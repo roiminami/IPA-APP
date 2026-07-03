@@ -28,10 +28,21 @@
             20%, 60% { transform: translateX(-6px); }
             40%, 80% { transform: translateX(6px); }
         }
+        .reveal-right {
+            max-width: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: max-width 0.5s ease, opacity 0.3s ease;
+        }
+        .hover-reveal:hover .reveal-right, .hover-reveal:active .reveal-right {
+            max-width: 300px;
+            opacity: 1;
+        }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
 
+    <!-- Header -->
     <header class="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm">
         <div class="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
             <div class="flex items-center space-x-3 cursor-pointer" onclick="goHome()">
@@ -40,7 +51,7 @@
                 </div>
                 <div>
                     <h1 class="text-sm md:text-base font-extrabold text-slate-900 leading-tight">TOEIC Part 5</h1>
-                    <p class="text-[10px] text-indigo-600 font-bold uppercase tracking-wider font-mono">Legal & Contract Vocab Training</p>
+                    <p class="text-[10px] text-indigo-600 font-bold uppercase tracking-wider">Legal & Contract Vocab Special Training</p>
                 </div>
             </div>
             
@@ -53,9 +64,10 @@
         </div>
     </header>
 
-    <!-- Main Content Wrapper -->
+    <!-- Main Content -->
     <main class="flex-grow max-w-5xl w-full mx-auto px-4 py-6 md:py-10 flex flex-col justify-center">
 
+        <!-- SCREEN 1: Preview -->
         <div id="cover-screen" class="fade-in bg-white rounded-3xl p-6 md:p-8 border border-slate-200 shadow-sm max-w-4xl mx-auto w-full my-4">
             <div class="text-center max-w-2xl mx-auto mb-8">
                 <span class="bg-indigo-50 text-indigo-700 text-xs font-extrabold px-3 py-1.5 rounded-full uppercase tracking-wider">
@@ -77,16 +89,16 @@
                     特训核心考点词 (<span id="count-core-badge">10</span>)
                 </button>
                 <button id="btn-tab-helper" onclick="switchPreviewTab('helper')" class="flex-1 py-2.5 text-xs font-bold rounded-xl transition-all text-slate-500 hover:text-slate-800">
-                    题干配套背景难词 (<span id="count-helper-badge">17</span>)
+                    题干配套背景难词 (<span id="count-helper-badge">0</span>)
                 </button>
             </div>
 
-            <!-- Vocabulary Cards Container -->
+            <!-- Grid -->
             <div class="mb-8">
                 <div id="vocab-grid-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5"></div>
             </div>
 
-            <!-- Start Challenge Entry -->
+            <!-- Start Button -->
             <div class="border-t border-slate-100 pt-6 text-center">
                 <button onclick="startQuiz()" class="inline-flex items-center justify-center space-x-3 bg-indigo-600 hover:bg-indigo-700 active:transform active:scale-95 transition-all text-white font-bold py-3.5 px-8 rounded-2xl shadow-xl w-full sm:w-auto">
                     <span>开始全量特训挑战</span>
@@ -95,9 +107,10 @@
             </div>
         </div>
 
+        <!-- SCREEN 2: Dashboard -->
         <div id="quiz-container" class="hidden space-y-6 fade-in max-w-4xl mx-auto w-full">
             
-            <!-- Question Tracker Status dots -->
+            <!-- Question Tracker -->
             <div class="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div class="flex items-center space-x-2">
                     <span class="w-2.5 h-2.5 rounded-full bg-indigo-600 animate-pulse"></span>
@@ -106,7 +119,7 @@
                 <div id="status-dots" class="flex flex-wrap gap-2"></div>
             </div>
 
-            <!-- Question Interactive Console Card -->
+            <!-- Question Card -->
             <div class="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden" id="main-question-card">
                 <div class="bg-slate-50 border-b border-slate-200/60 px-6 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div class="flex items-center space-x-3">
@@ -115,7 +128,6 @@
                     </div>
                     
                     <div class="flex items-center space-x-3 self-end sm:self-auto">
-                        <!-- Playback Speed controls -->
                         <div class="flex items-center bg-white border border-slate-200 rounded-xl p-1 text-xs shadow-inner">
                             <span class="text-slate-400 px-2"><i class="fa-solid fa-gauge-high"></i></span>
                             <button onclick="setSpeed(0.5)" id="speed-0.5" class="px-2.5 py-1 rounded-lg text-slate-500 font-semibold">0.5x</button>
@@ -130,31 +142,29 @@
                 </div>
 
                 <div class="p-6 md:p-8 space-y-6">
-                    <!-- Blank fill text -->
                     <div class="text-lg md:text-xl font-semibold text-slate-900 leading-relaxed" id="question-text"></div>
 
-                    <!-- Difficult Vocabulary Tooltips Helper -->
+                    <!-- Helper Words -->
                     <div class="bg-slate-50 border border-slate-100 rounded-2xl p-4 md:p-5">
                         <div class="flex items-center space-x-2 mb-3">
                             <div class="bg-indigo-100 text-indigo-700 p-1.5 rounded-lg flex items-center justify-center">
                                 <i class="fa-solid fa-lightbulb text-xs"></i>
                             </div>
-                            <h4 class="text-xs font-extrabold text-slate-700 uppercase tracking-wider">题干难词助手 (悬停/轻触显音标与释义，点击发音)</h4>
+                            <h4 class="text-xs font-extrabold text-slate-700 uppercase tracking-wider">题干难词助手 (悬停/轻触显音标与释义)</h4>
                         </div>
                         <div id="vocab-container" class="flex flex-wrap gap-2.5"></div>
                     </div>
 
-                    <!-- Multiple Choice Option list -->
+                    <!-- Options -->
                     <div class="space-y-3" id="options-container"></div>
                 </div>
 
-                <!-- Custom Inline Warning Alert -->
                 <div id="inline-toast" class="hidden px-8 py-3 bg-rose-50 text-rose-700 text-sm font-semibold border-t border-rose-100 flex items-center space-x-2">
                     <i class="fa-solid fa-circle-exclamation"></i>
-                    <span id="inline-toast-message">请先选择一个选项！</span>
+                    <span id="inline-toast-message">请先作答！</span>
                 </div>
 
-                <!-- Footer Navigation controls -->
+                <!-- Footer Navigation -->
                 <div class="bg-slate-50 border-t border-slate-100 px-6 py-4 flex items-center justify-between">
                     <button id="prev-btn" onclick="prevQuestion()" class="text-slate-600 hover:text-slate-900 font-bold flex items-center space-x-2 px-4 py-2.5 rounded-xl hover:bg-slate-200/60 transition-all">
                         <i class="fa-solid fa-arrow-left"></i>
@@ -167,7 +177,7 @@
                 </div>
             </div>
 
-            <!-- Detailed Analysis Panel -->
+            <!-- Analysis Panel -->
             <div id="analysis-panel" class="hidden bg-white rounded-3xl border border-slate-200 shadow-sm p-6 space-y-5 fade-in">
                 <div class="flex items-start space-x-4">
                     <div id="analysis-badge-icon" class="w-10 h-10 rounded-full flex items-center justify-center text-white mt-0.5 shrink-0"></div>
@@ -196,6 +206,7 @@
             </div>
         </div>
 
+        <!-- SCREEN 3: Settlement Report -->
         <div id="result-screen" class="hidden space-y-6 fade-in max-w-4xl mx-auto w-full">
             <div class="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm text-center max-w-xl mx-auto">
                 <div class="w-20 h-20 bg-indigo-50 text-indigo-600 rounded-full flex items-center justify-center mx-auto mb-5 shadow-inner">
@@ -259,7 +270,7 @@
                 </div>
             </div>
 
-            <!-- Personalized Mistake ledger -->
+            <!-- Mistake Ledger -->
             <div id="error-notebook" class="bg-white rounded-3xl border border-slate-200 shadow-sm p-6 md:p-8">
                 <div class="flex items-center space-x-3 mb-5 pb-4 border-b border-slate-100">
                     <div class="w-8 h-8 rounded-lg bg-rose-50 text-rose-600 flex items-center justify-center">
@@ -277,16 +288,15 @@
 
     <footer class="bg-white border-t border-slate-200 py-6 text-center text-xs text-slate-400 mt-12">
         <div class="max-w-5xl mx-auto px-4 flex flex-col sm:flex-row justify-between items-center gap-3">
-            <p>© 2026 TOEIC Part 5 智能交互高阶词汇特训系统</p>
+            <p>© 2026 TOEIC Part 5 智能高阶词汇特训系统</p>
         </div>
     </footer>
 
     <script>
-        // Core vocabularies
         const vocabBank = [
             { word: "abide by", pos: "V", ipa: "/əˈbaɪd baɪ/", zh: "遵守，顺从", ja: "遵守する、従う", desc: "常用于遵守法律、合同协议或企业规章制度。" },
-            { word: "accord with", pos: "V", ipa: "/əˈkɔːd wɪð/", zh: "与…一致，相符合", ja: "一致する、合致する", desc: "主语和宾语多为行为、陈述、条款或政策等。" },
-            { word: "in accordance with", pos: "Prep", ipa: "/ɪn əˈkɔːdns wɪð/", zh: "按照，根据", ja: "〜に従って、〜通りに", desc: "复合介词短语，用作状语，后接法规、条文或指示。" },
+            { word: "accord with", pos: "V", ipa: "/əˈkɔːd wɪð/", zh: "与…一致，相符合", desc: "主语和宾语多为行为、陈述、条款或政策等。" },
+            { word: "in accordance with", pos: "Prep", ipa: "/ɪn əˈkɔːdns wɪð/", zh: "按照，根据", ja: "〜に従って、〜通りに", desc: "介词短语，用作状语，后接法规、条文或指示。" },
             { word: "additional", pos: "A", ipa: "/əˈdɪʃənl/", zh: "额外的，附加的", ja: "追加の、付加的な", desc: "托业高频形容词，常修饰 funding, staff, charges, time 等。" },
             { word: "adjourn to", pos: "V", ipa: "/əˈdʒɜːn tuː/", zh: "移步至（某地）", ja: "（場所を）〜に移す", desc: "指会议休会或中止后，与会全体人员搬移到另一个地点。" },
             { word: "adjourn until", pos: "V", ipa: "/əˈdʒɜːn ʌnˈtɪl/", zh: "延期至（某时）", ja: "〜まで延期する", desc: "指会议、审判或讨论暂停并推迟到未来的具体时间点再继续。" },
@@ -296,28 +306,26 @@
             { word: "amendment", pos: "N", ipa: "/əˈmendmənt/", zh: "修改，修正案", ja: "修正、改正案", desc: "名词，指具体的合同修改内容、法律修正案或补充条款。" }
         ];
 
-        // Background hard words
         const helperVocabBank = [
             { word: "compliance", pos: "N", ipa: "/kəmˈplaɪəns/", zh: "合规，遵守", ja: "法令遵守" },
-            { word: "stipulated", pos: "A", ipa: "/ˈstɪpjuleɪtɪd/", zh: "约定的，明文规定的", ja: "明記された" },
-            { word: "provisions", pos: "N", ipa: "/prəˈvɪʒnz/", zh: "条款，规定", ja: "条項・規定" },
-            { word: "financial", pos: "A", ipa: "/faɪˈnænʃl/", zh: "财政的，金融的", ja: "財務の" },
-            { word: "statement", pos: "N", ipa: "/ˈsteɪtmənt/", zh: "报表，陈述", ja: "報告書" },
-            { word: "auditor", pos: "N", ipa: "/ˈɔːdɪtə(r)/", zh: "审计员", ja: "会計監査人" },
-            { word: "protocol", pos: "N", ipa: "/ˈprəʊtəkɒl/", zh: "协议，规程", ja: "協議・プロトコル" },
+            { word: "stipulated", pos: "A", ipa: "/ˈstɪpjuleɪtɪd/", zh: "约定的，明文规定的", ja: "明记された" },
+            { word: "provisions", pos: "N", ipa: "/prəˈvɪʒnz/", zh: "条款，规定", ja: "条项・规定" },
+            { word: "financial", pos: "A", ipa: "/faɪˈnænʃl/", zh: "财政的，金融的", ja: "财务の" },
+            { word: "statement", pos: "N", ipa: "/ˈsteɪtmənt/", zh: "报表，陈述", ja: "报告书" },
+            { word: "auditor", pos: "N", ipa: "/ˈɔːdɪtə(r)/", zh: "审计员", ja: "会计监查人" },
+            { word: "protocol", pos: "N", ipa: "/ˈprəʊtəkɒl/", zh: "协议，规程", ja: "协议・プロトコル" },
             { word: "implemented", pos: "V", ipa: "/ˈɪmplɪmentɪd/", zh: "实施，执行", ja: "実行された" },
-            { word: "resource", pos: "N", ipa: "/rɪˈsɔːs/", zh: "资源", ja: "資源" },
+            { word: "resource", pos: "N", ipa: "/rɪˈsɔːs/", zh: "资源", ja: "资源" },
             { word: "allocation", pos: "N", ipa: "/ˌæləˈkeɪʃn/", zh: "分配", ja: "割当" },
-            { word: "briefing", pos: "N", ipa: "/ˈbriːfɪŋ/", zh: "简报会", ja: "概要説明" },
-            { word: "boardroom", pos: "N", ipa: "/ˈbɔːdruːm/", zh: "董事会会议室", ja: "役員会議室" },
+            { word: "briefing", pos: "N", ipa: "/ˈbriːfɪŋ/", zh: "简报会", ja: "概要说明" },
+            { word: "boardroom", pos: "N", ipa: "/ˈbɔːdruːm/", zh: "董事会会议室", ja: "役员会议室" },
             { word: "session", pos: "N", ipa: "/ˈseʃn/", zh: "会议，期间", ja: "会期・セッション" },
             { word: "ratified", pos: "V", ipa: "/ˈrætɪfaɪd/", zh: "批准，认可", ja: "批准された" },
-            { word: "contractual", pos: "A", ipa: "/kənˈtræktʃuəl/", zh: "合同的，契约的", ja: "契約上の" },
-            { word: "obligations", pos: "N", ipa: "/ˌɒblɪˈɡeɪʃnz/", zh: "义务，责任", ja: "義務" },
+            { word: "contractual", pos: "A", ipa: "/kənˈtræktʃuəl/", zh: "合同的，契约的", ja: "契约上の" },
+            { word: "obligations", pos: "N", ipa: "/ˌɒblɪˈɡeɪʃnz/", zh: "义务，责任", ja: "义务" },
             { word: "proposed", pos: "A", ipa: "/prəˈpəʊzd/", zh: "提议的", ja: "提案された" }
         ];
 
-        // 10 high quality TOEIC Part 5 items
         const questionsDatabase = [
             {
                 id: "q_abide_by",
@@ -337,7 +345,7 @@
                 },
                 vocabHelper: [
                     { word: "compliance", ipa: "/kəmˈplaɪəns/", zh: "合规，遵守", ja: "法令遵守" },
-                    { word: "stipulated", ipa: "/ˈstɪpjuleɪtɪd/", zh: "约定的，明文规定的", ja: "明記された" }
+                    { word: "stipulated", ipa: "/ˈstɪpjuleɪtɪd/", zh: "约定的，明文规定的", ja: "明记された" }
                 ]
             },
             {
@@ -357,9 +365,9 @@
                     "adjourn until": "错误。意为“延期至”，用于会议或审判暂停，不符合财务对账场景。"
                 },
                 vocabHelper: [
-                    { word: "financial", ipa: "/faɪˈnænʃl/", zh: "财政的，金融的", ja: "財務の" },
-                    { word: "statement", ipa: "/ˈsteɪtmənt/", zh: "报表，陈述", ja: "報告書" },
-                    { word: "auditor", ipa: "/ˈɔːdɪtə(r)/", zh: "审计员", ja: "会計監査人" }
+                    { word: "financial", ipa: "/faɪˈnænʃl/", zh: "财政的，金融的", ja: "财务の" },
+                    { word: "statement", ipa: "/ˈsteɪtmənt/", zh: "报表，陈述", ja: "报告书" },
+                    { word: "auditor", ipa: "/ˈɔːdɪtə(r)/", zh: "审计员", ja: "会计监查人" }
                 ]
             },
             {
@@ -379,8 +387,8 @@
                     "amendment": "错误。名词“修改/修正案”，放入此处导致两个名词短语堆叠，语法彻底错误。"
                 },
                 vocabHelper: [
-                    { word: "provisions", ipa: "/prəˈvɪʒnz/", zh: "条款，规定", ja: "条項・規定" },
-                    { word: "protocol", ipa: "/ˈprəʊtəkɒl/", zh: "协议，规程", ja: "協議・プロトコル" }
+                    { word: "provisions", ipa: "/prəˈvɪʒnz/", zh: "条款，规定", ja: "条项・规定" },
+                    { word: "protocol", ipa: "/ˈprəʊtəkɒl/", zh: "协议，规程", ja: "协议・プロトコル" }
                 ]
             },
             {
@@ -396,12 +404,12 @@
                 rationales: {
                     "additional": "正确。形容词，意为“额外的，附加的”，作定语修饰不可数名词 funding（资金），商务场景最经典表达。",
                     "amendment": "错误。名词“修正案”，不可用于直接修饰资金做前置定语。",
-                    "abide by": "错误. 动词短语，不可直接充当名词的前置修饰词。",
+                    "abide by": "错误。动词短语，不可直接充当名词的前置修饰词。",
                     "accord with": "错误。动词短语，语法位置完全错误。"
                 },
                 vocabHelper: [
                     { word: "implemented", ipa: "/ˈɪmplɪmentɪd/", zh: "实施，执行", ja: "実行された" },
-                    { word: "resource", ipa: "/rɪˈsɔːs/", zh: "资源", ja: "資源" },
+                    { word: "resource", ipa: "/rɪˈsɔːs/", zh: "资源", ja: "资源" },
                     { word: "allocation", ipa: "/ˌæləˈkeɪʃn/", zh: "分配", ja: "割当" }
                 ]
             },
@@ -416,14 +424,14 @@
                 options: ["adjourn to", "adjourn until", "accord with", "amendable"],
                 chinese: "开幕致辞结束后，首席战略谈判代表决定移步至高管董事会会议室进行私下仲裁。",
                 rationales: {
-                    "adjourn to": "正确。动词短语，意为" + "“移步至（某地点）”，后面直接加具体的地点（boardroom），表示休会并转移场地。",
+                    "adjourn to": "正确。动词短语，意为“移步至（某地点）”，后面直接加具体的地点（boardroom），表示休会并转移场地。",
                     "adjourn until": "错误。意为“延期至（某时间点）”，其后必须接时间而不是地点名词。",
                     "accord with": "错误。意为“与…一致”，无法接地点名词构成合理的商务移动或会议流转动作。",
                     "amendable": "错误。形容词“可修改的”，不能在不定式符号 to 后面担任动词原形。"
                 },
                 vocabHelper: [
-                    { word: "briefing", ipa: "/ˈbriːfɪŋ/", zh: "简报会", ja: "概要説明" },
-                    { word: "boardroom", ipa: "/ˈbɔːdruːm/", zh: "董事会会议室", ja: "役員会議室" }
+                    { word: "briefing", ipa: "/ˈbriːfɪŋ/", zh: "简报会", ja: "概要说明" },
+                    { word: "boardroom", ipa: "/ˈbɔːdruːm/", zh: "董事会会议室", ja: "役员会议室" }
                 ]
             },
             {
@@ -463,7 +471,7 @@
                     "additional": "错误。形容词“额外的”，词性词义均不符合此处的句型空缺。"
                 },
                 vocabHelper: [
-                    { word: "contractual", ipa: "/kənˈtræktʃuəl/", zh: "合同的，契约的", ja: "契約上の" },
+                    { word: "contractual", ipa: "/kənˈtræktʃuəl/", zh: "合同的，契约的", ja: "契约上の" },
                     { word: "obligations", ipa: "/ˌɒblɪˈɡeɪʃnz/", zh: "义务，责任", ja: "義務" }
                 ]
             },
@@ -524,14 +532,14 @@
                     "in accordance with": "错误。介词短语，词性完全不对。"
                 },
                 vocabHelper: [
-                    { word: "protocol", ipa: "/ˈprəʊtəkɒl/", zh: "协议，规程", ja: "協議・プロトコル" }
+                    { word: "protocol", ipa: "/ˈprəʊtəkɒl/", zh: "协议，规程", ja: "协议・プロトコル" }
                 ]
             }
         ];
 
         let activeQuestionsList = [];
         let curIndex = 0;
-        let userAnswers = {}; 
+        let userAnswers = {}; // index -> choice string
         let currentRate = 1.0;
         let activeTab = 'core';
 
@@ -558,7 +566,7 @@
                 helperBtn.className = "flex-1 py-2.5 text-xs font-bold rounded-xl transition-all text-slate-500 hover:text-slate-800";
                 
                 vocabBank.forEach(v => {
-                    const jaSpan = v.ja ? `<span class="text-xs font-semibold text-rose-600 block">${v.ja}</span>` : '';
+                    const jaSpan = v.ja ? `<span class="text-xs font-semibold text-rose-600 block">日文: ${v.ja}</span>` : '';
                     container.innerHTML += `
                         <div onclick="speakWord('${v.word}')" class="bg-slate-50 hover:bg-indigo-50/60 border border-slate-200 hover:border-indigo-200 rounded-2xl p-4 transition-all duration-300 cursor-pointer shadow-sm flex flex-col justify-between group">
                             <div>
@@ -568,7 +576,7 @@
                                 </div>
                                 <div class="text-xs text-slate-400 font-mono mb-2">${v.ipa}</div>
                                 <div class="space-y-1 mb-2">
-                                    <span class="text-xs font-bold text-slate-700 block">${v.zh}</span>
+                                    <span class="text-xs font-bold text-slate-700 block">中文: ${v.zh}</span>
                                     ${jaSpan}
                                 </div>
                             </div>
@@ -590,8 +598,8 @@
                                 </div>
                                 <div class="text-xs text-slate-400 font-mono mb-2">${v.ipa}</div>
                                 <div class="space-y-1">
-                                    <span class="text-xs font-bold text-slate-700 block">${v.zh}</span>
-                                    <span class="text-xs font-semibold text-rose-600 block">${v.ja}</span>
+                                    <span class="text-xs font-bold text-slate-700 block">中文: ${v.zh}</span>
+                                    <span class="text-xs font-semibold text-rose-600 block">日文: ${v.ja}</span>
                                 </div>
                             </div>
                         </div>
@@ -683,29 +691,27 @@
             }
             document.getElementById('question-text').innerHTML = filledSentence;
 
-            // Helper words with correct custom layout transitions
+            // Helper words
             const helperContainer = document.getElementById('vocab-container');
             helperContainer.innerHTML = '';
             
+            // Filter out correct answer dynamically
             const strictlyFilteredHelpers = q.vocabHelper.filter(item => item.word.toLowerCase() !== q.correct.toLowerCase());
             
             if (strictlyFilteredHelpers.length === 0) {
                 helperContainer.innerHTML = `<span class="text-xs text-slate-400 italic">本题暂无其他背景高阶难词</span>`;
             } else {
                 strictlyFilteredHelpers.forEach(item => {
-                    // Create sliding tooltip element
-                    const btn = document.createElement('button');
-                    btn.className = "group relative inline-flex items-center space-x-1.5 bg-white hover:bg-indigo-50 text-slate-700 px-3 py-1.5 rounded-xl text-xs transition-all border border-slate-200 hover:border-indigo-300 cursor-pointer shadow-sm focus:outline-none";
-                    btn.onclick = () => speakWord(item.word);
-                    btn.innerHTML = `
-                        <span class="font-bold text-slate-900">${item.word}</span>
-                        <span class="max-w-0 overflow-hidden opacity-0 group-hover:max-w-[400px] group-hover:opacity-100 transition-all duration-300 ease-in-out flex items-center space-x-1.5 whitespace-nowrap">
-                            <span class="text-slate-400 font-mono font-medium">${item.ipa}</span>
-                            <span class="text-indigo-600 font-medium">${item.zh} / ${item.ja}</span>
-                        </span>
-                        <i class="fa-solid fa-volume-high text-[10px] text-slate-400 group-hover:text-indigo-500"></i>
+                    helperContainer.innerHTML += `
+                        <div class="hover-reveal bg-white border border-slate-200/80 px-3 py-1.5 rounded-xl text-xs font-medium text-slate-700 shadow-sm flex items-center space-x-1 cursor-help transition-all hover:border-indigo-300">
+                            <span class="font-bold text-slate-900">${item.word}</span>
+                            <div class="reveal-right flex items-center space-x-1.5 pl-1 text-slate-500 border-l border-slate-100 ml-1">
+                                <span class="font-mono text-[11px] text-indigo-500">${item.ipa}</span>
+                                <span class="bg-indigo-50 px-1.5 py-0.5 rounded text-[10px] text-indigo-700 font-semibold">${item.zh}</span>
+                                <span class="bg-rose-50 px-1.5 py-0.5 rounded text-[10px] text-rose-700 font-semibold">${item.ja}</span>
+                            </div>
+                        </div>
                     `;
-                    helperContainer.appendChild(btn);
                 });
             }
 
@@ -744,7 +750,7 @@
                 `;
             });
 
-            // Navigation status check
+            // Nav buttons
             document.getElementById('prev-btn').disabled = (idx === 0);
             document.getElementById('prev-btn').className = (idx === 0) ? "text-slate-300 font-bold flex items-center space-x-2 px-4 py-2.5 cursor-not-allowed" : "text-slate-600 hover:text-slate-900 font-bold flex items-center space-x-2 px-4 py-2.5 rounded-xl hover:bg-slate-200/60 transition-all";
 
@@ -755,6 +761,7 @@
                 nextBtnText.innerText = "下一题";
             }
 
+            // Analysis
             const analysisPanel = document.getElementById('analysis-panel');
             if (userAnswers[idx] !== undefined) {
                 analysisPanel.classList.remove('hidden');
@@ -912,7 +919,7 @@
             document.getElementById('result-accuracy').innerText = `${accuracyPct}%`;
             document.getElementById('result-score').innerText = `${correctCount} / ${totalQuestions}`;
 
-            // Render progress indicators
+            // Render progress bars
             ["easy", "medium", "hard"].forEach(lvl => {
                 const data = breakdown[lvl];
                 const bar = document.getElementById(`${lvl}-bar`);
@@ -927,7 +934,7 @@
                 }
             });
 
-            // Mistake Notebook drawing
+            // Missed notebook
             const missedListContainer = document.getElementById('error-words-list');
             missedListContainer.innerHTML = '';
             const retryBtn = document.getElementById('retry-errors-btn');
@@ -941,15 +948,15 @@
                     missedListContainer.innerHTML += `
                         <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-2.5">
                             <div class="flex items-center justify-between">
-                                <span class="text-xs font-bold bg-rose-50 text-rose-700 px-2.5 py-1 rounded-lg">核心考点: ${q.targetWord}</span>
+                                <span class="text-xs font-bold bg-rose-50 text-rose-700 px-2.5 py-1 rounded-lg">核心考点词: ${q.targetWord}</span>
                                 <span class="text-xs text-slate-400 font-medium">难度: ${q.difficulty}</span>
                             </div>
                             <p class="text-sm font-semibold text-slate-800 leading-relaxed">${q.sentence.replace('______', `<span class="text-emerald-600 underline font-extrabold">${q.correct}</span>`)}</p>
                             <div class="text-xs grid grid-cols-1 sm:grid-cols-2 gap-2 bg-white p-3 rounded-xl border border-slate-100">
-                                <div><span class="text-slate-400 font-medium">您的错选:</span> <span class="text-rose-600 font-bold">${wrongAns}</span></div>
-                                <div><span class="text-slate-400 font-medium">正确选项:</span> <span class="text-emerald-600 font-bold">${q.correct}</span></div>
+                                <div><span class="text-slate-400 font-medium">你的错误选择:</span> <span class="text-rose-600 font-bold">${wrongAns}</span></div>
+                                <div><span class="text-slate-400 font-medium">官方正确答案:</span> <span class="text-emerald-600 font-bold">${q.correct}</span></div>
                             </div>
-                            <p class="text-xs text-slate-600 leading-normal bg-white p-3 rounded-xl border border-slate-100 font-medium"><strong class="text-indigo-600 font-extrabold">考点深度精析:</strong> ${q.rationales[q.correct]}</p>
+                            <p class="text-xs text-slate-600 leading-normal bg-white p-3 rounded-xl border border-slate-100 font-medium"><strong class="text-indigo-600">考点深度精析:</strong> ${q.rationales[q.correct]}</p>
                         </div>
                     `;
                 });
