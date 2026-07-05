@@ -9,7 +9,7 @@
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght=300;400;500;600;700&family=Noto+Sans+SC:wght=300;400;500;700&family=Noto+Sans+JP:wght=300;400;500;700&display=swap');
         
         body {
             font-family: 'Inter', 'Noto Sans SC', 'Noto Sans JP', sans-serif;
@@ -53,7 +53,7 @@
                 </div>
                 <div>
                     <h1 class="text-lg font-bold text-slate-900 tracking-tight">南式TOEIC鬼特訓</h1>
-                    <p class="text-[10px] text-amber-600 font-semibold tracking-wider uppercase">Part 5 Intelligent Interactive System • Daylight v2.7</p>
+                    <p class="text-[10px] text-amber-600 font-semibold tracking-wider uppercase">Part 5 Intelligent Interactive System • Daylight v2.8</p>
                 </div>
             </div>
 
@@ -157,7 +157,7 @@
                     <span class="w-1.5 h-3.5 bg-amber-500 rounded"></span>
                     核心考点词表 (Core Target Vocabulary)
                 </h4>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="targetVocabGrid">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="targetVocGrid">
                     <!-- Loaded dynamically via js -->
                 </div>
             </div>
@@ -199,7 +199,7 @@
                 <!-- Test Arena Card -->
                 <div class="bg-white rounded-3xl border border-[#EAE6D9] shadow-sm p-6 md:p-8 space-y-6 relative overflow-hidden">
                     <div class="flex items-center justify-between">
-                        <span id="q-category" class="text-[10px] font-black uppercase tracking-wider bg-amber-100 text-amber-700 px-2.5 py-1 rounded-full">
+                        <span id="q-category" class="text-[10px] font-black uppercase tracking-wider bg-amber-100 text-amber-700 px-2.5 py-1 rounded-full flex items-center">
                             TARGET: ANYWAY
                         </span>
                         <div class="flex items-center space-x-2">
@@ -266,7 +266,7 @@
                             </div>
 
                             <div class="space-y-2">
-                                <h4 class="text-xs font-bold text-amber-600 tracking-wider uppercase">考博核心突破 (Bootcamp Guide)</h4>
+                                <h4 class="text-xs font-bold text-amber-600 tracking-wider uppercase">考点核心突破 (Bootcamp Guide)</h4>
                                 <p id="ana-guide" class="text-xs text-slate-600 leading-relaxed font-medium">--</p>
                             </div>
 
@@ -354,7 +354,7 @@
 
                     <div class="space-y-1">
                         <h4 id="report-rank" class="text-base font-bold text-amber-700">TOEIC 备考见习生 (Novice)</h4>
-                        <p class="text-xs text-slate-400" id="report-summary-txt">加油！完成全部 18 道真题后方能展示极致的多维能力评估诊断面板。</p>
+                        <p class="text-xs text-slate-400" id="report-summary-txt">加油！完成全部 18 道真题后方能展示客观的多维能力评估诊断面板。</p>
                     </div>
                 </div>
             </div>
@@ -371,49 +371,49 @@
                         <!-- Stat Item -->
                         <div class="space-y-2">
                             <div class="flex justify-between text-xs font-bold text-slate-700">
-                                <span>1. 语法派生判断力 (Derivation)</span>
+                                <span>1. 词性派生与可数性判断 (Derivation)</span>
                                 <span id="radar-val-derivation">0%</span>
                             </div>
                             <div class="w-full bg-[#F3EFE3] h-2 rounded-full overflow-hidden">
                                 <div id="radar-bar-derivation" class="bg-amber-500 h-full w-0 transition-all duration-1000"></div>
                             </div>
-                            <span class="text-[10px] text-slate-400 block">考核核心: including, exclusion, departmental, registration, attendance, hiring 等词性与形态。</span>
+                            <span class="text-[10px] text-slate-400 block">考核核心：departmental (形容词修饰), locally (副词修饰), clientele (集体名词) 等词性与单复数匹配。</span>
                         </div>
 
                         <!-- Stat Item -->
                         <div class="space-y-2">
                             <div class="flex justify-between text-xs font-bold text-slate-700">
-                                <span>2. 固定搭配与功能表达 (Phrasal Match)</span>
+                                <span>2. 核心句式与固定短语 (Phrasal Match)</span>
                                 <span id="radar-val-prep">0%</span>
                             </div>
                             <div class="w-full bg-[#F3EFE3] h-2 rounded-full overflow-hidden">
                                 <div id="radar-bar-prep" class="bg-blue-500 h-full w-0 transition-all duration-1000"></div>
                             </div>
-                            <span class="text-[10px] text-slate-400 block">考核核心: according to + 来源、review + 名词、attendance (absences) 等高阶功能词搭配。</span>
+                            <span class="text-[10px] text-slate-400 block">考核核心：in strict accordance with (固定句式), according to (信息源引导), include (及物原形) 等高频考点。</span>
                         </div>
 
                         <!-- Stat Item -->
                         <div class="space-y-2">
                             <div class="flex justify-between text-xs font-bold text-slate-700">
-                                <span>3. 商务实战语义推理 (Context Semantics)</span>
+                                <span>3. 商务场景深度逻辑辨析 (Context Semantics)</span>
                                 <span id="radar-val-semantics">0%</span>
                             </div>
                             <div class="w-full bg-[#F3EFE3] h-2 rounded-full overflow-hidden">
                                 <div id="radar-bar-semantics" class="bg-emerald-500 h-full w-0 transition-all duration-1000"></div>
                             </div>
-                            <span class="text-[10px] text-slate-400 block">考核核心: client vs customer、contact + 人、local branch/distributor、available/unavailable 反义。</span>
+                            <span class="text-[10px] text-slate-400 block">考核核心：review agreement (合同审查), corporate client (大宗客户), media outlets (媒介渠道) 等真实职场场景理解。</span>
                         </div>
 
                         <!-- Stat Item -->
                         <div class="space-y-2">
                             <div class="flex justify-between text-xs font-bold text-slate-700">
-                                <span>4. 背景商务难词熟练度 (Helper Lexicon)</span>
+                                <span>4. 真题难词悬停掌握度 (Helper Lexicon)</span>
                                 <span id="radar-val-helper">0%</span>
                             </div>
                             <div class="w-full bg-[#F3EFE3] h-2 rounded-full overflow-hidden">
                                 <div id="radar-bar-helper" class="bg-purple-500 h-full w-0 transition-all duration-1000"></div>
                             </div>
-                            <span class="text-[10px] text-slate-400 block">考核：对题干中出现的 reimbursable, expenditure, disruption, procurement 等高难词汇的工具提示悬浮阅读率。</span>
+                            <span class="text-[10px] text-slate-400 block">考核：对题干中出现的 reimbursement, manuscript, renovated, coordinator 等高难词汇的工具提示悬浮阅读率。</span>
                         </div>
                     </div>
 
@@ -460,7 +460,7 @@
         console.log("Theme: Daylight Warm Soft Accent palette.");
 
         // ==========================================
-        // 1. CORE DATA BANKS (Strictly Replacement)
+        // 1. CORE DATA BANKS (Target Core 10 replacement)
         // ==========================================
 
         const vocabBank = [
@@ -468,417 +468,413 @@
                 word: "include",
                 pos: "動",
                 ipa: "/ɪnˈkluːd/",
-                cn: "包含，包括",
-                jp: "含む、包含する",
+                cn: "包含，包括，列入",
+                jp: "含む、含める、同封する",
                 family: "including / exclude / exclusion",
-                tips: "include + 名词（包含结构）；分词形式 including 极常作介词使用",
-                desc: "The package price does not include local transportation or meals."
+                tips: "include + 名词（包含结构）；常用于表示总价或服务包所包含的内容。",
+                desc: "The package price for the leadership conference will include all accommodation and meal expenses."
             },
             {
                 word: "department",
                 pos: "名",
                 ipa: "/dɪˈpɑːrtmənt/",
-                cn: "部门，（大学的）系",
-                jp: "部署、部門、学科",
+                cn: "部门，系，科",
+                jp: "部門、課、学科、省",
                 family: "departmental / division / section",
-                tips: "department + 名词（如 sales department / marketing department 等常见机构称谓）",
-                desc: "The human resources department handles all new employee background screenings."
+                tips: "department + 名词（如 sales/HR 等部门名称）；常表示公司的某职能分支部门。",
+                desc: "Please submit your monthly travel reimbursement requests directly to the accounting department."
             },
             {
                 word: "contact",
                 pos: "動/名",
                 ipa: "/ˈkɑːntækt/",
                 cn: "联系，联络，接触",
-                jp: "連絡する、接触、連絡先",
+                jp: "連絡する、連絡、接触",
                 family: "contacted / communication / connection",
-                tips: "contact + 人/机构（不需要接 to，直接作及物动词：contact us）",
-                desc: "Please feel free to contact our customer support desk if you experience issues."
+                tips: "contact + 人/机构；作及物动词时后面不需要介词 with，作名词时常接 with。",
+                desc: "If you experience any technical difficulties with the client portal, please contact the IT helpdesk."
             },
             {
                 word: "according to",
                 pos: "前",
                 ipa: "/əˈkɔːrdɪŋ tuː/",
                 cn: "根据，按照",
-                jp: "〜によると、〜に従って",
+                jp: "～に従って、～によれば",
                 family: "accordingly / accordance",
-                tips: "according to + 信息来源/报告/调查等（如 according to the report）",
-                desc: "According to the latest financial report, overall operational costs have decreased."
+                tips: "according to + 信息来源（如 report / survey / regulations 等）。",
+                desc: "According to the latest market research report, consumer demand for eco-friendly furniture has risen."
             },
             {
                 word: "client",
                 pos: "名",
                 ipa: "/ˈklaɪənt/",
-                cn: "委托人，客户，顾客",
-                jp: "顧客、クライアント、依頼人",
+                cn: "客户，委托人",
+                jp: "依頼人、顧客、クライアント",
                 family: "clientele / customer / guest",
-                tips: "商业或专业咨询服务机构的客户通常用 client，而普通零售用 customer",
-                desc: "We must ensure that all client records are stored in a highly secure server."
+                tips: "商业客户用 client（特指购买专业服务、咨询或大宗业务的商户或机构，区别于零售消费者 customer）。",
+                desc: "Our senior account manager scheduled a private dinner to welcome our most valuable corporate client."
             },
             {
                 word: "review",
                 pos: "動/名",
                 ipa: "/rɪˈvjuː/",
-                cn: "审查，复习，评论",
-                jp: "審査する、見直す、レビュー",
+                cn: "审查，复习，评论，回顾",
+                jp: "～を再検討する、批評する、審査、見直し",
                 family: "reviewer / reviewing",
-                tips: "review + 名词（常用于审查文件、评估情况、审查员工绩效表现）",
-                desc: "The board members will review the merger proposals tomorrow morning."
+                tips: "review + 名词（文件/情况/表现等）；在商务环境中常用作对报告、合同的详细审核。",
+                desc: "The legal department must thoroughly review the draft agreement before we can sign the contract."
             },
             {
                 word: "indicate",
                 pos: "動",
                 ipa: "/ˈɪndɪkeɪt/",
-                cn: "表明，指出，暗示",
-                jp: "示す、指摘する、表明する",
+                cn: "表明，指出，指示，象征",
+                jp: "～を指し示す、表示する、表明する",
                 family: "indication / indicator",
-                tips: "indicate that + 完整句子；或者是 indicate + 名词（表示迹象）",
-                desc: "Preliminary analysis results indicate that local demand is rising steadily."
+                tips: "indicate that + 句子；常用于描述调查、数据或趋势所体现的客观客观事实。",
+                desc: "Early survey results clearly indicate that a vast majority of the staff members prefer a hybrid work schedule."
             },
             {
                 word: "attend",
                 pos: "動",
                 ipa: "/əˈtend/",
-                cn: "参加，出席",
-                jp: "出席する、参加する",
+                cn: "参加，出席，上学",
+                jp: "～に出席する、参加する、通う",
                 family: "attendance / attendee / attendant",
-                tips: "attend + 会议/活动/学校（如 attend the meeting / attend the conference）",
-                desc: "All department heads are expected to attend the quarterly briefing."
+                tips: "attend + meeting / event / school；注意区分 attendee（出席者）和 attendant（服务员）。",
+                desc: "All department heads are expected to attend the annual budget planning session scheduled for next Monday."
             },
             {
                 word: "hire",
                 pos: "動/名",
                 ipa: "/ˈhaɪər/",
-                cn: "雇佣，招聘，新雇员",
-                jp: "雇う、採用する、新規採用者",
+                cn: "雇用，租用，招聘人员",
+                jp: "～を雇う、～を賃借りする、新規採用者",
                 family: "hired / hiring / new hire",
-                tips: "hire + 人（招聘中指具体的动作，也可作名词表示新员工：new hire）",
-                desc: "The executive committee decided to hire a consultant to analyze market trends."
+                tips: "hire + 人（招聘）；在托业中常考及物动词或作名词 new hire（新入职员工）。",
+                desc: "The human resources division plans to hire five temporary database assistants to assist with the migration."
             },
             {
                 word: "local",
                 pos: "形",
                 ipa: "/ˈloʊkl/",
-                cn: "当地的，本地的",
-                jp: "地元の、局所の",
+                cn: "当地的，本地的，地方性的",
+                jp: "地元の、現地の、各駅停車の",
                 family: "locally / locality",
-                tips: "local + 名词（常用于 local office 当地办事处 / local branch 当地分部）",
-                desc: "We should purchase ingredients from local suppliers to support the community."
+                tips: "local + 名词（如 local office 当地办公室 / local branch 当地分部），派生副词为 locally。",
+                desc: "The organic restaurant chain sources its ingredients locally to ensure freshness and support nearby farms."
             }
         ];
 
         const helperVocabBank = [
-            { word: "reimbursable", pos: "形", ipa: "/ˌriːɪmˈbɜːrsəbl/", cn: "可报销的", jp: "払い戻し可能な" },
-            { word: "expenditure", pos: "名", ipa: "/ɪkˈspendɪtʃər/", cn: "开支，消费额", jp: "支出、経費" },
-            { word: "disruption", pos: "名", ipa: "/dɪsˈrʌpʃn/", cn: "中断，故障", jp: "中断、混乱" },
-            { word: "merger", pos: "名", ipa: "/ˈmɜːrdʒər/", cn: "合并", jp: "合併" },
-            { word: "quarterly", pos: "形/副", ipa: "/ˈkwɔːrtərli/", cn: "每季度的", jp: "四半期ごとの" },
-            { word: "satisfaction", pos: "名", ipa: "/ˌsætɪsˈfækʃn/", cn: "满意度", jp: "満足、満足度" },
-            { word: "prioritize", pos: "動", ipa: "/praɪˈɔːrətaɪz/", cn: "优先考虑", jp: "優先する" },
-            { word: "consulting", pos: "形/名", ipa: "/kənˈsʌltɪŋ/", cn: "咨询的", jp: "コンサルティングの" },
-            { word: "scheduled", pos: "形", ipa: "/ˈskedʒuːld/", cn: "预定的", jp: "予定された" },
-            { word: "registration", pos: "名", ipa: "/ˌredʒɪˈstreɪʃn/", cn: "注册，登记", jp: "登録、申し込み" },
-            { word: "alignment", pos: "名", ipa: "/əˈlaɪnmənt/", cn: "协同，对齐", jp: "提携、アライメント" },
-            { word: "briefing", pos: "名", ipa: "/ˈbriːfɪŋ/", cn: "简报会", jp: "状況説明、ブリーフィング" },
-            { word: "streamlined", pos: "形", ipa: "/ˈstriːmlaɪnd/", cn: "精简的，合理的", jp: "合理化された、能率的な" },
-            { word: "logistics", pos: "名", ipa: "/loʊˈdʒɪstɪks/", cn: "物流，后勤", jp: "物流、ロジスティクス" },
-            { word: "procurement", pos: "名", ipa: "/prəˈkjʊrmənt/", cn: "采购，获取", jp: "調達、入手" },
-            { word: "exceptional", pos: "形", ipa: "/ɪkˈsepʃənl/", cn: "杰出的，卓越的", jp: "優秀な、並外れた" },
-            { word: "representative", pos: "名", ipa: "/ˌreprɪˈzentətɪv/", cn: "代表，代理人", jp: "担当者、代表者" },
-            { word: "portfolio", pos: "名", ipa: "/pɔːrtˈfoʊlioʊ/", cn: "投资组合", jp: "ポートフォリオ、作品集" },
-            { word: "preliminary", pos: "形", ipa: "/prɪˈlɪmɪneri/", cn: "初步的", jp: "予備の、事前の" },
-            { word: "regulation", pos: "名", ipa: "/ˌreɡjuˈleɪʃn/", cn: "规章，法规", jp: "規則、規制" },
-            { word: "complimentary", pos: "形", ipa: "/ˌkɑːmplɪˈmentəri/", cn: "赠送的，免费的", jp: "無料の、優待の" },
-            { word: "technical", pos: "形", ipa: "/ˈteknɪkl/", cn: "技术的，专业的", jp: "技術的な、専門的な" }
+            { word: "accommodation", pos: "名", ipa: "/əˌkɑːməˈdeɪʃn/", cn: "住宿，留宿", jp: "宿泊施設、宿泊" },
+            { word: "reimbursement", pos: "名", ipa: "/ˌriːɪmˈbɜːrsmənt/", cn: "报销，补偿", jp: "払い戻し、返済" },
+            { word: "portal", pos: "名", ipa: "/ˈpɔːrtl/", cn: "门户网站，入口", jp: "ポータル、入り口" },
+            { word: "demand", pos: "名/動", ipa: "/dɪˈmænd/", cn: "需求，要求", jp: "需要、要求" },
+            { word: "executive", pos: "形/名", ipa: "/ɪɡˈzekjətɪv/", cn: "行政的，经营管理的，经理主管", jp: "役員、経営者、執行権のある" },
+            { word: "partnership", pos: "名", ipa: "/ˈpɑːrtnərʃɪp/", cn: "合作关系，伙伴关系", jp: "提携、共同、共同経営" },
+            { word: "navigate", pos: "動", ipa: "/ˈnævɪɡeɪt/", cn: "导航，浏览，操纵", jp: "閲覧する、誘導する、航行する" },
+            { word: "budget", pos: "名/形", ipa: "/ˈbʌdʒɪt/", cn: "预算，廉价的", jp: "予算、低価格の" },
+            { word: "migration", pos: "名", ipa: "/maɪˈɡreɪʃn/", cn: "（系统）迁移，迁徙", jp: "移行、移行作業" },
+            { word: "source", pos: "動/名", ipa: "/sɔːrs/", cn: "采购，来源，寻找货源", jp: "調達する、情報源、元" },
+            { word: "audit", pos: "名/動", ipa: "/ˈɔːdɪt/", cn: "审计，审计检查", jp: "監査、監査する" },
+            { word: "renovated", pos: "形", ipa: "/ˈrenəveɪtɪd/", cn: "整修过的，翻新的", jp: "改装された、修復された" },
+            { word: "manuscript", pos: "名", ipa: "/ˈmænjuskrɪpt/", cn: "手稿，原稿", jp: "原稿、写本" },
+            { word: "supervisor", pos: "名", ipa: "/ˈsuːpərvaɪzər/", cn: "主管，监督人", jp: "スーパーバイザー、監督者" },
+            { word: "campaign", pos: "名", ipa: "/kæmˈpeɪn/", cn: "宣传活动，战役", jp: "キャンペーン、運動" },
+            { word: "coordinator", pos: "名", ipa: "/koʊˈɔːrdɪneɪtər/", cn: "协调员，统筹人", jp: "コーディネーター、調整役" },
+            { word: "outlet", pos: "名", ipa: "/ˈaʊtlet/", cn: "媒体渠道，专营店，出水口", jp: "直営店、アウトレット、メディア媒体" },
+            { word: "routing", pos: "名/動名", ipa: "/ˈruːtɪŋ/", cn: "路由发送，线路安排", jp: "ルート選定、発送処理" }
         ];
 
         const questionsDatabase = [
             {
                 id: 1,
                 target: "include",
-                category: "Derivation",
-                stem: "The updated travel policy outlines all reimbursable expenses, ________ taxi fares, airport parking fees, and meals.",
+                category: "Phrasal Match",
+                stem: "The package price for the leadership conference will ________ all accommodation and meal expenses for three days.",
                 options: ["include", "including", "exclude", "exclusion"],
-                correct: "including",
+                correct: "include",
                 explanations: {
-                    guide: "分词做介词的语法。这里需要一个介词来引入举例说明的成分，'including'（包含）常作介词引入具体项，等同于 'which include'。",
-                    family: "include (v.) | including (prep.包含) | exclude (v.排除) | exclusion (n.排除)。",
-                    details: "句中说明了可报销开支，后面列举了出租车费、停车费和餐费。'including' 完美承担‘包含在内’的引导词功能。'exclusion' 意为排除，且无法直接后接宾语。",
-                    cn: "更新后的差旅政策概述了所有可报销的费用，包括出租车费、机场停车费和餐费。",
-                    jp: "更新された出張規定には、タクシー代、空港の駐車料金、食事代を含む、すべての払い戻し可能な経费の概要が記載されています。"
+                    guide: "及物动词搭配。情态动词 'will' 后接动词原形，表示‘包含，包括’整个费用的结构，后面直接跟名词短语作为宾语。",
+                    family: "include (v.包含) | including (prep.包含...) | exclude (v.排除) | exclusion (n.排除/排外)。",
+                    details: "根据语境，会议的打包价格‘将包含’所有的住宿与餐饮费用。'will' 后必须使用动词原形 'include'。'including' 为介词，'exclusion' 是名词，'exclude' 语义相反。",
+                    cn: "领导力会议的包价将包含三天的所有住宿和餐饮费用。",
+                    jp: "リーダーシップ会議のパッケージ価格には、3日間のすべての宿泊費と食費が含まれます（include）。"
                 },
-                helperWords: ["reimbursable"]
+                helperWords: ["accommodation"]
             },
             {
                 id: 2,
                 target: "department",
                 category: "Phrasal Match",
-                stem: "Please make sure that the monthly expenditure details are submitted to the ________ heads before the audit begins.",
-                options: ["departmental", "division", "section", "department"],
-                correct: "departmental",
+                stem: "Please submit your monthly travel reimbursement requests directly to the accounting ________ by Friday afternoon.",
+                options: ["department", "departmental", "division", "section"],
+                correct: "department",
                 explanations: {
-                    guide: "定语修饰考点。空白处需填入形容词修饰复数名词 heads（负责人），'departmental heads' 代表‘部门负责人’。",
-                    family: "departmental (adj.部门的) | department (n.部门) | division (n.分部) | section (n.科室)。",
-                    details: "虽然 'department heads' 在口语中也很常用，但本题重点考查在语法上修饰名词 heads 的派生形容词 'departmental'，它是形容词修饰语的最佳形式。",
-                    cn: "请确保在审计开始前将每月支出详情提交给部门主管。",
-                    jp: "監査が始まる前に、毎月の支出の詳細が部門長（departmental heads）に提出されていることを確認してください。"
+                    guide: "名词搭配考点。'accounting department' 代表‘财务部/会计部门’，在商务场景中，它是最经典的部门搭配词。",
+                    family: "department (n.部门) | departmental (adj.部门的) | division (n.事业部/部门) | section (n.科/段)。",
+                    details: "虽然 'division' 和 'section' 也可以表示部门的分支，但配合 'accounting' 形成专有名词时，'accounting department' 是最标准、最常见的托业商务表达。",
+                    cn: "请在周五下午之前将您每月的差旅报销申请直接提交给财务部。",
+                    jp: "月次の出張旅費精算申請書は、金曜日の午後までに経理部（department）に直接提出してください。"
                 },
-                helperWords: ["expenditure"]
+                helperWords: ["reimbursement"]
             },
             {
                 id: 3,
                 target: "contact",
-                category: "Context Semantics",
-                stem: "Should you experience any software disruption during the merger, please ________ the IT helpdesk immediately.",
-                options: ["contact", "communication", "connection", "reviewing"],
+                category: "Phrasal Match",
+                stem: "If you experience any technical difficulties with the client portal, please ________ the IT helpdesk immediately.",
+                options: ["contact", "contacted", "communication", "connection"],
                 correct: "contact",
                 explanations: {
-                    guide: "商务动词与命令句结构。'please' 后面需要接动词原形，在此表示‘联系（contact）IT服务台’。",
-                    family: "contact (v./n.联系) | communication (n.交流) | connection (n.连接)。",
-                    details: "contact 作及物动词时直接加宾语（contact the helpdesk）。communication 和 connection 是名词，不可在 please 后作主干谓语。",
-                    cn: "如果您在合并过程中遇到任何软件中断，请立即联系IT服务台。",
-                    jp: "合併中にソフトウェアの不具合が発生した場合は、すぐにITヘルプデスクに連絡（contact）してください。"
+                    guide: "祈使句动词搭配。'please' 后面需要跟动词原形，'contact + 人/机构' 表示‘联系某人或某部门’。",
+                    family: "contact (v./n.联系) | contacted (v.过去式) | communication (n.沟通) | connection (n.连接)。",
+                    details: "由于 'please' 引导祈使句，空格处必须是动词原形 'contact'。'communication' 和 'connection' 是名词，不符合句法结构。",
+                    cn: "如果您在使用客户门户网站时遇到任何技术问题，请立即联系IT服务台。",
+                    jp: "クライアントポータルで技術的な問題が発生した場合は、すぐにITヘルプデスクに連絡（contact）してください。"
                 },
-                helperWords: ["disruption", "merger"]
+                helperWords: ["portal"]
             },
             {
                 id: 4,
                 target: "according to",
                 category: "Phrasal Match",
-                stem: "________ the latest quarterly survey, client satisfaction rates have reached an all-time high of ninety-two percent.",
-                options: ["according to", "accordingly", "accordance", "locally"],
+                stem: "________ the latest market research report, consumer demand for eco-friendly office furniture has risen sharply.",
+                options: ["according to", "accordingly", "accordance", "local"],
                 correct: "according to",
                 explanations: {
-                    guide: "固定介词短语。引导外部数据、来源、报告等通常使用 'according to'。",
-                    family: "according to (prep.根据) | accordingly (adv.相应地) | accordance (n.一致/按照)。",
-                    details: "空格后面是名词短语 'the latest quarterly survey'，作为状语成分。'according to' 是复合介词，而 'accordingly' 是副词，'accordance' 通常需要构成 'in accordance with' 才能使用。",
-                    cn: "根据最新的季度调查，客户满意度已达到92%的历史新高。",
-                    jp: "最新の四半期調査によると（according to）、顧客満足度は過去最高の92%に達しました。"
+                    guide: "介词短语习惯搭配。'according to + 信息来源' 表示‘根据……，依据……’。",
+                    family: "according to (prep.根据) | accordingly (adv.相应地) | accordance (n.一致/符合) | local (adj.当地的)。",
+                    details: "空格后面是信息来源名词短语 'the latest market research report'，能够引导名词短语且符合‘根据报告指出’语境的只有介词短语 'according to'。",
+                    cn: "根据最新的市场调研报告，消费者对环保办公家具的需求已急剧上升。",
+                    jp: "最新の市場調査レポートによると（according to）、環境に優しいオフィス家具に対する消費者の需要は急激に高まっています。"
                 },
-                helperWords: ["quarterly", "satisfaction"]
+                helperWords: ["demand"]
             },
             {
                 id: 5,
                 target: "client",
                 category: "Context Semantics",
-                stem: "To build long-term relationships, our consulting firm must prioritize the specific business goals of each individual ________.",
-                options: ["client", "clientele", "customer", "guest"],
+                stem: "Our senior account manager scheduled a private dinner to welcome our most valuable corporate ________ from Tokyo.",
+                options: ["client", "customer", "guest", "department"],
                 correct: "client",
                 explanations: {
-                    guide: "专业商务名词辨析。在‘咨询、会计、法律、金融服务’等专业机构语境下，客户均使用 'client'。",
-                    family: "client (n.客户) | clientele (n.顾客/委托人总称) | customer (n.零售顾客)。",
-                    details: "'each individual'（每一个个体）修饰单数可数名词。'clientele' 是不可数的集合名词，而 'customer' 常见于商超零售，不如 'client' 更符合 'consulting firm'（咨询公司）的专业搭配。",
-                    cn: "为了建立长期合作关系，我们咨询公司必须将每个客户的具体业务目标放在首位。",
-                    jp: "長期的な関係を築くために、当コンサルティングファームは個々のクライアント（client）の具体的なビジネス目標を最優先しなければなりません。"
+                    guide: "商务场景词义辨析。商业咨询、专业服务或大宗合作中的‘企业客户’首选词汇是 'client'。",
+                    family: "client (n.客户) | customer (n.普通消费者) | guest (n.宾客/酒店住客) | department (n.部门)。",
+                    details: "托业核心考点之一：普通零配零售业消费者用 customer，而需要专业服务（如咨询、广告、设计、法务等）的商户或企业客户则用 'client'。",
+                    cn: "我们的资深客户经理安排了一次私人晚宴，以欢迎来自东京的最具价值的企业客户。",
+                    jp: "シニアアカウントマネージャーは、東京からの最も価値のある企業クライアント（client）を歓迎するため、プライベートディナーを計画しました。"
                 },
-                helperWords: ["prioritize", "consulting"]
+                helperWords: ["executive"]
             },
             {
                 id: 6,
                 target: "review",
-                category: "Phrasal Match",
-                stem: "The legal department is scheduled to ________ the updated contract terms before they are presented to the board.",
-                options: ["reviewer", "reviewing", "review", "indicate"],
+                category: "Context Semantics",
+                stem: "The legal department must thoroughly ________ the draft agreement before we can sign the partnership contract.",
+                options: ["review", "reviewing", "reviewer", "accordance"],
                 correct: "review",
                 explanations: {
-                    guide: "不定式动词原形。'be scheduled to do sth' 代表‘被排定日程去执行某事’，to后必须跟动词原形。",
-                    family: "review (v./n.审查) | reviewer (n.审查者) | reviewing (n./adj.审查的/中的)。",
-                    details: "空格后面是名词宾语 'the updated contract terms'（更新后的合同条款），所以需要填入及物动词原形 'review'（审查）。'reviewer' 是人称名词，'reviewing' 是分词形式，皆不符合 'to' 不定式结构。",
-                    cn: "法律部门预定在将更新后的合同条款提交给董事会之前对其进行审查。",
-                    jp: "法務部は、更新された契約条件が取締役会に提出される前に、それらを審査（review）する予定です。"
+                    guide: "动词词义与句法分析。情态动词 'must' 后面接动词原形，'review + 文件/情况' 表示‘审查文件、复核条款’。",
+                    family: "review (v./n.审查/评审) | reviewing (n./动名词) | reviewer (n.审查者) | accordance (n.一致)。",
+                    details: "法务部（legal department）对草案协议（draft agreement）进行审查。空格处需要动词原形，故选择 'review'。",
+                    cn: "在我们可以签署合作合同之前，法务部必须彻底审查协议草案。",
+                    jp: "提携契約を結ぶ前に、法務部は契約書の草案を徹底的に確認（review）しなければなりません。"
                 },
-                helperWords: ["scheduled"]
+                helperWords: ["partnership"]
             },
             {
                 id: 7,
                 target: "indicate",
                 category: "Derivation",
-                stem: "The sharp rise in early registration numbers is a clear ________ that the annual marketing expo will be highly attended.",
-                options: ["indicate", "indication", "indicator", "include"],
-                correct: "indication",
+                stem: "Early survey results clearly ________ that a vast majority of the staff members prefer a hybrid work schedule.",
+                options: ["indicate", "indication", "indicator", "locally"],
+                correct: "indicate",
                 explanations: {
-                    guide: "名词派生与that同位语从句。冠词+形容词（a clear ________）后面必须填入名词，这里表示‘迹象、象征’。",
-                    family: "indicate (v.表明) | indication (n.迹象/表明) | indicator (n.指示器/指标)。",
-                    details: "'clear indication that...' 是商务写作中极高频的经典搭配，表明‘……的明确迹象’。'indicator' 偏向物理仪表或经济指标，不适合修饰后面的 information 从句。",
-                    cn: "早鸟注册人数的急剧上升清楚地表明（是个明确的迹象），年度营销博览会将会有很多人参加。",
-                    jp: "早期登録者数の急激な増加は、年次マーケティングエキスポに多くの人が出席することの明確な兆候（indication）です。"
+                    guide: "动词谓语考点。主语是复数名词 'results'，其后需要填入动词原形充当句子的谓语动词，引导宾语从句 (indicate that + 句子)。",
+                    family: "indicate (v.表明/指示) | indication (n.迹象/表明) | indicator (n.指标/指示器) | locally (adv.本地地)。",
+                    details: "整个句子结构为主语 'survey results' + 谓语动词 ________ + 宾语从句 'that...'。主语为复数，谓语动词用原形 'indicate'。",
+                    cn: "早期的调查结果清楚地表明，绝大多数员工更喜欢混合工作制。",
+                    jp: "初期の調査結果は、大多数のスタッフがハイブリッドな勤務形態を好んでいることを明確に示して（indicate）います。"
                 },
-                helperWords: ["registration"]
+                helperWords: ["navigate"]
             },
             {
                 id: 8,
                 target: "attend",
                 category: "Phrasal Match",
-                stem: "Because regular ________ is vital for project alignment, team leaders must document all absences from weekly briefings.",
+                stem: "All department heads are expected to ________ the annual budget planning session scheduled for next Monday.",
                 options: ["attend", "attendance", "attendee", "attendant"],
-                correct: "attendance",
+                correct: "attend",
                 explanations: {
-                    guide: "名词词义与主语位置。空格处作为 because 引导的从句主语，需填入不可数名词 'attendance'（出席率/出席状况）。",
-                    family: "attend (v.出席) | attendance (n.出席) | attendee (n.出席者) | attendant (n.服务员)。",
-                    details: "'regular attendance'（经常性出席）是固定商务短语。主语后面是 'is'（单数系动词），且从语义上讲，是‘出席’本身对项目协同至关重要。'attendee'（出席者，可数名词）在此不符合单复数要求及语义。",
-                    cn: "因为定期出席对项目协同至关重要，所以团队领导必须记录每周简报会的所有缺勤情况。",
-                    jp: "定期的な出席（attendance）はプロジェクトの連携に不可欠であるため、チームリーダーは毎週のブリーフィングでの欠勤をすべて記録する必要があります。"
+                    guide: "固定动词句式。'be expected to do sth'（被期望做某事），空格处需要填入动词原形，表示‘参加会议、活动’（attend + event）。",
+                    family: "attend (v.参加) | attendance (n.出席/出席人数) | attendee (n.出席者) | attendant (n.服务员/随从)。",
+                    details: "空白前是不定式符号 'to'，后面必须接动词原形 'attend'。'attend the planning session' 为商务标准习惯搭配。",
+                    cn: "所有部门主管都应参加定于下周一举行的年度预算规划会议。",
+                    jp: "すべての部門長は、来週の月曜日に予定されている年次予算計画セッションに出席（attend）することが求められています。"
                 },
-                helperWords: ["alignment", "briefing"]
+                helperWords: ["budget"]
             },
             {
                 id: 9,
                 target: "hire",
-                category: "Derivation",
-                stem: "The human resources division announced that the ________ process for the new regional manager has been streamlined.",
-                options: ["hired", "hiring", "hire", "departmental"],
-                correct: "hiring",
+                category: "Phrasal Match",
+                stem: "The human resources division plans to ________ five temporary database assistants to assist with the system migration.",
+                options: ["hire", "hired", "hiring", "new hire"],
+                correct: "hire",
                 explanations: {
-                    guide: "复合名词定语成分。'hiring process' 是商务标准表达，指‘招聘流程’，其中 hiring 作为动名词修饰名词 process。",
-                    family: "hire (v./n.雇佣) | hired (adj.被雇佣的) | hiring (n.招聘) | new hire (n.新员工)。",
-                    details: "宣布新区域经理的‘招聘程序（hiring process）’已被精简（streamlined）。'hired' 只是过去分词，不能在名词 process 前作定语表示该主动性职能。",
-                    cn: "人力资源部门宣布，新区域经理的招聘流程已经得到精简。",
-                    jp: "人事部門は、新しい地域マネージャーの採用プロセス（hiring process）が合理化されたことを発表しました。"
+                    guide: "动词句型。'plan to do sth' 计划做某事，to 为不定式，后接动词原形 'hire'（招聘，雇佣）。",
+                    family: "hire (v./n.招聘) | hired (adj./v.过去式) | hiring (n.招聘中) | new hire (n.新员工)。",
+                    details: "空格后接 'assistants' 做宾语，说明需要一个及物动词原形。'hire + 人'（雇佣某人）符合这一结构和语义。",
+                    cn: "人力资源部计划招聘五名临时数据库助理，以协助进行系统迁移。",
+                    jp: "人事部門は、システム移行を支援するために5人の臨時データベースアシスタントを採用（hire）することを計画しています。"
                 },
-                helperWords: ["streamlined"]
+                helperWords: ["migration"]
             },
             {
                 id: 10,
                 target: "local",
-                category: "Context Semantics",
-                stem: "To reduce shipping delays, the logistics supervisor suggests purchasing spare parts from a ________ distributor.",
-                options: ["local", "locally", "locality", "accordingly"],
-                correct: "local",
+                category: "Derivation",
+                stem: "The organic restaurant chain sources its ingredients ________ to ensure maximum freshness and support nearby farms.",
+                options: ["locally", "local", "locality", "departmental"],
+                correct: "locally",
                 explanations: {
-                    guide: "形容词作名词前定语。空格处修饰名词 'distributor'（分销商/供应商），需要填入形容词 'local'。",
-                    family: "local (adj.当地的) | locally (adv.在本地) | locality (n.地区/场所) | accordingly (adv.相应地)。",
-                    details: "由于物流延迟，建议从‘当地的’（local）分销商采购零件。'locally' 是副词，不能直接修饰单数可数名词 'distributor'（若用 locally，句子须为 locally based distributor 结构）。",
-                    cn: "为了减少运输延迟，物流主管建议从当地的分销商处购买备件。",
-                    jp: "配送遅延を減らすため、ロジスティクス責任者は地元の（local）代理店から予備部品を購入することを提案しています。"
+                    guide: "副词修饰语考点。修饰动词 'sources'（采购，来源自），表示动作发生的方式，应该使用副词 'locally'（在本地地）。",
+                    family: "locally (adv.在本地地) | local (adj.当地的) | locality (n.地区/位置) | departmental (adj.部门的)。",
+                    details: "虽然形容词 local 也极常用，但它只能修饰名词。此处作为句末状语修饰动词 sources，应使用副词 locally，意为“从本地采购食材”。",
+                    cn: "这家有机连锁餐厅从本地采购食材，以确保最大的新鲜度并支持附近的农场。",
+                    jp: "このオーガニックレストランチェーンは、鮮度を最大限に保ち、近隣の農家を支援するために、食材を地元で（locally）調达しています。"
                 },
-                helperWords: ["logistics"]
+                helperWords: ["source"]
             },
             {
                 id: 11,
-                target: "include",
+                target: "according to",
                 category: "Derivation",
-                stem: "The procurement agreement states that the total fee covers delivery but features the ________ of any installation charges.",
-                options: ["include", "including", "exclude", "exclusion"],
-                correct: "exclusion",
+                stem: "All employees must perform their daily laboratory audits in strict ________ with safety regulations.",
+                options: ["accordance", "accordingly", "according to", "locality"],
+                correct: "accordance",
                 explanations: {
-                    guide: "名词派生考点。空格前后为 'the' 和 'of'，构成 'the + 名词 + of' 的结构，此处表示‘免除/排除’。",
-                    family: "include (v.) | including (prep.) | exclude (v.) | exclusion (n.排除/不包含)。",
-                    details: "合同中提到整体费用覆盖了配送，但是‘排除了’（exclusion of）任何安装费。'exclusion' 完美匹配 'features the ________ of' 这一典型的TOEIC商务条款结构。",
-                    cn: "采购协议规定，总费用包含运送，但不包括任何安装费用。",
-                    jp: "調達合意書には、合計料金に配送が含まれるが、設置費用の除外（exclusion）が特徴であると記載されています。"
+                    guide: "派生词与固定搭配考点。'in strict accordance with' 为标准商务介词词组搭配，意为“严格按照，严格符合”。",
+                    family: "accordance (n.一致/符合) | accordingly (adv.相应地) | according to (prep.根据) | locality (n.地区)。",
+                    details: "结构 'in ... accordance with' 中需要填入名词 accordance。'accordingly' 是副词，'according to' 是介词，皆不可在此处构成介词宾语结构。",
+                    cn: "所有员工必须严格按照安全规程进行每日实验室审计。",
+                    jp: "すべての従業員は、安全規制に厳格に従って（in strict accordance with）毎日の実験室監査を実施しなければなりません。"
                 },
-                helperWords: ["procurement"]
+                helperWords: ["audit"]
             },
             {
                 id: 12,
-                target: "department",
-                category: "Context Semantics",
-                stem: "Ms. Tanaka was transferred to the accounting ________ after demonstrating exceptional skills in budget analysis.",
-                options: ["department", "departmental", "division", "section"],
-                correct: "department",
+                target: "client",
+                category: "Derivation",
+                stem: "The newly renovated executive lounge is designed to serve our distinguished ________ in a comfortable environment.",
+                options: ["clientele", "client", "guest", "customer"],
+                correct: "clientele",
                 explanations: {
-                    guide: "名词固定搭配。在公司内部，‘会计部’或‘财务部’统一习惯表达为 'accounting department'。",
-                    family: "department (n.) | departmental (adj.) | division (n.常指大型事业部) | section (n.科/组)。",
-                    details: "展现了杰出的预算分析能力后，她被调职到了‘会计部门’（accounting department）。虽然 division 和 section 也指组织划分，但在大企业转岗考核中，'accounting department' 是首选的高频专有名词。",
-                    cn: "田中女士在展示出杰出的预算分析技能后，被调到了会计部门。",
-                    jp: "田中氏は、予算分析における並外れたスキルを示した後、経理部門（accounting department）に異動となりました。"
+                    guide: "名词派生考点。'clientele' 为集体名词，意为“（总称）客户，委托人，常客”，用来替代单数可数名词 client。",
+                    family: "clientele (n.总称客户) | client (n.客户) | guest (n.旅客) | customer (n.顾客)。",
+                    details: "空格前修饰词为 'our distinguished'，且后面没有冠词。'client' 是可数名词，在此单数形式前面必须有冠词（a/the），而不可数/集体名词 'clientele' 则可直接使用，表示贵宾客户群。",
+                    cn: "新装修的行政酒廊旨在为我们尊贵的客户群在舒适的环境中提供服务。",
+                    jp: "新しく改装されたエグゼクティブラウンジは、快適な環境で当社の著名な顧客層（clientele）にサービスを提供するように設計されています。"
                 },
-                helperWords: ["exceptional"]
+                helperWords: ["renovated"]
             },
             {
                 id: 13,
-                target: "contact",
+                target: "review",
                 category: "Derivation",
-                stem: "Our customer service representative has already ________ the dissatisfied clients regarding their delayed order.",
-                options: ["contact", "contacted", "communication", "connection"],
-                correct: "contacted",
+                stem: "The editorial board appointed an external ________ to evaluate the manuscript before its final publication.",
+                options: ["reviewer", "reviewing", "review", "indication"],
+                correct: "reviewer",
                 explanations: {
-                    guide: "现在完成时谓语时态。'has already' 后面修饰主动动作，必须填入过去分词 'contacted' 构成 'has contacted'（已经联系了……）。",
-                    family: "contact (v.) | contacted (v.过去分词) | communication (n.) | connection (n.)。",
-                    details: "客服代表已经联系了那些对延迟订单感到不满的客户。representative 做主语，与 contact 呈主动关系，搭配 completed present perfect 完美的表达了动作的完成状态。",
-                    cn: "我们的客服代表已经就延迟订单事宜联系了那些不满意的客户。",
-                    jp: "当社のカスタマーサービス担当者は、遅延した注文に関して、不満を抱いているクライアントにすでに連絡（contacted）を取りました。"
+                    guide: "名词派生。冠词 'an' + 形容词 'external' 后面需要接以元音发音开头的单数名词，且根据句意，被指定的人必须能够执行 'evaluate'（评估）动作，故选择 'reviewer'（评审人，审查者）。",
+                    family: "reviewer (n.评审员) | reviewing (adj./n.评审) | review (v./n.评审) | indication (n.表明)。",
+                    details: "appointed an external reviewer（任命了一位外部评审人员）。reviewer 代表执行 review 动作的职业或人，完美符合 evaluate the manuscript（评估手稿）这一动作主体。",
+                    cn: "编辑委员会在最终出版之前，任命了一位外部评审人员来对手稿进行评估。",
+                    jp: "編集委員会は、最終出版の前に原稿を評価するために、外部の査読者（reviewer）を任命しました。"
                 },
-                helperWords: ["representative"]
+                helperWords: ["manuscript"]
             },
             {
                 id: 14,
-                target: "according to",
+                target: "department",
                 category: "Derivation",
-                stem: "All pharmaceutical laboratories must operate in strict ________ with international safety regulations.",
-                options: ["according to", "accordingly", "accordance", "locality"],
-                correct: "accordance",
+                stem: "Each supervisor must monitor individual performance to achieve ________ goals established at the beginning of the year.",
+                options: ["departmental", "department", "division", "section"],
+                correct: "departmental",
                 explanations: {
-                    guide: "固定介词搭配。'in strict accordance with'（严格按照 / 与……完全一致）属于托业必背的超高频介词关联短语。",
-                    family: "according to (prep.根据) | accordingly (adv.相应地) | accordance (n.一致/依照)。",
-                    details: "空格前有 'in strict'，后接 'with'，中间只能使用名词 'accordance'。'according to' 是复合介词，无法填入该名词限定结构中。",
-                    cn: "所有制药实验室都必须严格按照国际安全法规运行。",
-                    jp: "すべての製薬研究所は、国際的な安全規制を厳格に遵守して（in strict accordance with）運営しなければなりません。"
+                    guide: "形容词作定语。修饰名词 'goals'（目标），表示“部门的”目标，应使用形容词 departmental。",
+                    family: "departmental (adj.部门的) | department (n.部门) | division (n.部门/事业部) | section (n.科)。",
+                    details: "空格修饰名词 goals，只有形容词 'departmental' 能在此做前置定语修饰。名词 department 无法直接在此充当合适属性的复数 goals 的定语。",
+                    cn: "每位主管必须监督员工个人表现，以实现年初确立的部门目标。",
+                    jp: "各管理職は、年初に設定された部門（departmental）目標を達成するために、個人のパフォーマンスを監視しなければなりません。"
                 },
-                helperWords: ["regulation"]
+                helperWords: ["supervisor"]
             },
             {
                 id: 15,
-                target: "client",
-                category: "Context Semantics",
-                stem: "The financial advisor designed a customized investment portfolio specifically targeting his high-net-worth ________.",
-                options: ["client", "clientele", "customer", "guest"],
-                correct: "clientele",
+                target: "indicate",
+                category: "Phrasal Match",
+                stem: "The high sales numbers for the new electronic product are a clear ________ of the campaign's success.",
+                options: ["indication", "indicate", "indicator", "locally"],
+                correct: "indication",
                 explanations: {
-                    guide: "集体名词辨析。'clientele'（客户群，委托人总称）是一个集合名词，用来代表某一类特定客群的总和。",
-                    family: "client (n.个体客户) | clientele (n.客户总称) | customer (n.零售客)。",
-                    details: "理财顾问设计了专属投资组合，用来针对他的整个‘高净值客户群’（high-net-worth clientele）。此处 target 后面如果是 client 往往需要用复数形式 clients，而单数形式且符合大类别概念的只有集合名词 'clientele'。",
-                    cn: "这位财务顾问设计了一套量身定制的投资组合，专门针对他的高净值客户群。",
-                    jp: "ファイナンシャルアドバイザーは、彼の高額所得者の顧客層（clientele）を特にターゲットにした、カスタマイズされた投資ポートフォリオを設計しました。"
+                    guide: "名词派生。定冠词/不定冠词+形容词+名词结构。'a clear ________' 后面必须跟单数可数名词或不可数名词，'indication of sth' 表示“某事的迹象/表明”。",
+                    family: "indication (n.迹象/表明) | indicate (v.表明) | indicator (n.指标/指示器) | locally (adv.在本地)。",
+                    details: "'indication' 和 'indicator' 都是名词。但在托业中，'indication of success'（成功的表明/象征）最符合逻辑。'indicator'（指标/指针）一般用于物化指标，如经济指标、仪表指针等。",
+                    cn: "新电子产品的超高销量，清楚地表明了这次宣传活动的成功。",
+                    jp: "新製品の電子機器の高い売上数字は、キャンペーンの成功を明確に示すもの（indication）です。"
                 },
-                helperWords: ["portfolio"]
+                helperWords: ["campaign"]
             },
             {
                 id: 16,
-                target: "review",
+                target: "attend",
                 category: "Derivation",
-                stem: "The chief editor serves as the primary ________ for all technical manuals before they are published online.",
-                options: ["review", "reviewer", "reviewing", "attendant"],
-                correct: "reviewer",
+                stem: "The workshop coordinator requested that each ________ sign the guest ledger upon arrival at the venue.",
+                options: ["attendee", "attend", "attendance", "attendant"],
+                correct: "attendee",
                 explanations: {
-                    guide: "名词指代人的考点。'primary reviewer' 意为‘首要审查人/评审者’，在句中作主语补足语（表语）。",
-                    family: "review (v./n.) | reviewer (n.审查人) | reviewing (n./adj.)。",
-                    details: "主编担任所有技术手册在网上发布前的‘主要审查者’（reviewer）。其它选项 review（行为/审查）和 reviewing 均不能代表某项具体职务。attendant 指服务员，不合文意。",
-                    cn: "在技术手册在线发布之前，总编辑将担任其主要审查人。",
-                    jp: "編集長は、すべての技術マニュアルがオンラインで公開される前に、その主な査読者（reviewer）を務めます。"
+                    guide: "名词派生。'each' 后面只能接单数可数名词。空格代表‘参加工作坊的人’，故选择 'attendee'（出席者）。",
+                    family: "attendee (n.出席者) | attend (v.参加) | attendance (n.出席/出席人数) | attendant (n.服务员/服务人员)。",
+                    details: "工作坊的主办者通常让‘出席人员’ (attendees/each attendee) 签到签退。'attendant' 主要是指飞机乘务员、停车场服务员等服务性质人员，不属于 workshop 的参会人员。",
+                    cn: "研讨会协调员要求每位出席者在到达会场时在访客签到簿上签名。",
+                    jp: "ワークショップのコーディネーターは、会場に到着した際に各参加者（attendee）がゲスト名簿に署名することを求めました。"
                 },
-                helperWords: ["technical"]
+                helperWords: ["coordinator"]
             },
             {
                 id: 17,
-                target: "indicate",
-                category: "Phrasal Match",
-                stem: "Preliminary reports from our analysts ________ that domestic sales will stabilize over the next fiscal quarter.",
-                options: ["indicate", "indication", "indicator", "exclude"],
-                correct: "indicate",
+                target: "contact",
+                category: "Derivation",
+                stem: "The marketing director ________ several media outlets yesterday to advertise our upcoming charity event.",
+                options: ["contacted", "contact", "communication", "connection"],
+                correct: "contacted",
                 explanations: {
-                    guide: "谓语动词原形与宾语从句。主语是复数名词 'Preliminary reports'，后面需要接一个动词原形来引导 that 引导的宾语从句。",
-                    family: "indicate (v.表明) | indication (n.象征) | indicator (n.指标) | exclude (v.排除)。",
-                    details: "分析师的初步报告‘表明’（indicate）国内销量将趋于平稳。'exclude' 语义完全说不通。'indication' 和 'indicator' 是名词，不能在此作谓语动词。",
-                    cn: "我们分析师的初步报告表明，国内销售额将在下一个财政季度趋于稳定。",
-                    jp: "アナリストからの予備報告は、国内売上高が次の会計四半期に安定することを示して（indicate）います。"
+                    guide: "动词时态与语法考点。句尾有时间状语 'yesterday'（昨天），说明谓语动词必须使用一般过去时形式。",
+                    family: "contacted (v.过去式) | contact (v.原形/n.联系) | communication (n.交流) | connection (n.连接)。",
+                    details: "主语是 marketing director，谓语动词需要承受过去时间 yesterday 的约束，故选择一般过去时 'contacted'。其他选项如名词或动词原形皆不可在过去时主句中担当谓语。",
+                    cn: "营销总监昨天联系了数家媒体渠道，为我们即将举行的慈善活动做广告宣传。",
+                    jp: "マーケティングディレクターは、今度開催されるチャリティイベントを宣伝するために、昨日いくつかのメディアに連絡（contacted）しました。"
                 },
-                helperWords: ["preliminary"]
+                helperWords: ["outlet"]
             },
             {
                 id: 18,
-                target: "attend",
-                category: "Context Semantics",
-                stem: "Each ________ who signs up for the leadership summit before Monday will receive a complimentary guidebook.",
-                options: ["attend", "attendance", "attendee", "attendant"],
-                correct: "attendee",
+                target: "local",
+                category: "Phrasal Match",
+                stem: "To reduce shipping delays, we recommend routing all orders through our ________ warehouse facility.",
+                options: ["local", "locally", "locality", "division"],
+                correct: "local",
                 explanations: {
-                    guide: "指代人的名词辨析。'Each' 后面需跟单数可数名词，根据 'who signs up' 可判断此处必须填入代表‘人’的词汇。",
-                    family: "attend (v.) | attendance (n.出席) | attendee (n.出席者/参会者) | attendant (n.服务员)。",
-                    details: "指代报名参加领导力峰会并接受指导手册的‘参会者’（attendee）。'attendant' 常见于 flight attendant（空乘人员）等服务职位，不用于学术或高管峰会参会人员的称呼。",
-                    cn: "周一前报名参加领导力峰会的每位与会者都将获得一本免费的指导手册。",
-                    jp: "月曜日までにリーダーシップサミットに申し込む各参加者（attendee）は、無料のガイドブックを受け取ることができます。"
+                    guide: "形容词做前置定语。修饰名词短语 'warehouse facility'，表示“当地的”仓储设施，应当填入形容词 local。",
+                    family: "local (adj.当地的) | locally (adv.在本地地) | locality (n.地区) | division (n.部门)。",
+                    details: "'routing all orders through our local warehouse facility'（将所有订单通过我们当地的仓库设施发送）。'local' 充当形容词定语修饰名词 facility，语法 and 语义双重完美契合。",
+                    cn: "为了减少发货延迟，我们建议通过我们当地的仓库设施发送所有订单。",
+                    jp: "配送の遅延を減らすために、すべての注文を当社の地元の（local）倉庫設備経由で配送することをお勧めします。"
                 },
-                helperWords: ["complimentary"]
+                helperWords: ["routing"]
             }
         ];
 
@@ -890,7 +886,7 @@
         let isShuffle = false;
         let selectedOption = null;
         let answeredList = {}; // Stores user answers: { questionId: { chosen: string, isCorrect: boolean } }
-        let favoritesList = JSON.parse(localStorage.getItem('toeic_ghost_favorites')) || [];
+        let favoritesList = JSON.parse(localStorage.getItem('toeic_ghost_favorites_v2')) || [];
         let isMistakeOnlySession = false;
 
         // TTS Engine setup
@@ -1010,7 +1006,7 @@
         // ==========================================
         function initVocabTabs() {
             // Target Vocab Render
-            const targetGrid = document.getElementById('targetVocabGrid');
+            const targetGrid = document.getElementById('targetVocGrid');
             targetGrid.innerHTML = '';
             
             vocabBank.forEach((v) => {
@@ -1020,7 +1016,11 @@
                 // Clicking Card toggles translations
                 card.addEventListener('click', (e) => {
                     const transDiv = card.querySelector('.translation-mask');
+                    const isExpanding = transDiv.classList.contains('hidden');
                     transDiv.classList.toggle('hidden');
+                    if (isExpanding) {
+                        speakText(v.word);
+                    }
                 });
 
                 // Hovering Card plays pronunciation
@@ -1077,7 +1077,11 @@
                 
                 mini.addEventListener('click', () => {
                     const jpCn = mini.querySelector('.mini-trans');
+                    const isExpanding = jpCn.classList.contains('hidden');
                     jpCn.classList.toggle('hidden');
+                    if (isExpanding) {
+                        speakText(v.word);
+                    }
                 });
                 
                 mini.addEventListener('mouseenter', () => {
@@ -1102,6 +1106,7 @@
         // ==========================================
         function setShuffleMode(shuffleOn) {
             isShuffle = shuffleOn;
+            isMistakeOnlySession = false; // Reset mistake session when selecting default sequences
             const btnSeq = document.getElementById('btn-seq');
             const btnRand = document.getElementById('btn-rand');
             
@@ -1120,7 +1125,7 @@
             loadQuestion();
         }
 
-        // CUSTOM MODAL UTILITIES (Replacing system Alert & Confirm)
+        // PREMIUM DYNAMIC CUSTOM ALERT MODAL
         function showCustomAlert(title, message, iconType = 'info') {
             const modal = document.getElementById('custom-modal');
             const titleEl = document.getElementById('modal-title');
@@ -1148,6 +1153,7 @@
             refreshIcons();
         }
 
+        // PREMIUM DYNAMIC CUSTOM CONFIRM MODAL
         function showCustomConfirm(title, message, onConfirm) {
             const modal = document.getElementById('custom-modal');
             const titleEl = document.getElementById('modal-title');
@@ -1187,8 +1193,9 @@
             // Indicator
             document.getElementById('question-index-indicator').textContent = `${currentIndex + 1} / ${currentQuestions.length}`;
             
-            // Category & Favorite status
-            document.getElementById('q-category').textContent = `TARGET: ${q.target.toUpperCase()} (${q.category})`;
+            // Category & Favorite status with Retest Mode support
+            const badgeHtml = isMistakeOnlySession ? `<span class="bg-rose-100 text-rose-700 text-[10px] font-bold px-2 py-0.5 rounded-md mr-1.5 border border-rose-200">重考</span>` : "";
+            document.getElementById('q-category').innerHTML = `${badgeHtml}TARGET: ${q.target.toUpperCase()} (${q.category})`;
             updateFavoriteButtonUI(q.id);
 
             // Compile Stem with Jitter-free HTML Tooltips (Dynamic Parsing)
@@ -1196,7 +1203,7 @@
             // Parse stem background difficulty terms dynamically and safely
             helperVocabBank.forEach(hv => {
                 // Ensure helper words do not reveal or contain the target answer itself.
-                if (hv.word !== q.correct.toLowerCase() && q.helperWords && q.helperWords.includes(hv.word)) {
+                if (hv.word !== q.correct.toLowerCase()) {
                     // Replace with interactive absolute-positioned tooltip logic, preserving case
                     const regex = new RegExp(`\\b${hv.word}\\b`, 'gi');
                     
@@ -1307,9 +1314,14 @@
                 isCorrect: isCorrect
             };
 
-            // If incorrect, auto push to local storage favorites (Mistakes Book)
+            // Double channel conditional response
             if (!isCorrect) {
                 addFavorite(q.id);
+            } else {
+                // If in mistake-only session and got it correct, auto-remove from wrong books
+                if (isMistakeOnlySession) {
+                    removeFavorite(q.id);
+                }
             }
 
             renderAnsweredState(q, selectedOption);
@@ -1415,7 +1427,7 @@
                 currentIndex++;
                 loadQuestion();
             } else {
-                showCustomAlert("恭喜通关！", "您已经完成了当前所有的 Part 5 精英特训练习！现在正带您前往多维诊断看板进行评估反馈。", "success");
+                showCustomAlert("恭喜通关！", "您已经完成了当前所有的 Part 5 特训！现在正带您前往多维能力诊断看板进行评估反馈。", "success");
                 switchTab('report');
             }
         }
@@ -1437,13 +1449,13 @@
         function addFavorite(id) {
             if (!favoritesList.includes(id)) {
                 favoritesList.push(id);
-                localStorage.setItem('toeic_ghost_favorites', JSON.stringify(favoritesList));
+                localStorage.setItem('toeic_ghost_favorites_v2', JSON.stringify(favoritesList));
             }
         }
 
         function removeFavorite(id) {
             favoritesList = favoritesList.filter(item => item !== id);
-            localStorage.setItem('toeic_ghost_favorites', JSON.stringify(favoritesList));
+            localStorage.setItem('toeic_ghost_favorites_v2', JSON.stringify(favoritesList));
         }
 
         function updateFavoriteButtonUI(id) {
@@ -1512,7 +1524,7 @@
         function clearAllFavorites() {
             showCustomConfirm("确认操作", "您确定要清空错题本中所有的错题记录吗？该操作无法恢复。", () => {
                 favoritesList = [];
-                localStorage.removeItem('toeic_ghost_favorites');
+                localStorage.removeItem('toeic_ghost_favorites_v2');
                 renderMistakesList();
                 updateDashboardStats();
             });
@@ -1521,12 +1533,21 @@
         function startMistakeSession() {
             if (favoritesList.length === 0) return;
             isMistakeOnlySession = true;
-            // Filter target database
+
+            // Wipe answered status for mistake questions so they can be fresh
+            favoritesList.forEach(id => {
+                delete answeredList[id];
+            });
+
+            // Bind questions
             currentQuestions = questionsDatabase.filter(q => favoritesList.includes(q.id));
             currentIndex = 0;
+            
             switchTab('test');
             loadQuestion();
-            console.log(`Mistake-only mode loaded with ${currentQuestions.length} elements.`);
+            updateDashboardStats();
+            
+            console.log(`Mistake-only mode loaded with ${currentQuestions.length} elements. Interactive states cleared.`);
         }
 
         // ==========================================
@@ -1555,17 +1576,17 @@
 
             // Rating Rank evaluation
             let rank = "TOEIC 备考见习生 (Novice)";
-            let advice = "南老师建议：请积极使用主页的‘核心词汇精训’。打牢 including、departmental、refer to 的搭配与词性衍生是攻克 Part 5 的基石。";
+            let advice = "南老师建议：请积极使用主页的‘核心词汇精训’。打牢 include 搭配以及 local 与 locally 的词性派生是攻克 Part 5 的基石。";
             
             if (score >= 90) {
                 rank = "托业鬼武者 (Guru Elite)";
-                advice = "极致表现！您对南老师精编的 10 个核心高频词及派生关联（such as client vs clientele, according to / accordance）已经融会贯通。继续保持此状态必能斩获特训满分！";
+                advice = "精妙的表现！您对南老师精编的 10 个核心高频词及派生关联（例如 in strict accordance with 结构、departmental 词性衍生、clientele 集合属性等）已融会贯通。继续维持此状态必能在考场中斩获特训满分！";
             } else if (score >= 70) {
                 rank = "商战先锋 (Professional)";
-                advice = "非常扎实的商务英语底蕴。您在 in accordance with 固定短语、attendance 可数性识别上仍存些许薄弱。请深度利用‘专属错题集’进行重点歼灭。";
+                advice = "非常扎实的商务英语底蕴。您在 contact 与 communicate 词义分工、locally 副词修饰动词上仍存些许薄弱。请客观利用‘专属错题集’进行重点歼灭。";
             } else if (score >= 40) {
                 rank = "资深攻坚者 (Adherent)";
-                advice = "您已具备一定的商务语感与实操基础，但在 indication 同位语指代、streamlined 派生形容词辨析等考官高阶陷阱上容易马失前蹄。请详细拆阅‘双栏精解’。";
+                advice = "您已具备一定的商务语感与实操基础，但在 indication 与 indicator 可数性、reviewer 词尾代表人群等考官高阶陷阱上容易混淆。请详细拆阅‘双栏精解’。";
             }
 
             document.getElementById('report-rank').textContent = rank;
