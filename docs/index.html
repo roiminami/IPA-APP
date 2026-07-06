@@ -1,486 +1,388 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>南式TOEIC鬼特訓 - Central Console (Canvas的奇妙冒险)</title>
+    <title>南式TOEIC鬼特訓 - Central Console</title>
+    <!-- 引入基础 UI 框架 -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     
     <script src="config.js"></script>
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght=400;500;600;700&family=Noto+Sans+SC:wght=400;500;700&family=Noto+Sans+JP:wght=400;500;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght=400;500;600;700&family=Noto+Sans+SC:wght=400;500;700&family=Noto+Sans+JP:wght=700;900&display=swap');
         
-        body {
+        /* 强制让外层宿主环境背景透明，确保完全透出下层的 iframe 动态雨滴 */
+        html, body {
+            background-color: transparent !important;
             font-family: 'Inter', 'Noto Sans SC', 'Noto Sans JP', sans-serif;
-            background-color: #000;
             margin: 0;
             padding: 0;
-            overflow-x: hidden;
-        }
-
-        /* Canvas 背景画布完全置于底层，并允许穿透点击 */
-        #display {
-            position: fixed;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 1;
-            pointer-events: none;
-        }
-
-        /* 前端 UI 容器置于上层，并保持半透明毛玻璃质感 */
-        .ui-container {
-            position: relative;
-            z-index: 10;
         }
         
-        .hidden {
-            display: none;
+        /* 磨砂玻璃卡片平滑悬停过渡动画 */
+        .glass-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* ================= ⚡ 核心：纯文本 CSS 3D 立体书 ================= */
+        .book-3d-space {
+            position: fixed;
+            left: 23%;        /* 初始左右位置（已对齐床铺） */
+            top: 58%;         /* 初始上下位置（已往上移动到床铺中央） */
+            width: 110px;     /* 书本宽度 */
+            height: 158px;    /* 书本高度 */
+            perspective: 1000px;
+            z-index: 5;       /* 夹在背景与前端 UI 之间 */
+            cursor: grab;     /* 提示可以抓取拖拽 */
+            user-select: none;
+        }
+        .book-3d-space:active {
+            cursor: grabbing; /* 拖拽中的手势 */
+        }
+
+        .book-3d-box {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            /* 空间立体旋转：使其平躺在 3D 房间的床面上 */
+            transform: rotateX(55deg) rotateY(0deg) rotateZ(-35deg);
+            transition: transform 0.1s ease; /* 保持拖拽时的丝滑响应 */
+        }
+
+        .book-face {
+            position: absolute;
+            box-sizing: border-box;
+            backface-visibility: visible;
+        }
+
+        /* 1. 书本正面（用纯文本及纯色手工复刻金フレ封面） */
+        .book-face.front {
+            width: 110px;
+            height: 158px;
+            background: #b59247; /* 经典金フレ黄铜底色 */
+            transform: translateZ(8px);
+            border: 1px solid #967633;
+            border-radius: 1px 3px 3px 1px;
+            box-shadow: inset -3px 0 5px rgba(0, 0, 0, 0.15);
+            font-family: 'Noto Sans JP', sans-serif;
+        }
+
+        /* 2. 书本背面（封底） */
+        .book-face.back {
+            width: 110px;
+            height: 158px;
+            background: #a0803b;
+            transform: translateZ(-8px) rotateY(180deg);
+            border-radius: 3px 1px 1px 3px;
+        }
+
+        /* 3. 书脊（左侧厚度面） */
+        .book-face.spine {
+            width: 16px;
+            height: 158px;
+            left: -8px;
+            background: #8c6e30; /* 暗金侧光阴影 */
+            transform: rotateY(-90deg);
+        }
+
+        /* 4. 书页右侧面（模拟纸张排线效果） */
+        .book-face.page-right {
+            width: 16px;
+            height: 158px;
+            right: -8px;
+            background: #f2ebd9;
+            background-image: linear-gradient(rgba(0,0,0,0.08) 1px, transparent 1px);
+            background-size: 100% 3px;
+            transform: rotateY(90deg);
+        }
+
+        /* 5. 书页顶部面 */
+        .book-face.page-top {
+            width: 110px;
+            height: 16px;
+            top: -8px;
+            background: #ebe3cf;
+            background-image: linear-gradient(90deg, rgba(0,0,0,0.08) 1px, transparent 1px);
+            background-size: 3px 100%;
+            transform: rotateX(90deg);
+        }
+
+        /* 6. 书页底部面 */
+        .book-face.page-bottom {
+            width: 110px;
+            height: 16px;
+            bottom: -8px;
+            background: #ebe3cf;
+            transform: rotateX(-90deg);
+        }
+
+        /* 7. 贴合床铺的真实物理阴影 */
+        .book-ambient-shadow {
+            position: absolute;
+            width: 114px;
+            height: 162px;
+            top: 4px;
+            left: -2px;
+            background: rgba(15, 12, 6, 0.7);
+            filter: blur(6px);
+            transform: translateZ(-12px);
+            pointer-events: none;
         }
     </style>
 </head>
+<body class="text-slate-800 min-h-screen flex flex-col antialiased relative">
 
-<body class="text-slate-200 min-h-screen flex flex-col antialiased">
+    <!-- ================= 背景层：WebGL 雨滴动态特效 iframe ================= -->
+    <iframe 
+        src="wallpaper/index1.html" 
+        style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; border: none; z-index: 0; pointer-events: none;"
+        allowtransparency="true"
+        title="Raindrop WebGL Background">
+    </iframe>
 
-    <canvas id="cvs" class="hidden" width="1980" height="1080"></canvas>
-    <canvas id="screenImage" class="hidden" width="234" height="357"></canvas>
-    <canvas id="rili" class="hidden" width="600" height="600"></canvas>
-    
-    <canvas id="display"></canvas>
+    <!-- ================= 🌟 纯文本复刻版：鼠标可自由拖拽的 3D 立体书 ================= -->
+    <div class="book-3d-space" id="draggable-toeic-book">
+        <div class="book-3d-box">
+            <!-- 环境阴影 -->
+            <div class="book-ambient-shadow"></div>
+            
+            <!-- 正面：纯文本排版复刻封面 -->
+            <div class="book-face front flex flex-col justify-between p-1.5 overflow-hidden select-none">
+                <!-- 顶部小徽章 -->
+                <div class="self-center text-[7px] text-amber-950/80 font-black border border-dashed border-amber-950/40 rounded px-1 scale-90 bg-amber-100/20">
+                    新形式対応
+                </div>
+                <!-- 主标题组合 -->
+                <div class="flex flex-col items-center my-auto tracking-tighter">
+                    <span class="text-[8px] font-black text-slate-900 font-mono leading-none">TOEIC® L&R</span>
+                    <span class="text-[11px] font-black text-slate-900 mt-0.5 leading-none">出る単特急</span>
+                    <span class="text-[12px] font-black text-white bg-slate-900 px-1 py-0.5 rounded shadow-sm scale-105 my-1 leading-none tracking-normal">
+                        金のフレーズ
+                    </span>
+                    <span class="text-[6px] text-amber-950 font-bold scale-75 leading-none">TEX加藤</span>
+                </div>
+                <!-- 底部白色实体大反差腰封 -->
+                <div class="bg-white -mx-1.5 -mb-1.5 p-1 text-center border-t border-amber-950/20">
+                    <span class="text-[8px] font-black text-red-600 block scale-90 tracking-widest animate-pulse">
+                        最新、最強。
+                    </span>
+                </div>
+            </div>
 
-    <div class="ui-container flex-1 flex flex-col min-h-screen">
+            <!-- 其余五个物理空间面 -->
+            <div class="book-face back"></div>
+            <div class="book-face spine"></div>
+            <div class="book-face page-right"></div>
+            <div class="book-face page-top"></div>
+            <div class="book-face page-bottom"></div>
+        </div>
+    </div>
+
+    <!-- ================= 前景层：考试控制台交互 UI (Z-Index 置顶) ================= -->
+    <div style="position: relative; z-index: 10;" class="flex-1 flex flex-col min-h-screen">
         
-        <header class="border-b border-slate-800/60 bg-slate-950/60 backdrop-blur-md sticky top-0 z-40">
+        <header class="border-b border-[#EAE6D9]/40 bg-white/70 backdrop-blur-xl sticky top-0 z-40">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
                 <div class="flex items-center space-x-3">
-                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center text-white font-black text-lg shadow-lg shadow-amber-500/20">
+                    <div class="w-10 h-10 rounded-xl bg-amber-500 flex items-center justify-center text-white font-black text-lg shadow-md shadow-amber-500/20">
                         南
                     </div>
                     <div>
-                        <h1 class="text-base font-bold text-white tracking-tight">南式TOEIC鬼特訓</h1>
-                        <p class="text-[10px] text-amber-500 font-semibold tracking-wider uppercase">UNIT CONTROLLER</p>
+                        <h1 class="text-base font-bold text-slate-900 tracking-tight">南式TOEIC鬼特訓</h1>
+                        <p class="text-[10px] text-amber-600 font-semibold tracking-wider uppercase">UNIT CONTROLLER</p>
                     </div>
                 </div>
                 
-                <div class="flex items-center space-x-4">
-                    <div class="text-xs text-slate-400 font-medium hidden md:flex items-center space-x-1">
-                        <span>访问群主博客：</span>
-                        <a href="https://www.minami.ac.cn/" target="_blank" class="text-amber-400 font-bold hover:text-amber-300 hover:underline inline-flex items-center space-x-0.5">
-                            <span>minami.ac.cn</span>
-                            <i data-lucide="external-link" class="w-3 h-3 inline"></i>
-                        </a>
-                    </div>
+                <div class="flex items-center space-x-3">
                     <span class="text-xs font-mono text-slate-500 hidden sm:inline" id="global-counter-txt">Total: -- Units</span>
-                    <div class="text-xs font-bold text-amber-400 bg-amber-950/40 px-3 py-1.5 rounded-xl border border-amber-500/30 flex items-center space-x-1.5 shrink-0">
+                    <div class="text-xs font-bold text-amber-600 bg-white/80 backdrop-blur-sm px-3 py-1.5 rounded-xl border border-amber-200/40 flex items-center space-x-1.5">
                         <span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span>
-                        <span>群主持续更新中 • 引擎正常</span>
+                        <span>群主持续更新中</span>
                     </div>
                 </div>
             </div>
         </header>
 
-        <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col gap-6">
+        <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col gap-6">
             
-            <section class="relative group">
-                <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500 group-focus-within:text-amber-500 transition-colors">
-                    <i data-lucide="search" class="w-5 h-5"></i>
+            <section class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="search" aria-hidden="true" class="lucide lucide-search w-4 h-4"><path d="m21 21-4.34-4.34"></path><circle cx="11" cy="11" r="8"></circle></svg>
                 </div>
-                <input 
-                    type="text" 
-                    id="searchConsoleInput" 
-                    oninput="filterToeicModules()" 
-                    placeholder="快速检索：输入单元编号或词义范围（如 '1'、'11-20'）直达目标特训..." 
-                    class="w-full pl-11 pr-4 py-3.5 bg-slate-900/50 backdrop-blur-sm rounded-xl border border-slate-800 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-amber-500 focus:ring-4 focus:ring-amber-500/10 transition-all shadow-xl"
-                >
+                <input type="text" id="searchConsoleInput" oninput="filterToeicModules()" placeholder="快速检索：输入单元编号或词义范围（如 '1'、'11-20'）直达目标特训..." class="w-full pl-10 pr-4 py-3 bg-white/75 backdrop-blur-xl rounded-xl border border-[#EAE6D9]/60 text-sm focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10 placeholder-slate-400 transition-all shadow-sm">
             </section>
 
-            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4" id="modulesGridContainer">
-                </div>
-
-            <div id="search-empty-state" class="hidden text-center py-16 bg-slate-900/50 backdrop-blur-sm rounded-2xl border border-slate-800 border-dashed space-y-2">
-                <div class="w-10 h-10 bg-slate-800 text-slate-500 rounded-full flex items-center justify-center mx-auto">
-                    <i data-lucide="alert-circle" class="w-5 h-5"></i>
-                </div>
-                <h4 class="text-xs font-bold text-slate-400">未找到相关特训单元</h4>
-                <p class="text-[11px] text-slate-500">请尝试更换筛选关键字。</p>
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3.5" id="modulesGridContainer">
+                <a href="test.html?unit=1-10" class="glass-card bg-white/75 backdrop-blur-sm p-3.5 rounded-xl border border-[#EAE6D9]/80 shadow-sm hover:border-amber-500 hover:bg-amber-50/40 hover:shadow-md active:scale-[0.98] flex items-center justify-between group">
+                    <div class="flex flex-col min-w-0 pr-2">
+                        <span class="text-[9px] font-mono text-slate-400 font-bold uppercase tracking-wider">UNIT 01</span>
+                        <span class="text-xs font-bold text-slate-800 group-hover:text-amber-600 transition-colors truncate mt-0.5">第 01 - 10 词</span>
+                    </div>
+                    <div class="w-6 h-6 rounded-lg bg-slate-100/50 group-hover:bg-amber-100 flex items-center justify-center shrink-0 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="chevron-right" aria-hidden="true" class="lucide lucide-chevron-right w-3.5 h-3.5 text-slate-400 group-hover:text-amber-600 transform group-hover:translate-x-0.5 transition-all"><path d="m9 18 6-6-6-6"></path></svg>
+                    </div>
+                </a>
+                <a href="test.html?unit=11-20" class="glass-card bg-white/75 backdrop-blur-sm p-3.5 rounded-xl border border-[#EAE6D9]/80 shadow-sm hover:border-amber-500 hover:bg-amber-50/40 hover:shadow-md active:scale-[0.98] flex items-center justify-between group">
+                    <div class="flex flex-col min-w-0 pr-2">
+                        <span class="text-[9px] font-mono text-slate-400 font-bold uppercase tracking-wider">UNIT 02</span>
+                        <span class="text-xs font-bold text-slate-800 group-hover:text-amber-600 transition-colors truncate mt-0.5">第 11 - 20 词</span>
+                    </div>
+                    <div class="w-6 h-6 rounded-lg bg-slate-100/50 group-hover:bg-amber-100 flex items-center justify-center shrink-0 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="chevron-right" aria-hidden="true" class="lucide lucide-chevron-right w-3.5 h-3.5 text-slate-400 group-hover:text-amber-600 transform group-hover:translate-x-0.5 transition-all"><path d="m9 18 6-6-6-6"></path></svg>
+                    </div>
+                </a>
+                <a href="test.html?unit=21-30" class="glass-card bg-white/75 backdrop-blur-sm p-3.5 rounded-xl border border-[#EAE6D9]/80 shadow-sm hover:border-amber-500 hover:bg-amber-50/40 hover:shadow-md active:scale-[0.98] flex items-center justify-between group">
+                    <div class="flex flex-col min-w-0 pr-2">
+                        <span class="text-[9px] font-mono text-slate-400 font-bold uppercase tracking-wider">UNIT 03</span>
+                        <span class="text-xs font-bold text-slate-800 group-hover:text-amber-600 transition-colors truncate mt-0.5">第 21 - 30 词</span>
+                    </div>
+                    <div class="w-6 h-6 rounded-lg bg-slate-100/50 group-hover:bg-amber-100 flex items-center justify-center shrink-0 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="chevron-right" aria-hidden="true" class="lucide lucide-chevron-right w-3.5 h-3.5 text-slate-400 group-hover:text-amber-600 transform group-hover:translate-x-0.5 transition-all"><path d="m9 18 6-6-6-6"></path></svg>
+                    </div>
+                </a>
+                <a href="test.html?unit=31-40" class="glass-card bg-white/75 backdrop-blur-sm p-3.5 rounded-xl border border-[#EAE6D9]/80 shadow-sm hover:border-amber-500 hover:bg-amber-50/40 hover:shadow-md active:scale-[0.98] flex items-center justify-between group">
+                    <div class="flex flex-col min-w-0 pr-2">
+                        <span class="text-[9px] font-mono text-slate-400 font-bold uppercase tracking-wider">UNIT 04</span>
+                        <span class="text-xs font-bold text-slate-800 group-hover:text-amber-600 transition-colors truncate mt-0.5">第 31 - 40 词</span>
+                    </div>
+                    <div class="w-6 h-6 rounded-lg bg-slate-100/50 group-hover:bg-amber-100 flex items-center justify-center shrink-0 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="chevron-right" aria-hidden="true" class="lucide lucide-chevron-right w-3.5 h-3.5 text-slate-400 group-hover:text-amber-600 transform group-hover:translate-x-0.5 transition-all"><path d="m9 18 6-6-6-6"></path></svg>
+                    </div>
+                </a>
             </div>
+
+            <div id="search-empty-state" class="hidden text-center py-16 bg-white/75 backdrop-blur-xl rounded-2xl border border-[#EAE6D9]/60 border-dashed space-y-2">
+                <div class="w-10 h-10 bg-slate-50/50 text-slate-400 rounded-full flex items-center justify-center mx-auto">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="alert-circle" aria-hidden="true" class="lucide lucide-alert-circle w-5 h-5"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="8" y2="12"></line><line x1="12" x2="12.01" y1="16" y2="16"></line></svg>
+                </div>
+                <h4 class="text-xs font-bold text-slate-700">未找到相关特训单元</h4>
+                <p class="text-[11px] text-slate-400">请尝试更换筛选关键字。</p>
+            </div>
+
+            <section class="p-4 bg-white/75 backdrop-blur-xl rounded-2xl border border-[#EAE6D9]/60 shadow-sm flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+                <div class="flex items-center space-x-2 text-xs text-slate-500 font-medium">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="refresh-cw" aria-hidden="true" class="lucide lucide-refresh-cw w-3.5 h-3.5 text-slate-400 animate-spin" style="animation-duration: 8s;"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"></path><path d="M21 3v5h-5"></path><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"></path><path d="M8 16H3v5"></path></svg>
+                    <span>群主持续更新中</span>
+                </div>
+                <div class="text-xs text-slate-600 font-medium flex flex-wrap items-center gap-1">
+                    <span>如果想要获取更多信息可以访问群主博客：</span>
+                    <a href="https://www.minami.ac.cn/" target="_blank" class="text-amber-600 font-bold hover:text-amber-700 hover:underline inline-flex items-center space-x-0.5">
+                        <span>https://www.minami.ac.cn/</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="external-link" aria-hidden="true" class="lucide lucide-external-link w-3 h-3 inline"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg>
+                    </a>
+                </div>
+            </section>
 
         </main>
 
-        <footer class="border-t border-slate-900/80 bg-slate-950/70 backdrop-blur-sm py-4 text-center text-[10px] text-slate-500 tracking-wide font-mono mt-auto">
-            Southern Ghost TOEIC Platform Engine • Powered by config.js & Canvas Adventure
+        <footer class="border-t border-[#EAE6D9]/40 bg-white/40 backdrop-blur-sm py-3 text-center text-[10px] text-slate-400 tracking-wide font-mono">
+            Southern Ghost TOEIC Platform Engine • Powered by config.js URL Router
         </footer>
     </div>
 
+    <!-- ================= 核心业务逻辑及高级拖拽控制 ================= -->
     <script>
-        var cvs = document.getElementById("cvs");
-        var ctx = cvs.getContext("2d");
-
-        var display = document.getElementById("display");
-        var displayCtx = display.getContext("2d");
-
-        var screenImage = document.getElementById("screenImage");
-        var screenImageCtx = screenImage.getContext("2d");
-
-        var rili = document.getElementById("rili");
-        var riliCtx = rili.getContext("2d");
-
-        // 1. 原日历高精度生成树逻辑
-        function drawRili() {
-            riliCtx.clearRect(0, 0, 600, 600);
-            var date = new Date();
-            var year = date.getYear();
-            var mouth = date.getMonth();
-            var today = date.getDate();
-            var week = date.getDay();
-
-            var cardSize = 40;
-
-            var array_three = [4, 6, 9, 11];
-            var array_threeone = [1, 3, 5, 7, 8, 10, 12];
-            var array_week = ["SUN", "MON", "TUES", "WED", "THUR", "FRI", "SAT"];
-
-            var firstDraw; 
-            var wIdx = today % 7;
-
-            if (week >= wIdx) {
-                firstDraw = week - wIdx + 1;
-            } else {
-                firstDraw = week - wIdx + 8;
-            }
-
-            var dayIndex = 1;
-            var countDay = 30;
-
-            if (array_three.indexOf(mouth + 1) > -1) {
-                countDay = 30;
-            } else if (array_threeone.indexOf(mouth + 1) > -1) {
-                countDay = 31;
-            } else {
-                if (year % 4 == 0 && year % 100 != 0 || year % 400 == 0)
-                    countDay = 29;
-                else
-                    countDay = 28;
-            }
-
-            var row = 6;
-            if (7 - firstDraw + 7 * 4 < countDay) { 
-                row = 7;
-            }
-
-            function drawTodaybg(i, j) {
-                riliCtx.save();
-                riliCtx.beginPath();
-                riliCtx.strokeStyle = "#900";
-                riliCtx.arc(45 + i * cardSize * 1.7 + cardSize / 1.18, 50 + j * cardSize + cardSize / 2, cardSize / 2 - 10, - Math.PI, Math.PI * 1);
-                riliCtx.stroke();
-                riliCtx.closePath();
-
-                riliCtx.beginPath();
-                riliCtx.arc(45 + i * cardSize * 1.7 + cardSize / 1.18, 50 + j * cardSize + cardSize / 2, cardSize / 2 - 9, - Math.PI, Math.PI * 0.9);
-                riliCtx.stroke();
-                riliCtx.closePath();
-
-                riliCtx.beginPath();
-                riliCtx.arc(45 + i * cardSize * 1.7 + cardSize / 1.18, 50 + j * cardSize + cardSize / 2, cardSize / 2 - 8, - Math.PI, Math.PI * 0.8);
-                riliCtx.stroke();
-                riliCtx.closePath();
-
-                riliCtx.beginPath();
-                riliCtx.arc(45 + i * cardSize * 1.7 + cardSize / 1.18, 50 + j * cardSize + cardSize / 2, cardSize / 2 - 7, - Math.PI, Math.PI * 0.7);
-                riliCtx.stroke();
-                riliCtx.closePath();
-
-                riliCtx.beginPath();
-                riliCtx.arc(45 + i * cardSize * 1.7 + cardSize / 1.18, 50 + j * cardSize + cardSize / 2, cardSize / 2 - 6, - Math.PI, Math.PI * 0.6);
-                riliCtx.stroke();
-                riliCtx.closePath();
-                riliCtx.restore();
-            }
-            
-            var isNum = /^\d+(\d+)?$/;
-
-            function drawDate(txt, i, j) {
-                riliCtx.textAlign = "center";
-                riliCtx.fillStyle = "rgb(69,68,84)";
-                riliCtx.font = (cardSize / 1.5) + 'px Impact';
-                var yOffest = 3;
-
-                if ((j == 0 || j == 6) && isNum.test(txt)) {
-                    riliCtx.fillStyle = "#900";
-                }
-
-                riliCtx.fillText(txt.toString(), 45 + j * cardSize * 1.7 + cardSize / 1.18, 50 + i * cardSize + cardSize / 3 * 2 + yOffest);
-
-                if (txt == today) {
-                    drawTodaybg(j, i);
-                }
-            }
-
-            riliCtx.fillStyle = "rgb(69,68,84)";
-            riliCtx.font = "900 26pt SimHei";
-            riliCtx.textAlign = "center";
-            var monthCN = ["一","二","三","四","五","六","七","八","九","十","十一","十二"];
-            riliCtx.scale(1.1,1);
-            riliCtx.fillText(monthCN[mouth] + "月", 260, 32);
-            riliCtx.resetTransform();
-            
-            riliCtx.font = "20pt SimHei";
-            riliCtx.textAlign = "end";
-            riliCtx.fillText(today + "日",520,38);
-
-            for (var i = 0; i < row; i++) {
-                for (var j = 0; j < 7; j++) {
-                    riliCtx.strokeRect(45 + j * cardSize * 1.70, 50 + i * cardSize, cardSize * 1.70, cardSize);
-                }
-            }
-
-            dayIndex = 1;
-
-            for (var i = 0; i < row; i++) { 
-                for (var j = 0; j < 7; j++) {
-                    if (i == 0) { 
-                        drawDate(array_week[j], i, j);
-                        continue;
-                    }
-                    if (i == 1 && j < firstDraw) { 
-                        continue;
-                    }
-                    if (dayIndex > countDay) { 
-                        break;
-                    }
-                    drawDate(dayIndex++, i, j);
-                }
-            }
-        }
-
-        var riliInterval = setInterval(drawRili, 3600000);
-        drawRili();
-
-        // 2. 静态图片素材加载
-        var screenMask = new Image(); screenMask.src = "wallpaper/Screenmask.png";
-        var screen = new Image(); screen.src = "wallpaper/screen.png";
-
-        var iv = setInterval(() => {
-            if (screen.complete && screenMask.complete) {
-                screenImageCtx.drawImage(screen, -1041, -210, 1280, 720);
-                screenImageCtx.globalCompositeOperation = "destination-atop";
-                screenImageCtx.drawImage(screenMask, 0, 0);
-                screenImageCtx.globalCompositeOperation = "source-over";
-                clearInterval(iv);
-            }
-        }, 14);
-
-        // 自适应拉伸
-        window.onresize = function () {
-            if (window.innerWidth / window.innerHeight > 1.8333333333333) {
-                display.width = window.innerWidth;
-                display.height = window.innerWidth / 1980 * 1080;
-                window.scrollTo(0, (window.innerHeight - 123) / 16);
-            } else {
-                display.width = window.innerHeight / 1080 * 1980;
-                display.height = window.innerHeight;
-            }
-        }
-        window.onresize();
-
-        var bg = new Image(); bg.src = "wallpaper/bg.png";
-        var mask = new Image(); mask.src = "wallpaper/mask.png";
-        var light = new Image(); light.src = "wallpaper/light.png";
-        var caidai = new Image(); caidai.src = "wallpaper/caidai.png";
-        var two = new Image(); two.src = "wallpaper/22.png";
-        var screenLight = new Image(); screenLight.src = "wallpaper/screenLight.png";
-        var phoneLight = new Image(); phoneLight.src = "wallpaper/phoneLight.png";
-
-        // 日语备考专属问候语 (全保留)
-        var phoneText = JSON.parse("[{\"time\":0,\"text\":\"夜更かし厳禁！\"},{\"time\":6,\"text\":\"朝活の時間です！\"},{\"time\":8,\"text\":\"今日もコツコツ！\"},{\"time\":11,\"text\":\"単語の復習した？\"},{\"time\":13,\"text\":\"集中力キープ！\"},{\"time\":16,\"text\":\"もう一踏ん張り！\"},{\"time\":19,\"text\":\"今日の成果は？\"}]");
-
-        var noRili = false;
-
-        // 3. 壁纸引擎联动配置
-        window.wallpaperPropertyListener = {
-            applyUserProperties: function (properties) {
-                if (properties.screenFile) {
-                    if (properties.screenFile.value) {
-                        screen.src = 'file:///' + properties.screenFile.value;
-                        var iv1 = setInterval(() => {
-                            if (screen.complete && screenMask.complete) {
-                                screenImageCtx.clearRect(0, 0, 1000, 1000);
-                                screenImageCtx.drawImage(screen, -1041, -210, 1280, 720);
-                                screenImageCtx.globalCompositeOperation = "destination-atop";
-                                screenImageCtx.drawImage(screenMask, 0, 0);
-                                screenImageCtx.globalCompositeOperation = "source-over";
-                                clearInterval(iv1);
-                            }
-                        }, 14);
-                    }
-                }
-                if (properties.phoneText) {
-                    if (properties.phoneText.value) {
-                        phoneText = JSON.parse(properties.phoneText.value);
-                    }
-                }
-                if (properties.disableRili) {
-                    if (properties.disableRili.value) {
-                        clearInterval(riliInterval);
-                        noRili = true;
-                    } else {
-                        riliInterval = setInterval(drawRili, 3600000);
-                        drawRili();
-                        noRili = false;
-                    }
-                }
-            }
-        }
-
-        function min(a, b) { return a > b ? b : a; }
-        function max(a, b) { return a > b ? a : b; }
-
-        var lightColor = { r: 0, g: 34, b: 77, a: 0 };
-        var night = false;
-        var debug = false;
-
-        // 4. 精简后的核心动画循环渲染区
-        function render() {
-            ctx.clearRect(0, 0, 1980, 1080);
-            ctx.drawImage(bg, 0, 0);
-            ctx.drawImage(mask, 954, 99);
-
-            ctx.fillStyle = "#97adbb";
-            ctx.font = "32pt Impact";
-            
-            ctx.transform(1, 2.05 * (Math.PI / 180), 0, 1, 0, 0);
-            var time = new Date();
-            ctx.fillText((time.getHours() < 10 ? "0" : "") + time.getHours().toString() + ":" + (time.getMinutes() < 10 ? "0" : "") + time.getMinutes() + ":" + (time.getSeconds() < 10 ? "0" : "") + time.getSeconds().toString(), 725, 318);
-            ctx.resetTransform();
-
-            // 绘制日历
-            if (!noRili) {
-                ctx.transform(0.9645, 0, 0 * (Math.PI / 180), 0.96, 967, 100);
-                ctx.rotate(6 * (Math.PI / 180));
-                ctx.drawImage(rili, 0, 0);
-                ctx.resetTransform();
-            }
-
-            ctx.globalCompositeOperation = "overlay";
-            ctx.drawImage(light, 971, 197);
-            ctx.globalCompositeOperation = "source-over";
-            ctx.drawImage(caidai, 949, 25);
-            ctx.drawImage(two, 1319, 345);
-
-            // 夜间滤镜效果
-            if (night && lightColor.a < 0.7) {
-                lightColor.a += 0.005; lightColor.a = min(lightColor.a, 0.7);
-            } else if (!night) {
-                lightColor.a -= 0.005; lightColor.a = max(lightColor.a, 0.0);
-            }
-
-            if (lightColor.a > 0) {
-                ctx.globalCompositeOperation = "hard-light";
-                ctx.fillStyle = "rgba(" + lightColor.r + "," + lightColor.g + "," + lightColor.b + "," + lightColor.a + ")";
-                ctx.fillRect(0, 0, 1980, 1080);
-                ctx.globalCompositeOperation = "source-over";
-                ctx.globalAlpha = lightColor.a / 0.7;
-                ctx.drawImage(phoneLight, 860, 437);
-                ctx.globalAlpha = 1;
-            }
-
-            ctx.drawImage(screenImage, 0, 0);
-            if (lightColor.a > 0) {
-                ctx.globalAlpha = lightColor.a / 0.7;
-                ctx.drawImage(screenLight, 0, 0);
-                ctx.globalAlpha = 1;
-            }
-
-            night = true;
-            var greeting = "凌晨啦!";
-            phoneText.forEach((v) => { if (time.getHours() >= v.time) { greeting = v.text; } });
-            if (time.getHours() >= 6 && time.getHours() <= 18) { night = false; }
-            night = debug ? !night : night;
-
-            // 手机文字
-            ctx.fillStyle = "#000"; ctx.font = "31.02pt SimHei";
-            ctx.transform(1.0911, -35 * (Math.PI / 180), 0, 0.5868, 1132.94, 564.07);
-            ctx.rotate(56.5 * (Math.PI / 180));
-            ctx.textAlign = "center"; ctx.fillStyle = "#fff";
-            ctx.fillText(greeting, 135, 100);
-            ctx.textAlign = "start"; ctx.resetTransform();
-
-            displayCtx.drawImage(cvs, 0, 0, display.width, display.height);
-            window.requestAnimationFrame(render);
-        }
-        window.requestAnimationFrame(render);
-
-
-        // ==========================================
-        // 核心逻辑：TOEIC 控制台数据渲染区
-        // ==========================================
-        let localConfigRegistry = [];
+        let staticModulesCache = [];
 
         document.addEventListener('DOMContentLoaded', () => {
-            if (typeof toeicModulesConfig === 'undefined') {
-                console.error("Router Core Error: 'toeicModulesConfig' missing.");
-                return;
-            }
-            localConfigRegistry = [...toeicModulesConfig];
-            renderConsoleGrid(localConfigRegistry);
-        });
-
-        function renderConsoleGrid(modulesList) {
             const container = document.getElementById('modulesGridContainer');
-            const emptyState = document.getElementById('search-empty-state');
             const counterText = document.getElementById('global-counter-txt');
             
-            container.innerHTML = '';
-            counterText.textContent = `Total: ${toeicModulesConfig.length} Units`;
-
-            if (modulesList.length === 0) {
-                container.classList.add('hidden');
-                emptyState.classList.remove('hidden');
-                return;
-            }
-
-            container.classList.remove('hidden');
-            emptyState.classList.add('hidden');
-
-            modulesList.forEach(mod => {
-                const cardAnchor = document.createElement('a');
-                cardAnchor.href = `test.html?unit=${mod.unit}`;
-                cardAnchor.className = "bg-slate-900/60 backdrop-blur-md p-4 rounded-xl border border-slate-800 hover:border-amber-500 hover:bg-slate-800/80 active:scale-[0.98] transition-all flex items-center justify-between group shadow-lg";
+            const cards = container.querySelectorAll('a');
+            cards.forEach(card => {
+                const urlObj = new URL(card.href, window.location.href);
+                const unitParam = urlObj.searchParams.get('unit') || '';
+                const idText = card.querySelector('.font-mono').textContent;
+                const titleText = card.querySelector('.text-xs').textContent;
                 
-                cardAnchor.innerHTML = `
-                    <div class="flex flex-col min-w-0 pr-2">
-                        <span class="text-[9px] font-mono text-amber-500 font-bold uppercase tracking-wider">UNIT ${String(mod.id).padStart(2, '0')}</span>
-                        <span class="text-xs font-bold text-slate-200 group-hover:text-amber-400 transition-colors truncate mt-0.5">${mod.title}</span>
-                    </div>
-                    <div class="w-6 h-6 rounded-lg bg-slate-800 group-hover:bg-amber-500 flex items-center justify-center shrink-0 transition-colors">
-                        <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-slate-400 group-hover:text-slate-950 transform group-hover:translate-x-0.5 transition-all"></i>
-                    </div>
-                `;
-                container.appendChild(cardAnchor);
+                staticModulesCache.push({
+                    domElement: card,
+                    unit: unitParam,
+                    idString: idText.toLowerCase(),
+                    titleString: titleText.toLowerCase()
+                });
             });
 
-            if (typeof lucide !== 'undefined') {
-                lucide.createIcons();
+            if (typeof toeicModulesConfig !== 'undefined') {
+                counterText.textContent = `Total: ${toeicModulesConfig.length} Units`;
+            } else {
+                counterText.textContent = `Total: ${staticModulesCache.length} Units`;
             }
+
+            // ⚡ 初始化 3D 书籍的鼠标自由拖拽逻辑
+            initBookDraggable();
+        });
+
+        // 3D 书籍鼠标拖拽处理函数
+        function initBookDraggable() {
+            const bookEl = document.getElementById('draggable-toeic-book');
+            if (!bookEl) return;
+
+            let isDragging = false;
+            let startX = 0, startY = 0;
+            let initialLeft = 0, initialTop = 0;
+
+            bookEl.addEventListener('mousedown', (e) => {
+                // 仅允许鼠标左键拖拽
+                if (e.button !== 0) return;
+                
+                isDragging = true;
+                e.preventDefault(); // 阻止浏览器默认的选择文本或拖图行为
+                
+                startX = e.clientX;
+                startY = e.clientY;
+                
+                // 实时计算当前定位值
+                const rect = bookEl.getBoundingClientRect();
+                initialLeft = rect.left;
+                initialTop = rect.top;
+            });
+
+            document.addEventListener('mousemove', (e) => {
+                if (!isDragging) return;
+                
+                // 计算鼠标位移差
+                const deltaX = e.clientX - startX;
+                const deltaY = e.clientY - startY;
+                
+                // 映射回宿主容器的 style 样式中
+                bookEl.style.left = `${initialLeft + deltaX}px`;
+                bookEl.style.top = `${initialTop + deltaY}px`;
+            });
+
+            document.addEventListener('mouseup', () => {
+                isDragging = false;
+            });
         }
 
+        // 检索检索业务逻辑
         function filterToeicModules() {
             const query = document.getElementById('searchConsoleInput').value.trim().toLowerCase();
-            if (!query) {
-                renderConsoleGrid(localConfigRegistry);
-                return;
-            }
-            const filtered = localConfigRegistry.filter(mod => {
-                return String(mod.id) === query || mod.title.toLowerCase().includes(query);
+            const container = document.getElementById('modulesGridContainer');
+            const emptyState = document.getElementById('search-empty-state');
+            
+            let visibleCount = 0;
+
+            staticModulesCache.forEach(item => {
+                if (!query || item.idString.includes(query) || item.titleString.includes(query) || item.unit.includes(query)) {
+                    item.domElement.style.display = 'flex';
+                    visibleCount++;
+                } else {
+                    item.domElement.style.display = 'none';
+                }
             });
-            renderConsoleGrid(filtered);
+
+            if (visibleCount === 0) {
+                container.classList.add('hidden');
+                emptyState.classList.remove('hidden');
+            } else {
+                container.classList.remove('hidden');
+                emptyState.classList.add('hidden');
+            }
         }
     </script>
 </body>
-
 </html>
