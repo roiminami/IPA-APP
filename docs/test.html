@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>南式TOEIC鬼特訓 - Intelligent Interactive System</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- 1. 引入中央路径配置文件 -->
+    <script src="config.js"></script>
+    
+    <!-- 2. 智能URL参数动态吸纳器 -->
+    <script>
+        (function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const unitParam = urlParams.get('unit') || '1-10'; // 默认保底 1-10
+            const dataJsName = "data" + unitParam + ".js";
+            // 同步阻塞加载，保障底层全套算法变量完美就绪
+            document.write('<script src="' + dataJsName + '"><\/script>');
+        })();
+    </script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght=300;400;500;600;700&family=Noto+Sans+SC:wght=300;400;500;700&family=Noto+Sans+JP:wght=300;400;500;700&display=swap');
+        body {
+            font-family: 'Inter', 'Noto Sans SC', 'Noto Sans JP', sans-serif;
+            background-color: #FAF9F5;
+        }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #FAF9F5; }
+        ::-webkit-scrollbar-thumb { background: #E6E1D3; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #D1C9B7; }
+        @keyframes subtle-pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.85; transform: scale(1.02); } }
+        .pulse-accent { animation: subtle-pulse 2s infinite ease-in-out; }
+    </style>
+</head>
+<body class="text-slate-800 min-h-screen flex flex-col antialiased">
+
+    <!-- TOP HEADER -->
+    <header class="border-b border-[#EAE6D9] bg-[#FAF9F5]/90 backdrop-blur-md sticky top-0 z-40 transition-colors">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3" onclick="window.location.href='index.html'" style="cursor:pointer">
+                <div class="w-10 h-10 rounded-xl bg-amber-500 flex items-center justify-center text-white font-black text-lg shadow-md shadow-amber-500/20">
+                    南
+                </div>
+                <div>
+                    <h1 class="text-lg font-bold text-slate-900 tracking-tight">南式TOEIC鬼特訓</h1>
+                    <p class="text-[10px] text-amber-600 font-semibold tracking-wider uppercase">返回中央控制台 (Index)</p>
+                </div>
+            </div>
+
+            <!-- Global TTS Controls -->
+            <div class="flex items-center space-x-4 bg-[#F3EFE3] px-3 py-1.5 rounded-xl border border-[#E1DBC9]">
+                <div class="flex items-center space-x-1">
+                    <i data-lucide="volume-2" class="w-4 h-4 text-amber-600"></i>
+                    <span class="text-xs font-semibold text-slate-700">TOEIC 主流四国口音引擎</span>
+                </div>
+                <select id="voiceSelect" class="bg-transparent text-xs text-slate-700 font-bold focus:outline-none max-w-[160px] cursor-pointer">
+                    <option value="auto">自动选择主流口音</option>
+                </select>
+                <div class="h-3 w-[1px] bg-[#E1DBC9]"></div>
+                <div class="flex items-center space-x-1">
+                    <span class="text-[10px] text-slate-500">速度:</span>
+                    <input type="range" id="voiceSpeed" min="0.6" max="1.4" step="0.1" value="1.0" class="w-12 h-1 accent-amber-500 cursor-pointer">
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN BODY -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col gap-8">
+        
+        <!-- DASHBOARD HERO STATS -->
+        <section class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div class="bg-white p-5 rounded-2xl border border-[#EAE6D9] shadow-sm flex items-center justify-between">
+                <div>
+                    <span class="text-xs font-medium text-slate-500 block">特训总进度 (Total Progress)</span>
+                    <span id="stat-progress-txt" class="text-2xl font-bold text-slate-800">0 / 18</span>
+                </div>
+                <div class="w-12 h-12 bg-amber-50 rounded-xl flex items-center justify-center text-amber-600">
+                    <i data-lucide="trending-up" class="w-6 h-6"></i>
+                </div>
+            </div>
+            <div class="bg-white p-5 rounded-2xl border border-[#EAE6D9] shadow-sm flex items-center justify-between">
+                <div>
+                    <span class="text-xs font-medium text-slate-500 block">综合正确率 (Accuracy)</span>
+                    <span id="stat-accuracy" class="text-2xl font-bold text-slate-800">0%</span>
+                </div>
+                <div class="w-12 h-12 bg-emerald-50 rounded-xl flex items-center justify-center text-emerald-600">
+                    <i data-lucide="check-circle" class="w-6 h-6"></i>
+                </div>
+            </div>
+            <div class="bg-white p-5 rounded-2xl border border-[#EAE6D9] shadow-sm flex items-center justify-between">
+                <div>
+                    <span class="text-xs font-medium text-slate-500 block">高频考点词 (Core Vocabs)</span>
+                    <span class="text-2xl font-bold text-slate-800">10 Words</span>
+                </div>
+                <div class="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center text-blue-600">
+                    <i data-lucide="book-open" class="w-6 h-6"></i>
+                </div>
+            </div>
+            <div class="bg-white p-5 rounded-2xl border border-[#EAE6D9] shadow-sm flex items-center justify-between">
+                <div>
+                    <span class="text-xs font-medium text-slate-500 block">错题本收录 (Mistakes Book)</span>
+                    <span id="stat-mistakes" class="text-2xl font-bold text-amber-700">0 Items</span>
+                </div>
+                <div class="w-12 h-12 bg-rose-50 rounded-xl flex items-center justify-center text-rose-600">
+                    <i data-lucide="bookmark-check" class="w-6 h-6"></i>
+                </div>
+            </div>
+        </section>
+
+        <!-- APP TABS NAVIGATION -->
+        <div class="border-b border-[#EAE6D9] flex space-x-1">
+            <button onclick="switchTab('vocab')" id="tab-vocab" class="tab-btn px-5 py-3 font-semibold text-sm border-b-2 border-amber-500 text-amber-600 focus:outline-none transition-all flex items-center space-x-2">
+                <i data-lucide="award" class="w-4 h-4"></i>
+                <span>① 核心词汇精训 (Core Vocab)</span>
+            </button>
+            <button onclick="switchTab('test')" id="tab-test" class="tab-btn px-5 py-3 font-semibold text-sm border-b-2 border-transparent text-slate-500 hover:text-slate-800 focus:outline-none transition-all flex items-center space-x-2">
+                <i data-lucide="compass" class="w-4 h-4"></i>
+                <span>② 智能测试引擎 (Test)</span>
+            </button>
+            <button onclick="switchTab('mistakes')" id="tab-mistakes" class="tab-btn px-5 py-3 font-semibold text-sm border-b-2 border-transparent text-slate-500 hover:text-slate-800 focus:outline-none transition-all flex items-center space-x-2">
+                <i data-lucide="shield-alert" class="w-4 h-4"></i>
+                <span>③ 专属错题集 (My Mistakes)</span>
+            </button>
+            <button onclick="switchTab('report')" id="tab-report" class="tab-btn px-5 py-3 font-semibold text-sm border-b-2 border-transparent text-slate-500 hover:text-slate-800 focus:outline-none transition-all flex items-center space-x-2">
+                <i data-lucide="bar-chart-3" class="w-4 h-4"></i>
+                <span>④ 难度挑战看板 (Difficulty Metrics)</span>
+            </button>
+        </div>
+
+        <!-- TAB 1: CORE VOCAB DICTIONARY -->
+        <div id="panel-vocab" class="tab-panel block space-y-6">
+            <div class="bg-gradient-to-r from-amber-500/10 to-amber-600/5 p-6 rounded-2xl border border-amber-200/50 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+                <div class="space-y-1">
+                    <h3 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                        <i data-lucide="lightbulb" class="text-amber-500"></i>
+                        TOEIC鬼特訓指南
+                    </h3>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        1. <strong>闪卡预习：</strong> 【点击例句】听原声朗读；【点击卡片其它区域】展折中日双语、词族与考点。<br>
+                        2. <strong>智能做题：</strong> 支持简单/中等/困难分层筛选。点击题干红字难词，自动展开的词性与音标提示卡。<br>
+                        3. <strong>四国口音 & 全题点读：</strong> 顶栏一键切换美/英/澳/加托业主流口音。点击喇叭，系统会自动用“正确答案”填补空缺并朗读全句，还原真实考场。
+                    </p>
+                </div>
+                
+                <div class="bg-white p-4 rounded-xl border border-amber-200 shadow-sm flex items-center justify-between gap-4 shrink-0">
+                    <div class="flex flex-col">
+                        <span class="text-xs font-bold text-slate-800">悬停读单词</span>
+                        <span class="text-[10px] text-slate-400">悬浮核心词及背景难词卡发音</span>
+                    </div>
+                    <button id="hoverToggleBtn" onclick="toggleHoverSpeech()" class="w-14 h-7 bg-slate-200 rounded-full relative transition-colors duration-300 focus:outline-none">
+                        <div id="hoverToggleDot" class="w-5 h-5 bg-white rounded-full absolute top-1 left-1 transition-transform duration-300 shadow-sm"></div>
+                    </button>
+                </div>
+            </div>
+
+            <div>
+                <h4 class="text-sm font-bold text-slate-700 mb-4 flex items-center gap-1.5">
+                    <span class="w-1.5 h-3.5 bg-amber-500 rounded"></span>
+                    核心考点词表 (Core Target Vocabulary)
+                </h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="targetVocabGrid"></div>
+            </div>
+
+            <div class="pt-4 border-t border-[#EAE6D9]">
+                <h4 class="text-sm font-bold text-slate-700 mb-4 flex items-center gap-1.5">
+                    <span class="w-1.5 h-3.5 bg-slate-500 rounded"></span>
+                    背景真题难词库 (Context Background Difficult Words)
+                </h4>
+                <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3" id="helperVocabGrid"></div>
+            </div>
+        </div>
+
+        <!-- TAB 2: SMART TEST ENGINE -->
+        <div id="panel-test" class="tab-panel hidden grid grid-cols-1 lg:grid-cols-12 gap-6">
+            <div class="lg:col-span-7 space-y-6">
+                <!-- Mode Controller -->
+                <div class="bg-white p-4 rounded-2xl border border-[#EAE6D9] flex flex-wrap items-center justify-between gap-4">
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs font-bold text-amber-600 bg-amber-50 px-2.5 py-1 rounded-md uppercase tracking-wider">练习模式: 全真随机乱序</span>
+                        <select id="diffFilterSelect" onchange="changeDifficultyFilter(this.value)" class="bg-[#FAF9F5] text-xs text-slate-700 font-bold px-2 py-1 rounded-lg border border-[#E1DBC9] focus:outline-none cursor-pointer transition-colors hover:border-amber-400">
+                            <option value="all">🔍 全部难度题型</option>
+                            <option value="简单">🟢 简单题型 </option>
+                            <option value="中等">🟡 中等题型 </option>
+                            <option value="困难">🔴 困难题型 </option>
+                        </select>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <button onclick="prevQuestion()" class="w-8 h-8 rounded-lg bg-[#F3EFE3] flex items-center justify-center text-slate-600 hover:bg-[#EAE6D9] transition-all">
+                            <i data-lucide="chevron-left" class="w-4 h-4"></i>
+                        </button>
+                        <span id="question-index-indicator" class="text-xs font-bold text-slate-700">1 / 18</span>
+                        <button onclick="nextQuestion()" class="w-8 h-8 rounded-lg bg-[#F3EFE3] flex items-center justify-center text-slate-600 hover:bg-[#EAE6D9] transition-all">
+                            <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Arena Card -->
+                <div class="bg-white rounded-3xl border border-[#EAE6D9] shadow-sm p-6 md:p-8 space-y-6 relative overflow-hidden">
+                    <div class="flex items-center justify-between">
+                        <span id="q-category" class="text-[10px] font-black uppercase tracking-wider bg-amber-100 text-amber-700 px-2.5 py-1 rounded-full flex items-center">
+                            难度: 简单
+                        </span>
+                        <div class="flex items-center space-x-2">
+                            <button onclick="speakQuestionText()" class="w-8 h-8 rounded-lg bg-amber-50 text-amber-600 hover:bg-amber-100 flex items-center justify-center transition-all" title="朗读全题">
+                                <i data-lucide="volume-2" class="w-4 h-4"></i>
+                            </button>
+                            <button id="favorite-btn" onclick="toggleFavoriteCurrent()" class="w-8 h-8 rounded-lg bg-slate-50 text-slate-400 hover:bg-slate-100 flex items-center justify-center transition-all" title="收藏错题">
+                                <i data-lucide="bookmark" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <h3 class="text-xs font-bold text-slate-400 tracking-wider uppercase">TOEIC - INCOMPLETE SENTENCE</h3>
+                        <div id="q-stem" class="text-lg md:text-xl font-medium text-slate-800 leading-relaxed tracking-normal"></div>
+                        
+                        <!-- 行内智能提示卡片 Container (安全防御，绝对不超框) -->
+                        <div id="q-hint-container" class="hidden bg-slate-900 text-white text-xs p-3 rounded-xl relative transition-all duration-200 shadow-lg"></div>
+                    </div>
+
+                    <div class="grid grid-cols-1 gap-3 pt-4" id="q-options-container"></div>
+
+                    <div class="flex items-center justify-between pt-4 border-t border-[#F3EFE3]">
+                        <div class="flex items-center space-x-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-slate-300" id="dot-status"></span>
+                            <span id="status-text" class="text-xs font-semibold text-slate-500">等待作答</span>
+                        </div>
+                        <button id="submit-btn" onclick="checkAnswer()" class="bg-slate-900 text-white font-bold text-sm px-6 py-2.5 rounded-xl hover:bg-amber-600 active:scale-95 transition-all">
+                            提交答案 (Submit)
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Side Parsing Box -->
+            <div class="lg:col-span-5">
+                <div class="bg-white rounded-3xl border border-[#EAE6D9] shadow-sm p-6 min-h-[400px] flex flex-col justify-between" id="analysis-panel">
+                    <div class="space-y-6">
+                        <div class="flex items-center space-x-2 border-b border-[#F3EFE3] pb-4">
+                            <i data-lucide="file-text" class="w-5 h-5 text-amber-500"></i>
+                            <h3 class="text-sm font-bold text-slate-800 tracking-wider">双栏式全维度深度解析 (Deep Analysis)</h3>
+                        </div>
+
+                        <div id="analysis-placeholder" class="text-center py-12 space-y-4">
+                            <div class="w-16 h-16 bg-amber-50 rounded-full flex items-center justify-center mx-auto text-amber-500">
+                                <i data-lucide="lock" class="w-6 h-6"></i>
+                            </div>
+                            <h4 class="text-sm font-bold text-slate-700">请先提交本题答案</h4>
+                            <p class="text-xs text-slate-400 max-w-[240px] mx-auto leading-relaxed">
+                                完成此题目后，本侧将立刻解锁高频核心短语、同义关系树、考点中日翻译。
+                            </p>
+                        </div>
+
+                        <div id="analysis-content" class="hidden space-y-5">
+                            <div class="flex items-center space-x-3">
+                                <span class="text-xs font-bold text-slate-500 bg-[#F3EFE3] px-2.5 py-1 rounded">正确答案: <span id="ana-correct-opt" class="text-emerald-600 font-bold ml-1"></span></span>
+                                <span class="text-xs font-bold text-slate-500 bg-[#F3EFE3] px-2.5 py-1 rounded">考查核心: <span id="ana-type" class="text-slate-800 font-bold ml-1">词义辨析</span></span>
+                            </div>
+
+                            <div class="space-y-2">
+                                <h4 class="text-xs font-bold text-amber-600 tracking-wider uppercase">考点突破 (Bootcamp Guide)</h4>
+                                <p id="ana-guide" class="text-xs text-slate-600 leading-relaxed font-medium">--</p>
+                            </div>
+
+                            <div class="space-y-2">
+                                <h4 class="text-xs font-bold text-amber-600 tracking-wider uppercase">词族关系与派生衍生 (Family Connections)</h4>
+                                <p id="ana-family" class="text-xs text-slate-600 leading-relaxed font-medium">--</p>
+                            </div>
+
+                            <div class="space-y-2">
+                                <h4 class="text-xs font-bold text-slate-500 tracking-wider uppercase">考查精解 (Instructor Summary)</h4>
+                                <div id="ana-details" class="text-xs text-slate-600 leading-relaxed bg-[#FAF9F5] p-3 rounded-xl border border-[#EAE6D9]">--</div>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-4 pt-2 border-t border-[#F3EFE3]">
+                                <div>
+                                    <h4 class="text-[10px] font-bold text-slate-400 tracking-wider uppercase">中文参考 (CN)</h4>
+                                    <p id="ana-cn" class="text-xs text-slate-600 leading-normal mt-1 font-medium">--</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-[10px] font-bold text-slate-400 tracking-wider uppercase">日本語訳 (JP)</h4>
+                                    <p id="ana-jp" class="text-xs text-slate-600 leading-normal mt-1 font-medium">--</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="analysis-nav" class="hidden pt-4 border-t border-[#F3EFE3] flex items-center justify-between">
+                        <span class="text-xs text-slate-400">已解锁深度学习。加油！</span>
+                        <button onclick="nextQuestion()" class="text-xs font-bold text-white bg-slate-900 hover:bg-amber-600 px-4 py-2 rounded-lg transition-all flex items-center space-x-1">
+                            <span>进入下一题 (Next)</span>
+                            <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 3: PERSONAL MISTAKES BOOK -->
+        <div id="panel-mistakes" class="tab-panel hidden space-y-6">
+            <div class="bg-white p-6 rounded-3xl border border-[#EAE6D9] shadow-sm space-y-4">
+                <div class="flex items-center justify-between flex-wrap gap-4">
+                    <div class="space-y-1">
+                        <h3 class="text-lg font-bold text-slate-950 flex items-center gap-2">
+                            <i data-lucide="shield-alert" class="text-rose-500"></i>
+                            专属错题集中营 (My Wrong Questions)
+                        </h3>
+                        <p class="text-xs text-slate-500">系统将全自动、非侵入式地收集您在测试引擎中的所有错题。</p>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <button onclick="clearAllFavorites()" class="px-4 py-2 bg-rose-50 hover:bg-rose-100 text-rose-600 text-xs font-bold rounded-xl transition-all">
+                            清空错题本
+                        </button>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4" id="mistakes-container"></div>
+            </div>
+        </div>
+
+        <!-- TAB 4: LAYERED PERFORMANCE REPORT -->
+        <div id="panel-report" class="tab-panel hidden grid grid-cols-1 lg:grid-cols-12 gap-6">
+            <div class="lg:col-span-4 space-y-6">
+                <div class="bg-white p-6 rounded-3xl border border-[#EAE6D9] shadow-sm text-center space-y-4 flex flex-col justify-center items-center">
+                    <h3 class="text-sm font-bold text-slate-700 uppercase tracking-wider">诊断结果得分 (Performance Score)</h3>
+                    <div class="relative w-36 h-36 flex items-center justify-center">
+                        <svg class="w-full h-full transform -rotate-90">
+                            <circle cx="72" cy="72" r="64" stroke="#F3EFE3" stroke-width="12" fill="transparent"></circle>
+                            <circle cx="72" cy="72" r="64" stroke="#f59e0b" stroke-width="12" fill="transparent" stroke-dasharray="402" stroke-dashoffset="402" id="report-circle-stroke" class="transition-all duration-1000"></circle>
+                        </svg>
+                        <div class="absolute flex flex-col items-center">
+                            <span id="report-score-big" class="text-4xl font-extrabold text-slate-900">0</span>
+                            <span class="text-[10px] text-slate-400 font-bold tracking-widest uppercase">SCORE</span>
+                        </div>
+                    </div>
+                    <div class="space-y-1">
+                        <h4 id="report-rank" class="text-base font-bold text-amber-700">TOEIC 备考见习生 (Novice)</h4>
+                        <p class="text-xs text-slate-400" id="report-summary-txt">加油！完成全部 18 道真题后方能展示客观的多维难度分析面板。</p>
+                    </div>
+                    <div class="w-full space-y-2 pt-2 border-t border-[#F3EFE3]">
+                        <button onclick="restartFullSession()" class="w-full py-2.5 bg-amber-500 hover:bg-amber-600 active:scale-95 text-white font-bold text-xs rounded-xl shadow-sm transition-all flex items-center justify-center space-x-1.5">
+                            <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+                            <span>重新开始完整特训 (清空错题本)</span>
+                        </button>
+                        <button id="btn-retest-mistakes-report" onclick="startMistakeSession()" class="w-full py-2.5 bg-slate-900 hover:bg-amber-600 active:scale-95 text-white font-bold text-xs rounded-xl shadow-sm transition-all flex items-center justify-center space-x-1.5 disabled:opacity-40 disabled:cursor-not-allowed">
+                            <i data-lucide="book-open" class="w-4 h-4"></i>
+                            <span>对错题进行专项重考 (考对一个删一个)</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lg:col-span-8 space-y-6">
+                <div class="bg-white p-6 rounded-3xl border border-[#EAE6D9] shadow-sm space-y-6">
+                    <div class="flex items-center space-x-2 border-b border-[#F3EFE3] pb-4">
+                        <i data-lucide="bar-chart-3" class="w-5 h-5 text-amber-500"></i>
+                        <h3 class="text-sm font-bold text-slate-800 tracking-wider">真题难度达成雷达 (Difficulty Level Mastery)</h3>
+                    </div>
+                    <div class="grid grid-cols-1 gap-6">
+                        <div class="space-y-2">
+                            <div class="flex justify-between text-xs font-bold text-slate-700">
+                                <span>1. 简单题型</span>
+                                <span id="radar-val-derivation">0%</span>
+                            </div>
+                            <div class="w-full bg-[#F3EFE3] h-2 rounded-full overflow-hidden">
+                                <div id="radar-bar-derivation" class="bg-emerald-500 h-full w-0 transition-all duration-1000"></div>
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="flex justify-between text-xs font-bold text-slate-700">
+                                <span>2. 中等题型</span>
+                                <span id="radar-val-prep">0%</span>
+                            </div>
+                            <div class="w-full bg-[#F3EFE3] h-2 rounded-full overflow-hidden">
+                                <div id="radar-bar-prep" class="bg-amber-500 h-full w-0 transition-all duration-1000"></div>
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="flex justify-between text-xs font-bold text-slate-700">
+                                <span>3. 困难题型</span>
+                                <span id="radar-val-semantics">0%</span>
+                            </div>
+                            <div class="w-full bg-[#F3EFE3] h-2 rounded-full overflow-hidden">
+                                <div id="radar-bar-semantics" class="bg-rose-500 h-full w-0 transition-all duration-1000"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-4 bg-amber-50 rounded-2xl border border-amber-200 text-xs text-amber-900 leading-relaxed space-y-1">
+                        <h4 class="font-bold flex items-center gap-1.5 text-amber-800"><i data-lucide="shield" class="w-4 h-4"></i>考官南老师的建议</h4>
+                        <p id="report-expert-advice">请先完成特训，系统分析器将为您绘制出客观达成雷达图。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="custom-modal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center z-50 hidden transition-all duration-300">
+        <div class="bg-white rounded-2xl border border-[#EAE6D9] shadow-2xl p-6 max-w-sm w-full mx-4 transform scale-95 transition-all duration-300 space-y-4">
+            <div class="flex items-start space-x-3">
+                <div id="modal-icon-container" class="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center text-amber-600 shrink-0"></div>
+                <div>
+                    <h4 id="modal-title" class="text-sm font-bold text-slate-900">提示</h4>
+                    <p id="modal-message" class="text-xs text-slate-500 mt-1 leading-relaxed">消息内容</p>
+                </div>
+            </div>
+            <div class="flex items-center justify-end space-x-2 pt-2 border-t border-[#F3EFE3]">
+                <button id="modal-cancel-btn" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-lg hidden transition-all">取消</button>
+                <button id="modal-confirm-btn" class="px-4 py-2 bg-slate-900 hover:bg-amber-600 text-white text-xs font-semibold rounded-lg transition-all">确定</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ENGINE RUNTIME INTERACTIVES -->
+    <script>
+        let currentQuestions = []; let currentIndex = 0; let selectedOption = null; let answeredList = {}; 
+        let favoritesList = JSON.parse(localStorage.getItem('toeic_ghost_favorites')) || [];
+        let isMistakeOnlySession = false; let hoverSpeechEnabled = false;
+        let synth = window.speechSynthesis; let selectedVoice = null;
+        let lastHintWord = ""; 
+        let currentDifficultyFilter = "all"; // 全局难度过滤状态
+
+        function refreshIcons() { if (typeof lucide !== 'undefined') lucide.createIcons(); }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            initVocabTabs(); initTTSVoices(); shuffleCurrentQuestions(); loadQuestion(); updateDashboardStats(); refreshIcons();
+        });
+
+        // 🌟 核心整合：融入难度分类的洗牌机制
+        function shuffleCurrentQuestions() {
+            let source = isMistakeOnlySession 
+                ? questionsDatabase.filter(q => favoritesList.includes(q.id))
+                : questionsDatabase;
+
+            if (currentDifficultyFilter !== "all") {
+                source = source.filter(q => q.category === currentDifficultyFilter);
+            }
+
+            currentQuestions = [...source].sort(() => Math.random() - 0.5);
+            currentQuestions.forEach(q => { q.shuffledOptions = [...q.options].sort(() => Math.random() - 0.5); });
+        }
+
+        // 🌟 核心整合：改变难度时的中枢控制逻辑
+        function changeDifficultyFilter(val) {
+            currentDifficultyFilter = val;
+            shuffleCurrentQuestions();
+            
+            if (currentQuestions.length === 0) {
+                showCustomAlert("筛选提示", "当前筛选条件下没有搜寻到任何题目（例如错题本中没有该难度的错题）。", "warning");
+                currentDifficultyFilter = "all";
+                document.getElementById('diffFilterSelect').value = "all";
+                shuffleCurrentQuestions();
+            }
+            
+            currentIndex = 0;
+            loadQuestion();
+            updateDashboardStats();
+        }
+
+        // 🌟 多口音核心：智能四国主流口音自适应分拣打分函数
+        function getBestMainstreamVoice() {
+            if (!synth) return null;
+            const voices = synth.getVoices();
+            let enVoices = voices.filter(v => {
+                const lang = v.lang.toLowerCase(); const name = v.name.toLowerCase();
+                const isJapanese = lang.includes('ja') || lang.includes('jp') || name.includes('ichiro') || name.includes('ayumi') || name.includes('kyoko') || name.includes('otoya') || name.includes('haruka') || name.includes('sayaka');
+                return lang.includes('en') && !isJapanese;
+            });
+            enVoices.sort((a, b) => {
+                function calculateScore(name, lang) {
+                    let score = 0;
+                    if (lang.includes('us')) score += 60; 
+                    if (lang.includes('gb') || lang.includes('uk')) score += 50; 
+                    if (lang.includes('au') || lang.includes('ca')) score += 40; 
+                    if (name.includes('natural')) score += 100;
+                    if (name.includes('neural')) score += 80;
+                    if (name.includes('google')) score += 60;
+                    return score;
+                }
+                return calculateScore(b.name, b.lang) - calculateScore(a.name, a.lang);
+            });
+            return enVoices[0] || null;
+        }
+
+        // 🌟 多口音核心：在列表初始化时，智能完成国际标准分类贴签 [美音]/[英音]/[澳音]/[加音]
+        function initTTSVoices() {
+            if (!synth) return; const select = document.getElementById('voiceSelect');
+            function populate() {
+                const voices = synth.getVoices(); select.innerHTML = '<option value="auto">自动选择主流英美音 (Auto)</option>';
+                let enVoices = voices.filter(v => {
+                    const lang = v.lang.toLowerCase(); const name = v.name.toLowerCase();
+                    const isJapanese = lang.includes('ja') || lang.includes('jp') || name.includes('ichiro') || name.includes('ayumi') || name.includes('kyoko') || name.includes('otoya') || name.includes('haruka') || name.includes('sayaka');
+                    return lang.includes('en') && !isJapanese;
+                });
+                
+                enVoices.sort((a, b) => {
+                    function calculateScore(name, lang) {
+                        let score = 0;
+                        if (lang.includes('us')) score += 60;
+                        if (lang.includes('gb') || lang.includes('uk')) score += 50;
+                        if (name.includes('natural')) score += 100;
+                        if (name.includes('neural')) score += 80;
+                        return score;
+                    }
+                    return calculateScore(b.name, b.lang) - calculateScore(a.name, a.lang);
+                });
+
+                enVoices.forEach(v => {
+                    const opt = document.createElement('option'); opt.value = v.name;
+                    const lang = v.lang.toLowerCase();
+                    let accentTag = "[美音]";
+                    if (lang.includes('gb') || lang.includes('uk')) accentTag = "[英音]";
+                    else if (lang.includes('au')) accentTag = "[澳音]";
+                    else if (lang.includes('ca')) accentTag = "[加音]";
+
+                    opt.textContent = `${accentTag} ${v.name}`; select.appendChild(opt);
+                });
+                
+                if (enVoices.length > 0) {
+                    const best = getBestMainstreamVoice();
+                    if (best) { selectedVoice = best; select.value = best.name; }
+                }
+            }
+            populate(); if (speechSynthesis.onvoiceschanged !== undefined) speechSynthesis.onvoiceschanged = populate;
+            select.addEventListener('change', () => { selectedVoice = synth.getVoices().find(v => v.name === select.value) || null; });
+        }
+
+        // 🌟 多口音核心：播放临界点动态拦截与语系绝对映射，击碎一切非英语环境产生的腔调畸变
+        function speakText(text) {
+            if (!synth) return; synth.cancel();
+            if (!selectedVoice || selectedVoice.name === 'auto') { selectedVoice = getBestMainstreamVoice(); }
+            
+            const cleaned = text.replace(/<[^>]*>/g, '').replace(/____+/g, 'blank');
+            const utter = new SpeechSynthesisUtterance(cleaned);
+            
+            if (selectedVoice) { utter.voice = selectedVoice; utter.lang = selectedVoice.lang; } 
+            else { utter.lang = 'en-US'; }
+            
+            utter.rate = parseFloat(document.getElementById('voiceSpeed').value) || 1.0;
+            synth.speak(utter);
+        }
+
+        function speakQuestionText() {
+            if (currentQuestions.length === 0) return;
+            const q = currentQuestions[currentIndex];
+            let rawText = q.stem.replace(/________+/g, q.correct);
+            speakText(rawText);
+        }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-btn').forEach(btn => { btn.classList.remove('border-amber-500', 'text-amber-600'); btn.classList.add('border-transparent', 'text-slate-500'); });
+            document.getElementById(`tab-${tabId}`).classList.add('border-amber-500', 'text-amber-600');
+            document.querySelectorAll('.tab-panel').forEach(panel => { panel.classList.add('hidden'); panel.classList.remove('block', 'grid'); });
+            const p = document.getElementById(`panel-${tabId}`);
+            if(tabId==='test'||tabId==='report') { p.classList.remove('hidden'); p.classList.add('grid'); } else { p.classList.remove('hidden'); p.classList.add('block'); }
+            if (tabId === 'report') renderPerformanceReport(); if (tabId === 'mistakes') renderMistakesList();
+        }
+
+        function toggleHoverSpeech() {
+            hoverSpeechEnabled = !hoverSpeechEnabled;
+            const btn = document.getElementById('hoverToggleBtn'); const dot = document.getElementById('hoverToggleDot');
+            if (hoverSpeechEnabled) { btn.className = "w-14 h-7 bg-amber-500 rounded-full relative transition-colors"; dot.style.transform = "translateX(28px)"; } 
+            else { btn.className = "w-14 h-7 bg-slate-200 rounded-full relative transition-colors"; dot.style.transform = "translateX(0px)"; }
+        }
+
+        function initVocabTabs() {
+            const targetGrid = document.getElementById('targetVocabGrid'); targetGrid.innerHTML = '';
+            vocabBank.forEach((v) => {
+                const card = document.createElement('div');
+                card.className = "bg-white p-5 rounded-2xl border border-[#EAE6D9] shadow-sm hover:border-amber-400 hover:shadow-md transition-all cursor-pointer space-y-3 relative overflow-hidden group";
+                card.addEventListener('click', () => {
+                    const transDiv = card.querySelector('.translation-mask'); const isExpanding = transDiv.classList.contains('hidden');
+                    document.querySelectorAll('.translation-mask').forEach(d => d.classList.add('hidden'));
+                    if (isExpanding) { transDiv.classList.remove('hidden'); speakText(v.word); } else { transDiv.classList.add('hidden'); }
+                });
+                card.addEventListener('mouseenter', () => { if (hoverSpeechEnabled) speakText(v.word); });
+                card.innerHTML = `
+                    <div class="flex justify-between items-start">
+                        <div><span class="text-xs font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded mr-1.5">${v.pos}</span><span class="text-sm font-bold text-slate-900 group-hover:text-amber-600">${v.word}</span></div>
+                        <span class="text-xs text-slate-400 font-mono">${v.ipa}</span>
+                    </div>
+                    <div class="text-xs text-slate-600 italic border-l-2 border-amber-500 pl-2 my-2.5 py-2 bg-amber-50/30 rounded-r flex items-center justify-between group/sentence" onclick="event.stopPropagation(); speakText('${v.desc.replace(/'/g, "\\'")}')">
+                        <span class="pr-2">"${v.desc}"</span><i data-lucide="volume-2" class="w-3.5 h-3.5 text-amber-500 opacity-40 group-hover/sentence:opacity-100 shrink-0"></i>
+                    </div>
+                    <div class="translation-mask hidden pt-2 border-t border-[#F3EFE3] space-y-3">
+                        <div class="text-xs text-slate-500"><span class="font-bold text-slate-700">派生关系:</span> ${v.family}</div>
+                        <div class="bg-[#FAF9F5] p-2.5 rounded-xl border border-[#F3EFE3] text-[11px] text-amber-800 font-medium"><span class="font-bold">考点:</span> ${v.tips}</div>
+                        <div class="grid grid-cols-2 gap-2 text-xs pt-1">
+                            <div><span class="text-[10px] text-slate-400 block uppercase font-bold">中文 (CN)</span><span class="font-semibold text-slate-700">${v.cn}</span></div>
+                            <div><span class="text-[10px] text-slate-400 block uppercase font-bold">日本語 (JP)</span><span class="font-semibold text-slate-700">${v.jp}</span></div>
+                        </div>
+                    </div>`;
+                targetGrid.appendChild(card);
+            });
+
+            const helperGrid = document.getElementById('helperVocabGrid'); helperGrid.innerHTML = '';
+            helperVocabBank.forEach(v => {
+                const mini = document.createElement('div'); mini.className = "bg-white p-3 rounded-xl border border-[#EAE6D9] text-center hover:border-slate-400 cursor-pointer transition-all group";
+                mini.addEventListener('click', () => {
+                    const jpCn = mini.querySelector('.mini-trans'); const isExpanding = jpCn.classList.contains('hidden');
+                    document.querySelectorAll('.mini-trans').forEach(d => d.classList.add('hidden'));
+                    if (isExpanding) { jpCn.classList.remove('hidden'); speakText(v.word); } else { jpCn.classList.add('hidden'); }
+                });
+                mini.addEventListener('mouseenter', () => { if (hoverSpeechEnabled) speakText(v.word); });
+                mini.innerHTML = `<div class="text-xs font-bold text-slate-800 group-hover:text-amber-600">${v.word} <span class="text-[10px] text-slate-400 font-normal">[${v.pos}]</span></div><div class="text-[9px] text-slate-400 font-mono">${v.ipa}</div><div class="mini-trans hidden text-[10px] text-slate-500 border-t border-[#F3EFE3] mt-1.5 pt-1.5"><div>${v.cn}</div><div class="text-slate-400">${v.jp}</div></div>`;
+                helperGrid.appendChild(mini);
+            });
+        }
+
+        function toggleStemWordHint(event, word, pos, ipa, cn, jp) {
+            if (event) event.stopPropagation();
+            const container = document.getElementById('q-hint-container');
+            if (!container.classList.contains('hidden') && lastHintWord === word) {
+                container.classList.add('hidden'); lastHintWord = ""; if (synth) synth.cancel(); return;
+            }
+            lastHintWord = word;
+            container.innerHTML = `
+                <div class="flex justify-between items-center border-b border-slate-700 pb-1.5 mb-1.5">
+                    <div>
+                        <span class="text-amber-400 font-bold text-sm tracking-wide">${word}</span>
+                        <span class="text-[10px] text-slate-400 ml-1.5 bg-slate-800 px-1.5 py-0.5 rounded font-sans">[${pos}]</span>
+                        <span class="text-[11px] text-slate-300 font-mono ml-2">${ipa}</span>
+                    </div>
+                    <button onclick="document.getElementById('q-hint-container').classList.add('hidden'); lastHintWord='';" class="text-slate-400 hover:text-white transition-colors">
+                        <i data-lucide="x" class="w-3.5 h-3.5"></i>
+                    </button>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px] leading-relaxed">
+                    <div><span class="text-slate-400 font-bold uppercase text-[9px] block">中文参考 (CN)</span><span class="text-slate-200 font-medium">${cn}</span></div>
+                    <div><span class="text-slate-400 font-bold uppercase text-[9px] block">日本語訳 (JP)</span><span class="text-slate-200 font-medium">${jp}</span></div>
+                </div>`;
+            container.classList.remove('hidden'); speakText(word); refreshIcons();
+        }
+
+        function showCustomAlert(title, message, iconType = 'info') {
+            const modal = document.getElementById('custom-modal'); document.getElementById('modal-title').textContent = title; document.getElementById('modal-message').textContent = message;
+            document.getElementById('modal-cancel-btn').classList.add('hidden');
+            document.getElementById('modal-icon-container').innerHTML = iconType==='success'?'<i data-lucide=\"check-circle\" class=\"text-emerald-600\"></i>':'<i data-lucide=\"info\"></i>';
+            document.getElementById('modal-confirm-btn').onclick = () => modal.classList.add('hidden'); modal.classList.remove('hidden'); refreshIcons();
+        }
+
+        function showCustomConfirm(title, message, onConfirm) {
+            const modal = document.getElementById('custom-modal'); document.getElementById('modal-title').textContent = title; document.getElementById('modal-message').textContent = message;
+            const c = document.getElementById('modal-cancel-btn'); c.classList.remove('hidden');
+            document.getElementById('modal-icon-container').innerHTML = '<i data-lucide=\"help-circle\" class=\"text-blue-600\"></i>';
+            document.getElementById('modal-confirm-btn').onclick = () => { modal.classList.add('hidden'); if(onConfirm) onConfirm(); };
+            c.onclick = () => modal.classList.add('hidden'); modal.classList.remove('hidden'); refreshIcons();
+        }
+
+        function loadQuestion() {
+            if (currentQuestions.length === 0) return; const q = currentQuestions[currentIndex]; selectedOption = null;
+            document.getElementById('question-index-indicator').textContent = `${currentIndex + 1} / ${currentQuestions.length}`;
+            document.getElementById('q-hint-container').classList.add('hidden'); lastHintWord = "";
+
+            let diffColor = "bg-emerald-100 text-emerald-800";
+            if (q.category === "中等") diffColor = "bg-amber-100 text-amber-800";
+            if (q.category === "困难") diffColor = "bg-rose-100 text-rose-800";
+            const badgeHtml = isMistakeOnlySession ? `<span class="bg-rose-100 text-rose-700 text-[10px] font-bold px-2 py-0.5 rounded-md mr-1.5 border border-rose-200">重考</span>` : "";
+            document.getElementById('q-category').innerHTML = `${badgeHtml}<span class="${diffColor} px-2.5 py-1 rounded-full font-black text-[10px] uppercase tracking-wider">难度: ${q.category}</span>`;
+            updateFavoriteButtonUI(q.id);
+
+            let stemHTML = q.stem;
+            helperVocabBank.forEach(hv => {
+                if (hv.word !== q.correct.toLowerCase()) {
+                    const regex = new RegExp(`\\b${hv.word}\\b`, 'gi');
+                    const escapedCn = hv.cn.replace(/'/g, "\\'"); const escapedJp = hv.jp.replace(/'/g, "\\'");
+                    stemHTML = stemHTML.replace(regex, (m) => `<span class="text-rose-700 font-bold border-b-2 border-rose-400 cursor-pointer inline-block" onclick="toggleStemWordHint(event, '${hv.word}', '${hv.pos}', '${hv.ipa}', '${escapedCn}', '${escapedJp}')">${m}</span>`);
+                }
+            });
+            document.getElementById('q-stem').innerHTML = stemHTML;
+
+            const optsContainer = document.getElementById('q-options-container'); optsContainer.innerHTML = '';
+            (q.shuffledOptions || q.options).forEach((opt, idx) => {
+                const label = String.fromCharCode(65 + idx);
+                const btn = document.createElement('button'); btn.className = "w-full text-left p-4 rounded-xl border border-[#EAE6D9] hover:border-slate-400 flex items-center justify-between font-medium bg-white group";
+                btn.onclick = () => { if (answeredList[q.id]) return; selectedOption = opt; optsContainer.querySelectorAll('button').forEach(b => { b.className="w-full text-left p-4 rounded-xl border border-[#EAE6D9] bg-white text-slate-700 flex items-center justify-between"; }); btn.className="w-full text-left p-4 rounded-xl border-2 border-amber-500 bg-amber-50/50 text-slate-800 flex items-center justify-between font-semibold"; };
+                btn.innerHTML = `<div class="flex items-center space-x-3"><span class="w-7 h-7 rounded-lg bg-[#F3EFE3] text-slate-600 font-bold text-xs flex items-center justify-center">${label}</span><span>${opt}</span></div>`;
+                optsContainer.appendChild(btn);
+            });
+
+            if (answeredList[q.id]) renderAnsweredState(q, answeredList[q.id].chosen); else resetEngineInteractiveState();
+            refreshIcons();
+        }
+
+        function checkAnswer() {
+            const q = currentQuestions[currentIndex]; if (answeredList[q.id]) { nextQuestion(); return; }
+            if (!selectedOption) { showCustomAlert("提示", "请先选择一个答案选项！", "warning"); return; }
+            const isCorrect = (selectedOption === q.correct);
+            answeredList[q.id] = { chosen: selectedOption, isCorrect: isCorrect };
+            if (!isCorrect) addFavorite(q.id); else if (isMistakeOnlySession) removeFavorite(q.id);
+            renderAnsweredState(q, selectedOption); updateDashboardStats();
+        }
+
+        function renderAnsweredState(q, chosenOpt) {
+            const isCorrect = (chosenOpt === q.correct);
+            const optsContainer = document.getElementById('q-options-container'); optsContainer.innerHTML = '';
+            (q.shuffledOptions || q.options).forEach((opt, idx) => {
+                const label = String.fromCharCode(65 + idx); const btn = document.createElement('button');
+                if (opt === q.correct) btn.className = "w-full text-left p-4 rounded-xl border-2 border-emerald-500 bg-emerald-50/50 flex items-center justify-between text-slate-800 font-medium";
+                else if (opt === chosenOpt) btn.className = "w-full text-left p-4 rounded-xl border-2 border-rose-500 bg-rose-50/50 flex items-center justify-between text-slate-800 font-medium";
+                else btn.className = "w-full text-left p-4 rounded-xl border border-[#EAE6D9] bg-white opacity-50 text-slate-400 flex items-center justify-between";
+                btn.innerHTML = `<div class="flex items-center space-x-3"><span class="w-7 h-7 rounded-lg bg-[#F3EFE3] text-slate-600 font-bold text-xs flex items-center justify-center">${label}</span><span>${opt}</span></div>`;
+                optsContainer.appendChild(btn);
+            });
+
+            const txt = document.getElementById('status-text');
+            if (isCorrect) { document.getElementById('dot-status').className="w-2.5 h-2.5 rounded-full bg-emerald-500"; txt.textContent="回答正确 (Correct)"; txt.className="text-xs font-semibold text-emerald-600"; }
+            else { document.getElementById('dot-status').className="w-2.5 h-2.5 rounded-full bg-rose-500"; txt.textContent=`回答错误 (Wrong) - 应选 [ ${q.correct} ]`; txt.className="text-xs font-semibold text-rose-600"; }
+            document.getElementById('submit-btn').textContent = "下一题 (Next)";
+
+            document.getElementById('analysis-placeholder').classList.add('hidden');
+            document.getElementById('analysis-content').classList.remove('hidden');
+            document.getElementById('ana-correct-opt').textContent = q.correct.toUpperCase();
+            document.getElementById('ana-type').textContent = `考点词: ${q.target}`;
+            document.getElementById('ana-guide').innerHTML = q.explanations.guide;
+            document.getElementById('ana-family').innerHTML = q.explanations.family || "-";
+            document.getElementById('ana-details').innerHTML = q.explanations.details;
+            document.getElementById('ana-cn').textContent = q.explanations.cn;
+            document.getElementById('ana-jp').textContent = q.explanations.jp;
+            document.getElementById('analysis-nav').classList.remove('hidden');
+            refreshIcons();
+        }
+
+        function resetEngineInteractiveState() {
+            document.getElementById('dot-status').className="w-2.5 h-2.5 rounded-full bg-slate-300";
+            document.getElementById('status-text').textContent="等待作答"; document.getElementById('status-text').className="text-xs font-semibold text-slate-500";
+            document.getElementById('submit-btn').textContent = "提交答案 (Submit)";
+            document.getElementById('analysis-placeholder').classList.remove('hidden');
+            document.getElementById('analysis-content').classList.add('hidden');
+            document.getElementById('analysis-nav').classList.add('hidden');
+        }
+
+        function prevQuestion() { if (currentIndex > 0) { currentIndex--; loadQuestion(); } }
+        function nextQuestion() { if (currentIndex < currentQuestions.length - 1) { currentIndex++; loadQuestion(); } else { showCustomAlert("特训通关！", "当前难度/特训任务已全部完成！现在带你前往难度达成看板。", "success"); switchTab('report'); } }
+
+        function toggleFavoriteCurrent() { const q = currentQuestions[currentIndex]; if (favoritesList.includes(q.id)) removeFavorite(q.id); else addFavorite(q.id); updateFavoriteButtonUI(q.id); updateDashboardStats(); }
+        function addFavorite(id) { if (!favoritesList.includes(id)) { favoritesList.push(id); localStorage.setItem('toeic_ghost_favorites', JSON.stringify(favoritesList)); } }
+        function removeFavorite(id) { favoritesList = favoritesList.filter(item => item !== id); localStorage.setItem('toeic_ghost_favorites', JSON.stringify(favoritesList)); }
+        function updateFavoriteButtonUI(id) { const btn = document.getElementById('favorite-btn'); if (favoritesList.includes(id)) { btn.className = "w-8 h-8 rounded-lg bg-rose-50 text-rose-500 flex items-center justify-center"; btn.innerHTML = `<i data-lucide="bookmark-check" class="w-4 h-4"></i>`; } else { btn.className = "w-8 h-8 rounded-lg bg-slate-50 text-slate-400 flex items-center justify-center"; btn.innerHTML = `<i data-lucide="bookmark" class="w-4 h-4"></i>`; } refreshIcons(); }
+
+        function renderMistakesList() {
+            const container = document.getElementById('mistakes-container'); container.innerHTML = '';
+            if (favoritesList.length === 0) { container.innerHTML = `<div class="col-span-full text-center py-12 text-xs text-slate-400">暂无错题记录，挑战全胜！</div>`; return; }
+            favoritesList.forEach(id => {
+                const q = questionsDatabase.find(item => item.id === id); if (!q) return;
+                const card = document.createElement('div'); card.className = "bg-[#FAF9F5] p-4 rounded-xl border border-[#EAE6D9] space-y-2";
+                card.innerHTML = `<div class="flex justify-between items-center"><span class="text-[10px] font-bold text-rose-600">ID: #${q.id}</span><button onclick="removeFavoriteAndReload(${q.id})" class="text-slate-400 hover:text-rose-600"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button></div><p class="text-xs font-medium text-slate-700">${q.stem.replace(/________+/g, '_____')}</p><div class="text-[11px] font-bold text-emerald-600">正确答案: ${q.correct}</div>`;
+                container.appendChild(card);
+            });
+            refreshIcons();
+        }
+
+        function removeFavoriteAndReload(id) { removeFavorite(id); renderMistakesList(); updateDashboardStats(); renderPerformanceReport(); }
+        function clearAllFavorites() { showCustomConfirm("确认操作", "确定清空全部错题数据吗？", () => { favoritesList = []; localStorage.removeItem('toeic_ghost_favorites'); renderMistakesList(); updateDashboardStats(); renderPerformanceReport(); }); }
+
+        function startMistakeSession() {
+            if (favoritesList.length === 0) return; isMistakeOnlySession = true;
+            favoritesList.forEach(id => delete answeredList[id]);
+            
+            shuffleCurrentQuestions();
+            if (currentQuestions.length === 0) {
+                currentDifficultyFilter = "all";
+                if(document.getElementById('diffFilterSelect')) document.getElementById('diffFilterSelect').value = "all";
+                shuffleCurrentQuestions();
+            }
+            
+            currentIndex = 0; switchTab('test'); loadQuestion(); updateDashboardStats();
+        }
+
+        function renderPerformanceReport() {
+            const total = questionsDatabase.length; const answeredCount = Object.keys(answeredList).length;
+            const correctCount = Object.values(answeredList).filter(item => item.isCorrect).length;
+            const accuracyRatio = answeredCount > 0 ? (correctCount / answeredCount) : 0;
+            const score = Math.round((correctCount / total) * 100);
+
+            document.getElementById('report-score-big').textContent = score;
+            const offset = 402 - (accuracyRatio * 402);
+            document.getElementById('report-circle-stroke').style.strokeDashoffset = offset;
+
+            let rank = "TOEIC 备考见习生 (Novice)";
+            let advice = "南老师建议：打牢基础词汇句式是攻克 TOEIC 高阶题的根本。";
+            if (score >= 90) { rank = "托业鬼武者 (Guru Elite)"; advice = "惊艳的表现！您对本阶段的核心词汇及语法衍生已达到手到擒来的地步。"; }
+            else if (score >= 70) { rank = "商战先锋 (Professional)"; advice = "商务底蕴扎实，但部分困难题型仍存细节盲区，请配合双栏深度精解和错题集重点消灭。"; }
+
+            document.getElementById('report-rank').textContent = rank;
+            document.getElementById('report-expert-advice').textContent = advice;
+
+            const groupEasy = questionsDatabase.filter(q => q.category === '简单').map(q => q.id);
+            const groupMedium = questionsDatabase.filter(q => q.category === '中等').map(q => q.id);
+            const groupHard = questionsDatabase.filter(q => q.category === '困难').map(q => q.id);
+
+            setTimeout(() => {
+                animateRadarBar('derivation', calculateGroupAccuracy(groupEasy));
+                animateRadarBar('prep', calculateGroupAccuracy(groupMedium));
+                animateRadarBar('semantics', calculateGroupAccuracy(groupHard));
+            }, 50);
+
+            document.getElementById('btn-retest-mistakes-report').disabled = (favoritesList.length === 0);
+        }
+
+        function calculateGroupAccuracy(qIdArray) {
+            const sub = qIdArray.filter(id => answeredList[id] !== undefined); if (sub.length === 0) return 0;
+            return Math.round((sub.filter(id => answeredList[id].isCorrect).length / sub.length) * 100);
+        }
+
+        function animateRadarBar(id, value) {
+            if(document.getElementById(`radar-val-${id}`)) document.getElementById(`radar-val-${id}`).textContent = `${value}%`;
+            if(document.getElementById(`radar-bar-${id}`)) document.getElementById(`radar-bar-${id}`).style.width = `${value}%`;
+        }
+
+        function restartFullSession() {
+            showCustomConfirm("重置特训", "确定清空当前进度与错题本，彻底重新开始吗？", () => {
+                answeredList = {}; favoritesList = []; localStorage.removeItem('toeic_ghost_favorites');
+                isMistakeOnlySession = false; 
+                currentDifficultyFilter = "all"; 
+                if(document.getElementById('diffFilterSelect')) document.getElementById('diffFilterSelect').value = "all";
+                shuffleCurrentQuestions(); currentIndex = 0;
+                updateDashboardStats(); switchTab('test'); loadQuestion();
+            });
+        }
+
+        function updateDashboardStats() {
+            const total = currentQuestions.length; 
+            let answeredInCurrent = 0;
+            currentQuestions.forEach(q => { if (answeredList[q.id]) answeredInCurrent++; });
+            const correctCount = currentQuestions.filter(q => answeredList[q.id] && answeredList[q.id].isCorrect).length;
+            
+            document.getElementById('stat-progress-txt').textContent = `${answeredInCurrent} / ${total}`;
+            document.getElementById('stat-accuracy').textContent = answeredInCurrent > 0 ? `${Math.round((correctCount / answeredInCurrent) * 100)}%` : "0%";
+            document.getElementById('stat-mistakes').textContent = `${favoritesList.length} Items`;
+        }
+    </script>
+</body>
+</html>
