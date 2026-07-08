@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>南式TOEIC鬼特訓 - Central Console</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght=400;500;600;700&family=Noto+Sans+JP:wght=400;500;700&family=Noto+Sans+SC:wght=400;500;700&display=swap" rel="stylesheet">
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     
@@ -11,10 +16,24 @@
     <script src="books.js"></script>
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght=400;500;600;700&family=Noto+Sans+SC:wght=400;500;700&family=Noto+Sans+JP:wght=400;500;700&display=swap');
         body {
             font-family: 'Inter', 'Noto Sans SC', 'Noto Sans JP', sans-serif;
             background-color: transparent;
+        }
+
+        /* 为大容量单元容器定制的隐藏式微距滚动条 */
+        #modulesGridContainer::-webkit-scrollbar {
+            width: 5px;
+        }
+        #modulesGridContainer::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        #modulesGridContainer::-webkit-scrollbar-thumb {
+            background: rgba(234, 230, 217, 0.4); 
+            border-radius: 99px;
+        }
+        #modulesGridContainer::-webkit-scrollbar-thumb:hover {
+            background: rgba(245, 158, 11, 0.6); 
         }
     </style>
 </head>
@@ -22,7 +41,7 @@
 
     <iframe src="Cyberpunk/wallpaper.html" class="fixed inset-0 w-full h-full border-none -z-50 pointer-events-none"></iframe>
 
-    <header class="border-b border-[#EAE6D9]/60 bg-[#FAF9F5]/70 backdrop-blur-md sticky top-0 z-40">
+    <header class="border-b border-[#EAE6D9]/40 bg-[#FAF9F5]/35 backdrop-blur-sm sticky top-0 z-40">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
             <div class="flex items-center space-x-3">
                 <div class="w-10 h-10 rounded-xl bg-amber-500 flex items-center justify-center text-white font-black text-lg shadow-md shadow-amber-500/20">南</div>
@@ -34,7 +53,7 @@
             
             <div class="flex items-center space-x-3">
                 <span class="text-xs font-mono text-slate-500 hidden sm:inline" id="global-counter-txt">Total: -- Units</span>
-                <div class="text-xs font-bold text-amber-600 bg-amber-50/80 px-3 py-1.5 rounded-xl border border-amber-200/60 flex items-center space-x-1.5 backdrop-blur-sm">
+                <div class="text-xs font-bold text-amber-600 bg-amber-50/40 px-3 py-1.5 rounded-xl border border-amber-200/40 flex items-center space-x-1.5 backdrop-blur-sm">
                     <span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span>
                     <span>群主持续更新中</span>
                 </div>
@@ -54,23 +73,23 @@
                     id="searchConsoleInput" 
                     oninput="filterToeicModules()" 
                     placeholder="快速检索：输入单词序号（如 '13'）直达目标单元..." 
-                    class="w-full pl-10 pr-32 py-3 bg-white/75 backdrop-blur-md rounded-xl border border-[#EAE6D9] text-sm focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10 placeholder-slate-400 transition-all shadow-sm"
+                    class="w-full pl-10 pr-32 py-3 bg-white/35 backdrop-blur-sm rounded-xl border border-[#EAE6D9]/60 text-sm focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10 placeholder-slate-400 transition-all shadow-sm"
                 >
                 <div id="search-lock-badge" class="absolute right-3 flex items-center pointer-events-none transition-all duration-300 opacity-0 scale-75"></div>
             </div>
         </section>
 
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3.5" id="modulesGridContainer"></div>
+        <div class="grid grid-cols-2 min-[440px]:grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8 gap-2 max-h-[66vh] overflow-y-auto pr-1.5" id="modulesGridContainer"></div>
 
-        <div id="search-empty-state" class="hidden text-center py-16 bg-white/75 backdrop-blur-md rounded-2xl border border-[#EAE6D9] border-dashed space-y-2">
-            <div class="w-10 h-10 bg-slate-50/50 text-slate-400 rounded-full flex items-center justify-center mx-auto">
+        <div id="search-empty-state" class="hidden text-center py-16 bg-white/35 backdrop-blur-sm rounded-2xl border border-[#EAE6D9]/60 border-dashed space-y-2">
+            <div class="w-10 h-10 bg-slate-50/30 text-slate-400 rounded-full flex items-center justify-center mx-auto">
                 <i data-lucide="alert-circle" class="w-5 h-5"></i>
             </div>
             <h4 class="text-xs font-bold text-slate-700">未找到相关特训单元</h4>
             <p class="text-[11px] text-slate-400">该书籍中未检索到包含此单词序号的单元。</p>
         </div>
 
-        <section class="p-4 bg-white/75 backdrop-blur-md rounded-2xl border border-[#EAE6D9] shadow-sm flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+        <section class="p-4 bg-white/35 backdrop-blur-sm rounded-2xl border border-[#EAE6D9]/60 shadow-sm flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
             <div class="flex items-center space-x-2 text-xs text-slate-500 font-medium">
                 <i data-lucide="refresh-cw" class="w-3.5 h-3.5 text-slate-400 animate-spin" style="animation-duration: 8s;"></i>
                 <span>群主持续更新中</span>
@@ -86,7 +105,7 @@
 
     </main>
 
-    <footer class="border-t border-[#EAE6D9]/40 bg-[#FAF9F5]/40 backdrop-blur-sm py-3 text-center text-[10px] text-slate-500 tracking-wide font-mono relative z-10">
+    <footer class="border-t border-[#EAE6D9]/30 bg-[#FAF9F5]/20 backdrop-blur-[1px] py-3 text-center text-[10px] text-slate-400 tracking-wide font-mono relative z-10">
         Southern Ghost TOEIC Platform Engine • Powered by config.js URL Router
     </footer>
 
@@ -122,18 +141,17 @@
 
             modulesList.forEach(mod => {
                 const cardAnchor = document.createElement('a');
-                cardAnchor.href = `test.html?unit=${mod.unit}`;
+                cardAnchor.href = `test.html?unit=${encodeURIComponent(mod.unit)}`;
                 
-                // 💡 自动化核心：直接去全局配置字典（my3DBooksDataset）里抓取当前书对应的视觉样式
                 const bookMeta = (typeof my3DBooksDataset !== 'undefined') 
                     ? my3DBooksDataset.find(b => b.bookId === mod.book) 
                     : null;
 
-                // 如果配置里找不到，就自动使用优雅的默认冷色皮肤兜底
-                const themeClass = bookMeta?.cardTheme || "border-slate-400/30 hover:border-slate-500 hover:bg-slate-100/20";
+                const themeClass = bookMeta?.cardTheme || "border-slate-400/30 hover:border-slate-500 hover:bg-slate-100/10";
                 const dotColor = bookMeta?.dotColor || "bg-slate-400 shadow-slate-400/50";
 
-                cardAnchor.className = `bg-white/75 backdrop-blur-md p-3.5 rounded-xl border ${themeClass} shadow-sm active:scale-[0.98] transition-all flex items-center justify-between group`;
+                // ✨ 优化：把单元卡片的生成模板也同步降级至 bg-white/35 + backdrop-blur-sm，右侧箭头盒换成更透光的 bg-[#FAF9F5]/30
+                cardAnchor.className = `bg-white/35 backdrop-blur-sm p-3.5 rounded-xl border ${themeClass} shadow-sm active:scale-[0.98] transition-all flex items-center justify-between group`;
                 
                 cardAnchor.innerHTML = `
                     <div class="flex flex-col min-w-0 pr-2">
@@ -143,7 +161,7 @@
                         </div>
                         <span class="text-xs font-bold text-slate-800 group-hover:text-amber-600 transition-colors truncate mt-1">${mod.title}</span>
                     </div>
-                    <div class="w-6 h-6 rounded-lg bg-[#FAF9F5]/60 group-hover:bg-amber-100 flex items-center justify-center shrink-0 transition-colors">
+                    <div class="w-6 h-6 rounded-lg bg-[#FAF9F5]/30 group-hover:bg-amber-500/20 flex items-center justify-center shrink-0 transition-colors">
                         <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-slate-400 group-hover:text-amber-600 transform group-hover:translate-x-0.5 transition-all"></i>
                     </div>
                 `;
@@ -153,50 +171,42 @@
             if (typeof lucide !== 'undefined') { lucide.createIcons(); }
         }
 
-        // 💡 智能联合检索：自动剔除字母前缀，并解析数字区间
         function filterToeicModules() {
             const query = document.getElementById('searchConsoleInput').value.trim();
             
             const filtered = localConfigRegistry.filter(mod => {
-                // 维度一：必须满足当前书册的锁定状态
                 if (currentBookFilter !== 'all' && mod.book !== currentBookFilter) {
                     return false;
                 }
                 
-                // 如果未输入任何数字，默认放行当前书册下的所有组
                 if (!query) return true;
                 
-                // 核心算法：当输入纯数字（如 13）时
                 if (/^\d+$/.test(query) && mod.unit.includes('-')) {
                     const targetNum = parseInt(query, 10);
                     const rangeParts = mod.unit.split('-');
                     
-                    // 💡 核心改动：利用 .replace(/\D/g, '') 过滤掉非数字字符
-                    // 这样 'g11' 会变成 '11'，'s1' 会变成 '1'，完美转为纯数字区间
                     const start = parseInt(rangeParts[0].replace(/\D/g, ''), 10);
                     const end = parseInt(rangeParts[1].replace(/\D/g, ''), 10);
                     
                     return targetNum >= start && targetNum <= end;
                 }
                 
-                // 兜底逻辑：支持模糊匹配
                 return mod.title.includes(query) || mod.unit.includes(query);
             });
             
             renderConsoleGrid(filtered);
         }
 
-        // 💡 自动化核心：锁定逻辑完全根据书籍本身的配置动态变换
         window.setBookFilter = function(bookId) {
             currentBookFilter = bookId;
             
             const badge = document.getElementById('search-lock-badge');
             const inputEl = document.getElementById('searchConsoleInput');
             
-            const bookMeta = my3DBooksDataset.find(b => b.bookId === bookId);
+            const dataset = (typeof my3DBooksDataset !== 'undefined') ? my3DBooksDataset : [];
+            const bookMeta = dataset.find(b => b.bookId === bookId);
             
             if (bookMeta) {
-                // 动态获取配置中的标签背景色、代号名
                 badge.innerHTML = `<span class="text-[10px] font-black px-2 py-0.5 rounded-md ${bookMeta.lockBadgeStyle}">🔒 SCOPE: ${bookMeta.scopeCode}</span>`;
                 badge.classList.remove('opacity-0', 'scale-75');
                 badge.classList.add('opacity-100', 'scale-100');
@@ -215,7 +225,7 @@
                 const inputEl = document.getElementById('searchConsoleInput');
                 badge.classList.remove('opacity-100', 'scale-100');
                 badge.classList.add('opacity-0', 'scale-75');
-                inputEl.placeholder = "快速检索：输入单词序号（如 '13'）直达目标单元...";
+                inputEl.placeholder = "快速检索：输入单词序号（如 '13'）直达目标单元..." ;
                 
                 filterToeicModules();
                 if (typeof window.resetBookVisuals === 'function') { window.resetBookVisuals(); }

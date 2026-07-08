@@ -14,8 +14,8 @@ const my3DBooksDataset = [
         coverBorder: "#967633",      
         backBg: "#a0803b",           
         spineBg: "#8c6e30",          
-        initLeft: "22%",             
-        initTop: "60%",
+        initLeft: "30%",             
+        initTop: "40%",
         
         // 💡 主页看板同步资产 (新增)
         scopeCode: "ALPHA",                                                           // 锁定时显示的抽象代号
@@ -31,7 +31,7 @@ const my3DBooksDataset = [
         slogan: "顶点を極めよ。",
         sloganColor: "text-neutral-400",
         coverBg: "#1a202c", coverBorder: "#2d3748", backBg: "#2d3748", spineBg: "#111827",
-        initLeft: "42%", initTop: "64%",
+        initLeft: "30%", initTop: "64%",
         
         // 💡 以后直接在这里定义前端长什么样就行了！
         scopeCode: "GAMMA",
