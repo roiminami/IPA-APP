@@ -23,13 +23,13 @@
 
         /* 为大容量单元容器定制的隐藏式微距滚动条 */
         #modulesGridContainer::-webkit-scrollbar {
-            width: 5px;
+            width: 4px;
         }
         #modulesGridContainer::-webkit-scrollbar-track {
             background: transparent;
         }
         #modulesGridContainer::-webkit-scrollbar-thumb {
-            background: rgba(234, 230, 217, 0.4); 
+            background: rgba(234, 230, 217, 0.2); 
             border-radius: 99px;
         }
         #modulesGridContainer::-webkit-scrollbar-thumb:hover {
@@ -37,23 +37,23 @@
         }
     </style>
 </head>
-<body class="text-slate-800 min-h-screen flex flex-col antialiased relative">
+<body class="text-slate-200 min-h-screen flex flex-col antialiased relative">
 
     <iframe src="Cyberpunk/wallpaper.html" class="fixed inset-0 w-full h-full border-none -z-50 pointer-events-none"></iframe>
 
-    <header class="border-b border-[#EAE6D9]/40 bg-[#FAF9F5]/35 backdrop-blur-sm sticky top-0 z-40">
+    <header class="border-b border-slate-800/50 bg-slate-950/35 backdrop-blur-sm sticky top-0 z-40">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
             <div class="flex items-center space-x-3">
                 <div class="w-10 h-10 rounded-xl bg-amber-500 flex items-center justify-center text-white font-black text-lg shadow-md shadow-amber-500/20">南</div>
                 <div>
-                    <h1 class="text-base font-bold text-slate-900 tracking-tight">南式TOEIC鬼特訓</h1>
-                    <p class="text-[10px] text-amber-600 font-semibold tracking-wider uppercase">UNIT CONTROLLER</p>
+                    <h1 class="text-base font-bold text-slate-100 tracking-tight">南式TOEIC鬼特訓</h1>
+                    <p class="text-[10px] text-amber-500 font-semibold tracking-wider uppercase">UNIT CONTROLLER</p>
                 </div>
             </div>
             
             <div class="flex items-center space-x-3">
-                <span class="text-xs font-mono text-slate-500 hidden sm:inline" id="global-counter-txt">Total: -- Units</span>
-                <div class="text-xs font-bold text-amber-600 bg-amber-50/40 px-3 py-1.5 rounded-xl border border-amber-200/40 flex items-center space-x-1.5 backdrop-blur-sm">
+                <span class="text-xs font-mono text-slate-400 hidden sm:inline" id="global-counter-txt">Total: -- Units</span>
+                <div class="text-xs font-bold text-amber-500 bg-amber-950/40 px-3 py-1.5 rounded-xl border border-amber-500/30 flex items-center space-x-1.5 backdrop-blur-sm">
                     <span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span>
                     <span>群主持续更新中</span>
                 </div>
@@ -61,55 +61,62 @@
         </div>
     </header>
 
-    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col gap-6 relative z-10">
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-1 lg:grid-cols-12 gap-6 relative z-10">
         
-        <section class="relative">
-            <div class="relative flex items-center">
-                <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
-                    <i data-lucide="search" class="w-4 h-4"></i>
+        <div class="lg:col-span-6 xl:col-span-5 flex flex-col gap-4">
+            
+            <section class="relative">
+                <div class="relative flex items-center">
+                    <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                        <i data-lucide="search" class="w-4 h-4"></i>
+                    </div>
+                    <input 
+                        type="text" 
+                        id="searchConsoleInput" 
+                        oninput="filterToeicModules()" 
+                        placeholder="快速检索：输入单词序号直达单元..." 
+                        class="w-full pl-10 pr-32 py-3 bg-slate-900/40 backdrop-blur-sm rounded-xl border border-slate-700/50 text-sm text-slate-100 focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10 placeholder-slate-500 transition-all shadow-md"
+                    >
+                    <div id="search-lock-badge" class="absolute right-3 flex items-center pointer-events-none transition-all duration-300 opacity-0 scale-75"></div>
                 </div>
-                <input 
-                    type="text" 
-                    id="searchConsoleInput" 
-                    oninput="filterToeicModules()" 
-                    placeholder="快速检索：输入单词序号（如 '13'）直达目标单元..." 
-                    class="w-full pl-10 pr-32 py-3 bg-white/35 backdrop-blur-sm rounded-xl border border-[#EAE6D9]/60 text-sm focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10 placeholder-slate-400 transition-all shadow-sm"
-                >
-                <div id="search-lock-badge" class="absolute right-3 flex items-center pointer-events-none transition-all duration-300 opacity-0 scale-75"></div>
-            </div>
-        </section>
+            </section>
 
-        <div class="grid grid-cols-2 min-[440px]:grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8 gap-2 max-h-[66vh] overflow-y-auto pr-1.5" id="modulesGridContainer"></div>
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 max-h-[62vh] overflow-y-auto pr-1" id="modulesGridContainer"></div>
 
-        <div id="search-empty-state" class="hidden text-center py-16 bg-white/35 backdrop-blur-sm rounded-2xl border border-[#EAE6D9]/60 border-dashed space-y-2">
-            <div class="w-10 h-10 bg-slate-50/30 text-slate-400 rounded-full flex items-center justify-center mx-auto">
-                <i data-lucide="alert-circle" class="w-5 h-5"></i>
+            <div id="search-empty-state" class="hidden text-center py-12 bg-slate-900/40 backdrop-blur-sm rounded-2xl border border-slate-700/40 border-dashed space-y-2">
+                <div class="w-10 h-10 bg-slate-800/50 text-slate-500 rounded-full flex items-center justify-center mx-auto">
+                    <i data-lucide="alert-circle" class="w-5 h-5"></i>
+                </div>
+                <h4 class="text-xs font-bold text-slate-300">未找到相关特训单元</h4>
+                <p class="text-[11px] text-slate-500">该书籍中未检索到此序列单元。</p>
             </div>
-            <h4 class="text-xs font-bold text-slate-700">未找到相关特训单元</h4>
-            <p class="text-[11px] text-slate-400">该书籍中未检索到包含此单词序号的单元。</p>
+
+            <section class="p-3.5 bg-slate-900/40 backdrop-blur-sm rounded-2xl border border-slate-700/40 shadow-md flex flex-col gap-2">
+                <div class="flex items-center space-x-2 text-xs text-slate-400 font-medium">
+                    <i data-lucide="refresh-cw" class="w-3.5 h-3.5 text-slate-500 animate-spin" style="animation-duration: 8s;"></i>
+                    <span>群主持续更新中</span>
+                </div>
+                <div class="text-[11px] text-slate-400 leading-relaxed">
+                    <span>更多信息访问博客：</span>
+                    <a href="https://www.minami.ac.cn/" target="_blank" class="text-amber-400 font-bold hover:text-amber-300 hover:underline inline-flex items-center space-x-0.5">
+                        <span>minami.ac.cn</span>
+                        <i data-lucide="external-link" class="w-3 h-3 inline"></i>
+                    </a>
+                </div>
+            </section>
+            
         </div>
 
-        <section class="p-4 bg-white/35 backdrop-blur-sm rounded-2xl border border-[#EAE6D9]/60 shadow-sm flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
-            <div class="flex items-center space-x-2 text-xs text-slate-500 font-medium">
-                <i data-lucide="refresh-cw" class="w-3.5 h-3.5 text-slate-400 animate-spin" style="animation-duration: 8s;"></i>
-                <span>群主持续更新中</span>
-            </div>
-            <div class="text-xs text-slate-600 font-medium flex flex-wrap items-center gap-1">
-                <span>如果想要获取更多信息可以访问群主博客：</span>
-                <a href="https://www.minami.ac.cn/" target="_blank" class="text-amber-600 font-bold hover:text-amber-700 hover:underline inline-flex items-center space-x-0.5">
-                    <span>https://www.minami.ac.cn/</span>
-                    <i data-lucide="external-link" class="w-3 h-3 inline"></i>
-                </a>
-            </div>
-        </section>
-
+        <div class="lg:col-span-6 xl:col-span-7 hidden lg:block pointer-events-none"></div>
+        
     </main>
 
-    <footer class="border-t border-[#EAE6D9]/30 bg-[#FAF9F5]/20 backdrop-blur-[1px] py-3 text-center text-[10px] text-slate-400 tracking-wide font-mono relative z-10">
+    <footer class="border-t border-slate-900/60 bg-slate-950/20 py-3 text-center text-[10px] text-slate-500 tracking-wide font-mono relative z-10">
         Southern Ghost TOEIC Platform Engine • Powered by config.js URL Router
     </footer>
 
     <script>
+        // 🔒 核心 JavaScript 逻辑 100% 完整保留，未做任何改动
         let localConfigRegistry = [];
         let currentBookFilter = 'all'; 
 
@@ -147,22 +154,21 @@
                     ? my3DBooksDataset.find(b => b.bookId === mod.book) 
                     : null;
 
-                const themeClass = bookMeta?.cardTheme || "border-slate-400/30 hover:border-slate-500 hover:bg-slate-100/10";
-                const dotColor = bookMeta?.dotColor || "bg-slate-400 shadow-slate-400/50";
+                const themeClass = bookMeta?.cardTheme || "border-slate-700/40 hover:border-slate-500 hover:bg-slate-800/30";
+                const dotColor = bookMeta?.dotColor || "bg-slate-500 shadow-slate-500/50";
 
-                // ✨ 优化：把单元卡片的生成模板也同步降级至 bg-white/35 + backdrop-blur-sm，右侧箭头盒换成更透光的 bg-[#FAF9F5]/30
-                cardAnchor.className = `bg-white/35 backdrop-blur-sm p-3.5 rounded-xl border ${themeClass} shadow-sm active:scale-[0.98] transition-all flex items-center justify-between group`;
+                cardAnchor.className = `bg-slate-950/40 backdrop-blur-sm p-3 rounded-xl border ${themeClass} shadow-md active:scale-[0.98] transition-all flex items-center justify-between group`;
                 
                 cardAnchor.innerHTML = `
-                    <div class="flex flex-col min-w-0 pr-2">
-                        <div class="flex items-center space-x-2">
-                            <span class="text-[9px] font-mono text-slate-400 font-bold uppercase tracking-wider">UNIT ${String(mod.id).padStart(2, '0')}</span>
+                    <div class="flex flex-col min-w-0 pr-1">
+                        <div class="flex items-center space-x-1.5">
+                            <span class="text-[9px] font-mono text-slate-500 font-bold uppercase tracking-wider">UNIT ${String(mod.id).padStart(2, '0')}</span>
                             <span class="w-1.5 h-1.5 rounded-full ${dotColor} shadow-sm"></span>
                         </div>
-                        <span class="text-xs font-bold text-slate-800 group-hover:text-amber-600 transition-colors truncate mt-1">${mod.title}</span>
+                        <span class="text-xs font-bold text-slate-200 group-hover:text-amber-400 transition-colors truncate mt-0.5">${mod.title}</span>
                     </div>
-                    <div class="w-6 h-6 rounded-lg bg-[#FAF9F5]/30 group-hover:bg-amber-500/20 flex items-center justify-center shrink-0 transition-colors">
-                        <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-slate-400 group-hover:text-amber-600 transform group-hover:translate-x-0.5 transition-all"></i>
+                    <div class="w-5 h-5 rounded-md bg-slate-800/40 group-hover:bg-amber-500/20 flex items-center justify-center shrink-0 transition-colors">
+                        <i data-lucide="chevron-right" class="w-3 h-3 text-slate-500 group-hover:text-amber-400 transform group-hover:translate-x-0.5 transition-all"></i>
                     </div>
                 `;
                 container.appendChild(cardAnchor);
@@ -210,7 +216,7 @@
                 badge.innerHTML = `<span class="text-[10px] font-black px-2 py-0.5 rounded-md ${bookMeta.lockBadgeStyle}">🔒 SCOPE: ${bookMeta.scopeCode}</span>`;
                 badge.classList.remove('opacity-0', 'scale-75');
                 badge.classList.add('opacity-100', 'scale-100');
-                inputEl.placeholder = "已锁定区间范围 | 请输入要定位的单词序号...";
+                inputEl.placeholder = "已锁定区间范围 | 输入要定位的序号...";
             }
             
             filterToeicModules();
@@ -225,7 +231,7 @@
                 const inputEl = document.getElementById('searchConsoleInput');
                 badge.classList.remove('opacity-100', 'scale-100');
                 badge.classList.add('opacity-0', 'scale-75');
-                inputEl.placeholder = "快速检索：输入单词序号（如 '13'）直达目标单元..." ;
+                inputEl.placeholder = "快速检索：输入单词序号（如 '13'）直达目标单元...";
                 
                 filterToeicModules();
                 if (typeof window.resetBookVisuals === 'function') { window.resetBookVisuals(); }
