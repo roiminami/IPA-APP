@@ -1,5 +1,5 @@
 // ============================================================================
-// [DATABASE] SOUTHERN GHOST TOEIC CORE DATA BUNDLE (data11-20.js)
+// [DATABASE] SOUTHERN GHOST TOEIC CORE DATA BUNDLE (datag1-10.js Expansion)
 // ============================================================================
 
 // 1. 核心考点词表 (Core Target Vocabulary)
@@ -8,90 +8,90 @@ const vocabBank = [
         word: "repair",
         pos: "動/名",
         ipa: "/rɪˈper/",
-        cn: "修理，修补；维修",
-        jp: "修理する、修復する；修理、メンテナンス",
-        family: "repairable / reparation / mechanic / fix",
-        tips: "托业高频商务搭配：under repair（在修理中），repair services（维修服务）。注意名词和动词同形。",
-        desc: "He will repair the car."
+        cn: "修理，维修",
+        jp: "修理する；修理、修繕",
+        family: "repairable / reparation / repairperson",
+        tips: "常考动词与名词同形用法。在商务场景中常考名词短语：under repair（正在维修中）、repair costs（维修费用），或者复合名词 repairperson（维修人员）。",
+        desc: "We need to repair the copier."
     },
     {
         word: "article",
         pos: "名",
         ipa: "/ˈɑːrtɪkl/",
-        cn: "文章，报道；条款；物品",
-        jp: "記事、論説；条項；品物",
-        family: "newspaper / column / item / feature",
-        tips: "在阅读Part 7中常作为文献类型出现（'According to the article...'）。另外在物流合同中，也可表示“物品，商品”。",
+        cn: "文章，报道；商品，条款",
+        jp: "記事、論文；品物、アイテム、条項",
+        family: "articles",
+        tips: "托业阅读最高频含义是“报刊文章、新闻报道”。而在商务合同或物流场景中，它也可以指代法律的“条款”或货物的“一件商品/物品”。",
         desc: "I read an interesting article."
     },
     {
         word: "update",
         pos: "動/名",
         ipa: "/ˌʌpˈdeɪt/",
-        cn: "更新，使现代化；最新消息",
-        jp: "更新する、最新のものにする；最新情報",
-        family: "upgraded / outdated / status / renew",
-        tips: "商务IT场景常客：software update（软件更新），system update（系统升级）。作动词时常接 update the policy（更新政策）。",
-        desc: "Please update your software today."
+        cn: "更新，升级；最新信息",
+        jp: "更新する、アップデートする；最新情報",
+        family: "updated / updater",
+        tips: "IT 与行政管理高频词。作动词常用于 update the software（更新软件）；作名词常考 provide an update on the project（提供项目的最新进展）。",
+        desc: "Please update your password now."
     },
     {
         word: "advertise",
         pos: "動",
         ipa: "/ˈædvərtaɪz/",
-        cn: "为……做广告，宣传；招牌",
-        jp: "広告を出す、宣伝する、公募する",
-        family: "advertisement / advertising / advertiser / promote",
-        tips: "常考不及物用法 advertise for a new position（公开招聘新职位），或者及物动词 advertise the product（宣传产品）。",
-        desc: "They advertise the new product."
+        cn: "为……做广告，宣传",
+        jp: "広告を出す、宣伝する",
+        family: "advertisement / advertising / advertiser",
+        tips: "动词形式，注意其衍生名词的高阶混淆：advertisement 是指可数的“一则广告”，而 advertising 是指不可数的“广告业/广告宣传活动”。",
+        desc: "They advertise their products online."
     },
     {
         word: "equipment",
         pos: "名",
         ipa: "/ɪˈkwɪpmənt/",
-        cn: "设备，装备，器材",
-        jp: "機器、設備、用具",
-        family: "equip / equipped / facility / device",
-        tips: "不可数名词！托业经典陷阱题，绝对不能加 -s。常见搭配：office equipment（办公设备），safety equipment（安全防护用具）。",
-        desc: "The office needs new equipment."
+        cn: "设备，器材",
+        jp: "機器、設備、備品",
+        family: "equip / equipped",
+        tips: "绝对不可数名词！在托业中绝对不能加 -s，也不能与不定冠词 an 连用。常考复合名词：office equipment（办公设备）、laboratory equipment（实验室设备）。",
+        desc: "The office bought new equipment."
     },
     {
         word: "increase",
         pos: "動/名",
         ipa: "/ɪnˈkriːs/",
-        cn: "增加，增长，提高",
+        cn: "增加，增长",
         jp: "増加する、増やす；増加、上昇",
-        family: "increasingly / decrease / growth / rise",
-        tips: "常见图表题词汇。作名词时常搭配 an increase in sales（销量增长）；作动词时常与 significantly 连用表示大幅增长。",
-        desc: "Sales will increase next month."
+        family: "increased / increasingly / incremental",
+        tips: "作动词时常与副词搭配（e.g., increase significantly 显著增长）。作名词时，后面常接介词 in 表明在哪个方面的增长（an increase in sales）。",
+        desc: "Sales increase every year."
     },
     {
         word: "opening",
         pos: "名/形",
         ipa: "/ˈoʊpnɪŋ/",
-        cn: "空缺，职缺；开幕，开始",
-        jp: "職の空き、欠員；開店、開始；開会の",
-        family: "open / openness / vacancy / launch",
-        tips: "托业阅读与听力核心高频词，表示“职位空缺”（job opening），等同于 vacancy。也常用于 grand opening（盛大开幕）。",
-        desc: "There is a job opening."
+        cn: "空缺，职缺；开张，开始的",
+        jp: "欠員、仕事の空き；開店、オープニング、開始の",
+        family: "open / openly / opener",
+        tips: "职场招聘场景最高频词汇之一，常考 job opening（职位空缺），完美等同于 vacancy。也可指庆典活动：grand opening（盛大开业）。",
+        desc: "There is a job opening here."
     },
     {
         word: "ship",
         pos: "動/名",
         ipa: "/ʃɪp/",
-        cn: "运输，运送，邮寄；船",
+        cn: "运送，船运；船只",
         jp: "出荷する、輸送する；船",
-        family: "shipment / shipping / deliver / transport",
-        tips: "在托业中动词用法极多，指通过任何交通工具“运送货物”（不限于船运）。常见搭配：ship the order（发货）。",
-        desc: "We will ship the order."
+        family: "shipment / shipping / shipper",
+        tips: "托业最爱考动词用法，不局限于用船运，任何陆运、空运的商品发货均可使用 ship。常考复合名词：shipping department（运输部）。",
+        desc: "We will ship the order today."
     },
     {
         word: "expect",
         pos: "動",
         ipa: "/ɪkˈspekt/",
-        cn: "期待，预期，要求",
-        jp: "予期する、期待する、想定する",
-        family: "expectation / expected / unexpected / anticipate",
-        tips: "常见句型 be expected to do sth（被预期做某事/应该做某事）。常用于预测公司未来的收入或项目截止日期。",
+        cn: "期待，预期，预料",
+        jp: "予期する、期待する、〜する見込みである",
+        family: "expectation / expected / unexpected",
+        tips: "核心主宾结构：be expected to do sth（预计将做某事）。其名词复数形式 expectations 常考 exceed expectations（超出预期）。",
         desc: "We expect a large crowd."
     },
     {
@@ -100,302 +100,282 @@ const vocabBank = [
         ipa: "/ˈriːsntli/",
         cn: "最近，近来",
         jp: "最近、近頃",
-        family: "recent / late / lately / current",
-        tips: "时态题的核心标志词！在托业中，recently 出现时，句子谓语动词通常使用现在完成时（has/have done）或一般过去时。",
-        desc: "She recently changed her job."
+        family: "recent",
+        tips: "时态题强标志词。在托业 Part 5 中，recently 出现时，句子谓语动词几乎必然锁定为“现在完成时”或“一般过去时”，用以描述刚发生不久的事。",
+        desc: "He recently joined the firm."
     }
 ];
 
-// 2. 背景真题难词库 (Context Background Difficult Words)
-const helperVocabBank = [
-    { word: "maintenance", pos: "名", ipa: "/ˈmeɪntənəns/", cn: "维护，保养", jp: "保守、メンテナンス" },
-    { word: "merger", pos: "名", ipa: "/ˈmɜːrdʒər/", cn: "合并", jp: "合併" },
-    { word: "Management", pos: "名", ipa: "/ˈmænɪdʒmənt/", cn: "管理层，管理", jp: "経営陣、管理" },
-    { word: "significant", pos: "形", ipa: "/sɪɡˈnɪfɪkənt/", cn: "显著的，重大的", jp: "著しい、重大な" },
-    { word: "administrative", pos: "形", ipa: "/ədˈmɪnɪstreɪtɪv/", cn: "行政的，管理的", jp: "管理の、行政の" },
-    { word: "logistics", pos: "名", ipa: "/ləˈdʒɪstɪks/", cn: "物流，后勤", jp: "物流、ロジスティクス" },
-    { word: "fluctuate", pos: "動", ipa: "/ˈflʌktʃueɪt/", cn: "波动，起伏", jp: "変動する、上下する" },
-    { word: "mandatory", pos: "形", ipa: "/ˈmændətɔːri/", cn: "强制性的，义务的", jp: "義務的な、強制的な" },
-    { word: "cybersecurity", pos: "名", ipa: "/ˌsaɪbərˈsɪkjʊrəti/", cn: "网络安全", jp: "サイバーセキュリティ" },
-    { word: "machinery", pos: "名", ipa: "/məːˈʃiːnəri/", cn: "机械，机器（总称）", jp: "機械類" },
-    { word: "authorization", pos: "名", ipa: "/ˌɔːθərəˈzeɪʃn/", cn: "授权，批准", jp: "権限付与、承認" },
-    { word: "depreciates", pos: "動", ipa: "/dɪˈpriːʃieɪts/", cn: "贬值，折旧（单三）", jp: "価値が下がる、減価償却する（三人称単数）" },
-    { word: "inevitably", pos: "副", ipa: "/ɪnˈevɪtəbli/", cn: "不可避免地", jp: "不可避的に、必然的に" },
-    { word: "Attendees", pos: "名", ipa: "/əˌtenˈdiːz/", cn: "与会者，出席者（复数）", jp: "出席者、参加者（複数形）" },
-    { word: "merchandise", pos: "名", ipa: "/ˈmɜːrtʃəndaɪz/", cn: "商品，货物", jp: "商品" },
-    { word: "lucrative", pos: "形", ipa: "/ˈluːkrətɪv/", cn: "获利丰厚的，赚钱的", jp: "利益の上がる、儲かる" }
-];
-
-// 3. 核心真题库 (Questions Database)
+// 2. 核心真题库 (Questions Database)
 const questionsDatabase = [
     {
         id: 1,
-        target: "repair",
+        target: "equipment",
         category: "简单",
-        stem: "The maintenance crew will ________ the broken elevator tomorrow morning.",
-        options: ["repair", "repairable", "equipment", "opening"],
-        correct: "repair",
+        stem: "The maintenance crew brought new electrical ________ to fix the laboratory power grid.",
+        options: ["equipment", "expect", "recently", "article"],
+        correct: "equipment",
         explanations: {
-            guide: "情态动词后的动词原形考点。will 后面必须接动词原形作为谓语，结合句意选 repair（修理）。",
-            family: "repair (v./n.修理) | repairable (adj.可修理的) | equipment (n.设备) | opening (n.空缺)。",
-            details: "句意为‘维修人员明天早上将修理损坏的电梯’。repairable 是形容词，不能直接作情态动词 will 后的谓语动词。",
-            cn: "维修人员明天早上将修理损坏的电梯。",
-            jp: "メンテナンス（maintenance）スタッフは明日午前、故障したエレベーターを修理（repair）する予定です。"
+            guide: "形容词后的名词中心语考点。电气形容词 electrical 后面需要搭配名词，结合整个句子的修复语境，选 equipment（设备）。",
+            family: "equipment (n.设备) | expect (v.期待) | recently (adv.最近) | article (n.文章)。",
+            details: "laboratory equipment 属于高频商务/技术场景搭配。equipment 是不可数名词，此处由 electrical 修饰，完美作 brought 的宾语。",
+            cn: "维修人员带来了新的电气设备来修复实验室的电网。",
+            jp: "メンテナンス員は、研究室の電力網を修理するために新しい電気機器（equipment）を持ってきました。"
         }
     },
     {
         id: 2,
-        target: "article",
+        target: "repair",
         category: "简单",
-        stem: "The latest ________ in the corporate newsletter details the upcoming merger.",
-        options: ["article", "articles", "advertise", "recently"],
-        correct: "article",
-        explanations: {
-            guide: "名词单数与主谓一致判断。The latest 后面需要名词作主语，根据 details（动词单三）可知主语为单数名词 article。",
-            family: "article (n.文章/单数) | articles (n.文章/复数) | advertise (v.做广告) | recently (adv.最近)。",
-            details: "此处指的是一篇文章。由于谓语动词是 details 这一单数第三人称形式，故排除复数名词 articles。",
-            cn: "企业内部通讯中的最新文章详细介绍了即将进行的合并。",
-            jp: "社内報の最新記事（article）では、近く行われる合併（merger）について詳しく説明しています。"
+        stem: "The technician will ________ the broken photocopying machine as soon as possible.",
+        options: ["repair", "update", "advertise", "ship"],
+        correct: "repair",
+        exmutations: {
+            guide: "情态动词后的动词原形辨析。will 后面需要接动词原形，结合后面的宾语 broken photocopying machine（损坏的复印机），选择 repair（修理）。",
+            family: "repair (v.修理) | update (v.更新) | advertise (v.做广告) | ship (v.运送)。",
+            details: "根据语境中的 broken（坏的）可直接锁定具有修复含义的及物动词 repair。其他动词逻辑上不通顺。",
+            cn: "技术人员将尽快修理那台损坏的复印机。",
+            jp: "技術者は、壊れたコピー機をできるだけ早く修理（repair）する予定です。"
         }
     },
     {
         id: 3,
-        target: "update",
+        target: "recently",
         category: "简单",
-        stem: "Management requests all employees to ________ their profile information before Friday.",
-        options: ["update", "updated", "increase", "expect"],
-        correct: "update",
+        stem: "Mr. Gomez ________ joined our marketing team as a senior graphic designer.",
+        options: ["recently", "recent", "opening", "increase"],
+        correct: "recently",
         explanations: {
-            guide: "动词不定式结构。to 后面需要接动词原形构成不定式短语，语义为“更新”个人资料，选 update。",
-            family: "update (v.更新) | updated (adj./v-ed已更新的) | increase (v.增加) | expect (v.期待)。",
-            details: "requests sb to do sth 为固定搭配，要求某人做某事。updated 是过去分词或过去式，不符合动词原形的要求。",
-            cn: "管理层要求所有员工在星期五之前更新他们的个人资料信息。",
-            jp: "経営陣（Management）はすべての従業員に対し、金曜日までにプロフィール情報を更新（update）するよう求めています。"
+            guide: "副词修饰谓语动词。空格位于主语 Mr. Gomez 和过去式动词 joined 之间，需要一个副词来修饰动词，表示“最近”加入了团队，选 recently。",
+            family: "recently (adv.最近) | recent (adj.最近的) | opening (n.空缺) | increase (v./n.增加)。",
+            details: "一般过去时 joined 与时间副词 recently 是托业中最核心的语法搭配。recent 是形容词，不能在此位置直接修饰动词。",
+            cn: "戈麦斯先生最近加入了我们的营销团队，担任资深美工设计师。",
+            jp: "ゴメス氏は最近（recently）、シニアグラフィックデザイナーとして当社のマーケティングチームに加わりました。"
         }
     },
     {
         id: 4,
-        target: "advertise",
+        target: "increase",
         category: "简单",
-        stem: "The marketing team plans to ________ the new software on various social media platforms.",
-        options: ["advertise", "advertisement", "ship", "article"],
-        correct: "advertise",
+        stem: "Management hopes to ________ the monthly sales targets by ten percent next quarter.",
+        options: ["increase", "equipment", "article", "recently"],
+        correct: "increase",
         explanations: {
-            guide: "及物动词不定式用法。plans to 后面需加动词原形，后接宾语 the new software，结合商业情境选 advertise（宣传/做广告）。",
-            family: "advertise (v.做广告) | advertisement (n.广告) | ship (v.运输) | article (n.文章)。",
-            details: "此处需要填入动词形式来带出后面的宾语。advertisement 是名词，无法在 to 后面充当动词原形成分。",
-            cn: "营销团队计划在各种社交媒体平台上为这款新软件做广告。",
-            jp: "マーケティングチームは、さまざまなSNSプラットフォーム（platforms）で新しいソフトウェアを宣伝（advertise）することを計画しています。"
+            guide: "动词不定式结构。hopes to 后面需要接动词原形作为核心谓语，后接宾语 targets，表达“增加”销售目标，选 increase。",
+            family: "increase (v./n.增加) | equipment (n.设备) | article (n.文章) | recently (adv.最近)。",
+            details: "to 为不定式符号，后面必须接动词原形。在四个选项中，只有 increase 具有动词词性并能完美搭配后面的百分比变化。",
+            cn: "管理层希望在下个季度将每月销售目标提高百分之十。",
+            jp: "経営陣は、来四半期の月間売上目標を10％引き上げる（increase）ことを望んでいます。"
         }
     },
     {
         id: 5,
-        target: "equipment",
+        target: "advertise",
         category: "简单",
-        stem: "The laboratory ordered new laboratory ________ from a certified medical supplier.",
-        options: ["equipment", "equipped", "opening", "repair"],
-        correct: "equipment",
+        stem: "The local business decided to ________ its new organic products on social media platforms.",
+        options: ["advertise", "advertisement", "equipment", "opening"],
+        correct: "advertise",
         explanations: {
-            guide: "名词充当宾语成分。ordered（订购）是及物动词，后面需要名词作宾 office 语，表达“设备”概念，选 equipment。",
-            family: "equipment (n.设备/不可数) | equipped (adj.装备齐全的) | opening (n.职缺) | repair (v./n.修理)。",
-            details: "ordered new laboratory equipment（订购了新的实验室设备）。equipped 是形容词或动词过去式，不能用在此处作宾语中心语。",
-            cn: "该实验室向一家经过认证的医疗供应商订购了新的实验室设备。",
-            jp: "研究所（laboratory）は、認定された（certified）医療サプライヤーから新しい実験機器（equipment）を注文しました。"
+            guide: "动词不定式结构辨析。decided to 后面需要接一个动词原形，表达该企业决定在社交媒体上“做广告宣传”其产品，选 advertise。",
+            family: "advertise (v.做广告) | advertisement (n.广告) | equipment (n.设备) | opening (n.空缺)。",
+            details: "decide to do sth 是固定句型。选项中虽然 advertisement 与宣传有关，但它是名词，无法接在不定式符号 to 后面。",
+            cn: "这家当地企业决定在社交媒体平台上为其新型有机产品做广告。",
+            jp: "地元の企業は、ソーシャルメディアプラットフォームで新しい有機製品を宣伝する（advertise）ことに決めました。"
         }
     },
     {
         id: 6,
-        target: "increase",
+        target: "article",
         category: "简单",
-        stem: "Strong performance in the European sector led to a significant ________ in overall profits.",
-        options: ["increase", "increasingly", "update", "recently"],
-        correct: "increase",
+        stem: "The journalist wrote an interesting ________ about the rapid growth of local startups.",
+        options: ["article", "update", "ship", "expect"],
+        correct: "article",
         explanations: {
-            guide: "不定冠词与形容词后的名词。a significant 后面必须搭配名词中心语，根据商业利润语境，选 increase（增长）。",
-            family: "increase (n./v.增加) | increasingly (adv.渐增地) | update (n./v.更新) | recently (adv.最近)。",
-            details: "led to a significant increase in profits 属于固定商业搭配，意为“导致利润显著增长”。increasingly 是副词，不能被形容词修饰且不能作名词宾语。",
-            cn: "欧洲部门的强劲表现带动了整体利润的显著增长。",
-            jp: "欧州セクターでの好調な業績により、全体の利益が大幅に増加（increase）しました。"
+            guide: "名词宾语辨析。由不定冠词 an 和形容词 interesting 修饰，空格处需要填入一个单数可数名词，指代记者撰写的“文章”，选 article。",
+            family: "article (n.文章) | update (v./n.更新) | ship (v./n.运送) | expect (v.期待)。",
+            details: "journalist（记者）与 write（写）这两个职业及动作场景词，直接呼应了核心宾语 article（文章/报道）。",
+            cn: "这位记者写了一篇关于当地初创企业快速增长的有趣文章。",
+            jp: "そのジャーナリストは、地元の新興企業の急成長に関する興味深い記事（article）を書きました。"
         }
     },
     {
         id: 7,
         target: "opening",
         category: "中等",
-        stem: "Human Resources announced a temporary job ________ in the administrative department.",
-        options: ["opening", "openings", "expect", "advertise"],
+        stem: "Because of a sudden resignation, there is currently a job ________ in the accounting department.",
+        options: ["opening", "openly", "equipment", "repair"],
         correct: "opening",
         explanations: {
-            guide: "复合名词修饰与可数名词单复数。不定冠词 a 修饰后面的可数名词单数，job opening 指“职位空缺”。",
-            family: "opening (n.空缺/单数) | openings (n.空缺/复数) | expect (v.期待) | advertise (v.做广告)。",
-            details: "a temporary job opening（一个临时的职位空缺）。由于前面有单数不定冠词 a，因此排除复数形式 openings，而 expect 和 advertise 则是动词形式。",
-            cn: "人力资源部宣布行政部门有一个临时的职位空缺。",
-            jp: "人事部は、行政（administrative）部門に一時的な職の空き（opening）があることを発表しました。"
+            guide: "复合名词与职场专属语境。job 与后面的名词组合构成固定短语，表示“职位空缺”，选 opening。",
+            family: "opening (n.空缺) | openly (adv.公开地) | equipment (n.设备) | repair (v./n.修理)。",
+            details: "job opening 是托业招聘场景的绝对高频词。sudden resignation（突然辞职）导致了岗位出现空缺，逻辑完全吻合。",
+            cn: "由于有人突然辞职，目前财务部有一个职位空缺。",
+            jp: "突然の退職により、現在経理部門に仕事の空き（opening）があります。"
         }
     },
     {
         id: 8,
         target: "ship",
         category: "中等",
-        stem: "The logistics provider promised to ________ the fragile components via express courier.",
-        options: ["ship", "shipment", "equipment", "repair"],
+        stem: "The warehouse will ________ the ordered items directly to the client's address tomorrow morning.",
+        options: ["ship", "shipment", "expect", "article"],
         correct: "ship",
         explanations: {
-            guide: "动词不定式带宾语。promised to 后面需要接动词原形，用来支配后面的名词短语宾语，表示“运送”，选 ship。",
-            family: "ship (v.运输) | shipment (n.运输的货物) | equipment (n.设备) | repair (n./v.维修)。",
-            details: "ship the fragile components 意为“运送易碎部件”。shipment 是名词，不能跟在 to 后面直接担当谓语动词的功能。",
-            cn: "物流供应商承诺通过快递公司运送这批易碎部件。",
-            jp: "物流（logistics）業者は、エクスプレス便で壊れやすい部品を発送（ship）することを約束しました。"
+            guide: "情态动词后的动词辨析。will 后面必须接动词原形，根据主语 warehouse（仓库）和宾语 items（物品），选表示“运送/发货”的动词 ship。",
+            family: "ship (v.运送) | shipment (n.运输的货物) | expect (v.期待) | article (n.文章)。",
+            details: "ship items to an address 属于典型物流表达。shipment 是名词（货物），无法跟在助动词 will 后面担当谓语。",
+            cn: "仓库将于明天早上将订购的物品直接寄送到客户的地址。",
+            jp: "倉庫は明日午前、注文された品物をクライアントの住所に直接発送（ship）します。"
         }
     },
     {
         id: 9,
         target: "expect",
         category: "中等",
-        stem: "Financial analysts ________ that the interest rates will fluctuate over the next quarter.",
-        options: ["expect", "expectation", "increase", "recently"],
+        stem: "Weather analysts ________ a severe storm to hit the coastal region sometime this weekend.",
+        options: ["expect", "expectation", "recently", "advertise"],
         correct: "expect",
         explanations: {
-            guide: "主谓一致与宾语从句谓语动词。主语为复数名词 analysts，空格后带 that 引导的宾语从句，选复数动词 expect（预计）。",
-            family: "expect (v.预计/原形) | expectation (n.预期) | increase (v./n.增加) | recently (adv.最近)。",
-            details: "Analysts expect that... 意为“分析师预计……”，属于高频图表或金融分析句型。expectation 为名词，无法直接引导宾语从句。",
-            cn: "金融分析师预计利率在下一个季度内将会出现波动。",
-            jp: "金融アナリスト（analysts）は、金利が次の四半期（quarter）にかけて変動する（fluctuate）と予想（expect）しています。"
+            guide: "动词谓语及句型搭配。主语是复数名词 analysts，空格处缺少核心谓语动词，且后面跟了 sb/sth to do 结构，选用 expect。",
+            family: "expect (v.期待/预料) | expectation (n.期待) | recently (adv.最近) | advertise (v.做广告)。",
+            details: "expect sth to do sth 是非常经典的客观预测表达。expectation 是名词，置于此处会导致句子缺少动作核心。",
+            cn: "天气分析师预计，本周末某个时候将有一场严重的暴风雨袭击沿海地区。",
+            jp: "気象アナリストは、今週末のいつか激しい嵐が沿岸地域を襲うと予想（expect）しています。"
         }
     },
     {
         id: 10,
-        target: "recently",
+        target: "update",
         category: "中等",
-        stem: "The board of directors has ________ approved the revised budget for research and development.",
-        options: ["recently", "recent", "update", "article"],
-        correct: "recently",
+        stem: "Please read the attached document to review the latest ________ regarding our corporate travel policy.",
+        options: ["update", "updated", "increase", "opening"],
+        correct: "update",
         explanations: {
-            guide: "现在完成时中的副词修饰。has 与过去分词 approved 之间需要填入副词作状语，recently 常与现在完成时连用。",
-            family: "recently (adv.最近) | recent (adj.最近的) | update (v./n.更新) | article (n.文章)。",
-            details: "has recently approved 意为“最近批准了”。recent 是形容词，通常修饰名词（如 recent changes），不能放在助动词与过去分词之间修饰动词。",
-            cn: "董事会最近批准了修改后的研发预算。",
-            jp: "取締役会（directors）は、研究開発のための修正（revised）予算案を最近（recently）承認（approved）しました。"
+            guide: "定冠词与形容词后的名词成分。the latest 后面需要接名词，指代最新的“信息/修改版”，选名词 update。",
+            family: "update (n./v.更新) | updated (adj.更新的) | increase (v./n.增加) | opening (n.空缺)。",
+            details: "the latest update 属于职场通知中的固定搭配，指“最新动态”。updated 是过去分词/形容词，不能直接放在 latest 后面独立作名词中心词。",
+            cn: "请阅读随附的文件，以审查有关我们公司差旅政策的最新更新信息。",
+            jp: "出張ポリシーに関する最新情報（update）を確認するため、添付の書類をお読みください。"
         }
     },
     {
         id: 11,
-        target: "repair",
+        target: "recently",
         category: "中等",
-        stem: "The manufacturing plant was shut down temporarily because the main conveyor belt was under ________.",
-        options: ["repair", "repairable", "equipment", "shipment"],
-        correct: "repair",
+        stem: "According to a ________ survey, a majority of local consumers prefer shopping online rather than in stores.",
+        options: ["recent", "recently", "equipment", "advertise"],
+        correct: "recent",
         explanations: {
-            guide: "介词固定搭配名词考点。under 后面经常跟抽象名词，构成介词短语表示某种状态，固定搭配为 under repair（维修中）。",
-            family: "repair (n./v.维修) | repairable (adj.可维修的) | equipment (n.设备) | shipment (n.运输货物)。",
-            details: "was under repair 意为“正在维修”。repairable 是形容词，通常不直接跟在介词 under 后面作宾语。",
-            cn: "由于主要的传送带正在维修，这家制造厂暂时关闭了。",
-            jp: "メインのコンベアベルトが修理中（under repair）だったため、製造（manufacturing）工場は一時的に閉鎖されました。"
+            guide: "名词前的形容词修饰用法。空格在不定冠词 a 之后、名词 survey 之前，需要填入形容词形式，表示“最近的”调查，选 recent。",
+            family: "recent (adj.最近的) | recently (adv.最近) | equipment (n.设备) | advertise (v.做广告)。",
+            details: "a recent survey（一项最近的调查）在托业阅读中极为常见。recently 是副词，只能修饰动词、形容词或全句，不能直接修饰名词 survey。",
+            cn: "根据最近的一项调查，大多数当地消费者更喜欢在线购物，而不是在实体店购物。",
+            jp: "最近の（recent）調査によると、地元の消費者の大半は店舗よりもオンラインでの買い物を好んでいます。"
         }
     },
     {
         id: 12,
-        target: "update",
+        target: "increase",
         category: "中等",
-        stem: "The IT department will issue a mandatory system ________ to enhance cybersecurity parameters.",
-        options: ["update", "updated", "advertising", "opening"],
-        correct: "update",
+        stem: "Due to the rise in raw material costs, we have seen a steady ________ in production expenses.",
+        options: ["increase", "increasingly", "ship", "update"],
+        correct: "increase",
         explanations: {
-            guide: "形容词后的名词中心语。a mandatory system 后面需要一个名词，构成完整概念“系统更新”，应选名词 update。",
-            family: "update (n./v.更新) | updated (adj.已更新的) | advertising (n.广告业) | opening (n.职缺)。",
-            details: "issue a mandatory system update 意为“发布强制性系统更新”。updated 是分词形式，在此处无法充当名词中心语。",
-            cn: "IT部门将发布一项强制性的系统更新，以增强网络安全参数。",
-            jp: "IT部門は、サイバーセキュリティ（cybersecurity）の基準を強化（enhance）するために、義務的な（mandatory）システムアップデート（update）を発行します。"
+            guide: "形容词后的名词中心语。不定冠词 a 和形容词 steady（稳步的）后面需要接名词，表达开支呈现稳步的“增长”，选 increase。",
+            family: "increase (n./v.增加) | increasingly (adv.渐增地) | ship (v./n.运送) | update (v./n.更新)。",
+            details: "a steady increase in sth（在某方面的持续稳步增长）是职场财务汇报的必备高频结构。increasingly 为副词，绝不能充当名词中心语。",
+            cn: "由于原材料成本上升，我们的生产费用呈现出稳步增长的态势。",
+            jp: "原材料費の高騰により、製造コストが着実に増加（increase）しています。"
         }
     },
     {
         id: 13,
-        target: "equipment",
+        target: "ship",
         category: "困难",
-        stem: "Purchasing heavy machinery requires prior authorization because specialized ________ depreciates rapidly over time.",
-        options: ["equipment", "equipped", "increase", "expect"],
-        correct: "equipment",
+        stem: "Customers can track their orders online once the standard ________ has been processed by the logistics team.",
+        options: ["shipment", "shipping", "ship", "expect"],
+        correct: "shipment",
         explanations: {
-            guide: "从句主语与不可数名词特质。because 引导的原因状语从句中，specialized 是形容词，空格处需要名词充当该从句主语，选 equipment。",
-            family: "equipment (n.设备/不可数名词) | equipped (adj.装备好的) | increase (v./n.增加) | expect (v.期待)。",
-            details: "specialized equipment 意为“专业设备”，并且它是不可数名词，完美对应后面单数第三人称谓语动词 depreciates 的时态要求。",
-            cn: "购买重型机械需要事先授权，因为专业设备随着时间的推移折旧速度很快。",
-            jp: "専門的な機器（equipment）は時間の経過とともに急速に減価償却する（depreciates）ため、重機（machinery）の購入には事前の（prior）承認（authorization）が必要です。"
+            guide: "名词作主语及特定语境辨析。空格在定冠词 the 与形容词 standard 后面，充当 once 引导的从句主语，根据 has been processed 选可数名词单数 shipment。",
+            family: "shipment (n.运送的货物) | shipping (n.运输/总称) | ship (v.运送) | expect (v.期待)。",
+            details: "shipment 指具体“被运送的这批货物/单子”。当该货物被物流团队处理后，客户才可以追踪它。shipping 虽也是名词，但多指抽象的运输业或运输行为，与单数谓语 has 配合指代具体订单时不如 shipment 贴切。",
+            cn: "一旦物流团队处理了标准货件，客户就可以在网上跟踪他们的订单。",
+            jp: "物流チームによって標準発送（shipment）が処理されると、お客様はオンラインで注文を追跡できます。"
         }
     },
     {
         id: 14,
-        target: "increase",
+        target: "advertise",
         category: "困难",
-        stem: "The sudden surge in raw material prices will inevitably force the manufacturer to ________ retail prices.",
-        options: ["increase", "increasingly", "advertise", "update"],
-        correct: "increase",
+        stem: "The company allocated a large portion of its annual budget to digital ________ campaigns.",
+        options: ["advertising", "advertise", "advertisement", "article"],
+        correct: "advertising",
         explanations: {
-            guide: "动词不定式复合结构与句意整合。force sb to do sth（迫使某人做某事），空格处需要填入动词原形，结合物价上涨背景选 increase（提高）。",
-            family: "increase (v.增加) | increasingly (adv.越来越多地) | advertise (v.做广告) | update (v.更新)。",
-            details: "原材料价格激增迫使厂商“提高”零售价。increasingly 是副词，不能跟在 to 后面充当不定式中的主干动词。",
-            cn: "原材料价格的突然激增将不可避免地迫使制造商提高零售价格。",
-            jp: "原材料価格の急激な高騰（surge）により、製造業者は小売価格を引き上げ（increase）ざるを得なく（inevitably）なるでしょう。"
+            guide: "复合名词修饰及不可数名词高阶辨析。此处需要填入名词与后面的 campaigns（活动）结合构成复合概念，指代“广告宣传活动”，选不可数动名词形式 advertising。",
+            family: "advertising (n.广告宣传/不可数) | advertise (v.做广告) | advertisement (n.广告/可数) | article (n.文章)。",
+            details: "advertising campaigns 是行业专属商业词汇。advertisement 如果用来修饰 campaigns 或作为整体，一般不用其单数形式不加冠词地直接摆在 digital 后面，而 advertising 作名词修饰语最符合商务表达惯例。",
+            cn: "该公司将其年度预算的很大一部分分配给了数字广告宣传活动。",
+            jp: "同社は年間予算の大部分をデジタル広告（advertising）キャンペーンに割り当てました。"
         }
     },
     {
         id: 15,
-        target: "opening",
+        target: "expect",
         category: "困难",
-        stem: "Attendees gathered early at the convention center to witness the grand ________ of the international trade expo.",
-        options: ["opening", "openings", "article", "equipment"],
-        correct: "opening",
+        stem: "The profit margins for the second quarter significantly exceeded the initial ________ of financial experts.",
+        options: ["expectations", "expected", "expect", "unexpected"],
+        correct: "expectations",
         explanations: {
-            guide: "专有名词级固定搭配。the grand opening 是商务英语中极其高频的固定短语，意为“盛大开幕/盛大开业”。",
-            family: "opening (n.开幕/开业) | openings (n.空缺复数) | article (n.文章) | equipment (n.设备)。",
-            details: "虽然 opening 也有“职位空缺”之意，但在修饰语 grand（盛大的）后面，特指展会或店铺的开幕式。由于是特指这一场开幕，所以不用复数 openings。",
-            cn: "与会者聚集在会议中心，共同见证国际贸易博览会的盛大开幕。",
-            jp: "参加者（Attendees）は国際貿易博览会（expo）の盛大な開幕（opening）に立ち会う（witness）ため、会場（convention center）に早くから集まりました。"
+            guide: "高频商务短语与名词复数应用。空格前有形容词 initial 修饰，处在宾语核心位置，配合 exceed 构成固定高阶搭配 exceed expectations（超出预期），选名词复数 expectations。",
+            family: "expectations (n.预期/复数) | expected (adj.预期的) | expect (v.期待) | unexpected (adj.意料之外的)。",
+            details: "exceeded the initial expectations 意为“超出了最初的预期”。expected 是形容词，不能在形容词 initial 后面直接担当名词性宾语中心词。",
+            cn: "第二季度的利润率明显超出了财务专家最初的预期。",
+            jp: "第2四半期の利益率は、金融専門家の当初の予測（expectations）を大幅に上回りました。"
         }
     },
     {
         id: 16,
-        target: "ship",
+        target: "opening",
         category: "困难",
-        stem: "In accordance with the distribution agreement, the manufacturer is obligated to ________ the merchandise within forty-eight hours.",
-        options: ["ship", "shipment", "repair", "expect"],
-        correct: "ship",
+        stem: "The grand ________ of the new retail branch in downtown Tokyo is scheduled for next Friday morning.",
+        options: ["opening", "openly", "update", "equipment"],
+        correct: "opening",
         explanations: {
-            guide: "高级被动结构后的动词原形。be obligated to 意为“有义务做某事”，to 后面必须使用及物动词原形，后接商品，选 ship（发货/运送）。",
-            family: "ship (v.运送) | shipment (n.运输的货物) | repair (v.修理) | expect (v.期待)。",
-            details: "ship the merchandise 意为“运送货物/发货”。shipment 为名词形式，不能直接与 to 构成不定式去修饰或带出宾语货物。",
-            cn: "根据分销协议，制造商有义务在四十八小时内将货物发出。",
-            jp: "配送契約に基づき、製造業者は48時間以内に商品（merchandise）を発送（ship）する義務（obligated）があります。"
+            guide: "商业庆典固定复合名词。The grand ________ 结构专指商铺或分店的“盛大开业/开张”，固定使用动名词转化的名词 opening。",
+            family: "opening (n.开业/空缺) | openly (adv.公开地) | update (n./v.更新) | equipment (n.设备)。",
+            details: "grand opening 是托业 Part 7 和 Part 5 常见的商业告示用语。openly 是副词，不能被 grand 修饰充当主语。",
+            cn: "位于东京市中心的新零售分店的盛大开业典礼定于下周五早上举行。",
+            jp: "東京の繁華街にある新しい小売支店のグランドオープン（opening）は、来週金曜日の朝に予定されています。"
         }
     },
     {
         id: 17,
-        target: "expect",
+        target: "increase",
         category: "困难",
-        stem: "Internal guidelines dictate that supervisors should ________ all staff members to submit their expense reports promptly.",
-        options: ["expect", "expectation", "update", "recently"],
-        correct: "expect",
+        stem: "With the market becoming ________ competitive, local businesses must find unique ways to attract clients.",
+        options: ["increasingly", "increase", "increased", "recently"],
+        correct: "increasingly",
         explanations: {
-            guide: "情态动词搭配与宾语补足语结构。should 后面需要动词原形，且该动词能够与后文的 sb to do sth（要求某人做某事）形成呼应，应选 expect。",
-            family: "expect (v.要求/期望) | expectation (n.期待) | update (v.更新) | recently (adv.最近)。",
-            details: "expect sb to do sth 在商务职场中常用于表达“主管要求/期望下属做某事”。expectation 是名词，不具备此句法功能。",
-            cn: "内部指南规定，主管应要求所有员工及时提交其费用报告。",
-            jp: "社内ガイドライン（guidelines）では、管理職はすべてのスタッフが経費報告書を迅速に（promptly）提出することを求める（expect）べきだと規定（dictate）しています。"
+            guide: "副词修饰形容词高阶考点。空格位于系动词 becoming 之后，形容词 competitive（竞争激烈的）之前，需要副词来修饰该形容词，表示“日益/逐渐”，选 increasingly。",
+            family: "increasingly (adv.渐增地) | increase (v./n.增加) | increased (adj.增加的) | recently (adv.最近)。",
+            details: "increasingly competitive 属于经典的“副词 + 形容词”结构，用以修饰核心属性。increase 或 increased 无法直接修饰另一个形容词 competitive。",
+            cn: "随着市场竞争变得日益激烈，当地企业必须寻找独特的方法来吸引客户。",
+            jp: "市場の競争がますます（increasingly）激しくなる中、地元の企業は顧客を惹きつけるための独自の方法を見つけなければなりません。"
         }
     },
     {
         id: 18,
-        target: "recently",
+        target: "equipment",
         category: "困难",
-        stem: "The newly appointed chief executive officer, who ________ negotiated a lucrative partnership, will address the press today.",
-        options: ["recently", "recent", "advertise", "shipment"],
-        correct: "recently",
+        stem: "The newly ________ laboratory is now fully capable of conducting advanced biological research.",
+        options: ["equipped", "equipment", "repair", "updated"],
+        correct: "equipped",
         explanations: {
-            guide: "定语从句中的时间副词用法。在 who 引导的定语从句中，修饰过去式动词 negotiated，需要副词形式，应选 recently。",
-            family: "recently (adv.最近) | recent (adj.最近的) | advertise (v.做广告) | shipment (n.运输货物)。",
-            details: "who recently negotiated...（他最近成功谈判了……）。recent 是形容词，不能用来修饰动词过去式 negotiated。",
-            cn: "新上任的首席执行官最近谈成了一项获利丰厚的合作，他将于今天向媒体发表讲话。",
-            jp: "新しく任命された（appointed）最高経営責任者は、最近（recently）利益の上がる（lucrative）提携（partnership）を交渉し、今日記者会見を行う予定です。"
+            guide: "过去分词作形容词的被动修饰结构。空格前有副词 newly（新近地），后有名词 laboratory（实验室），此处需要填入一个过去分词充当形容词，表达“装备齐全的”，选 equipped。",
+            family: "equipped (adj./v-ed装备好的) | equipment (n.设备) | repair (v./n.修理) | updated (adj.更新的)。",
+            details: "be newly equipped 意为“新配备了设备的”。此处的 equipped 与 laboratory 组合成“新装配好的实验室”概念，且能完美与后面的功能描述呼应。equipment 是名词，无法被副词 newly 修饰。",
+            cn: "这间新配备了设备的实验室现在完全有能力进行高级生物学研究。",
+            jp: "新しく設備が整った（equipped）研究室は、現在、高度な生物学的研究を行う能力を完全に備えています。"
         }
     }
 ];

@@ -4,20 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>南式TOEIC鬼特訓 - Intelligent Interactive System</title>
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
     
-    <!-- 1. 引入中央路径配置文件 -->
     <script src="config.js"></script>
     
-    <!-- 2. 智能URL参数动态吸纳器 -->
     <script>
+        // 🌟 提取全局单元参数，用于隔离不同单元的错题本数据
+        window.unitParam = '1-10';
         (function() {
             const urlParams = new URLSearchParams(window.location.search);
-            const unitParam = urlParams.get('unit') || '1-10'; // 默认保底 1-10
-            const dataJsName = "data" + unitParam + ".js";
+            window.unitParam = urlParams.get('unit') || '1-10'; // 默认保底 1-10
+            const dataJsName = "data" + window.unitParam + ".js";
             // 同步阻塞加载，保障底层全套算法变量完美就绪
             document.write('<script src="' + dataJsName + '"><\/script>');
         })();
@@ -39,7 +37,16 @@
 </head>
 <body class="text-slate-800 min-h-screen flex flex-col antialiased">
 
-    <!-- TOP HEADER -->
+    <div id="global-exam-timer-bar" class="bg-slate-900 text-white text-xs py-2 px-4 flex items-center justify-between border-b border-slate-800 shrink-0">
+        <div class="flex items-center space-x-3">
+            <span class="font-bold text-amber-400">⏱️ 考试计时器</span>
+            <span id="global-timer-display" class="font-mono bg-slate-800 px-2 py-0.5 rounded text-amber-300 font-bold hidden">00:00:00</span>
+        </div>
+        <button onclick="toggleGlobalTimerDisplay()" class="bg-amber-50 hover:bg-amber-600 text-slate-900 px-2.5 py-0.5 rounded-lg font-bold text-[11px] transition-colors">
+            点击显示时间
+        </button>
+    </div>
+
     <header class="border-b border-[#EAE6D9] bg-[#FAF9F5]/90 backdrop-blur-md sticky top-0 z-40 transition-colors">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
             <div class="flex items-center space-x-3" onclick="window.location.href='index.html'" style="cursor:pointer">
@@ -52,7 +59,6 @@
                 </div>
             </div>
 
-            <!-- Global TTS Controls -->
             <div class="flex items-center space-x-4 bg-[#F3EFE3] px-3 py-1.5 rounded-xl border border-[#E1DBC9]">
                 <div class="flex items-center space-x-1">
                     <i data-lucide="volume-2" class="w-4 h-4 text-amber-600"></i>
@@ -70,70 +76,70 @@
         </div>
     </header>
 
-    <!-- MAIN BODY -->
     <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col gap-8">
         
-        <!-- DASHBOARD HERO STATS -->
         <section class="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <div class="bg-white p-5 rounded-2xl border border-[#EAE6D9] shadow-sm flex items-center justify-between">
+            <div class="bg-white p-3.5 rounded-xl border border-[#EAE6D9] shadow-sm flex items-center justify-between">
                 <div>
                     <span class="text-xs font-medium text-slate-500 block">特训总进度 (Total Progress)</span>
-                    <span id="stat-progress-txt" class="text-2xl font-bold text-slate-800">0 / 18</span>
+                    <span id="stat-progress-txt" class="text-xl font-bold text-slate-800">0 / 18</span>
                 </div>
-                <div class="w-12 h-12 bg-amber-50 rounded-xl flex items-center justify-center text-amber-600">
-                    <i data-lucide="trending-up" class="w-6 h-6"></i>
+                <div class="w-10 h-10 bg-amber-50 rounded-lg flex items-center justify-center text-amber-600 shrink-0">
+                    <i data-lucide="trending-up" class="w-5 h-5"></i>
                 </div>
             </div>
-            <div class="bg-white p-5 rounded-2xl border border-[#EAE6D9] shadow-sm flex items-center justify-between">
+            <div class="bg-white p-3.5 rounded-xl border border-[#EAE6D9] shadow-sm flex items-center justify-between">
                 <div>
                     <span class="text-xs font-medium text-slate-500 block">综合正确率 (Accuracy)</span>
-                    <span id="stat-accuracy" class="text-2xl font-bold text-slate-800">0%</span>
+                    <span id="stat-accuracy" class="text-xl font-bold text-slate-800">0%</span>
                 </div>
-                <div class="w-12 h-12 bg-emerald-50 rounded-xl flex items-center justify-center text-emerald-600">
-                    <i data-lucide="check-circle" class="w-6 h-6"></i>
+                <div class="w-10 h-10 bg-emerald-50 rounded-lg flex items-center justify-center text-emerald-600 shrink-0">
+                    <i data-lucide="check-circle" class="w-5 h-5"></i>
                 </div>
             </div>
-            <div class="bg-white p-5 rounded-2xl border border-[#EAE6D9] shadow-sm flex items-center justify-between">
+            <div class="bg-white p-3.5 rounded-xl border border-[#EAE6D9] shadow-sm flex items-center justify-between">
                 <div>
                     <span class="text-xs font-medium text-slate-500 block">高频考点词 (Core Vocabs)</span>
-                    <span class="text-2xl font-bold text-slate-800">10 Words</span>
+                    <span class="text-xl font-bold text-slate-800">10 Words</span>
                 </div>
-                <div class="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center text-blue-600">
-                    <i data-lucide="book-open" class="w-6 h-6"></i>
+                <div class="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center text-blue-600 shrink-0">
+                    <i data-lucide="book-open" class="w-5 h-5"></i>
                 </div>
             </div>
-            <div class="bg-white p-5 rounded-2xl border border-[#EAE6D9] shadow-sm flex items-center justify-between">
+            <div class="bg-white p-3.5 rounded-xl border border-[#EAE6D9] shadow-sm flex items-center justify-between">
                 <div>
                     <span class="text-xs font-medium text-slate-500 block">错题本收录 (Mistakes Book)</span>
-                    <span id="stat-mistakes" class="text-2xl font-bold text-amber-700">0 Items</span>
+                    <span id="stat-mistakes" class="text-xl font-bold text-amber-700">0 Items</span>
                 </div>
-                <div class="w-12 h-12 bg-rose-50 rounded-xl flex items-center justify-center text-rose-600">
-                    <i data-lucide="bookmark-check" class="w-6 h-6"></i>
+                <div class="w-10 h-10 bg-rose-50 rounded-lg flex items-center justify-center text-rose-600 shrink-0">
+                    <i data-lucide="bookmark-check" class="w-5 h-5"></i>
                 </div>
             </div>
         </section>
 
-        <!-- APP TABS NAVIGATION -->
-        <div class="border-b border-[#EAE6D9] flex space-x-1">
-            <button onclick="switchTab('vocab')" id="tab-vocab" class="tab-btn px-5 py-3 font-semibold text-sm border-b-2 border-amber-500 text-amber-600 focus:outline-none transition-all flex items-center space-x-2">
+        <div class="border-b border-[#EAE6D9] flex space-x-1 flex-wrap gap-y-2">
+            <button onclick="switchTab('vocab')" id="tab-vocab" class="tab-btn px-3.5 py-2 font-medium text-xs sm:text-sm border-b-2 border-amber-500 text-amber-600 focus:outline-none transition-all flex items-center space-x-1.5">
                 <i data-lucide="award" class="w-4 h-4"></i>
                 <span>① 核心词汇精训 (Core Vocab)</span>
             </button>
-            <button onclick="switchTab('test')" id="tab-test" class="tab-btn px-5 py-3 font-semibold text-sm border-b-2 border-transparent text-slate-500 hover:text-slate-800 focus:outline-none transition-all flex items-center space-x-2">
+            <button onclick="switchTab('test')" id="tab-test" class="tab-btn px-3.5 py-2 font-medium text-xs sm:text-sm border-b-2 border-transparent text-slate-500 hover:text-slate-800 focus:outline-none transition-all flex items-center space-x-1.5">
                 <i data-lucide="compass" class="w-4 h-4"></i>
                 <span>② 智能测试引擎 (Test)</span>
             </button>
-            <button onclick="switchTab('mistakes')" id="tab-mistakes" class="tab-btn px-5 py-3 font-semibold text-sm border-b-2 border-transparent text-slate-500 hover:text-slate-800 focus:outline-none transition-all flex items-center space-x-2">
-                <i data-lucide="shield-alert" class="w-4 h-4"></i>
-                <span>③ 专属错题集 (My Mistakes)</span>
+            <button onclick="switchTab('dict')" id="tab-dict" class="tab-btn px-3.5 py-2 font-medium text-xs sm:text-sm border-b-2 border-transparent text-slate-500 hover:text-slate-800 focus:outline-none transition-all flex items-center space-x-1.5">
+                <i data-lucide="search" class="w-4 h-4"></i>
+                <span>③ 生词扫盲 (Vocab Scan)</span>
             </button>
-            <button onclick="switchTab('report')" id="tab-report" class="tab-btn px-5 py-3 font-semibold text-sm border-b-2 border-transparent text-slate-500 hover:text-slate-800 focus:outline-none transition-all flex items-center space-x-2">
+            <button onclick="switchTab('mistakes')" id="tab-mistakes" class="tab-btn px-3.5 py-2 font-medium text-xs sm:text-sm border-b-2 border-transparent text-slate-500 hover:text-slate-800 focus:outline-none transition-all flex items-center space-x-1.5">
+                <i data-lucide="shield-alert" class="w-4 h-4"></i>
+                <span>④ 专属错题集 (My Mistakes)</span>
+            </button>
+            <button onclick="switchTab('report')" id="tab-report" class="tab-btn px-3.5 py-2 font-medium text-xs sm:text-sm border-b-2 border-transparent text-slate-500 hover:text-slate-800 focus:outline-none transition-all flex items-center space-x-1.5">
                 <i data-lucide="bar-chart-3" class="w-4 h-4"></i>
-                <span>④ 难度挑战看板 (Difficulty Metrics)</span>
+                <span>⑤ 难度挑战看板 (Difficulty Metrics)</span>
             </button>
         </div>
 
-        <!-- TAB 1: CORE VOCAB DICTIONARY -->
         <div id="panel-vocab" class="tab-panel block space-y-6">
             <div class="bg-gradient-to-r from-amber-500/10 to-amber-600/5 p-6 rounded-2xl border border-amber-200/50 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
                 <div class="space-y-1">
@@ -143,7 +149,7 @@
                     </h3>
                     <p class="text-xs text-slate-600 leading-relaxed">
                         1. <strong>闪卡预习：</strong> 【点击例句】听原声朗读；【点击卡片其它区域】展折中日双语、词族与考点。<br>
-                        2. <strong>智能做题：</strong> 支持简单/中等/困难分层筛选。点击题干红字难词，自动展开的词性与音标提示卡。<br>
+                        2. <strong>智能做题：</strong> 支持简单/中等/困难分层筛选。在测试引擎中，<strong>双击任何不认识的英语单词</strong>，系统将自动帮您收录并在生词页开启盲打强化特训。<br>
                         3. <strong>四国口音 & 全题点读：</strong> 顶栏一键切换美/英/澳/加托业主流口音。点击喇叭，系统会自动用“正确答案”填补空缺并朗读全句，还原真实考场。
                     </p>
                 </div>
@@ -151,7 +157,7 @@
                 <div class="bg-white p-4 rounded-xl border border-amber-200 shadow-sm flex items-center justify-between gap-4 shrink-0">
                     <div class="flex flex-col">
                         <span class="text-xs font-bold text-slate-800">悬停读单词</span>
-                        <span class="text-[10px] text-slate-400">悬浮核心词及背景难词卡发音</span>
+                        <span class="text-[10px] text-slate-400">悬浮核心词简易发音</span>
                     </div>
                     <button id="hoverToggleBtn" onclick="toggleHoverSpeech()" class="w-14 h-7 bg-slate-200 rounded-full relative transition-colors duration-300 focus:outline-none">
                         <div id="hoverToggleDot" class="w-5 h-5 bg-white rounded-full absolute top-1 left-1 transition-transform duration-300 shadow-sm"></div>
@@ -166,23 +172,16 @@
                 </h4>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="targetVocabGrid"></div>
             </div>
-
-            <div class="pt-4 border-t border-[#EAE6D9]">
-                <h4 class="text-sm font-bold text-slate-700 mb-4 flex items-center gap-1.5">
-                    <span class="w-1.5 h-3.5 bg-slate-500 rounded"></span>
-                    背景真题难词库 (Context Background Difficult Words)
-                </h4>
-                <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3" id="helperVocabGrid"></div>
-            </div>
         </div>
 
-        <!-- TAB 2: SMART TEST ENGINE -->
         <div id="panel-test" class="tab-panel hidden grid grid-cols-1 lg:grid-cols-12 gap-6">
             <div class="lg:col-span-7 space-y-6">
-                <!-- Mode Controller -->
                 <div class="bg-white p-4 rounded-2xl border border-[#EAE6D9] flex flex-wrap items-center justify-between gap-4">
                     <div class="flex items-center gap-2">
-                        <span class="text-xs font-bold text-amber-600 bg-amber-50 px-2.5 py-1 rounded-md uppercase tracking-wider">练习模式: 全真随机乱序</span>
+                        <span id="retest-timer-banner" class="hidden text-xs font-bold text-rose-600 bg-rose-50 px-2.5 py-1 rounded-md uppercase tracking-wider animate-pulse flex items-center gap-1">
+                            <i data-lucide="timer" class="w-3.5 h-3.5"></i> 专项重考中
+                        </span>
+                        <span id="practice-mode-badge" class="text-xs font-bold text-amber-600 bg-amber-50 px-2.5 py-1 rounded-md uppercase tracking-wider">练习模式: 全真随机乱序</span>
                         <select id="diffFilterSelect" onchange="changeDifficultyFilter(this.value)" class="bg-[#FAF9F5] text-xs text-slate-700 font-bold px-2 py-1 rounded-lg border border-[#E1DBC9] focus:outline-none cursor-pointer transition-colors hover:border-amber-400">
                             <option value="all">🔍 全部难度题型</option>
                             <option value="简单">🟢 简单题型 </option>
@@ -201,7 +200,6 @@
                     </div>
                 </div>
 
-                <!-- Arena Card -->
                 <div class="bg-white rounded-3xl border border-[#EAE6D9] shadow-sm p-6 md:p-8 space-y-6 relative overflow-hidden">
                     <div class="flex items-center justify-between">
                         <span id="q-category" class="text-[10px] font-black uppercase tracking-wider bg-amber-100 text-amber-700 px-2.5 py-1 rounded-full flex items-center">
@@ -218,10 +216,9 @@
                     </div>
 
                     <div class="space-y-4">
-                        <h3 class="text-xs font-bold text-slate-400 tracking-wider uppercase">TOEIC - INCOMPLETE SENTENCE</h3>
-                        <div id="q-stem" class="text-lg md:text-xl font-medium text-slate-800 leading-relaxed tracking-normal"></div>
+                        <h3 class="text-xs font-bold text-slate-400 tracking-wider uppercase">TOEIC - INCOMPLETE SENTENCE (提示：双击任一单词可查阅字典)</h3>
+                        <div id="q-stem" class="text-lg md:text-xl font-medium text-slate-800 leading-relaxed tracking-normal select-text cursor-pointer"></div>
                         
-                        <!-- 行内智能提示卡片 Container (安全防御，绝对不超框) -->
                         <div id="q-hint-container" class="hidden bg-slate-900 text-white text-xs p-3 rounded-xl relative transition-all duration-200 shadow-lg"></div>
                     </div>
 
@@ -239,8 +236,33 @@
                 </div>
             </div>
 
-            <!-- Right Side Parsing Box -->
-            <div class="lg:col-span-5">
+            <div class="lg:col-span-5 flex flex-col gap-4">
+                <div class="bg-white rounded-3xl border border-[#EAE6D9] shadow-sm p-6 space-y-4">
+                    <div class="flex items-center justify-between border-b border-[#F3EFE3] pb-3">
+                        <div class="flex items-center space-x-2">
+                            <i data-lucide="search" class="w-5 h-5 text-amber-500"></i>
+                            <h3 class="text-sm font-bold text-slate-800 tracking-wider">生词快捷查询与特训</h3>
+                        </div>
+                    </div>
+                    <div class="flex gap-2">
+                        <input type="text" id="dict-search-input_tab2" onkeydown="if(event.key==='Enter') queryOnlineDict()" placeholder="输入英文生词后回车或点击查询..." class="flex-1 bg-[#FAF9F5] text-xs px-3 py-2.5 rounded-xl border border-[#E1DBC9] focus:outline-none focus:border-amber-500 font-medium text-slate-800 transition-all shadow-sm">
+                        <button onclick="queryOnlineDict()" class="bg-slate-900 text-white text-xs font-bold px-4 py-2.5 rounded-xl hover:bg-amber-600 transition-all shrink-0 shadow-sm">查询</button>
+                    </div>
+                    <div id="dict-result-panel_tab2" class="hidden text-xs bg-[#FAF9F5] p-3 rounded-xl border border-[#EAE6D9] space-y-2 max-h-[200px] overflow-y-auto"></div>
+                    
+                    <div id="dict-practice-panel_tab2" class="hidden bg-amber-50/70 p-3 rounded-xl border border-amber-200/70 space-y-2 text-xs">
+                        <div class="flex justify-between items-center">
+                            <span class="font-bold text-amber-900 flex items-center gap-1"><i data-lucide="edit-3" class="w-3.5 h-3.5 text-amber-600"></i> 输入强化记忆: <span id="practice-target-word_tab2" onclick="resetPracticeUI()" title="点击复原" class="text-amber-700 underline font-black ml-1 cursor-pointer"></span></span>
+                        </div>
+                        <div class="flex gap-2">
+                            <input type="text" id="dict-practice-input_tab2" oninput="checkPracticeInput()" onkeydown="if(event.key==='Enter') submitPracticeWord()" placeholder="在此反复打字进行拼写抗遗忘背诵..." class="flex-1 bg-white text-xs px-3 py-1.5 rounded-lg border border-amber-300 focus:outline-none focus:border-amber-600 font-bold tracking-wide text-slate-800">
+                            <button onclick="submitPracticeWord()" class="bg-amber-600 text-white text-xs font-bold px-3 py-1.5 rounded-lg hover:bg-amber-700 transition-all shrink-0">核验</button>
+                            <button onclick="completePractice()" class="bg-slate-700 text-white text-xs font-bold px-3 py-1.5 rounded-lg hover:bg-slate-800 transition-all shrink-0">完成</button>
+                        </div>
+                        <div id="practice-feedback_tab2" onclick="resetPracticeUI()" title="点击复原" class="text-[11px] p-2 rounded-xl hidden transition-all duration-300 cursor-pointer"></div>
+                    </div>
+                </div>
+
                 <div class="bg-white rounded-3xl border border-[#EAE6D9] shadow-sm p-6 min-h-[400px] flex flex-col justify-between" id="analysis-panel">
                     <div class="space-y-6">
                         <div class="flex items-center space-x-2 border-b border-[#F3EFE3] pb-4">
@@ -285,25 +307,80 @@
                                     <p id="ana-cn" class="text-xs text-slate-600 leading-normal mt-1 font-medium">--</p>
                                 </div>
                                 <div>
-                                    <h4 class="text-[10px] font-bold text-slate-400 tracking-wider uppercase">日本語訳 (JP)</h4>
+                                    <h4 class="text-[10px] font-bold text-slate-400 tracking-wider uppercase">日本語译 (JP)</h4>
                                     <p id="ana-jp" class="text-xs text-slate-600 leading-normal mt-1 font-medium">--</p>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-                    <div id="analysis-nav" class="hidden pt-4 border-t border-[#F3EFE3] flex items-center justify-between">
-                        <span class="text-xs text-slate-400">已解锁深度学习。加油！</span>
-                        <button onclick="nextQuestion()" class="text-xs font-bold text-white bg-slate-900 hover:bg-amber-600 px-4 py-2 rounded-lg transition-all flex items-center space-x-1">
-                            <span>进入下一题 (Next)</span>
-                            <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
-                        </button>
-                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- TAB 3: PERSONAL MISTAKES BOOK -->
+        <div id="panel-dict" class="tab-panel hidden">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 max-w-7xl mx-auto items-start">
+                
+                <div class="bg-white rounded-3xl border border-[#EAE6D9] shadow-sm p-5 space-y-4 min-h-[500px] max-h-[500px] overflow-y-auto">
+                    <div class="flex items-center justify-between border-b border-[#F3EFE3] pb-2">
+                        <h4 class="text-xs font-bold text-slate-400 tracking-wider uppercase flex items-center gap-1">
+                            <i data-lucide="layers" class="w-3.5 h-3.5 text-amber-500"></i> 生词库跟踪
+                        </h4>
+                        <div class="flex items-center space-x-2">
+                            <button onclick="exportNotebookToExcel()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-[10px] font-bold px-2.5 py-1 rounded-lg flex items-center gap-1 transition-all shadow-sm">
+                                <i data-lucide="download" class="w-3 h-3"></i> 导出 EXCEL
+                            </button>
+                            <button onclick="clearDictNotebook()" class="text-[10px] text-rose-600 hover:underline">全部清空</button>
+                        </div>
+                    </div>
+                    <div class="text-[11px] font-medium text-slate-500 flex justify-between bg-[#FAF9F5] p-2 rounded-xl border border-[#EAE6D9]">
+                        <span>总计: <span id="dict-total-count" class="text-slate-800 font-bold">0</span> 词</span>
+                        <span>总练习: <span id="dict-total-practice" class="text-slate-800 font-bold">0</span> 次</span>
+                    </div>
+                    <div id="dict-notebook-list" class="flex flex-wrap gap-2 max-h-[380px] overflow-y-auto py-1"></div>
+                </div>
+
+                <div class="bg-white rounded-3xl border border-[#EAE6D9] shadow-sm p-5 space-y-4 min-h-[500px]">
+                    <div class="flex items-center justify-between border-b border-[#F3EFE3] pb-2">
+                        <div class="flex items-center space-x-2">
+                            <i data-lucide="search" class="w-4 h-4 text-amber-500"></i>
+                            <h3 class="text-sm font-bold text-slate-800 tracking-wider">字典</h3>
+                        </div>
+                    </div>
+                    <div class="flex gap-2">
+                        <input type="text" id="dict-search-input" onkeydown="if(event.key==='Enter') queryOnlineDict()" placeholder="输入英文生词后回车或点击查询..." class="flex-1 bg-[#FAF9F5] text-xs px-3 py-2.5 rounded-xl border border-[#E1DBC9] focus:outline-none focus:border-amber-500 font-medium text-slate-800 transition-all shadow-sm">
+                        <button onclick="queryOnlineDict()" class="bg-slate-900 text-white text-xs font-bold px-4 py-2.5 rounded-xl hover:bg-amber-600 transition-all shrink-0 shadow-sm">查询</button>
+                    </div>
+                    <div id="dict-result-panel" class="hidden text-xs bg-[#FAF9F5] p-3 rounded-xl border border-[#EAE6D9] space-y-2 max-h-[180px] overflow-y-auto"></div>
+                    
+                    <div id="dict-practice-panel" class="hidden bg-amber-50/70 p-3 rounded-xl border border-amber-200/70 space-y-2 text-xs">
+                        <div class="flex justify-between items-center">
+                            <span class="font-bold text-amber-900 flex items-center gap-1"><i data-lucide="edit-3" class="w-3.5 h-3.5 text-amber-600"></i> 输入强化记忆: <span id="practice-target-word" onclick="resetPracticeUI()" title="点击复原" class="text-amber-700 underline font-black ml-1 cursor-pointer"></span></span>
+                        </div>
+                        <div class="flex gap-2">
+                            <input type="text" id="dict-practice-input" oninput="checkPracticeInput()" onkeydown="if(event.key==='Enter') submitPracticeWord()" placeholder="在此反复打字进行拼写抗遗忘背诵..." class="flex-1 bg-white text-xs px-3 py-1.5 rounded-lg border border-amber-300 focus:outline-none focus:border-amber-600 font-bold tracking-wide text-slate-800">
+                            <button onclick="submitPracticeWord()" class="bg-amber-600 text-white text-xs font-bold px-3 py-1.5 rounded-lg hover:bg-amber-700 transition-all shrink-0">核验</button>
+                            <button onclick="completePractice()" class="bg-slate-700 text-white text-xs font-bold px-3 py-1.5 rounded-lg hover:bg-slate-800 transition-all shrink-0">完成</button>
+                        </div>
+                        <div id="practice-feedback" onclick="resetPracticeUI()" title="点击复原" class="text-[11px] p-2 rounded-xl hidden transition-all duration-300 cursor-pointer"></div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-3xl border border-[#EAE6D9] shadow-sm p-5 space-y-4 min-h-[500px] flex flex-col justify-between">
+                    <div id="dict-exam-panel" class="hidden bg-amber-50/70 p-4 rounded-2xl border border-amber-200/70 space-y-4 text-xs flex-1 flex flex-col justify-between">
+                        </div>
+                    <div id="dict-exam-placeholder" class="h-full flex flex-col items-center justify-center text-center py-20 text-slate-400 text-xs space-y-3 flex-1">
+                        <i data-lucide="award" class="w-8 h-8 text-amber-500 animate-pulse"></i>
+                        <div class="space-y-1">
+                            <p class="font-bold text-slate-700">生词考试中心</p>
+                            <p class="text-slate-400 text-[11px]">点击左侧生词药丸激活，或直接一键随机联考</p>
+                        </div>
+                        <button onclick="loadNextExamQuestion()" class="px-4 py-2 bg-slate-900 text-white rounded-xl text-xs font-black hover:bg-amber-600 transition-all shadow-sm">开始考试</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
         <div id="panel-mistakes" class="tab-panel hidden space-y-6">
             <div class="bg-white p-6 rounded-3xl border border-[#EAE6D9] shadow-sm space-y-4">
                 <div class="flex items-center justify-between flex-wrap gap-4">
@@ -315,6 +392,9 @@
                         <p class="text-xs text-slate-500">系统将全自动、非侵入式地收集您在测试引擎中的所有错题。</p>
                     </div>
                     <div class="flex items-center space-x-2">
+                        <button onclick="exportMistakesToExcel()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl transition-all flex items-center gap-1">
+                            <i data-lucide="download" class="w-3.5 h-3.5"></i> 导出错题 EXCEL
+                        </button>
                         <button onclick="clearAllFavorites()" class="px-4 py-2 bg-rose-50 hover:bg-rose-100 text-rose-600 text-xs font-bold rounded-xl transition-all">
                             清空错题本
                         </button>
@@ -324,7 +404,6 @@
             </div>
         </div>
 
-        <!-- TAB 4: LAYERED PERFORMANCE REPORT -->
         <div id="panel-report" class="tab-panel hidden grid grid-cols-1 lg:grid-cols-12 gap-6">
             <div class="lg:col-span-4 space-y-6">
                 <div class="bg-white p-6 rounded-3xl border border-[#EAE6D9] shadow-sm text-center space-y-4 flex flex-col justify-center items-center">
@@ -351,6 +430,10 @@
                         <button id="btn-retest-mistakes-report" onclick="startMistakeSession()" class="w-full py-2.5 bg-slate-900 hover:bg-amber-600 active:scale-95 text-white font-bold text-xs rounded-xl shadow-sm transition-all flex items-center justify-center space-x-1.5 disabled:opacity-40 disabled:cursor-not-allowed">
                             <i data-lucide="book-open" class="w-4 h-4"></i>
                             <span>对错题进行专项重考 (考对一个删一个)</span>
+                        </button>
+                        <button onclick="exportNotebookToExcel()" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white font-bold text-xs rounded-xl shadow-sm transition-all flex items-center justify-center space-x-1.5">
+                            <i data-lucide="download" class="w-4 h-4"></i>
+                            <span>导出生词本 EXCEL</span>
                         </button>
                     </div>
                 </div>
@@ -406,7 +489,7 @@
                 <div id="modal-icon-container" class="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center text-amber-600 shrink-0"></div>
                 <div>
                     <h4 id="modal-title" class="text-sm font-bold text-slate-900">提示</h4>
-                    <p id="modal-message" class="text-xs text-slate-500 mt-1 leading-relaxed">消息内容</p>
+                    <p id="modal-message" class="text-xs text-slate-500 mt-1 leading-relaxed whitespace-pre-line">消息内容</p>
                 </div>
             </div>
             <div class="flex items-center justify-end space-x-2 pt-2 border-t border-[#F3EFE3]">
@@ -416,22 +499,143 @@
         </div>
     </div>
 
-    <!-- ENGINE RUNTIME INTERACTIVES -->
     <script>
         let currentQuestions = []; let currentIndex = 0; let selectedOption = null; let answeredList = {}; 
-        let favoritesList = JSON.parse(localStorage.getItem('toeic_ghost_favorites')) || [];
+        
+        // 🌟 利用 window.unitParam 动态生成有单元隔离的错题本地存储主键
+        let favoritesKey = 'toeic_ghost_favorites_' + (window.unitParam || '1-10');
+        let favoritesList = JSON.parse(localStorage.getItem(favoritesKey)) || [];
+        
         let isMistakeOnlySession = false; let hoverSpeechEnabled = false;
         let synth = window.speechSynthesis; let selectedVoice = null;
         let lastHintWord = ""; 
         let currentDifficultyFilter = "all"; // 全局难度过滤状态
+        
+        // 在线生词字典本地数据载体
+        let dictNotebook = JSON.parse(localStorage.getItem('toeic_dict_notebook')) || {};
+        let activePracticeWord = ""; // 当前正在练习输入强化的单词
+
+        // 🌟 错题专项重考精密计时全局中枢状态变量
+        let retestStartTime = null;
+        let retestTimerInterval = null;
+        
+        // 🌟 生词考试中心精密计时全局中枢状态变量
+        let wordExamStartTime = null;
+        let wordExamInterval = null;
+        
+        // 🌟 生词考试底层控制状态位
+        let currentExamWord = "";
+        let examDictVisible = false;
+        let examThreshold = parseInt(localStorage.getItem('toeic_exam_threshold')) || 3; 
+
+        // 🌟 全局进入网页即刻开启的考试静默计时中枢状态
+        let pageLoadStartTime = Date.now();
+        setInterval(() => {
+            let elapsed = Math.floor((Date.now() - pageLoadStartTime) / 1000);
+            let h = String(Math.floor(elapsed / 3600)).padStart(2, '0');
+            let m = String(Math.floor((elapsed % 3600) / 60)).padStart(2, '0');
+            let s = String(elapsed % 60).padStart(2, '0');
+            const timerEl = document.getElementById('global-timer-display');
+            if (timerEl) timerEl.textContent = `${h}:${m}:${s}`;
+        }, 1000);
+
+        function toggleGlobalTimerDisplay() {
+            const el = document.getElementById('global-timer-display');
+            const btn = event.target;
+            if (el.classList.contains('hidden')) {
+                el.classList.remove('hidden');
+                btn.textContent = "点击隐藏时间";
+            } else {
+                el.classList.add('hidden');
+                btn.textContent = "点击显示时间";
+            }
+        }
+
+        // 快捷特训模块输入完成后的“点击一键复原”清除机制
+        function resetPracticeUI() {
+            const feedback = document.getElementById('practice-feedback');
+            const feedback2 = document.getElementById('practice-feedback_tab2');
+            if (feedback) { feedback.classList.add('hidden'); feedback.innerHTML = ''; }
+            if (feedback2) { feedback2.classList.add('hidden'); feedback2.innerHTML = ''; }
+            const pInput = document.getElementById('dict-practice-input');
+            const pInput2 = document.getElementById('dict-practice-input_tab2');
+            if (pInput) { pInput.value = ""; pInput.focus(); }
+            if (pInput2) { pInput2.value = ""; pInput2.focus(); }
+        }
+
+        // 🌟 新增功能：完成输入特训后，清除并隐藏快捷查询与特训面板，变回未输入状态
+        function completePractice() {
+            const input = document.getElementById('dict-search-input');
+            const input2 = document.getElementById('dict-search-input_tab2');
+            const pInput = document.getElementById('dict-practice-input');
+            const pInput2 = document.getElementById('dict-practice-input_tab2');
+            if (input) input.value = "";
+            if (input2) input2.value = "";
+            if (pInput) pInput.value = "";
+            if (pInput2) pInput2.value = "";
+
+            const panel = document.getElementById('dict-result-panel');
+            const panel2 = document.getElementById('dict-result-panel_tab2');
+            const pracPanel = document.getElementById('dict-practice-panel');
+            const pracPanel2 = document.getElementById('dict-practice-panel_tab2');
+            if (panel) { panel.classList.add('hidden'); panel.innerHTML = ''; }
+            if (panel2) { panel2.classList.add('hidden'); panel2.innerHTML = ''; }
+            if (pracPanel) pracPanel.classList.add('hidden');
+            if (pracPanel2) pracPanel2.classList.add('hidden');
+
+            const feedback = document.getElementById('practice-feedback');
+            const feedback2 = document.getElementById('practice-feedback_tab2');
+            if (feedback) { feedback.classList.add('hidden'); feedback.innerHTML = ''; }
+            if (feedback2) { feedback2.classList.add('hidden'); feedback2.innerHTML = ''; }
+
+            activePracticeWord = "";
+        }
 
         function refreshIcons() { if (typeof lucide !== 'undefined') lucide.createIcons(); }
 
         window.addEventListener('DOMContentLoaded', () => {
-            initVocabTabs(); initTTSVoices(); shuffleCurrentQuestions(); loadQuestion(); updateDashboardStats(); refreshIcons();
+            initVocabTabs(); initTTSVoices(); shuffleCurrentQuestions(); loadQuestion(); updateDashboardStats(); initDictNotebook(); refreshIcons();
+            
+            // 精准修复：双击页面任意英文单词引入 50ms 线程延迟缓冲器，确保文本完全选定后 100% 全局触发
+            document.addEventListener('dblclick', (e) => {
+                if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+                setTimeout(() => {
+                    const sel = window.getSelection().toString().trim();
+                    const cleaned = sel.replace(/[^a-zA-Z-]/g, ''); 
+                    if (cleaned) {
+                        const searchInput = document.getElementById('dict-search-input');
+                        const searchInput2 = document.getElementById('dict-search-input_tab2');
+                        if (searchInput) searchInput.value = cleaned;
+                        if (searchInput2) searchInput2.value = cleaned;
+                        
+                        // 智能防跳转：若已经是测试引擎界面（Tab2），则不切页直接查询
+                        const testPanel = document.getElementById('panel-test');
+                        if (testPanel && !testPanel.classList.contains('hidden')) {
+                            // 保持在当前页面
+                        } else {
+                            switchTab('dict'); // 否则自动切入生词扫盲页面
+                        }
+                        queryOnlineDict();
+                    }
+                }, 50);
+            });
+
+            // 键盘党快捷键底层监听 ([Ctrl]重播发音)
+            document.addEventListener('keydown', (e) => {
+                const practicePanel = document.getElementById('dict-practice-panel');
+                const practicePanel2 = document.getElementById('dict-practice-panel_tab2');
+                const isVisible = practicePanel && !practicePanel.classList.contains('hidden');
+                const isVisible2 = practicePanel2 && !practicePanel2.classList.contains('hidden');
+                if (isVisible || isVisible2) {
+                    if (e.key === 'Control') {
+                        e.preventDefault();
+                        if (activePracticeWord) speakText(activePracticeWord);
+                    }
+                }
+            });
         });
 
-        // 🌟 核心整合：融入难度分类的洗牌机制
+        // 融入难度分类的洗牌机制
         function shuffleCurrentQuestions() {
             let source = isMistakeOnlySession 
                 ? questionsDatabase.filter(q => favoritesList.includes(q.id))
@@ -445,7 +649,7 @@
             currentQuestions.forEach(q => { q.shuffledOptions = [...q.options].sort(() => Math.random() - 0.5); });
         }
 
-        // 🌟 核心整合：改变难度时的中枢控制逻辑
+        // 改变难度时的中枢控制逻辑
         function changeDifficultyFilter(val) {
             currentDifficultyFilter = val;
             shuffleCurrentQuestions();
@@ -462,7 +666,7 @@
             updateDashboardStats();
         }
 
-        // 🌟 多口音核心：智能四国主流口音自适应分拣打分函数
+        // 智能四国主流口音自适应分拣打分函数
         function getBestMainstreamVoice() {
             if (!synth) return null;
             const voices = synth.getVoices();
@@ -487,7 +691,7 @@
             return enVoices[0] || null;
         }
 
-        // 🌟 多口音核心：在列表初始化时，智能完成国际标准分类贴签 [美音]/[英音]/[澳音]/[加音]
+        // 在列表初始化时，智能完成 international 标准分类贴签
         function initTTSVoices() {
             if (!synth) return; const select = document.getElementById('voiceSelect');
             function populate() {
@@ -530,7 +734,7 @@
             select.addEventListener('change', () => { selectedVoice = synth.getVoices().find(v => v.name === select.value) || null; });
         }
 
-        // 🌟 多口音核心：播放临界点动态拦截与语系绝对映射，击碎一切非英语环境产生的腔调畸变
+        // 播放临界点动态拦截与语系绝对映射
         function speakText(text) {
             if (!synth) return; synth.cancel();
             if (!selectedVoice || selectedVoice.name === 'auto') { selectedVoice = getBestMainstreamVoice(); }
@@ -558,9 +762,42 @@
             document.querySelectorAll('.tab-panel').forEach(panel => { panel.classList.add('hidden'); panel.classList.remove('block', 'grid'); });
             const p = document.getElementById(`panel-${tabId}`);
             if(tabId==='test'||tabId==='report') { p.classList.remove('hidden'); p.classList.add('grid'); } else { p.classList.remove('hidden'); p.classList.add('block'); }
-            if (tabId === 'report') renderPerformanceReport(); if (tabId === 'mistakes') renderMistakesList();
+            
+            if (tabId === 'report') {
+                renderPerformanceReport(); 
+                
+                // 🌟 看板达成小奖励与大奖励结算：只有在全部题型到达100%时，才包含总耗时（考试时间）通报并引导询问返回
+                const groupEasy = questionsDatabase.filter(q => q.category === '简单').map(q => q.id);
+                const groupMedium = questionsDatabase.filter(q => q.category === '中等').map(q => q.id);
+                const groupHard = questionsDatabase.filter(q => q.category === '困难').map(q => q.id);
+
+                const accEasy = calculateGroupAccuracy(groupEasy);
+                const accMedium = calculateGroupAccuracy(groupMedium);
+                const accHard = calculateGroupAccuracy(groupHard);
+
+                let elapsed = Math.floor((Date.now() - pageLoadStartTime) / 1000);
+                let h = Math.floor(elapsed / 3600);
+                let m = Math.floor((elapsed % 3600) / 60);
+                let s = elapsed % 60;
+                let timeStr = `${h > 0 ? h + '小时' : ''}${m}分${s}秒`;
+
+                let rewardMsg = "";
+                if (accEasy === 100 && accMedium === 100 && accHard === 100) {
+                    rewardMsg = `🔥 战力全开！全部题型均已到达 100% 满分掌控！恭喜斩获全胜殿堂级【鬼特训终极大奖励】！🎁🏆✨\n⏱️ 当前总耗时（考试时间）：${timeStr}`;
+                }
+
+                if (rewardMsg) {
+                    setTimeout(() => {
+                        showCustomConfirm("🏆 难度特训奖励通报", rewardMsg + "\n\n是否需要现在立刻返回中央控制台 (Index)？", () => {
+                            window.location.href = 'index.html';
+                        });
+                    }, 600);
+                }
+            } 
+            if (tabId === 'mistakes') renderMistakesList();
         }
 
+        // 悬停发音中枢切换控制
         function toggleHoverSpeech() {
             hoverSpeechEnabled = !hoverSpeechEnabled;
             const btn = document.getElementById('hoverToggleBtn'); const dot = document.getElementById('hoverToggleDot');
@@ -568,6 +805,7 @@
             else { btn.className = "w-14 h-7 bg-slate-200 rounded-full relative transition-colors"; dot.style.transform = "translateX(0px)"; }
         }
 
+        // 初始化词汇卡片组件
         function initVocabTabs() {
             const targetGrid = document.getElementById('targetVocabGrid'); targetGrid.innerHTML = '';
             vocabBank.forEach((v) => {
@@ -597,45 +835,10 @@
                     </div>`;
                 targetGrid.appendChild(card);
             });
-
-            const helperGrid = document.getElementById('helperVocabGrid'); helperGrid.innerHTML = '';
-            helperVocabBank.forEach(v => {
-                const mini = document.createElement('div'); mini.className = "bg-white p-3 rounded-xl border border-[#EAE6D9] text-center hover:border-slate-400 cursor-pointer transition-all group";
-                mini.addEventListener('click', () => {
-                    const jpCn = mini.querySelector('.mini-trans'); const isExpanding = jpCn.classList.contains('hidden');
-                    document.querySelectorAll('.mini-trans').forEach(d => d.classList.add('hidden'));
-                    if (isExpanding) { jpCn.classList.remove('hidden'); speakText(v.word); } else { jpCn.classList.add('hidden'); }
-                });
-                mini.addEventListener('mouseenter', () => { if (hoverSpeechEnabled) speakText(v.word); });
-                mini.innerHTML = `<div class="text-xs font-bold text-slate-800 group-hover:text-amber-600">${v.word} <span class="text-[10px] text-slate-400 font-normal">[${v.pos}]</span></div><div class="text-[9px] text-slate-400 font-mono">${v.ipa}</div><div class="mini-trans hidden text-[10px] text-slate-500 border-t border-[#F3EFE3] mt-1.5 pt-1.5"><div>${v.cn}</div><div class="text-slate-400">${v.jp}</div></div>`;
-                helperGrid.appendChild(mini);
-            });
         }
 
-        function toggleStemWordHint(event, word, pos, ipa, cn, jp) {
-            if (event) event.stopPropagation();
-            const container = document.getElementById('q-hint-container');
-            if (!container.classList.contains('hidden') && lastHintWord === word) {
-                container.classList.add('hidden'); lastHintWord = ""; if (synth) synth.cancel(); return;
-            }
-            lastHintWord = word;
-            container.innerHTML = `
-                <div class="flex justify-between items-center border-b border-slate-700 pb-1.5 mb-1.5">
-                    <div>
-                        <span class="text-amber-400 font-bold text-sm tracking-wide">${word}</span>
-                        <span class="text-[10px] text-slate-400 ml-1.5 bg-slate-800 px-1.5 py-0.5 rounded font-sans">[${pos}]</span>
-                        <span class="text-[11px] text-slate-300 font-mono ml-2">${ipa}</span>
-                    </div>
-                    <button onclick="document.getElementById('q-hint-container').classList.add('hidden'); lastHintWord='';" class="text-slate-400 hover:text-white transition-colors">
-                        <i data-lucide="x" class="w-3.5 h-3.5"></i>
-                    </button>
-                </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px] leading-relaxed">
-                    <div><span class="text-slate-400 font-bold uppercase text-[9px] block">中文参考 (CN)</span><span class="text-slate-200 font-medium">${cn}</span></div>
-                    <div><span class="text-slate-400 font-bold uppercase text-[9px] block">日本語訳 (JP)</span><span class="text-slate-200 font-medium">${jp}</span></div>
-                </div>`;
-            container.classList.remove('hidden'); speakText(word); refreshIcons();
-        }
+        // 变变更为占位功能
+        function toggleStemWordHint(event, word, pos, ipa, cn, jp) {}
 
         function showCustomAlert(title, message, iconType = 'info') {
             const modal = document.getElementById('custom-modal'); document.getElementById('modal-title').textContent = title; document.getElementById('modal-message').textContent = message;
@@ -664,15 +867,8 @@
             document.getElementById('q-category').innerHTML = `${badgeHtml}<span class="${diffColor} px-2.5 py-1 rounded-full font-black text-[10px] uppercase tracking-wider">难度: ${q.category}</span>`;
             updateFavoriteButtonUI(q.id);
 
-            let stemHTML = q.stem;
-            helperVocabBank.forEach(hv => {
-                if (hv.word !== q.correct.toLowerCase()) {
-                    const regex = new RegExp(`\\b${hv.word}\\b`, 'gi');
-                    const escapedCn = hv.cn.replace(/'/g, "\\'"); const escapedJp = hv.jp.replace(/'/g, "\\'");
-                    stemHTML = stemHTML.replace(regex, (m) => `<span class="text-rose-700 font-bold border-b-2 border-rose-400 cursor-pointer inline-block" onclick="toggleStemWordHint(event, '${hv.word}', '${hv.pos}', '${hv.ipa}', '${escapedCn}', '${escapedJp}')">${m}</span>`);
-                }
-            });
-            document.getElementById('q-stem').innerHTML = stemHTML;
+            // 直接载入纯净题干文本（带有下划线）
+            document.getElementById('q-stem').innerHTML = q.stem;
 
             const optsContainer = document.getElementById('q-options-container'); optsContainer.innerHTML = '';
             (q.shuffledOptions || q.options).forEach((opt, idx) => {
@@ -687,12 +883,40 @@
             refreshIcons();
         }
 
+        function initDictNotebook() {
+            renderDictNotebook();
+        }
+
         function checkAnswer() {
             const q = currentQuestions[currentIndex]; if (answeredList[q.id]) { nextQuestion(); return; }
             if (!selectedOption) { showCustomAlert("提示", "请先选择一个答案选项！", "warning"); return; }
             const isCorrect = (selectedOption === q.correct);
             answeredList[q.id] = { chosen: selectedOption, isCorrect: isCorrect };
-            if (!isCorrect) addFavorite(q.id); else if (isMistakeOnlySession) removeFavorite(q.id);
+            
+            if (!isCorrect) {
+                addFavorite(q.id); 
+            } else if (isMistakeOnlySession) {
+                removeFavorite(q.id);
+                // 🌟 核心高阶设计：如果专项错题重考模式下错题完美清零，立刻判定通过并弹窗呈现！
+                if (favoritesList.length === 0) {
+                    renderAnsweredState(q, selectedOption);
+                    updateDashboardStats();
+                    
+                    if (retestTimerInterval) clearInterval(retestTimerInterval);
+                    
+                    setTimeout(() => {
+                        const timerBanner = document.getElementById('retest-timer-banner');
+                        const modeBadge = document.getElementById('practice-mode-badge');
+                        if (timerBanner) timerBanner.classList.add('hidden');
+                        if (modeBadge) modeBadge.classList.remove('hidden');
+                        
+                        showCustomAlert("🏆 错题专项特训完美通关！", `🔥 恭喜通过！斩获托业全胜神级特等大奖励！🎁\n\n所有顽固错题已被您全部无情消灭！您的商务英语内力已突破天际！\n\n南老师为您记特等大功一次！👍`, "success");
+                        isMistakeOnlySession = false;
+                        switchTab('report');
+                    }, 500);
+                    return;
+                }
+            }
             renderAnsweredState(q, selectedOption); updateDashboardStats();
         }
 
@@ -708,6 +932,9 @@
                 optsContainer.appendChild(btn);
             });
 
+            const highlightClass = isCorrect ? 'text-emerald-600 font-bold underline mx-1' : 'text-rose-600 font-bold underline mx-1';
+            document.getElementById('q-stem').innerHTML = q.stem.replace(/________+/g, `<span class="${highlightClass}">${q.correct}</span>`);
+
             const txt = document.getElementById('status-text');
             if (isCorrect) { document.getElementById('dot-status').className="w-2.5 h-2.5 rounded-full bg-emerald-500"; txt.textContent="回答正确 (Correct)"; txt.className="text-xs font-semibold text-emerald-600"; }
             else { document.getElementById('dot-status').className="w-2.5 h-2.5 rounded-full bg-rose-500"; txt.textContent=`回答错误 (Wrong) - 应选 [ ${q.correct} ]`; txt.className="text-xs font-semibold text-rose-600"; }
@@ -722,7 +949,6 @@
             document.getElementById('ana-details').innerHTML = q.explanations.details;
             document.getElementById('ana-cn').textContent = q.explanations.cn;
             document.getElementById('ana-jp').textContent = q.explanations.jp;
-            document.getElementById('analysis-nav').classList.remove('hidden');
             refreshIcons();
         }
 
@@ -732,15 +958,40 @@
             document.getElementById('submit-btn').textContent = "提交答案 (Submit)";
             document.getElementById('analysis-placeholder').classList.remove('hidden');
             document.getElementById('analysis-content').classList.add('hidden');
-            document.getElementById('analysis-nav').classList.add('hidden');
         }
 
         function prevQuestion() { if (currentIndex > 0) { currentIndex--; loadQuestion(); } }
-        function nextQuestion() { if (currentIndex < currentQuestions.length - 1) { currentIndex++; loadQuestion(); } else { showCustomAlert("特训通关！", "当前难度/特训任务已全部完成！现在带你前往难度达成看板。", "success"); switchTab('report'); } }
+        function nextQuestion() { 
+            if (currentIndex < currentQuestions.length - 1) { 
+                currentIndex++; loadQuestion(); 
+            } else { 
+                if (isMistakeOnlySession) {
+                    if (retestTimerInterval) clearInterval(retestTimerInterval);
+                    const timerBanner = document.getElementById('retest-timer-banner');
+                    const modeBadge = document.getElementById('practice-mode-badge');
+                    if (timerBanner) timerBanner.classList.add('hidden');
+                    if (modeBadge) modeBadge.classList.remove('hidden');
+
+                    if (favoritesList.length === 0) {
+                        showCustomAlert("🏆 错题专项特训通过！", `🔥 恭喜通过！斩获全胜大奖励！🎁\n您已完美消除了所有错题！`, "success");
+                        isMistakeOnlySession = false;
+                    } else {
+                        showCustomAlert("专项重考小结", `本次错题轮询重考完毕，部分顽固题目依旧未消除，可前往错题集继续发起专项挑战。`, "info");
+                        isMistakeOnlySession = false;
+                    }
+                } else {
+                    showCustomAlert("特训通关！", "当前难度/特训任务已全部完成！现在带你前往难度达成看板。", "success"); 
+                }
+                switchTab('report'); 
+            } 
+        }
 
         function toggleFavoriteCurrent() { const q = currentQuestions[currentIndex]; if (favoritesList.includes(q.id)) removeFavorite(q.id); else addFavorite(q.id); updateFavoriteButtonUI(q.id); updateDashboardStats(); }
-        function addFavorite(id) { if (!favoritesList.includes(id)) { favoritesList.push(id); localStorage.setItem('toeic_ghost_favorites', JSON.stringify(favoritesList)); } }
-        function removeFavorite(id) { favoritesList = favoritesList.filter(item => item !== id); localStorage.setItem('toeic_ghost_favorites', JSON.stringify(favoritesList)); }
+        
+        // 错题库隔离追加
+        function addFavorite(id) { if (!favoritesList.includes(id)) { favoritesList.push(id); localStorage.setItem(favoritesKey, JSON.stringify(favoritesList)); } }
+        function removeFavorite(id) { favoritesList = favoritesList.filter(item => item !== id); localStorage.setItem(favoritesKey, JSON.stringify(favoritesList)); }
+        
         function updateFavoriteButtonUI(id) { const btn = document.getElementById('favorite-btn'); if (favoritesList.includes(id)) { btn.className = "w-8 h-8 rounded-lg bg-rose-50 text-rose-500 flex items-center justify-center"; btn.innerHTML = `<i data-lucide="bookmark-check" class="w-4 h-4"></i>`; } else { btn.className = "w-8 h-8 rounded-lg bg-slate-50 text-slate-400 flex items-center justify-center"; btn.innerHTML = `<i data-lucide="bookmark" class="w-4 h-4"></i>`; } refreshIcons(); }
 
         function renderMistakesList() {
@@ -749,17 +1000,19 @@
             favoritesList.forEach(id => {
                 const q = questionsDatabase.find(item => item.id === id); if (!q) return;
                 const card = document.createElement('div'); card.className = "bg-[#FAF9F5] p-4 rounded-xl border border-[#EAE6D9] space-y-2";
-                card.innerHTML = `<div class="flex justify-between items-center"><span class="text-[10px] font-bold text-rose-600">ID: #${q.id}</span><button onclick="removeFavoriteAndReload(${q.id})" class="text-slate-400 hover:text-rose-600"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button></div><p class="text-xs font-medium text-slate-700">${q.stem.replace(/________+/g, '_____')}</p><div class="text-[11px] font-bold text-emerald-600">正确答案: ${q.correct}</div>`;
+                card.innerHTML = `<div class="flex justify-between items-center"><span class="text-[10px] font-bold text-rose-600">ID: #${q.id}</span><button onclick="removeFavoriteAndReload(${q.id})" class="text-slate-400 hover:text-rose-600"><i data-lucide=\"trash-2\" class=\"w-3.5 h-3.5\"></i></button></div><p class="text-xs font-medium text-slate-700">${q.stem.replace(/________+/g, '_____')}</p><div class="text-[11px] font-bold text-emerald-600">正确答案: ${q.correct}</div>`;
                 container.appendChild(card);
             });
             refreshIcons();
         }
 
         function removeFavoriteAndReload(id) { removeFavorite(id); renderMistakesList(); updateDashboardStats(); renderPerformanceReport(); }
-        function clearAllFavorites() { showCustomConfirm("确认操作", "确定清空全部错题数据吗？", () => { favoritesList = []; localStorage.removeItem('toeic_ghost_favorites'); renderMistakesList(); updateDashboardStats(); renderPerformanceReport(); }); }
+        function clearAllFavorites() { showCustomConfirm("确认操作", "确定清空全部错题数据吗？", () => { favoritesList = []; localStorage.removeItem(favoritesKey); renderMistakesList(); updateDashboardStats(); renderPerformanceReport(); }); }
 
+        // 开启错题重考
         function startMistakeSession() {
-            if (favoritesList.length === 0) return; isMistakeOnlySession = true;
+            if (favoritesList.length === 0) return; 
+            isMistakeOnlySession = true;
             favoritesList.forEach(id => delete answeredList[id]);
             
             shuffleCurrentQuestions();
@@ -770,6 +1023,25 @@
             }
             
             currentIndex = 0; switchTab('test'); loadQuestion(); updateDashboardStats();
+
+            // 联动计时UI面板
+            retestStartTime = Date.now();
+            if (retestTimerInterval) clearInterval(retestTimerInterval);
+            
+            const timerBanner = document.getElementById('retest-timer-banner');
+            const modeBadge = document.getElementById('practice-mode-badge');
+            if (timerBanner) timerBanner.classList.add('hidden');
+            if (modeBadge) modeBadge.classList.remove('hidden');
+            
+            retestTimerInterval = setInterval(() => {
+                const elapsed = Math.floor((Date.now() - retestStartTime) / 1000);
+                const m = String(Math.floor(elapsed / 60)).padStart(2, '0');
+                const s = String(elapsed % 60).padStart(2, '0');
+                const clockEl = document.getElementById('retest-timer-clock');
+                if (clockEl) clockEl.textContent = `${m}:${s}`;
+            }, 1000);
+            
+            refreshIcons();
         }
 
         function renderPerformanceReport() {
@@ -803,9 +1075,10 @@
             document.getElementById('btn-retest-mistakes-report').disabled = (favoritesList.length === 0);
         }
 
+        // 🌟 升级点：难度的分母直接采用难度库里全部的题数 (qIdArray.length)
         function calculateGroupAccuracy(qIdArray) {
-            const sub = qIdArray.filter(id => answeredList[id] !== undefined); if (sub.length === 0) return 0;
-            return Math.round((sub.filter(id => answeredList[id].isCorrect).length / sub.length) * 100);
+            if (qIdArray.length === 0) return 0;
+            return Math.round((qIdArray.filter(id => answeredList[id] !== undefined && answeredList[id].isCorrect).length / qIdArray.length) * 100);
         }
 
         function animateRadarBar(id, value) {
@@ -813,9 +1086,16 @@
             if(document.getElementById(`radar-bar-${id}`)) document.getElementById(`radar-bar-${id}`).style.width = `${value}%`;
         }
 
+        // 重新开始
         function restartFullSession() {
             showCustomConfirm("重置特训", "确定清空当前进度与错题本，彻底重新开始吗？", () => {
-                answeredList = {}; favoritesList = []; localStorage.removeItem('toeic_ghost_favorites');
+                if (retestTimerInterval) clearInterval(retestTimerInterval);
+                const timerBanner = document.getElementById('retest-timer-banner');
+                const modeBadge = document.getElementById('practice-mode-badge');
+                if (timerBanner) timerBanner.classList.add('hidden');
+                if (modeBadge) modeBadge.classList.remove('hidden');
+                
+                answeredList = {}; favoritesList = []; localStorage.removeItem(favoritesKey);
                 isMistakeOnlySession = false; 
                 currentDifficultyFilter = "all"; 
                 if(document.getElementById('diffFilterSelect')) document.getElementById('diffFilterSelect').value = "all";
@@ -824,15 +1104,728 @@
             });
         }
 
+        // 🌟 升级点：将特训总进度的分母锁定为题库中的全部题数 (questionsDatabase.length)，分子展示用户实际已做完的总题数
         function updateDashboardStats() {
-            const total = currentQuestions.length; 
+            const total = questionsDatabase.length; 
+            let totalAnswered = Object.keys(answeredList).length;
             let answeredInCurrent = 0;
             currentQuestions.forEach(q => { if (answeredList[q.id]) answeredInCurrent++; });
             const correctCount = currentQuestions.filter(q => answeredList[q.id] && answeredList[q.id].isCorrect).length;
             
-            document.getElementById('stat-progress-txt').textContent = `${answeredInCurrent} / ${total}`;
+            document.getElementById('stat-progress-txt').textContent = `${totalAnswered} / ${total}`;
             document.getElementById('stat-accuracy').textContent = answeredInCurrent > 0 ? `${Math.round((correctCount / answeredInCurrent) * 100)}%` : "0%";
             document.getElementById('stat-mistakes').textContent = `${favoritesList.length} Items`;
+        }
+
+        // 在线智能全功能多重词性云端字典抓取
+        async function queryOnlineDict() {
+            const input = document.getElementById('dict-search-input');
+            const input2 = document.getElementById('dict-search-input_tab2');
+            
+            let word = "";
+            const testPanel = document.getElementById('panel-test');
+            if (testPanel && !testPanel.classList.contains('hidden') && input2 && input2.value.trim()) {
+                word = input2.value.trim().toLowerCase();
+            } else if (input && input.value.trim()) {
+                word = input.value.trim().toLowerCase();
+            } else if (input2 && input2.value.trim()) {
+                word = input2.value.trim().toLowerCase();
+            }
+            if (!word) return;
+
+            if (input) input.value = word;
+            if (input2) input2.value = word;
+            
+            let isNewWord = !dictNotebook[word] || !dictNotebook[word].def;
+
+            if (dictNotebook[word] && dictNotebook[word].def) {
+                speakText(word);
+                showWordPracticeCard(word, false);
+                return;
+            }
+
+            const panel = document.getElementById('dict-result-panel');
+            const panel2 = document.getElementById('dict-result-panel_tab2');
+            if (panel) { panel.classList.remove('hidden'); panel.innerHTML = `<div class="text-slate-400 animate-pulse font-medium">正在连线开放式中文云端词典通道...</div>`; }
+            if (panel2) { panel2.classList.remove('hidden'); panel2.innerHTML = `<div class="text-slate-400 animate-pulse font-medium">正在连线开放式中文云端词典通道...</div>`; }
+            
+            let posStr = "";
+            let ipa = "";
+            let translation = "";
+            let exEn = "";
+            let exCn = "";
+            
+            try {
+                try {
+                    const dictRes = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`);
+                    if (dictRes.ok) {
+                        const dictData = await dictRes.json();
+                        if (dictData && dictData.length > 0) {
+                            ipa = dictData[0].phonetic || (dictData[0].phonetics && dictData[0].phonetics[0] ? dictData[0].phonetics[0].text : "");
+                            if (dictData[0].meanings) {
+                                let allPos = dictData[0].meanings.map(m => m.partOfSpeech).filter(Boolean);
+                                posStr = [...new Set(allPos)].join(' / ');
+
+                                for (const entry of dictData) {
+                                    if (entry.meanings) {
+                                        for (const m of entry.meanings) {
+                                            if (m.definitions) {
+                                                for (const d of m.definitions) {
+                                                    if (d.example) {
+                                                        exEn = d.example;
+                                                        break;
+                                                    }
+                                                }
+                                            }
+                                            if (exEn) break;
+                                        }
+                                    }
+                                    if (exEn) break;
+                                }
+                            }
+                        }
+                    }
+                } catch(e) {}
+
+                if(!posStr) posStr = "v. / n.";
+
+                const transRes = await fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=zh-CN&dt=t&dt=bd&dt=at&q=${encodeURIComponent(word)}`);
+                if (!transRes.ok) throw new Error("连接异常");
+                const resJson = await transRes.json();
+                
+                let translationParts = [];
+                if (resJson[1]) {
+                    resJson[1].forEach(posGroup => {
+                        const currentLabel = posGroup[0] || "";
+                        const wordsArr = posGroup[1] || [];
+                        if (wordsArr.length > 0) {
+                            translationParts.push(`[${currentLabel}] ${wordsArr.slice(0, 5).join('、')}`);
+                        }
+                    });
+                }
+                
+                if (translationParts.length > 0) {
+                    translation = translationParts.join(' ； ');
+                } else if (resJson[0] && resJson[0][0] && resJson[0][0][0]) {
+                    translation = resJson[0][0][0];
+                }
+
+                if (!translation) throw new Error("释义空缺");
+                
+                if (exEn) {
+                    try {
+                        const exTransRes = await fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=zh-CN&dt=t&q=${encodeURIComponent(exEn)}`);
+                        if (exTransRes.ok) {
+                            const exTransJson = await exTransRes.json();
+                            if (exTransJson[0] && exTransJson[0][0] && exTransJson[0][0][0]) {
+                                exCn = exTransJson[0][0][0];
+                            }
+                        }
+                    } catch(e) {
+                        exCn = "";
+                    }
+                } else {
+                    exEn = "";
+                    exCn = "";
+                }
+
+                if (!dictNotebook[word]) {
+                    dictNotebook[word] = { count: 0, streak: 0, def: translation, pos: posStr, ipa: ipa, exEn: exEn, exCn: exCn };
+                } else {
+                    if (dictNotebook[word].streak === undefined) dictNotebook[word].streak = 0;
+                    dictNotebook[word].pos = posStr;
+                    dictNotebook[word].ipa = ipa;
+                    dictNotebook[word].def = translation;
+                    dictNotebook[word].exEn = exEn;
+                    dictNotebook[word].exCn = exCn;
+                }
+                localStorage.setItem('toeic_dict_notebook', JSON.stringify(dictNotebook));
+                renderDictNotebook();
+
+                speakText(word);
+                showWordPracticeCard(word, isNewWord);
+            } catch (err) {
+                const errMsg = `<div class="text-rose-500 font-bold flex items-center gap-1"><i data-lucide=\"alert-circle\" class=\"w-3.5 h-3.5\"></i> 未检索到该生词释义，请更正拼写。</div>`;
+                if (panel) panel.innerHTML = errMsg;
+                if (panel2) panel2.innerHTML = errMsg;
+            }
+            refreshIcons();
+        }
+
+        // 呈现单词多维释义卡片并联动两套输入强化面板
+        function showWordPracticeCard(word, isNewWord = false) {
+            if (!dictNotebook[word]) return;
+            activePracticeWord = word;
+            const item = dictNotebook[word];
+
+            const ipaHtml = item.ipa ? `<span class="text-amber-600 font-mono text-[11px]">${item.ipa}</span>` : '';
+            const posHtml = item.pos ? `<span class="bg-amber-100 text-amber-800 text-[9px] px-1.5 py-0.5 rounded-md font-sans uppercase font-black tracking-wide">${item.pos}</span>` : '';
+
+            const exampleBlockHtml = item.exEn ? `
+                <div class="bg-white p-2.5 rounded-xl border border-slate-200 text-slate-600">
+                    <span class="text-slate-400 block text-[9px] font-bold uppercase tracking-wider mb-0.5">【例句】</span>
+                    <p class="text-slate-700 font-medium font-serif leading-normal">"${item.exEn}"</p>
+                    ${item.exCn ? `<p class="text-slate-400 mt-0.5">${item.exCn}</p>` : ''}
+                </div>
+            ` : '';
+
+            const getNoteHtml = (suffix) => `
+                <div class="mt-2 space-y-1">
+                    <span class="text-slate-400 block text-[9px] font-bold uppercase tracking-wider">【专属笔记】</span>
+                    <textarea id="dict-note-input${suffix}" oninput="saveWordNote('${word.replace(/'/g, "\\'")}', this.value)" placeholder="在此写入个性化记忆诀窍、固定搭配或笔记..." class="w-full bg-white text-xs p-2 rounded-xl border border-slate-200 focus:outline-none focus:border-amber-500 font-medium text-slate-800 shadow-sm transition-all" rows="2">${item.note || ''}</textarea>
+                </div>
+            `;
+
+            const baseContent = `
+                <div class="flex justify-between items-center font-bold text-slate-900 border-b border-slate-200 pb-1.5">
+                    <span class="flex items-center gap-2">
+                        <button onclick="speakText('${word.replace(/'/g, "\\'")}')" class="text-amber-600 hover:text-amber-700 flex items-center gap-1 bg-amber-50 px-2 py-0.5 rounded-lg border border-amber-200" title="点击朗进发音">
+                            <i data-lucide="volume-2" class="w-3.5 h-3.5"></i> <span class="text-slate-900 font-black text-sm">${word}</span>
+                        </button>
+                        ${ipaHtml}
+                        ${posHtml}
+                    </span>
+                </div>
+                <div class="mt-2 space-y-2">
+                    <div class="text-slate-800 font-semibold bg-amber-50/40 p-2.5 rounded-xl border border-amber-100/60 leading-relaxed">${item.def}</div>
+                    ${exampleBlockHtml}
+            `;
+
+            const panel = document.getElementById('dict-result-panel');
+            const panel2 = document.getElementById('dict-result-panel_tab2');
+            if (panel) { panel.classList.remove('hidden'); panel.innerHTML = baseContent + getNoteHtml('') + '</div>'; }
+            if (panel2) { panel2.classList.remove('hidden'); panel2.innerHTML = baseContent + getNoteHtml('_tab2') + '</div>'; }
+
+            // 同步激活两个面板的输入强化机制
+            const pracPanel = document.getElementById('dict-practice-panel');
+            const pracPanel2 = document.getElementById('dict-practice-panel_tab2');
+            if (pracPanel) pracPanel.classList.remove('hidden');
+            if (pracPanel2) pracPanel2.classList.remove('hidden');
+            
+            const targetWord = document.getElementById('practice-target-word');
+            const targetWord2 = document.getElementById('practice-target-word_tab2');
+            if (targetWord) targetWord.textContent = word;
+            if (targetWord2) targetWord2.textContent = word;
+            
+            const pInput = document.getElementById('dict-practice-input');
+            const pInput2 = document.getElementById('dict-practice-input_tab2');
+            const placeholderText = `连续重复输入 "${word}" 进行抗遗忘记忆...`;
+            if (pInput) pInput.placeholder = placeholderText;
+            if (pInput2) pInput2.placeholder = placeholderText;
+            
+            const feedback = document.getElementById('practice-feedback');
+            const feedback2 = document.getElementById('practice-feedback_tab2');
+            if (feedback) feedback.classList.add('hidden');
+            if (feedback2) feedback2.classList.add('hidden');
+            
+            refreshIcons();
+        }
+
+        // 🌟 新增功能：保存生词笔记并跨面板实时同步
+        function saveWordNote(word, val) {
+            if (dictNotebook[word]) {
+                dictNotebook[word].note = val;
+                localStorage.setItem('toeic_dict_notebook', JSON.stringify(dictNotebook));
+                const targetId = event.target.id === 'dict-note-input' ? 'dict-note-input_tab2' : 'dict-note-input';
+                const otherInput = document.getElementById(targetId);
+                if (otherInput) otherInput.value = val;
+            }
+        }
+
+        function checkPracticeInput() {
+            const pInput = document.getElementById('dict-practice-input');
+            const pInput2 = document.getElementById('dict-practice-input_tab2');
+            let userVal = "";
+            
+            const testPanel = document.getElementById('panel-test');
+            const dictPanel = document.getElementById('panel-dict');
+            
+            if (testPanel && !testPanel.classList.contains('hidden') && pInput2) {
+                userVal = pInput2.value.trim().toLowerCase();
+            } else if (dictPanel && !dictPanel.classList.contains('hidden') && pInput) {
+                userVal = pInput.value.trim().toLowerCase();
+            } else if (pInput2 && pInput2.value.trim()) {
+                userVal = pInput2.value.trim().toLowerCase();
+            } else if (pInput) {
+                userVal = pInput.value.trim().toLowerCase();
+            }
+            
+            if (activePracticeWord && userVal === activePracticeWord) {
+                executePracticeSuccess();
+            }
+        }
+
+        // 核心拼写判定处理中枢
+        function submitPracticeWord() {
+            const pInput = document.getElementById('dict-practice-input');
+            const pInput2 = document.getElementById('dict-practice-input_tab2');
+            let userVal = "";
+            let activeInput = null;
+            
+            const testPanel = document.getElementById('panel-test');
+            const dictPanel = document.getElementById('panel-dict');
+            
+            if (testPanel && !testPanel.classList.contains('hidden') && pInput2) {
+                userVal = pInput2.value.trim().toLowerCase();
+                activeInput = pInput2;
+            } else if (dictPanel && !dictPanel.classList.contains('hidden') && pInput) {
+                userVal = pInput.value.trim().toLowerCase();
+                activeInput = pInput;
+            } else if (pInput2 && pInput2.value.trim()) {
+                userVal = pInput2.value.trim().toLowerCase();
+                activeInput = pInput2;
+            } else if (pInput) {
+                userVal = pInput.value.trim().toLowerCase();
+                activeInput = pInput;
+            }
+            
+            if (!activePracticeWord || !dictNotebook[activePracticeWord]) return;
+            if (userVal === activePracticeWord) {
+                executePracticeSuccess();
+            } else {
+                const feedback = document.getElementById('practice-feedback');
+                const feedback2 = document.getElementById('practice-feedback_tab2');
+                const errMsg = `❌ 拼写未对。目标词应为: "${activePracticeWord}"，请核对。`;
+                const errClass = "text-[11px] font-bold text-rose-700 bg-rose-50 border border-rose-200 p-2 rounded-xl mt-1 block cursor-pointer";
+                
+                if (feedback) { feedback.classList.remove('hidden'); feedback.className = errClass; feedback.textContent = errMsg; }
+                if (feedback2) { feedback2.classList.remove('hidden'); feedback2.className = errClass; feedback2.textContent = errMsg; }
+                if (activeInput) activeInput.select();
+            }
+        }
+
+        function executePracticeSuccess() {
+            const pInput = document.getElementById('dict-practice-input');
+            const pInput2 = document.getElementById('dict-practice-input_tab2');
+            dictNotebook[activePracticeWord].count += 1;
+            localStorage.setItem('toeic_dict_notebook', JSON.stringify(dictNotebook));
+            speakText(activePracticeWord);
+            
+            if (pInput) pInput.value = "";
+            if (pInput2) pInput2.value = "";
+            
+            const testPanel = document.getElementById('panel-test');
+            const dictPanel = document.getElementById('panel-dict');
+            if (testPanel && !testPanel.classList.contains('hidden') && pInput2) {
+                pInput2.focus();
+            } else if (dictPanel && !dictPanel.classList.contains('hidden') && pInput) {
+                pInput.focus();
+            }
+            
+            renderDictNotebook();
+            showWordPracticeCard(activePracticeWord, false);
+            
+            const feedback = document.getElementById('practice-feedback');
+            const feedback2 = document.getElementById('practice-feedback_tab2');
+            let rankTitle = "初见";
+            if (dictNotebook[activePracticeWord].count >= 15) rankTitle = "钻石";
+            else if (dictNotebook[activePracticeWord].count >= 10) rankTitle = "黄金";
+            else if (dictNotebook[activePracticeWord].count >= 6) rankTitle = "白银";
+            else if (dictNotebook[activePracticeWord].count >= 3) rankTitle = "青铜";
+            
+            const successMsg = `💚 正确！已累计拼写强化至 ${dictNotebook[activePracticeWord].count} 次 (${rankTitle})。点击此处或目标词可一键清空复原。`;
+            const successClass = "text-[11px] font-bold text-emerald-800 bg-emerald-50 border border-emerald-200 p-2 rounded-xl mt-1 block cursor-pointer";
+            
+            if (feedback) { feedback.classList.remove('hidden'); feedback.className = successClass; feedback.textContent = successMsg; }
+            if (feedback2) { feedback2.classList.remove('hidden'); feedback2.className = successClass; feedback2.textContent = successMsg; }
+        }
+
+        // 初始化/加载自测闪卡考试
+        function startWordExam(word) {
+            if (!dictNotebook[word]) return;
+            currentExamWord = word;
+            
+            // 联动控制：加载新词考核时默认在中间隐藏字典面板
+            examDictVisible = false;
+            
+            // 确保同步为当前备考词输入目标
+            activePracticeWord = word;
+            const targetWord = document.getElementById('practice-target-word');
+            if (targetWord) targetWord.textContent = word;
+            const pInput = document.getElementById('dict-practice-input');
+            if (pInput) pInput.placeholder = `连续重复输入 "${word}" 进行抗遗忘记忆...`;
+
+            const item = dictNotebook[word];
+            const ipaHtml = item.ipa ? `<span class="text-amber-600 font-mono text-[11px]">${item.ipa}</span>` : '';
+            const posHtml = item.pos ? `<span class="bg-amber-100 text-amber-800 text-[9px] px-1.5 py-0.5 rounded-md font-sans uppercase font-black tracking-wide">${item.pos}</span>` : '';
+            const exampleBlockHtml = item.exEn ? `
+                <div class="bg-white p-2.5 rounded-xl border border-slate-200 text-slate-600">
+                    <span class="text-slate-400 block text-[9px] font-bold uppercase tracking-wider mb-0.5">【例句】</span>
+                    <p class="text-slate-700 font-medium font-serif leading-normal">"${item.exEn}"</p>
+                    ${item.exCn ? `<p class="text-slate-400 mt-0.5">${item.exCn}</p>` : ''}
+                </div>
+            ` : '';
+
+            const cardContent = `
+                <div class="flex justify-between items-center font-bold text-slate-900 border-b border-slate-200 pb-1.5">
+                    <span class="flex items-center gap-2">
+                        <button onclick="speakText('${word.replace(/'/g, "\\'")}')" class="text-amber-600 hover:text-amber-700 flex items-center gap-1 bg-amber-50 px-2 py-0.5 rounded-lg border border-amber-200" title="点击朗读发音">
+                            <i data-lucide="volume-2" class="w-3.5 h-3.5"></i> <span class="text-slate-900 font-black text-sm">${word}</span>
+                        </button>
+                        ${ipaHtml}
+                        ${posHtml}
+                    </span>
+                </div>
+                <div class="mt-2 space-y-2">
+                    <div class="text-slate-800 font-semibold bg-amber-50/40 p-2.5 rounded-xl border border-amber-100/60 leading-relaxed">${item.def}</div>
+                    ${exampleBlockHtml}
+                    <div class="mt-2 space-y-1">
+                        <span class="text-slate-400 block text-[9px] font-bold uppercase tracking-wider">【专属笔记】</span>
+                        <textarea id="dict-note-input" oninput="saveWordNote('${word.replace(/'/g, "\\'")}', this.value)" placeholder="在此输入个性化记忆诀窍、固定搭配或笔记..." class="w-full bg-white text-xs p-2 rounded-xl border border-slate-200 focus:outline-none focus:border-amber-500 font-medium text-slate-800 shadow-sm transition-all" rows="2">${item.note || ''}</textarea>
+                    </div>
+                </div>
+            `;
+            
+            const panel = document.getElementById('dict-result-panel');
+            if (panel) {
+                panel.innerHTML = cardContent;
+                panel.classList.add('hidden'); // 考核开启时默认隐藏
+            }
+
+            renderExamCard();
+        }
+
+        // 🌟 升级点：“点击显示/隐藏字典”时，输入强化记忆与字典解释一起显示/隐藏
+        function toggleExamDict() {
+            examDictVisible = !examDictVisible;
+            const panel = document.getElementById('dict-result-panel');
+            const pracPanel = document.getElementById('dict-practice-panel');
+            if (panel) {
+                if (examDictVisible) panel.classList.remove('hidden');
+                else panel.classList.add('hidden');
+            }
+            if (pracPanel) {
+                if (examDictVisible) pracPanel.classList.remove('hidden');
+                else pracPanel.classList.add('hidden');
+            }
+        }
+
+        function updateExamThreshold(val) {
+            let num = parseInt(val) || 3;
+            if (num < 1) num = 1;
+            examThreshold = num;
+            localStorage.setItem('toeic_exam_threshold', num);
+            const threshText = document.getElementById('exam-threshold-text');
+            if (threshText) threshText.textContent = `满 ${examThreshold} 次自动移出`;
+        }
+
+        // 渲染考试闪卡
+        function renderExamCard() {
+            const panel = document.getElementById('dict-exam-panel');
+            const placeholder = document.getElementById('dict-exam-placeholder');
+            if (!panel || !placeholder) return;
+            
+            panel.classList.remove('hidden');
+            placeholder.classList.add('hidden');
+            
+            const item = dictNotebook[currentExamWord];
+            if (item.streak === undefined) item.streak = 0;
+            const currentStreak = item.streak;
+            const currentInputCount = item.count || 0;
+
+            panel.innerHTML = `
+                <div class="space-y-4 flex-1 flex flex-col justify-between">
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center border-b border-[#F3EFE3] pb-2 flex-wrap gap-1 text-[11px]">
+                            <div class="flex items-center text-slate-600 font-bold">
+                                <span>移出目标: 连续做对</span>
+                                <input type="number" id="exam-threshold-input" onchange="updateExamThreshold(this.value)" value="${examThreshold}" min="1" class="w-10 h-5 text-center bg-white border border-[#E1DBC9] rounded mx-1 font-black text-amber-700 focus:outline-none">
+                                <span>次 ⭕</span>
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-2 gap-2 bg-[#FAF9F5] p-2 rounded-xl border border-[#EAE6D9] text-center font-bold text-[11px]">
+                            <div class="text-slate-600">输入次数: <span class="text-slate-900 text-xs font-black block mt-0.5">${currentInputCount} 次</span></div>
+                            <div class="text-amber-800">连对次数: <span class="text-amber-600 text-xs font-black block mt-0.5">${currentStreak} 次</span></div>
+                        </div>
+                        
+                        <div class="text-center py-6 bg-white rounded-2xl border border-[#EAE6D9] shadow-sm">
+                            <button onclick="speakText('${currentExamWord.replace(/'/g, "\\'")}')" class="text-2xl font-black text-slate-900 hover:text-amber-600 inline-flex items-center gap-1.5 focus:outline-none" title="重播发音">
+                                ${currentExamWord}
+                                <i data-lucide="volume-2" class="w-4.5 h-4.5 text-amber-500"></i>
+                            </button>
+                            ${item.ipa ? `<p class="text-slate-400 font-mono text-[10px] mt-0.5">${item.ipa}</p>` : ''}
+                        </div>
+
+                        <div class="text-center">
+                            <button onclick="toggleExamDict()" class="px-3 py-1 bg-white hover:bg-slate-50 border border-[#EAE6D9] text-slate-600 font-bold rounded-lg transition-all inline-flex items-center gap-1 shadow-sm text-[11px]">
+                                <i data-lucide="eye" class="w-3.5 h-3.5"></i> <span>点击显示/隐藏字典</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-3 pt-2" id="exam-action-buttons">
+                        <button onclick="handleExamAssessment(false)" class="bg-rose-500 hover:bg-rose-600 text-white font-black py-3 rounded-xl text-sm transition-all shadow-md shadow-rose-500/10 active:scale-95 flex items-center justify-center gap-1.5">
+                            <i data-lucide="x" class="w-4 h-4"></i> 忘记了 (❌)
+                        </button>
+                        <button onclick="handleExamAssessment(true)" class="bg-emerald-600 hover:bg-emerald-700 text-white font-black py-3 rounded-xl text-sm transition-all shadow-md shadow-emerald-600/10 active:scale-95 flex items-center justify-center gap-1.5">
+                            <i data-lucide="check" class="w-4 h-4"></i> 记得 (⭕)
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            speakText(currentExamWord);
+            refreshIcons();
+        }
+
+        // 处理自测评估判定逻辑
+        function handleExamAssessment(remembered) {
+            if (!currentExamWord || !dictNotebook[currentExamWord]) return;
+            const item = dictNotebook[currentExamWord];
+            
+            // 每次考核，无论记得与否，输入次数均自增 +1
+            item.count = (item.count || 0) + 1;
+            
+            if (remembered) {
+                item.streak = (item.streak || 0) + 1;
+                
+                // 检查连对次数是否达到设定的删除门槛
+                if (item.streak >= examThreshold) {
+                    const deletedWord = currentExamWord;
+                    delete dictNotebook[deletedWord];
+                    localStorage.setItem('toeic_dict_notebook', JSON.stringify(dictNotebook));
+                    
+                    renderDictNotebook();
+                    showCustomAlert("移出生词库", `生词 "${deletedWord}" 已连续做对 ${examThreshold} 次，自动移出生词库跟踪！`, "success");
+                    loadNextExamQuestion();
+                    return;
+                }
+                localStorage.setItem('toeic_dict_notebook', JSON.stringify(dictNotebook));
+                renderDictNotebook();
+                loadNextExamQuestion(); 
+            } else {
+                // 忘记了：连对直接重置归零
+                item.streak = 0;
+                localStorage.setItem('toeic_dict_notebook', JSON.stringify(dictNotebook));
+                renderDictNotebook();
+                
+                // 🌟 升级点：忘记了的时候，输入强化记忆和字典一起强制显示出来
+                examDictVisible = true;
+                const panel = document.getElementById('dict-result-panel');
+                const pracPanel = document.getElementById('dict-practice-panel');
+                if (panel) panel.classList.remove('hidden');
+                if (pracPanel) pracPanel.classList.remove('hidden');
+                
+                renderExamCard();
+                
+                // 动态将按钮替换为复戏完毕过渡按钮
+                const btnBlock = document.getElementById('exam-action-buttons');
+                if (btnBlock) {
+                    btnBlock.className = "pt-2";
+                    btnBlock.innerHTML = `
+                        <button onclick="loadNextExamQuestion()" class="w-full bg-slate-900 text-white font-black py-2.5 rounded-xl text-xs hover:bg-amber-600 transition-all shadow-sm flex items-center justify-center gap-1">
+                            <span>我已记住，看下一题</span> <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                        </button>
+                    `;
+                    refreshIcons();
+                }
+            }
+        }
+
+        // 顺次/随机提取下一题，并接管生词考试持久计时核心
+        function loadNextExamQuestion() {
+            const words = Object.keys(dictNotebook);
+            if (words.length === 0) {
+                const panel = document.getElementById('dict-exam-panel');
+                const placeholder = document.getElementById('dict-exam-placeholder');
+                if (panel) panel.classList.add('hidden');
+                if (placeholder) placeholder.classList.remove('hidden');
+                
+                // 🌟 升级点：生词考试中心清零通关，结算极品大奖励！
+                if (wordExamInterval) {
+                    clearInterval(wordExamInterval);
+                    showCustomAlert("🏆 词库完美大通关！", `🔥 恭喜通过！斩获托业生词歼灭战特等大奖励！🎁\n\n您已成功将生词库彻底归零清空，词汇神经反射速度拉满！\n\n南老师愿称你为拼写界最强！战力突破天际！🚀`, "success");
+                    wordExamInterval = null;
+                }
+                currentExamWord = "";
+                return;
+            }
+            
+            // 🌟 如果计时器尚未开启，在这里一键激活
+            if (!wordExamInterval) {
+                wordExamStartTime = Date.now();
+                wordExamInterval = setInterval(() => {
+                    const elapsed = Math.floor((Date.now() - wordExamStartTime) / 1000);
+                    const mStr = String(Math.floor(elapsed / 60)).padStart(2, '0');
+                    const sStr = String(elapsed % 60).padStart(2, '0');
+                    const clockEl = document.getElementById('word-exam-timer-clock');
+                    if (clockEl) clockEl.textContent = `${mStr}:${sStr}`;
+                }, 1000);
+            }
+            
+            let nextWord = words[Math.floor(Math.random() * words.length)];
+            if (words.length > 1 && nextWord === currentExamWord) {
+                while (nextWord === currentExamWord) {
+                    nextWord = words[Math.floor(Math.random() * words.length)];
+                }
+            }
+            
+            startWordExam(nextWord);
+        }
+
+        function deleteSingleWord(word, event) {
+            if (event) event.stopPropagation(); 
+            if (dictNotebook[word]) {
+                delete dictNotebook[word];
+                localStorage.setItem('toeic_dict_notebook', JSON.stringify(dictNotebook));
+                renderDictNotebook();
+                
+                if (activePracticeWord === word || currentExamWord === word) {
+                    const panel = document.getElementById('dict-exam-panel');
+                    const placeholder = document.getElementById('dict-exam-placeholder');
+                    if (panel) panel.classList.add('hidden');
+                    if (placeholder) placeholder.classList.remove('hidden');
+                    currentExamWord = "";
+                }
+            }
+        }
+
+        // 导出生词本 EXCEL 
+        function exportNotebookToExcel() {
+            const words = Object.keys(dictNotebook);
+            if (words.length === 0) {
+                showCustomAlert("导出提示", "当前生词练习本空空如也，无法导出！", "warning");
+                return;
+            }
+            
+            let csvContent = "\ufeff单词,词性,音标,意思,英文对应商务场景例句,中文对应例句翻译,抗遗忘记忆次数\n";
+            words.forEach(word => {
+                const item = dictNotebook[word];
+                const cleanPos = (item.pos || "").replace(/"/g, '""');
+                const cleanIpa = (item.ipa || "").replace(/"/g, '""');
+                const cleanDef = (item.def || "").replace(/"/g, '""');
+                const cleanExEn = (item.exEn || "").replace(/"/g, '""');
+                const cleanExCn = (item.exCn || "").replace(/"/g, '""');
+                csvContent += `"${word}","${cleanPos}","${cleanIpa}","${cleanDef}","${cleanExEn}","${cleanExCn}",${item.count}\n`;
+            });
+            
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.setAttribute("href", url);
+            
+            const now = new Date();
+            const y = now.getFullYear();
+            const m = String(now.getMonth() + 1).padStart(2, '0');
+            const d = String(now.getDate()).padStart(2, '0');
+            
+            link.setAttribute("download", `toeic_notebook_${y}${m}${d}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // 导出全量错题本
+        function exportMistakesToExcel() {
+            if (favoritesList.length === 0) {
+                showCustomAlert("导出提示", "当前错题本空空如也，无法导出！", "warning");
+                return;
+            }
+            
+            let csvContent = "\ufeff题目ID,全真题干,正确答案,难度级别,核心考点,深度解析指南,中文翻译参考,日本語译参考\n";
+            favoritesList.forEach(id => {
+                const q = questionsDatabase.find(item => item.id === id);
+                if (q) {
+                    const cleanStem = (q.stem || "").replace(/"/g, '""').replace(/\r?\n/g, ' ');
+                    const cleanCorrect = (q.correct || "").replace(/"/g, '""');
+                    const cleanCategory = (q.category || "").replace(/"/g, '""');
+                    const cleanTarget = (q.target || "").replace(/"/g, '""');
+                    const cleanGuide = (q.explanations?.guide || "").replace(/<[^>]*>/g, '').replace(/"/g, '""').replace(/\r?\n/g, ' ');
+                    const cleanCn = (q.explanations?.cn || "").replace(/"/g, '""').replace(/\r?\n/g, ' ');
+                    const cleanJp = (q.explanations?.jp || "").replace(/"/g, '""').replace(/\r?\n/g, ' ');
+                    
+                    csvContent += `"${q.id}","${cleanStem}","${cleanCorrect}","${cleanCategory}","${cleanTarget}","${cleanGuide}","${cleanCn}","${cleanJp}"\n`;
+                }
+            });
+            
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.setAttribute("href", url);
+            
+            const now = new Date();
+            const y = now.getFullYear();
+            const m = String(now.getMonth() + 1).padStart(2, '0');
+            const d = String(now.getDate()).padStart(2, '0');
+            
+            link.setAttribute("download", `toeic_mistakes_${y}${m}${d}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // 渲染生词标签列表
+        function renderDictNotebook() {
+            const container = document.getElementById('dict-notebook-list');
+            if (!container) return;
+            container.innerHTML = '';
+            const words = Object.keys(dictNotebook);
+            
+            const totalCountEl = document.getElementById('dict-total-count');
+            if (totalCountEl) totalCountEl.textContent = words.length;
+
+            let totalPractice = 0;
+            words.forEach(word => {
+                totalPractice += (dictNotebook[word].count || 0);
+            });
+            const totalPracticeEl = document.getElementById('dict-total-practice');
+            if (totalPracticeEl) totalPracticeEl.textContent = totalPractice;
+
+            if (words.length === 0) {
+                container.innerHTML = `<span class="text-[11px] text-slate-400 italic">暂无生词记录，请在上方输入框键入回车检索。</span>`;
+                return;
+            }
+            words.forEach(word => {
+                const item = dictNotebook[word];
+                
+                let pillClass = "bg-slate-100 border-slate-300 hover:bg-slate-200/70 text-slate-800"; 
+                if (item.count >= 15) pillClass = "bg-purple-50 border-purple-300 hover:bg-purple-100/70 text-purple-900"; 
+                else if (item.count >= 10) pillClass = "bg-yellow-50 border-yellow-300 hover:bg-yellow-100/70 text-yellow-900"; 
+                else if (item.count >= 6) pillClass = "bg-blue-50 border-blue-300 hover:bg-blue-100/70 text-blue-900"; 
+                else if (item.count >= 3) pillClass = "bg-amber-50 border-amber-200 hover:bg-amber-100/70 text-amber-900"; 
+
+                const pillWrapper = document.createElement('div');
+                pillWrapper.className = `inline-flex items-center border rounded-xl overflow-hidden shadow-sm transition-all ${pillClass}`;
+                
+                pillWrapper.innerHTML = `
+                    <button onclick="speakText('${word.replace(/'/g, "\\")}'); startWordExam('${word.replace(/'/g, "\\")}')" class="px-2.5 py-1 text-xs font-semibold flex items-center space-x-1 focus:outline-none">
+                        <span>${word}</span>
+                        <span class="bg-amber-500 text-white text-[9px] px-1 rounded-full font-black">${item.count}</span>
+                    </button>
+                    <button onclick="deleteSingleWord('${word.replace(/'/g, "\\'")}', event)" class="px-1.5 py-1 text-slate-400 hover:text-rose-600 border-l border-black/5 hover:bg-rose-50/50 transition-colors focus:outline-none" title="删除该词">
+                        <i data-lucide="x" class="w-3 h-3"></i>
+                    </button>
+                `;
+                container.appendChild(pillWrapper);
+            });
+            refreshIcons();
+        }
+
+        // 清空生词练习本数据
+        function clearDictNotebook() {
+            showCustomConfirm("确认操作", "确定要彻底清空生词强化练习本吗？", () => {
+                if (wordExamInterval) { clearInterval(wordExamInterval); wordExamInterval = null; }
+                dictNotebook = {};
+                localStorage.removeItem('toeic_dict_notebook');
+                renderDictNotebook();
+                
+                const panel = document.getElementById('dict-result-panel');
+                const panel2 = document.getElementById('dict-result-panel_tab2');
+                if (panel) panel.classList.add('hidden');
+                if (panel2) panel2.classList.add('hidden');
+                
+                const pracPanel = document.getElementById('dict-practice-panel');
+                const pracPanel2 = document.getElementById('dict-practice-panel_tab2');
+                if (pracPanel) pracPanel.classList.add('hidden');
+                if (pracPanel2) pracPanel2.classList.add('hidden');
+                
+                const examPanel = document.getElementById('dict-exam-panel');
+                const examPlaceholder = document.getElementById('dict-exam-placeholder');
+                if (examPanel) examPanel.classList.add('hidden');
+                if (examPlaceholder) examPlaceholder.classList.remove('hidden');
+                currentExamWord = "";
+            });
         }
     </script>
 </body>

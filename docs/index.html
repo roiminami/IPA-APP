@@ -16,9 +16,12 @@
     <script src="books.js"></script>
 
     <style>
+        /* ⚡ 核心修复：强制主页面底层为深色背景，从根本上杜绝白闪 */
+        html, body {
+            background-color: #020617;
+        }
         body {
             font-family: 'Inter', 'Noto Sans SC', 'Noto Sans JP', sans-serif;
-            background-color: transparent;
         }
 
         /* 为大容量单元容器定制的隐藏式微距滚动条 */
@@ -39,7 +42,8 @@
 </head>
 <body class="text-slate-200 min-h-screen flex flex-col antialiased relative">
 
-    <iframe src="Cyberpunk/wallpaper.html" class="fixed inset-0 w-full h-full border-none -z-50 pointer-events-none"></iframe>
+    <!-- ⚡ 核心修复：给 iframe 加上了 bg-[#0a0a12] 深色底，让其加载时不会露出默认的白色 -->
+    <iframe src="Cyberpunk/wallpaper.html" class="fixed inset-0 w-full h-full border-none -z-50 pointer-events-none bg-[#0a0a12]"></iframe>
 
     <header class="border-b border-slate-800/50 bg-slate-950/35 backdrop-blur-sm sticky top-0 z-40">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
