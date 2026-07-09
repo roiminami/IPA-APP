@@ -9,25 +9,26 @@
 	<link rel="stylesheet" type="text/css" href="css/normalize.css" />
 	<link rel="stylesheet" type="text/css" href="css/demo.css" />
     <style>
-		/* ⚡ 彻底根除闪烁：将原本动态加载的 main.jpg 直接作为 CSS 强固背景铺底 */
-		html, body, .slideshow, .container {
+		html, body {
 			margin: 0;
 			padding: 0;
 			width: 100%;
 			height: 100%;
 			overflow: hidden;
-			background: url('img/main.jpg') no-repeat center center;
-			background-size: cover !important;
+			background-color: #0a0a12; /* 使用深色底，确保初始全黑不刺眼 */
 		}
 
-		/* 锁死画布与图片尺寸 */
-		#container, #myCanvas, #imgif, .img {
+		/* ⚡ 核心修复：初始让渲染容器隐形，防止 JS 初始化未完成时的“图片变大”和“闪烁” */
+		.slideshow, .container {
+			opacity: 0;
+			transition: opacity 0.3s ease-in-out;
+		}
+
+		/* 保持原有的绝对定位，但绝不使用 !important 强制尺寸，避免破坏 WebGL 视口计算 */
+		#container {
 			position: absolute;
 			top: 0;
 			left: 0;
-			width: 100% !important;
-			height: 100% !important;
-			object-fit: cover; 
 		}
 	</style>
 </head>
@@ -42,7 +43,7 @@
 	</div>
 	
 	<div class="container">		   
-		<img class="img" id="imgif" alt="logo" src="img/main.jpg" />
+		<img class="img" id="imgif" alt="logo" src="img/main.png" />
 		<canvas class="img" id='myCanvas'></canvas>			
 		<p class="nosupport">Sorry, but your browser does not support WebGL!</p>
 	</div>
@@ -51,6 +52,17 @@
 	<script src="js/index.js"></script>
 
 	<script>
+		// ⚡ 核心修复：等待页面图片加载完毕、WebGL 视口尺寸计算完成后，再优雅淡入，彻底解决闪烁与变形
+		window.addEventListener('load', () => {
+			// 延迟 100ms 确保 WebGL 上下文第一帧顺利在后台渲染完毕
+			setTimeout(() => {
+				const slideshow = document.querySelector('.slideshow');
+				const container = document.querySelector('.container');
+				if (slideshow) slideshow.style.opacity = '1';
+				if (container) container.style.opacity = '1';
+			}, 100);
+		});
+
 		let resizeTimer;
 		window.addEventListener('resize', () => {
 			clearTimeout(resizeTimer);
