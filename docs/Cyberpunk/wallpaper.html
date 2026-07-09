@@ -15,7 +15,7 @@
 			width: 100%;
 			height: 100%;
 			overflow: hidden;
-			background-color: #0a0a12; /* 确保绝对暗色底 */
+			background-color: #0a0a12; 
 		}
 
 		.slideshow, .container {
@@ -27,7 +27,6 @@
 			overflow: hidden;
 		}
 
-		/* ⚡ 终极修复：初始全部隐形，并延迟 200ms 淡入 */
 		#container, #myCanvas, #imgif, .img {
 			position: absolute;
 			top: 0;
@@ -35,21 +34,16 @@
 			width: 100% !important;
 			height: 100% !important;
 			object-fit: cover; 
-			
-			opacity: 0; /* 初始隐形，防止图片未加载、Canvas未初始化时的白闪 */
-			animation: rainWindowFadeIn 0.4s ease-in-out forwards;
-			animation-delay: 0.2s; /* 核心：给 JS 运行和图片解码留出 200 毫秒的纯暗色缓冲期 */
-		}
-
-		@keyframes rainWindowFadeIn {
-			to { opacity: 1; }
 		}
 	</style>
 </head>
 
 <body class="demo-1">
+
+	<div id="loadingMask" style="position: fixed; inset: 0; background-color: #0a0a12; z-index: 999999; transition: opacity 0.4s ease-out; pointer-events: none;"></div>
+
 	<div class="slideshow">
-		<canvas id="container"></canvas>
+		<canvas id="container" style="position:absolute"></canvas>
 		<div class="slide" id="main" data-weather="rain"></div>
 		<nav class="slideshow__nav">				
 			<a class="nav-item" href="#main"></a>			
@@ -66,6 +60,18 @@
 	<script src="js/index.js"></script>
 
 	<script>
+		// ⚡ 监听整个页面所有资源（大图、水滴纹理、WebGL上下文）彻底就绪的事件
+		window.addEventListener('load', () => {
+			// 给 WebGL 渲染出第一帧留出 250 毫秒的黄金缓冲期
+			setTimeout(() => {
+				const mask = document.getElementById('loadingMask');
+				if (mask) {
+					mask.style.opacity = '0'; // 优雅淡出
+					setTimeout(() => mask.remove(), 400); // 动画结束后销毁，释放内存
+				}
+			}, 250);
+		});
+
 		let resizeTimer;
 		window.addEventListener('resize', () => {
 			clearTimeout(resizeTimer);
