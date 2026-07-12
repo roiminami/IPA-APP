@@ -892,6 +892,15 @@
             if (!selectedOption) { showCustomAlert("提示", "请先选择一个答案选项！", "warning"); return; }
             const isCorrect = (selectedOption === q.correct);
             answeredList[q.id] = { chosen: selectedOption, isCorrect: isCorrect };
+// 🌟 新增：以最后一次交卷/回答战绩为准，覆盖写入该单元的总题数与做对题数
+        let answeredInCurrentUnit = 0;
+        currentQuestions.forEach(q => { if (answeredList[q.id]) answeredInCurrentUnit++; });
+        const correctCountInUnit = currentQuestions.filter(q => answeredList[q.id] && answeredList[q.id].isCorrect).length;
+        
+        if (answeredInCurrentUnit > 0) {
+            localStorage.setItem(`toeic_total_${window.unitParam}`, questionsDatabase.length);
+            localStorage.setItem(`toeic_correct_${window.unitParam}`, correctCountInUnit);
+        }
             
             if (!isCorrect) {
                 addFavorite(q.id); 

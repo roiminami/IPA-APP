@@ -2,79 +2,77 @@
  * 📖 3D立体书 & 前端控制台 大一统配置中心
  * * 以后不管是增加 3D 书籍还是修改控制台卡片皮肤，全在这里统一操作！
  */
+/**
+ * 📖 3D立体书 & 前端控制台 大一统配置中心
+ * * 以后不管是增加 3D 书籍还是修改控制台卡片皮肤，全在这里统一操作！
+ */
 const my3DBooksDataset = [
     {
+        bookId: "progress",
+        title: "我的学习报告",
+        typeTag: "全库盲刷",
+        author: "SYSTEM",
+        slogan: "打破边界，盲区空投。",
+        sloganColor: "text-amber-600 font-extrabold animate-pulse", 
+        coverBg: "#1c1a16",          
+        coverBorder: "#967633",      
+        backBg: "#282520",           
+        spineBg: "#12100e",          
+        initLeft: "55%",             // 🌟 错开左侧小盆栽
+        initTop: "18%",              // 🌟 垂直空投！从 6.5% 降落到 33%，直达实体木书架搁板
+        
+        scopeCode: "SHUFFLE_MODE",
+        lockBadgeStyle: "bg-amber-600/20 text-amber-600 border border-amber-600/30",
+        cardTheme: "border-amber-600/20 hover:border-amber-600 hover:bg-amber-50/10",
+        dotColor: "bg-amber-600 shadow-amber-600/50"
+    },
+    {
         bookId: "gold",
-        title: "金のフレーズ",
+        title: "金之流",
         typeTag: "新形式对应",
-        author: "TEX加藤",
+        author: "XXXX",
         slogan: "最新、最強。",
         sloganColor: "text-red-600",
         coverBg: "#b59247",          
         coverBorder: "#967633",      
         backBg: "#a0803b",           
         spineBg: "#8c6e30",          
-        initLeft: "30%",             
-        initTop: "40%",
+        initLeft: "65%",             // 🌟 保持并排空隙
+        initTop: "18%",              // 🌟 同步降落到 33% 书架线
         
-        // 💡 主页看板同步资产 (新增)
-        scopeCode: "ALPHA",                                                           // 锁定时显示的抽象代号
-        lockBadgeStyle: "bg-amber-500/20 text-amber-700 border border-amber-500/30", // 锁定标签的配色
-        cardTheme: "border-amber-500/30 hover:border-amber-500 hover:bg-amber-50/20",  // 控制台卡片外框悬停色
-        dotColor: "bg-amber-500 shadow-amber-500/50"                                  // 控制台卡片隐式指示灯颜色
+        scopeCode: "ALPHA",                                                           
+        lockBadgeStyle: "bg-amber-500/20 text-amber-700 border border-amber-500/30", 
+        cardTheme: "border-amber-500/30 hover:border-amber-500 hover:bg-amber-50/20",  
+        dotColor: "bg-amber-500 shadow-amber-500/50"                                  
     },
     {
         bookId: "black",
-        title: "黒のフレーズ",
+        title: "黒之流",
         typeTag: "顶级突破",
-        author: "TEX加藤",
+        author: "XXXX",
         slogan: "顶点を極めよ。",
         sloganColor: "text-neutral-400",
-        coverBg: "#1a202c", coverBorder: "#2d3748", backBg: "#2d3748", spineBg: "#111827",
-        initLeft: "30%", initTop: "64%",
+        coverBg: "#1a202c",          
+        coverBorder: "#2d3748",      
+        backBg: "#2d3748", 
+        spineBg: "#111827",
+        initLeft: "75%",             // 🌟 保持并排空隙
+        initTop: "18%",              // 🌟 同步降落到 33% 书架线
         
-        // 💡 以后直接在这里定义前端长什么样就行了！
         scopeCode: "GAMMA",
         lockBadgeStyle: "bg-neutral-800/20 text-neutral-800 border border-neutral-800/30",
         cardTheme: "border-neutral-800/30 hover:border-neutral-800 hover:bg-neutral-800/10",
         dotColor: "bg-neutral-800 shadow-neutral-800/50"
-    },
-
-
-
-
-
-/**
-    {
-        bookId: "silver",
-        title: "银のフレーズ",
-        typeTag: "新形式对应",
-        author: "TEX加藤",
-        slogan: "基础から学ぶ。",
-        sloganColor: "text-slate-600",
-        coverBg: "#718096",          
-        coverBorder: "#4a5568",
-        backBg: "#5a6578",
-        spineBg: "#4a5568",
-        initLeft: "32%",             
-        initTop: "62%",
-        
-        // 💡 主页看板同步资产 (新增)
-        scopeCode: "BETA",
-        lockBadgeStyle: "bg-slate-500/20 text-slate-700 border border-slate-500/30",
-        cardTheme: "border-slate-400/30 hover:border-slate-500 hover:bg-slate-100/20",
-        dotColor: "bg-slate-400 shadow-slate-400/50"
     }
-        */
 ];
 
 // =====================================================================
-// ⚡ 自动化渲染与独立拖拽引擎（保持纯净，终身无需再改）
+// ⚡ 自动化渲染与独立拖拽引擎（保持纯净，无需再改）
 // =====================================================================
 document.addEventListener('DOMContentLoaded', () => {
     inject3DBookStyles(); 
     render3DBooks();      
-    initBookDraggable();  
+    initBookDraggable();      //
 });
 
 function inject3DBookStyles() {
@@ -108,10 +106,8 @@ function render3DBooks() {
                 <div class="book-face front flex flex-col justify-between p-1 overflow-hidden select-none" style="background: ${book.coverBg}; border: 1px solid ${book.coverBorder};">
                     <div class="self-center text-[5px] text-amber-950/80 font-black border border-dashed border-amber-950/40 rounded px-0.5 scale-90 bg-amber-100/10 leading-none">${book.typeTag}</div>
                     <div class="flex flex-col items-center my-auto tracking-tighter">
-                        <span class="text-[6px] font-black text-slate-900 font-mono leading-none">TOEIC® L&R</span>
-                        <span class="text-[8px] font-black text-slate-900 mt-0.5 leading-none">出る単特急</span>
-                        <span class="text-[9px] font-black text-white bg-slate-900 px-1 py-0.5 rounded shadow-sm my-0.5 leading-none tracking-normal scale-105">${book.title}</span>
-                        <span class="text-[5px] text-amber-950 font-bold scale-75 leading-none">${book.author}</span>
+                        <span class="text-[11px] font-black text-white bg-slate-900/90 px-1.5 py-0.5 rounded shadow-sm my-0.5 leading-none tracking-normal scale-105">${book.title}</span>
+                        <span class="text-[5px] text-white/60 font-bold scale-75 leading-none mt-1">${book.author}</span>
                     </div>
                     <div class="bg-white -mx-1 -mb-1 p-0.5 text-center border-t border-amber-950/20">
                         <span class="text-[6px] font-black ${book.sloganColor} block scale-90 tracking-wider">${book.slogan}</span>
