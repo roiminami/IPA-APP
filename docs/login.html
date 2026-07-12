@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>南式TOEIC鬼特訓 - 俱乐部登录舱</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght=400;600;700;900&family=Noto+Sans+SC:wght=400;700;900&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script src="supabase-sync.js"></script>
+
+    <style>
+        body { background-color: #FAF9F5; font-family: 'Inter', 'Noto Sans SC', sans-serif; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-center items-center px-4 relative antialiased">
+
+    <div class="max-w-md w-full bg-gradient-to-br from-slate-950 via-slate-900 to-slate-850 text-white rounded-3xl p-8 border border-slate-800 shadow-2xl space-y-5 relative z-10">
+        
+        <div class="text-center space-y-1.5">
+            <div class="w-14 h-14 rounded-2xl bg-amber-500 flex items-center justify-center text-slate-950 font-black text-2xl mx-auto shadow-lg shadow-amber-500/20">南</div>
+            <div class="pt-1">
+                <h1 class="text-xl font-black text-white tracking-tight">南式TOEIC鬼特訓</h1>
+                <p class="text-[9px] text-amber-500 font-semibold tracking-widest uppercase">ALL-IN-ONE AUTH PASS</p>
+            </div>
+            <p class="text-xs text-slate-400 max-w-xs mx-auto pt-1 font-medium leading-relaxed">
+                接通云端数据同步，永久保存并跨端同步您的刷题流水与生词本。
+            </p>
+        </div>
+
+        <div class="space-y-3 bg-slate-900/40 p-4 rounded-2xl border border-slate-800/60">
+            <span class="block text-[10px] text-amber-500 font-bold uppercase tracking-wider mb-1 pl-1">🔐 方式一：设置账号密码登录</span>
+            
+            <div class="space-y-2">
+                <input 
+                    type="email" 
+                    id="user-email" 
+                    placeholder="输入您的邮箱 (Email)" 
+                    class="w-full bg-slate-950 text-slate-200 placeholder-slate-600 text-xs px-4 py-2.5 rounded-xl border border-slate-800 focus:outline-none focus:border-amber-500 font-medium shadow-inner transition-all"
+                >
+                <input 
+                    type="password" 
+                    id="user-password" 
+                    placeholder="自设密码 (Password)" 
+                    class="w-full bg-slate-950 text-slate-200 placeholder-slate-600 text-xs px-4 py-2.5 rounded-xl border border-slate-800 focus:outline-none focus:border-amber-500 font-medium shadow-inner transition-all"
+                >
+            </div>
+
+            <div class="flex gap-2 pt-1">
+                <button 
+                    onclick="handlePasswordLogin()" 
+                    class="flex-1 bg-amber-500 hover:bg-amber-600 text-slate-950 font-black text-[11px] py-2 rounded-xl active:scale-[0.98] transition-all shadow-md shadow-amber-500/10 cursor-pointer"
+                >
+                    登录系统
+                </button>
+                <button 
+                    onclick="handlePasswordRegister()" 
+                    class="flex-1 bg-slate-800 hover:bg-slate-700 text-amber-400 font-bold text-[11px] py-2 rounded-xl active:scale-[0.98] transition-all border border-slate-700 cursor-pointer"
+                >
+                    快捷注册
+                </button>
+            </div>
+            
+            <div class="text-center pt-1.5">
+                <button onclick="handleMagicLinkLogin()" class="text-[10px] text-slate-400 hover:text-amber-400 underline transition-colors focus:outline-none">
+                    或者：使用邮箱免密快捷通道（发射魔链登录） ➔
+                </button>
+            </div>
+        </div>
+
+        <div class="relative flex py-1 items-center">
+            <div class="flex-grow border-t border-slate-800"></div>
+            <span class="flex-shrink mx-3 text-[9px] text-slate-600 font-bold uppercase tracking-widest">或者 / OR</span>
+            <div class="flex-grow border-t border-slate-800"></div>
+        </div>
+
+        <div class="space-y-2">
+            <span class="block text-[10px] text-slate-400 font-bold uppercase tracking-wider pl-1 text-center">💡 方式二：第三方账号一键连入</span>
+            
+            <button 
+                onclick="handleGoogleSignIn()" 
+                class="w-full bg-white hover:bg-slate-50 text-slate-900 font-bold text-xs py-2.5 rounded-xl flex items-center justify-center gap-2 border border-slate-200 transition-all active:scale-[0.98] shadow-sm cursor-pointer"
+            >
+                <svg class="w-4 h-4" viewBox="0 0 24 24"><path fill="#EA4335" d="M12 5.04c1.64 0 3.12.56 4.28 1.67l3.2-3.2C17.52 1.59 14.97 1 12 1 7.35 1 3.4 3.65 1.48 7.5l3.77 2.92C6.18 7.22 8.87 5.04 12 5.04z"/><path fill="#4285F4" d="M23.49 12.27c0-.81-.07-1.59-.2-2.36H12v4.51h6.46c-.29 1.48-1.14 2.73-2.4 3.58l3.73 2.89c2.18-2.01 3.45-4.97 3.45-8.62z"/><path fill="#FBBC05" d="M5.25 14.58c-.25-.75-.39-1.55-.39-2.38s.14-1.63.39-2.38L1.48 6.9C.54 8.78 0 10.89 0 13s.54 4.22 1.48 6.1l3.77-2.92z"/><path fill="#34A853" d="M12 23c3.24 0 5.97-1.07 7.96-2.92l-3.73-2.89c-1.03.69-2.35 1.11-4.23 1.11-3.13 0-5.82-2.18-6.77-5.38l-3.77 2.92C3.4 20.35 7.35 23 12 23z"/></svg>
+                使用 Google 账号一键登录
+            </button>
+        </div>
+
+        <div class="text-center border-t border-slate-800/60 pt-4">
+            <a href="index.html" class="text-[11px] text-slate-500 hover:text-slate-400 underline tracking-wide transition-colors">
+                暂不登录，以游客身份进入离线控制台 ➔
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // ============================================================================
+        // 🚀 核心动作一：传统 邮箱 + 密码 的登录与注册
+        // ============================================================================
+        async function handlePasswordLogin() {
+            const email = document.getElementById('user-email').value.trim();
+            const password = document.getElementById('user-password').value.trim();
+            if (!email || !password) return alert("提示：请完整输入邮箱和密码！");
+            
+            if (typeof cloudLogin === 'function') {
+                await cloudLogin(email, password);
+                const { data: { user } } = await supabase.auth.getUser();
+                if (user) window.location.href = 'index.html';
+            }
+        }
+
+        async function handlePasswordRegister() {
+            const email = document.getElementById('user-email').value.trim();
+            const password = document.getElementById('user-password').value.trim();
+            if (!email || !password) return alert("提示：注册需要完整填写邮箱并设置密码！");
+            if (password.length < 6) return alert("提示：为了账号安全，密码请至少设置6位以上！");
+            
+            if (typeof cloudRegister === 'function') {
+                await cloudRegister(email, password);
+            }
+        }
+
+        // ============================================================================
+        // 🚀 核心动作二：备用的邮箱免密魔法链接登录 (Magic Link)
+        // ============================================================================
+        async function handleMagicLinkLogin() {
+            const email = document.getElementById('user-email').value.trim();
+            if (!email) return alert("提示：请先在上方输入框键入您的邮箱！");
+            
+            const { error } = await supabase.auth.signInWithOtp({
+                email: email,
+                options: {
+                    emailRedirectTo: window.location.origin + window.location.pathname.replace('login.html', 'index.html')
+                }
+            });
+
+            if (error) alert("发射失败: " + error.message);
+            else alert("🚀 快捷登录魔链已发射！请去邮箱查收并点击链接，即可免密登录！");
+        }
+
+        // ============================================================================
+        // 🚀 核心动作三：第三方社交账号一键登录 (Google OAuth)
+        // ============================================================================
+        async function handleGoogleSignIn() {
+            const { error } = await supabase.auth.signInWithOAuth({
+                provider: 'google',
+                options: {
+                    redirectTo: window.location.origin + window.location.pathname.replace('login.html', 'index.html')
+                }
+            });
+            if (error) alert("第三方登录失败: " + error.message);
+        }
+
+        // 智能防回头守卫：一旦登录过，直接帮他云回显并导流回中央控制台
+        window.addEventListener('load', async () => {
+            const { data: { user } } = await supabase.auth.getUser();
+            if (user) {
+                if (typeof loadUserDataFromCloud === 'function') await loadUserDataFromCloud(user.id);
+                window.location.href = 'index.html';
+            }
+        });
+    </script>
+</body>
+</html>

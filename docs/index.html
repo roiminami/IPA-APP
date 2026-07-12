@@ -42,11 +42,13 @@
             }
         }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="auth.js"></script>
 </head>
-<body class="text-slate-800 min-h-screen flex flex-col antialiased relative">
+<body class="text-slate-800 min-h-screen flex flex-col antialiased relative overflow-x-hidden">
 
     <header class="border-b border-[#EAE6D9] bg-[#FAF9F5]/90 backdrop-blur-sm sticky top-0 z-40 shrink-0">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
             <div class="flex items-center space-x-3">
                 <div class="w-10 h-10 rounded-xl bg-amber-500 flex items-center justify-center text-white font-black text-lg shadow-md shadow-amber-500/20">南</div>
                 <div>
@@ -55,11 +57,41 @@
                 </div>
             </div>
             
-            <div class="flex items-center space-x-3">
+            <div class="flex items-center space-x-4">
                 <span class="text-xs font-mono text-slate-400 hidden sm:inline" id="global-counter-txt">Total: -- Units</span>
-                <div class="text-xs font-bold text-amber-700 bg-amber-50 px-3 py-1.5 rounded-xl border border-amber-200 flex items-center space-x-1.5 shadow-sm">
+                <div class="text-xs font-bold text-amber-700 bg-amber-50 px-3 py-1.5 rounded-xl border border-amber-200 hidden md:flex items-center space-x-1.5 shadow-sm">
                     <span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span>
                     <span>群主持续更新中</span>
+                </div>
+
+                <div id="auth-section" class="flex items-center space-x-2 text-xs">
+                    <div id="auth-logged-out" class="flex items-center space-x-3 bg-[#FAF9F5] border border-[#EAE6D9] p-1.5 pl-3 rounded-xl shadow-xs">
+                        <div class="flex items-center space-x-1.5 pr-2 border-r border-slate-200 hidden sm:flex">
+                            <span class="relative flex h-2 w-2">
+                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                                <span class="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
+                            </span>
+                            <span class="text-[10px] text-slate-500 font-medium tracking-tight">
+                                建议先 <span class="text-amber-700 font-bold">Sign Up (注册)</span> 再刷题，防止进度丢失
+                            </span>
+                        </div>
+                        
+                        <button onclick="openRegisterModal()" class="bg-slate-900 hover:bg-amber-600 text-white font-bold px-3.5 py-1.5 rounded-lg active:scale-95 transition-all cursor-pointer text-[11px] tracking-wide shadow-xs flex items-center space-x-1">
+                            <span>🔑</span>
+                            <span>Get Started / 登录注册</span>
+                        </button>
+                    </div>
+
+                    <div id="auth-logged-in" class="hidden flex items-center space-x-2 bg-slate-900 text-white p-1 pr-2.5 rounded-xl shadow-sm">
+                        <div class="flex items-center space-x-2">
+                            <div class="w-6 h-6 rounded-lg bg-amber-500 text-slate-900 flex items-center justify-center font-black text-[11px] shadow-inner" id="user-avatar">U</div>
+                            <span class="text-[11px] font-mono tracking-tight max-w-[110px] truncate text-slate-200" id="user-email-display">user@example.com</span>
+                        </div>
+                        <span class="text-slate-700 text-[10px] mx-0.5">|</span>
+                        <button onclick="handleLogout()" class="text-slate-400 hover:text-rose-400 text-[10px] font-medium transition-colors cursor-pointer pl-0.5">
+                            Sign Out / 登出
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -67,10 +99,8 @@
 
     <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-1 lg:grid-cols-12 gap-8 relative z-10 items-start">
         
-        <!-- 左侧核心控制面板区 (占 5 栏) -->
         <div class="lg:col-span-5 flex flex-col gap-4 w-full">
             
-            <!-- ⚡ 黑金置顶痛点宣传卡片 -->
             <section class="bg-gradient-to-br from-slate-950 via-slate-900 to-slate-850 text-amber-400 p-3.5 rounded-2xl border border-slate-800 shadow-lg flex items-start space-x-3 shrink-0">
                 <div class="w-8 h-8 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center shrink-0 mt-0.5 animate-pulse shadow-inner">
                     <i data-lucide="sparkles" class="w-4.5 h-4.5 text-amber-400"></i>
@@ -81,14 +111,12 @@
                         <h5 class="font-black text-white text-[11px] sm:text-xs tracking-tight">更适合在日中国宝宝体质的 TOEIC 突击神器</h5>
                     </div>
                     <p class="text-[11px] text-slate-300 font-medium leading-relaxed">
-                        鉴于 TOEIC 盛行于日韩，在日中国人常面临中文高质备考资源匮乏的困境。为此，本系统已完整收录含有 <strong class="text-amber-400 font-black underline decoration-amber-400/50 decoration-2 underline-offset-2">AI 智能考点分析</strong> 的全真题目 <span id="stat-total-questions-header" class="text-white font-black font-mono text-xs bg-slate-800 px-1.5 py-0.5 rounded border border-slate-700">--</span> 道，<span class="text-white font-bold">群主持续搜集中！</span>直击华人思维盲区。
+                        鉴于 TOEIC 盛行于日韩，在日中国人常面临中文高质备考 resource 匮乏的困境。为此，本系统已完整收录含有 <strong class="text-amber-400 font-black underline decoration-amber-400/50 decoration-2 underline-offset-2">AI 智能考点分析</strong> 的全真题目 <span id="stat-total-questions-header" class="text-white font-black font-mono text-xs bg-slate-800 px-1.5 py-0.5 rounded border border-slate-700">--</span> 道，<span class="text-white font-bold">群主持续搜集中！</span>直击华人思维盲区。
                     </p>
                 </div>
             </section>
             
-            <!-- 🌟 学习报告数据三子星区 -->
             <section id="statsDashboardSection" class="grid grid-cols-3 gap-2 bg-white p-3 rounded-2xl border border-[#EAE6D9] shadow-xs shrink-0">
-                <!-- 🎯 卡片一：已完成特训 -->
                 <div class="bg-[#FAF9F5] p-3 rounded-xl border border-[#EAE6D9]/70 flex flex-col justify-between shadow-xs relative overflow-hidden group">
                     <div>
                         <span class="text-[10px] font-black text-slate-900 tracking-tight block">已完成特训</span>
@@ -100,7 +128,6 @@
                     </div>
                     <div class="absolute bottom-0 left-0 right-0 h-1 bg-slate-300/40"></div>
                 </div>
-                <!-- 🎯 卡片二：已完美通关 -->
                 <div class="bg-amber-50/30 p-3 rounded-xl border border-amber-200/50 flex flex-col justify-between shadow-xs relative overflow-hidden group">
                     <div>
                         <span class="text-[10px] font-black text-amber-900 tracking-tight block">已完美通关</span>
@@ -112,7 +139,6 @@
                     </div>
                     <div class="absolute bottom-0 left-0 right-0 h-1 bg-amber-400/50"></div>
                 </div>
-                <!-- 🎯 卡片三：累计答对题数 -->
                 <div class="bg-emerald-50/20 p-3 rounded-xl border border-emerald-200/40 flex flex-col justify-between shadow-xs relative overflow-hidden group">
                     <div>
                         <span class="text-[10px] font-black text-emerald-950 tracking-tight block">累计答对题数</span>
@@ -124,9 +150,8 @@
                     </div>
                     <div class="absolute bottom-0 left-0 right-0 h-1 bg-emerald-400/50"></div>
                 </div>
-            </section>
+                </section>
 
-            <!-- 检索输入框 -->
             <section class="relative shrink-0">
                 <div class="relative flex items-center">
                     <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
@@ -143,18 +168,14 @@
                 </div>
             </section>
 
-            <!-- 关卡卡片网格容器 -->
             <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3 overflow-y-auto pr-1 pb-2 transition-all duration-300 max-h-[52vh] lg:max-h-[46vh] min-h-[300px]" id="modulesGridContainer"></div>
 
-            <!-- 智能动态零留痕历史空状态唤醒面板 -->
             <div id="search-empty-state" class="hidden text-center bg-white rounded-2xl border border-[#EAE6D9] border-dashed space-y-3 shadow-sm transition-all flex flex-col justify-center items-center p-6 min-h-[260px]"></div>
             
         </div>
 
-        <!-- 右侧桌面场景与右下角名片区 (占 7 栏) -->
         <div class="lg:col-span-7 w-full flex flex-col gap-4 items-center lg:items-start h-full justify-start overflow-visible">
             
-            <!-- ① 智能全端等比定位舱 -->
             <div class="w-full flex justify-center items-start overflow-visible h-[240px] sm:h-[320px] lg:h-auto">
                 <div id="deskAssetWrapper" class="scale-anchor-container w-[640px] h-[380px] bg-white rounded-[24px] border border-[#EAE6D9] shadow-sm relative overflow-hidden shrink-0 select-none">
                     <img 
@@ -166,9 +187,7 @@
                 </div>
             </div>
 
-            <!-- ② 📢 黄金右下角：南南伴你学！学搭俱乐部硬核名片 -->
             <section class="bg-amber-50/40 border border-amber-200/60 rounded-2xl p-4 shadow-sm grid grid-cols-1 sm:grid-cols-12 gap-4 max-w-2xl w-full shrink-0 mt-4 lg:mt-0">
-                <!-- 左半部 -->
                 <div class="sm:col-span-5 flex flex-col justify-between border-b sm:border-b-0 sm:border-r border-amber-200/60 pb-3 sm:pb-0 pr-0 sm:pr-4 gap-3">
                     <div class="space-y-1.5">
                         <div class="flex items-center space-x-2">
@@ -193,7 +212,6 @@
                         </div>
                     </div>
                 </div>
-                <!-- 右半部 -->
                 <div class="sm:col-span-7 flex flex-col justify-between space-y-2.5 pl-0 sm:pl-1">
                     <p class="text-[11px] text-slate-600 leading-relaxed font-medium">
                         👥 成员主要来自<strong>小红书</strong>，专注高效执行力与持续成长。理性互助，抱团在 <span class="text-amber-700 font-bold">IT / 英语 / 会计 / 投资</span> 等硬核跨界领域全速推进！
@@ -213,6 +231,33 @@
     <footer class="border-t border-[#EAE6D9] bg-[#F3EFE3]/30 py-3 text-center text-[10px] text-slate-400 tracking-wide font-mono relative z-10 shrink-0">
         Southern Ghost TOEIC Platform Engine • Powered by config.js URL Router
     </footer>
+
+    <div id="login-modal" class="hidden fixed inset-0 bg-black/40 backdrop-blur-xs flex items-center justify-center z-50 p-4">
+        <div class="bg-[#FAF9F5] border border-[#EAE6D9] p-6 rounded-2xl w-full max-w-sm shadow-2xl text-slate-800">
+            <h3 class="text-base font-bold mb-1 text-center text-slate-900 flex items-center justify-center gap-1.5">
+                🔑 <span id="auth-modal-title">Create Account (注册新账号)</span>
+            </h3>
+            <p id="auth-modal-desc" class="text-[11px] text-slate-500 text-center mb-4 leading-normal">
+                Sign up first to activate your cloud sync space and protect your local training data.<br>
+                <span class="text-amber-700 font-medium">请先注册以激活云端同步，防止刷题进度丢失。</span>
+            </p>
+            
+            <input type="email" id="modal-email" placeholder="Email Address (邮箱地址)" class="w-full p-2.5 bg-white border border-[#E1DBC9] rounded-xl mb-3 text-xs focus:outline-none focus:border-amber-500 text-slate-800 font-medium">
+            <input type="password" id="modal-password" placeholder="Password (常用密码 8-18位字母+数字)" class="w-full p-2.5 bg-white border border-[#E1DBC9] rounded-xl mb-4 text-xs focus:outline-none focus:border-amber-500 text-slate-800 font-medium">
+            
+            <button id="auth-submit-btn" onclick="submitAuth('register')" class="w-full bg-slate-900 text-white py-2.5 rounded-xl font-bold hover:bg-amber-600 transition text-xs cursor-pointer shadow-sm">
+                Get Started & Sign Up (立即注册并开始)
+            </button>
+            
+            <div class="mt-4 pt-3 border-t border-slate-200/60 flex flex-col items-center gap-2">
+                <p class="text-[11px] text-slate-500">
+                    <span id="auth-switch-text">Already have an account? (已有账号？)</span>
+                    <button id="auth-switch-btn" onclick="toggleAuthMode()" class="text-amber-700 font-bold hover:underline ml-1 cursor-pointer">Sign In (去登录)</button>
+                </p>
+                <button onclick="closeLoginModal()" class="text-slate-400 text-[10px] mt-1 hover:text-slate-600 transition cursor-pointer">Keep Local & Close (暂不登录)</button>
+            </div>
+        </div>
+    </div>
 
     <script>
         let localConfigRegistry = [];
@@ -315,10 +360,22 @@
 
             modulesList.forEach(mod => {
                 const cardAnchor = document.createElement('a');
-                cardAnchor.href = `test.html?unit=${encodeURIComponent(mod.unit)}`;
                 
                 const total = parseInt(localStorage.getItem(`toeic_total_${mod.unit}`) || '0', 10);
                 const correct = parseInt(localStorage.getItem(`toeic_correct_${mod.unit}`) || '0', 10);
+                
+                cardAnchor.href = "javascript:void(0);";
+                cardAnchor.onclick = (e) => {
+                    e.preventDefault();
+                    if (typeof window.checkAuthPermission === 'function') {
+                        const canAccess = window.checkAuthPermission(mod.unit);
+                        if (canAccess) {
+                            window.location.href = `test.html?unit=${encodeURIComponent(mod.unit)}`;
+                        }
+                    } else {
+                        window.location.href = `test.html?unit=${encodeURIComponent(mod.unit)}`;
+                    }
+                };
                 
                 let stateBadgeHtml = "";
                 let isPerfect = false;
@@ -327,7 +384,6 @@
                     isPerfect = true;
                 }
 
-                // 🌟 分分段数据皮肤匹配锚点
                 let scoreText = "";
                 let scoreBg = "";
                 if (mod.section === 'score600') { scoreText = "600分"; scoreBg = "bg-emerald-50 text-emerald-700 border-emerald-200"; }
@@ -335,7 +391,6 @@
                 else if (mod.section === 'score860') { scoreText = "860分"; scoreBg = "bg-orange-50 text-amber-700 border-amber-200"; }
                 else if (mod.section === 'score990') { scoreText = "990分"; scoreBg = "bg-purple-50 text-purple-700 border-purple-200"; }
                 
-                // 🌟 终极融合态状态机分流：未开始时显示纯净分数[cite: 2]；开始后完美保留“已特训/已通关”荣耀勋章[cite: 2]！
                 if (total === 0) {
                     if (mod.type === 'standard') {
                         stateBadgeHtml = `<span class="text-[9px] font-black tracking-wide ${scoreBg} px-1.5 py-0.5 rounded border">${scoreText}</span>`;
@@ -391,7 +446,6 @@
                 
                 if (/^\d+$/.test(query)) {
                     const targetNum = parseInt(query, 10);
-                    
                     const rangeRegex = /(\d+)\s*[-–—]\s*(\d+)/g;
                     let match;
                     
