@@ -739,7 +739,10 @@
         }
 
         function speakText(text) {
-            if (!synth) return; synth.cancel();
+            if (!synth) return; 
+            if (synth.speaking) {
+                    synth.cancel();
+                }
             if (!selectedVoice || selectedVoice.name === 'auto') { selectedVoice = getBestMainstreamVoice(); }
             const cleaned = text.replace(/<[^>]*>/g, '').replace(/____+/g, 'blank');
             const utter = new SpeechSynthesisUtterance(cleaned);
@@ -1203,7 +1206,11 @@
         function executePracticeSuccess() {
             const pInput = document.getElementById('dict-practice-input'); const pInput2 = document.getElementById('dict-practice-input_tab2');
             dictNotebook[activePracticeWord].count += 1;  dictNotebook[activePracticeWord].ts = Date.now(); localStorage.setItem('toeic_dict_notebook', JSON.stringify(dictNotebook));
-            speakText(activePracticeWord);
+            
+            const wordToSpeak = activePracticeWord;
+                setTimeout(() => {
+                    speakText(wordToSpeak);
+                }, 50);
             
             if (pInput) pInput.value = ""; if (pInput2) pInput2.value = "";
             const testPanel = document.getElementById('panel-test'); const dictPanel = document.getElementById('panel-dict');
