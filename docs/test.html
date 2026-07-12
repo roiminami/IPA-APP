@@ -1060,8 +1060,17 @@
             if (!word) return;
 
             if (input) input.value = word; if (input2) input2.value = word;
+
+            // 🌟 【核心修复点】在任何 await 异步网络请求之前，立刻同步朗读！
+            // 此时手势凭证 100% 有效，现代浏览器绝对不会拦截，且查词响应速度在感官上变快了
+            speakText(word);
+
             let isNewWord = !dictNotebook[word] || !dictNotebook[word].def;
-            if (dictNotebook[word] && dictNotebook[word].def) { speakText(word); showWordPracticeCard(word, false); return; }
+            if (dictNotebook[word] && dictNotebook[word].def) { 
+                // 👈 原来的 speakText(word) 已经移到上面去了，这里直接展示卡片即可
+                showWordPracticeCard(word, false); 
+                return; 
+            }
 
             const panel = document.getElementById('dict-result-panel'); const panel2 = document.getElementById('dict-result-panel_tab2');
             if (panel) { panel.classList.remove('hidden'); panel.innerHTML = `<div class="text-slate-400 animate-pulse font-medium">正在连线开放式中文云端词典通道...</div>`; }
@@ -1121,15 +1130,17 @@
                     } catch(e) { exCn = ""; }
                 }
 
-                if (!dictNotebook[word]) { dictNotebook[word] = { count: 0, streak: 0, def: translation, pos: posStr, ipa: ipa, exEn: exEn, exCn: exCn }; } 
+                if (!dictNotebook[word]) { dictNotebook[word] = { count: 0, streak: 0, def: translation, pos: posStr, ipa: ipa, exEn: exEn, exCn: exCn, ts: Date.now() }; } 
                 else {
                     if (dictNotebook[word].streak === undefined) dictNotebook[word].streak = 0;
                     dictNotebook[word].pos = posStr; dictNotebook[word].ipa = ipa; dictNotebook[word].def = translation;
-                    dictNotebook[word].exEn = exEn; dictNotebook[word].exCn = exCn;
-                    dictNotebook[word].ts = Date.now(); // 👈 加上这一行
+                    dictNotebook[word].exEn = exEn; dictNotebook[word].exCn = exCn; dictNotebook[word].ts = Date.now();
                 }
                 localStorage.setItem('toeic_dict_notebook', JSON.stringify(dictNotebook));
-                renderDictNotebook(); speakText(word); showWordPracticeCard(word, isNewWord);
+                renderDictNotebook(); 
+                
+                // 🌟 【核心修复点】这里原本的 speakText(word) 挪走删掉了，防止二次重复朗读
+                showWordPracticeCard(word, isNewWord);
             } catch (err) {
                 const errMsg = `<div class="text-rose-500 font-bold flex items-center gap-1"><i data-lucide=\"alert-circle\" class=\"w-3.5 h-3.5\"></i> 未检索到该生词释义。</div>`;
                 if (panel) panel.innerHTML = errMsg; if (panel2) panel2.innerHTML = errMsg;
