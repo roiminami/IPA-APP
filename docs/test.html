@@ -278,7 +278,7 @@
                             <span class="font-bold text-amber-900 flex items-center gap-1"><i data-lucide="edit-3" class="w-3.5 h-3.5 text-amber-600"></i> 输入强化记忆: <span id="practice-target-word_tab2" onclick="resetPracticeUI()" title="点击复原" class="text-amber-700 underline font-black ml-1 cursor-pointer break-all"></span></span>
                         </div>
                         <div class="flex flex-col sm:flex-row gap-2">
-                            <input type="text" id="dict-practice-input_tab2" readonly onfocus="this.removeAttribute('readonly');" onblur="this.setAttribute('readonly', 'readonly');" oninput="checkPracticeInput()" onkeydown="if(event.key==='Enter') submitPracticeWord()" placeholder="在此反复打字进行拼写抗遗忘背诵..." class="flex-1 bg-white text-xs px-3 py-1.5 rounded-lg border border-amber-300 focus:outline-none focus:border-amber-600 font-bold tracking-wide text-slate-800 min-w-0">
+                            <input type="text" id="dict-practice-input_tab2" autocomplete="one-time-code" readonly onfocus="this.removeAttribute('readonly');" onblur="this.setAttribute('readonly', 'readonly');" oninput="checkPracticeInput()" onkeydown="if(event.key==='Enter') submitPracticeWord()" placeholder="在此反复打字进行拼写抗遗忘背诵..." class="flex-1 bg-white text-xs px-3 py-1.5 rounded-lg border border-amber-300 focus:outline-none focus:border-amber-600 font-bold tracking-wide text-slate-800 min-w-0">
                             <div class="flex gap-2 shrink-0">
                                 <button onclick="submitPracticeWord()" class="flex-1 sm:flex-none bg-amber-600 text-white text-xs font-bold px-3 py-1.5 rounded-lg hover:bg-amber-700 transition-all text-center cursor-pointer">核验</button>
                                 <button onclick="completePractice()" class="flex-1 sm:flex-none bg-slate-700 text-white text-xs font-bold px-3 py-1.5 rounded-lg hover:bg-slate-800 transition-all text-center cursor-pointer">完成</button>
@@ -382,7 +382,7 @@
                             <span class="font-bold text-amber-900 flex items-center gap-1"><i data-lucide="edit-3" class="w-3.5 h-3.5 text-amber-600"></i> 输入强化记忆: <span id="practice-target-word" onclick="resetPracticeUI()" title="点击复原" class="text-amber-700 underline font-black ml-1 cursor-pointer break-all"></span></span>
                         </div>
                         <div class="flex flex-col sm:flex-row gap-2">
-                            <input type="text" id="dict-practice-input" readonly onfocus="this.removeAttribute('readonly');" onblur="this.setAttribute('readonly', 'readonly');" oninput="checkPracticeInput()" onkeydown="if(event.key==='Enter') submitPracticeWord()" placeholder="在此反复打字进行拼写抗遗忘背诵..." class="flex-1 bg-white text-xs px-3 py-1.5 rounded-lg border border-amber-300 focus:outline-none focus:border-amber-600 font-bold tracking-wide text-slate-800 min-w-0">
+                            <input type="text" id="dict-practice-input" autocomplete="one-time-code" readonly onfocus="this.removeAttribute('readonly');" onblur="this.setAttribute('readonly', 'readonly');" oninput="checkPracticeInput()" onkeydown="if(event.key==='Enter') submitPracticeWord()" placeholder="在此反复打字进行拼写抗遗忘背诵..." class="flex-1 bg-white text-xs px-3 py-1.5 rounded-lg border border-amber-300 focus:outline-none focus:border-amber-600 font-bold tracking-wide text-slate-800 min-w-0">
                             <div class="flex gap-2 shrink-0">
                                 <button onclick="submitPracticeWord()" class="flex-1 sm:flex-none bg-amber-600 text-white text-xs font-bold px-3 py-1.5 rounded-lg hover:bg-amber-700 transition-all text-center cursor-pointer">核验</button>
                                 <button onclick="completePractice()" class="flex-1 sm:flex-none bg-slate-700 text-white text-xs font-bold px-3 py-1.5 rounded-lg hover:bg-slate-800 transition-all text-center cursor-pointer">完成</button>
@@ -1381,7 +1381,7 @@
     </script>
 
     <div id="login-modal" class="hidden fixed inset-0 bg-black/40 backdrop-blur-xs flex items-center justify-center z-50 p-4">
-        <div class="bg-[#FAF9F5] border border-[#EAE6D9] p-6 rounded-2xl w-full max-w-sm shadow-2xl text-slate-800 relative">
+        <form onsubmit="event.preventDefault();" class="bg-[#FAF9F5] border border-[#EAE6D9] p-6 rounded-2xl w-full max-w-sm shadow-2xl text-slate-800 relative">
             <h3 class="text-base font-bold mb-1 text-center text-slate-900 flex items-center justify-center gap-1.5">
                 🔑 <span id="auth-modal-title">Create Account (注册新账号)</span>
             </h3>
@@ -1408,9 +1408,9 @@
                     <span id="auth-switch-text">Already have an account? (已有账号？)</span>
                     <button id="auth-switch-btn" onclick="toggleAuthMode()" class="text-amber-700 font-bold hover:underline ml-1 cursor-pointer">Sign In (去登录)</button>
                 </p>
-                <button onclick="closeLoginModal()" class="text-slate-400 text-[10px] mt-1 hover:text-slate-600 transition cursor-pointer">Keep Local & Close (暂不登录)</button>
+                <button type="button" onclick="closeLoginModal()" class="text-slate-400 text-[10px] mt-1 hover:text-slate-600 transition cursor-pointer">Keep Local & Close (暂不登录)</button>
             </div>
-        </div>
+        </form>
     </div>
 </body>
 </html>

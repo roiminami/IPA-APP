@@ -215,7 +215,7 @@
     </footer>
 
     <div id="login-modal" class="hidden fixed inset-0 bg-black/40 backdrop-blur-xs flex items-center justify-center z-50 p-4">
-        <div class="bg-[#FAF9F5] border border-[#EAE6D9] p-6 rounded-2xl w-full max-w-sm shadow-2xl text-slate-800 relative">
+        <form onsubmit="event.preventDefault();" class="bg-[#FAF9F5] border border-[#EAE6D9] p-6 rounded-2xl w-full max-w-sm shadow-2xl text-slate-800 relative">
             <h3 class="text-base font-bold mb-1 text-center text-slate-900 flex items-center justify-center gap-1.5">
                 🔑 <span id="auth-modal-title">Create Account (注册新账号)</span>
             </h3>
@@ -228,12 +228,12 @@
             
             <div class="w-full relative mb-4">
                 <input type="password" id="modal-password" placeholder="Password (常用密码 8-18位字母+数字)" class="w-full p-2.5 bg-white border border-[#E1DBC9] rounded-xl text-xs focus:outline-none focus:border-amber-500 text-slate-800 font-medium">
-                <button id="auth-forgot-btn" onclick="switchToForgotMode()" class="hidden absolute right-3 top-2.5 text-[10px] text-slate-400 hover:text-amber-700 font-semibold tracking-tight transition-colors">
+                <button id="auth-forgot-btn" onclick="switchToForgotMode()" class="hidden absolute right-3 top-2.5 text-[10px] text-slate-400 hover:text-amber-700 font-semibold tracking-tight transition-colors cursor-pointer">
                     Forgot? / 忘记密码
                 </button>
             </div>
             
-            <button id="auth-submit-btn" onclick="submitAuth('register')" class="w-full bg-slate-900 text-white py-2.5 rounded-xl font-bold hover:bg-amber-600 transition text-xs cursor-pointer shadow-sm text-center">
+            <button id="auth-submit-btn" onclick="submitAuth('register')" class="w-full bg-slate-900 text-white py-2.5 rounded-xl font-bold hover:bg-amber-600 transition text-xs cursor-pointer shadow-sm text-center block">
                 Get Started & Sign Up (立即注册并开始)
             </button>
             
@@ -242,11 +242,10 @@
                     <span id="auth-switch-text">Already have an account? (已有账号？)</span>
                     <button id="auth-switch-btn" onclick="toggleAuthMode()" class="text-amber-700 font-bold hover:underline ml-1 cursor-pointer">Sign In (去登录)</button>
                 </p>
-                <button onclick="closeLoginModal()" class="text-slate-400 text-[10px] mt-1 hover:text-slate-600 transition cursor-pointer">Keep Local & Close (暂不登录)</button>
+                <button type="button" onclick="closeLoginModal()" class="text-slate-400 text-[10px] mt-1 hover:text-slate-600 transition cursor-pointer">Keep Local & Close (暂不登录)</button>
             </div>
-        </div>
+        </form>
     </div>
-
     <script>
         let localConfigRegistry = [];
         let currentBookFilter = 'progress'; 
