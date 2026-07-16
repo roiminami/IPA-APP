@@ -1,500 +1,538 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="ja">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>南式TOEIC鬼特訓 - Central Console</title>
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght=400;500;600;700;900&family=Noto+Sans+JP:wght=400;500;700&family=Noto+Sans+SC:wght=400;500;700;900&display=swap" rel="stylesheet">
-    
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
-    
-    <script src="config.js"></script>
-    <script src="books.js"></script>
-
+    <title>南式応用情報速攻！科目B突破システム</title>
     <style>
-        html, body { background-color: #FAF9F5; }
-        body { font-family: 'Inter', 'Noto Sans SC', 'Noto Sans JP', sans-serif; }
-        #modulesGridContainer::-webkit-scrollbar { width: 4px; }
-        #modulesGridContainer::-webkit-scrollbar-track { background: #FAF9F5; }
-        #modulesGridContainer::-webkit-scrollbar-thumb { background: #E6E1D3; border-radius: 99px; }
-        #modulesGridContainer::-webkit-scrollbar-thumb:hover { background: #D1C9B7; }
-        .scale-anchor-container { transform-origin: top center; }
-        @media (min-width: 1024px) { .scale-anchor-container { transform: none !important; } }
-    </style>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="auth.js"></script>
-</head>
-<body class="text-slate-800 min-h-screen flex flex-col antialiased relative overflow-x-hidden">
-
-    <header class="border-b border-[#EAE6D9] bg-[#FAF9F5]/90 backdrop-blur-sm sticky top-0 z-40 shrink-0">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
-            <div class="flex items-center space-x-3">
-                <div class="w-10 h-10 rounded-xl bg-amber-500 flex items-center justify-center text-white font-black text-lg shadow-md shadow-amber-500/20">南</div>
-                <div>
-                    <h1 class="text-base font-bold text-slate-900 tracking-tight">南式TOEIC鬼特訓</h1>
-                    <p class="text-[10px] text-amber-600 font-semibold tracking-wider uppercase">UNIT CONTROLLER</p>
-                </div>
-            </div>
+        :root {
+            --primary: #2563eb;
+            --primary-light: #3b82f6;
+            --primary-bg: #f0f6ff;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #0f172a;
+            --text-sub: #475569;
+            --border: #e2e8f0;
             
-            <div class="flex items-center space-x-4">
-                <span class="text-xs font-mono text-slate-400 hidden sm:inline" id="global-counter-txt">Total: -- Units</span>
-                <div class="text-xs font-bold text-amber-700 bg-amber-50 px-3 py-1.5 rounded-xl border border-amber-200 hidden md:flex items-center space-x-1.5 shadow-sm">
-                    <span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span>
-                    <span>群主持续更新中</span>
-                </div>
+            --radius-lg: 16px;
+            --radius-md: 10px;
+            
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -2px rgba(0,0,0,0.05);
+            --shadow-lg: 0 10px 25px -5px rgba(0,0,0,0.05), 0 8px 10px -6px rgba(0,0,0,0.05);
+        }
 
-                <div id="auth-section" class="flex items-center space-x-2 text-xs">
-                    <div id="auth-logged-out" class="flex items-center space-x-3 bg-[#FAF9F5] border border-[#EAE6D9] p-1.5 pl-3 rounded-xl shadow-xs">
-                        <div class="flex items-center space-x-1.5 pr-2 border-r border-slate-200 hidden sm:flex">
-                            <span class="relative flex h-2 w-2">
-                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
-                                <span class="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
-                            </span>
-                            <span class="text-[10px] text-slate-500 font-medium tracking-tight">
-                                建议先 <span class="text-amber-700 font-bold">Sign Up (注册)</span> 再刷题，防止进度丢失
-                            </span>
-                        </div>
-                        
-                        <button onclick="openRegisterModal()" class="bg-slate-900 hover:bg-amber-600 text-white font-bold px-3.5 py-1.5 rounded-lg active:scale-95 transition-all cursor-pointer text-[11px] tracking-wide shadow-xs flex items-center space-x-1">
-                            <span>🔑</span>
-                            <span>Get Started / 登录注册</span>
-                        </button>
-                    </div>
+        * { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0; 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        body { 
+            background-color: var(--bg-color); 
+            color: var(--text-main); 
+            padding: 3rem 2rem; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+        }
 
-                    <div id="auth-logged-in" class="hidden flex items-center space-x-2 bg-slate-900 text-white p-1 pr-2.5 rounded-xl shadow-sm">
-                        <div class="flex items-center space-x-2">
-                            <div class="w-6 h-6 rounded-lg bg-amber-500 text-slate-900 flex items-center justify-center font-black text-[11px] shadow-inner" id="user-avatar">U</div>
-                            <span class="text-[11px] font-mono tracking-tight max-w-[110px] truncate text-slate-200" id="user-email-display">user@example.com</span>
-                        </div>
-                        <span class="text-slate-700 text-[10px] mx-0.5">|</span>
-                        <button onclick="handleLogout()" class="text-slate-400 hover:text-rose-400 text-[10px] font-medium transition-colors cursor-pointer pl-0.5">
-                            Sign Out / 登出
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
+        header { 
+            text-align: center; 
+            margin-bottom: 3rem; 
+            width: 100%;
+            max-width: 1200px;
+        }
+        h1 { 
+            font-size: 2.2rem; 
+            font-weight: 850; 
+            color: #1e3a8a;
+            letter-spacing: -0.03em;
+            margin-bottom: 0.6rem;
+        }
+        .subtitle {
+            font-size: 0.95rem;
+            color: var(--text-sub);
+            font-weight: 500;
+        }
+
+        .filter-section { 
+            width: 100%; 
+            max-width: 1200px; 
+            margin-bottom: 1.5rem; 
+            background: var(--card-bg);
+            padding: 1.2rem 1.5rem;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
+        }
+        .filter-label { 
+            font-size: 0.85rem; 
+            font-weight: 800; 
+            color: #1e40af; 
+            margin-bottom: 0.8rem; 
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .tag-container { 
+            display: flex; 
+            flex-wrap: wrap; 
+            gap: 0.6rem; 
+            width: 100%; 
+        }
+
+        .tag-btn { 
+            padding: 0.5rem 1.2rem; 
+            border: 1px solid var(--border); 
+            border-radius: 9999px; 
+            background: white; 
+            font-size: 0.85rem; 
+            font-weight: 700; 
+            color: var(--text-sub); 
+            cursor: pointer; 
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); 
+            box-shadow: var(--shadow-sm);
+        }
+        .tag-btn:hover {
+            border-color: var(--primary-light);
+            color: var(--primary);
+            background-color: var(--primary-bg);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+        .tag-btn.active { 
+            background: var(--primary); 
+            color: white; 
+            border-color: var(--primary); 
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+        }
+
+        main { 
+            width: 100%; 
+            max-width: 1200px; 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(500px, 1fr)); 
+            gap: 2rem; 
+            margin-top: 1rem;
+        }
+
+        .card { 
+            background: var(--card-bg); 
+            border: 1px solid var(--border); 
+            border-radius: var(--radius-lg); 
+            padding: 1.8rem; 
+            box-shadow: var(--shadow-md);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+            animation: fadeIn 0.35s ease-out;
+            display: flex;
+            flex-direction: column;
+        }
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card-title { 
+            font-size: 1.3rem; 
+            font-weight: 850; 
+            margin-bottom: 1.5rem; 
+            color: #1e3a8a; 
+            border-left: 4px solid var(--primary);
+            padding-left: 0.7rem;
+            line-height: 1.2;
+        }
+
+        .card-columns {
+            display: flex;
+            gap: 1.5rem;
+        }
+        .card-column {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .column-header {
+            font-size: 0.9rem;
+            font-weight: 800;
+            color: var(--text-sub);
+            margin-bottom: 0.8rem;
+            padding-bottom: 0.4rem;
+            border-bottom: 2px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        
+        .list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        .item { 
+            background: #ffffff; 
+            border: 1px solid var(--border); 
+            padding: 0.8rem 1rem; 
+            border-radius: var(--radius-md); 
+            text-decoration: none; 
+            color: var(--text-main); 
+            font-size: 0.85rem; 
+            font-weight: 700; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: var(--shadow-sm);
+            border-left: 3px solid transparent;
+        }
+        .item:hover { 
+            border-color: var(--primary-light); 
+            border-left-color: var(--primary);
+            color: var(--primary); 
+            transform: translateX(3px);
+            box-shadow: var(--shadow-md);
+            background-color: var(--primary-bg);
+        }
+
+        .arrow-icon {
+            width: 16px;
+            height: 16px;
+            fill: none;
+            stroke: var(--text-sub);
+            stroke-width: 2.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            transition: transform 0.2s ease, stroke 0.2s ease;
+            flex-shrink: 0;
+        }
+        .item:hover .arrow-icon {
+            stroke: var(--primary);
+            transform: translateX(4px);
+        }
+
+        .badge { 
+            font-size: 0.7rem; 
+            background: #f1f5f9; 
+            padding: 0.15rem 0.4rem; 
+            border-radius: 6px; 
+            color: var(--text-sub); 
+            margin-left: 0.5rem;
+            flex-shrink: 0;
+            border: 1px solid #e2e8f0;
+        }
+
+        @media (max-width: 640px) {
+            body { padding: 1.5rem 1rem; }
+            main { grid-template-columns: 1fr; }
+            .card-columns {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>南式応用情報速攻！科目B</h1>
+        <p class="subtitle">効率よく、スマートに過去問を突破しよう</p>
     </header>
 
-    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-1 lg:grid-cols-12 gap-8 relative z-10 items-start">
-        
-        <div class="lg:col-span-5 flex flex-col gap-4 w-full">
-            
-            <section class="bg-gradient-to-br from-slate-950 via-slate-900 to-slate-850 text-amber-400 p-3.5 rounded-2xl border border-slate-800 shadow-lg flex items-start space-x-3 shrink-0">
-                <div class="w-8 h-8 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center shrink-0 mt-0.5 animate-pulse shadow-inner">
-                    <i data-lucide="sparkles" class="w-4.5 h-4.5 text-amber-400"></i>
-                </div>
-                <div class="flex-1 space-y-1">
-                    <div class="flex items-center space-x-1.5 flex-wrap gap-y-1">
-                        <span class="bg-gradient-to-r from-amber-400 to-amber-500 text-slate-950 font-black text-[9px] px-1.5 py-0.5 rounded-md uppercase tracking-wider shadow-xs">🔥 在日必刷</span>
-                        <h5 class="font-black text-white text-[11px] sm:text-xs tracking-tight">更适合在日中国宝宝体质的 TOEIC 突击神器</h5>
-                    </div>
-                    <p class="text-[11px] text-slate-300 font-medium leading-relaxed">
-                        鉴于 TOEIC 盛行于日韩，在日中国人常面临高质量中文备考资源匮乏的问题。本系统已收录 <span id="stat-total-questions-header" class="text-white font-black font-mono text-xs bg-slate-800 px-1.5 py-0.5 rounded border border-slate-700">--</span> 道全真题，每题配备 <strong class="text-amber-400 font-black underline decoration-amber-400/50 decoration-2 underline-offset-2">AI 智能考点解析</strong>，持续更新中，专攻华人易错考点。
-                    </p>
-                </div>
-            </section>
-            
-            <section id="statsDashboardSection" class="grid grid-cols-3 gap-2 bg-white p-3 rounded-2xl border border-[#EAE6D9] shadow-xs shrink-0">
-                <div class="bg-[#FAF9F5] p-3 rounded-xl border border-[#EAE6D9]/70 flex flex-col justify-between shadow-xs relative overflow-hidden group">
-                    <div>
-                        <span class="text-[10px] font-black text-slate-900 tracking-tight block">已完成特训</span>
-                        <span class="text-[8px] font-mono text-slate-400 uppercase font-bold tracking-wider block -mt-0.5">Completed Units</span>
-                    </div>
-                    <div class="mt-3 flex items-baseline space-x-0.5">
-                        <span class="text-2xl sm:text-3xl font-black text-slate-900 font-mono tracking-tighter" id="stat-attempted-units">0</span>
-                        <span class="text-xs text-slate-400 font-bold" id="stat-total-units-left">/ --</span>
-                    </div>
-                    <div class="absolute bottom-0 left-0 right-0 h-1 bg-slate-300/40"></div>
-                </div>
-                <div class="bg-amber-50/30 p-3 rounded-xl border border-amber-200/50 flex flex-col justify-between shadow-xs relative overflow-hidden group">
-                    <div>
-                        <span class="text-[10px] font-black text-amber-900 tracking-tight block">已完美通关</span>
-                        <span class="text-[8px] font-mono text-amber-600 uppercase font-bold tracking-wider block -mt-0.5">Perfect Cleared</span>
-                    </div>
-                    <div class="mt-3 flex items-baseline space-x-0.5">
-                        <span class="text-2xl sm:text-3xl font-black text-amber-600 font-mono tracking-tighter" id="stat-perfect-progress">0</span>
-                        <span class="text-xs text-amber-500 font-bold" id="stat-total-units-right">/ --</span>
-                    </div>
-                    <div class="absolute bottom-0 left-0 right-0 h-1 bg-amber-400/50"></div>
-                </div>
-                <div class="bg-emerald-50/20 p-3 rounded-xl border border-emerald-200/40 flex flex-col justify-between shadow-xs relative overflow-hidden group">
-                    <div>
-                        <span class="text-[10px] font-black text-emerald-950 tracking-tight block">累计答对题数</span>
-                        <span class="text-[8px] font-mono text-emerald-600 uppercase font-bold tracking-wider block -mt-0.5">Total Correct</span>
-                    </div>
-                    <div class="mt-3 flex items-baseline space-x-0.5">
-                        <span class="text-2xl sm:text-3xl font-black text-emerald-600 font-mono tracking-tighter" id="stat-correct-count">0</span>
-                        <span class="text-xs text-emerald-500 font-black">题</span>
-                    </div>
-                    <div class="absolute bottom-0 left-0 right-0 h-1 bg-emerald-400/50"></div>
-                </div>
-            </section>
-
-            <section class="relative shrink-0">
-                <input type="text" style="position: absolute; top: -9999px; left: -9999px;" autocomplete="username" tabindex="-1" />
-                <input type="password" style="position: absolute; top: -9999px; left: -9999px;" autocomplete="current-password" tabindex="-1" />
-                
-                <div class="relative flex items-center">
-                    <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
-                        <i data-lucide="search" class="w-5 h-5"></i>
-                    </div>
-                    <input 
-                        type="text" 
-                        id="searchConsoleInput" 
-                        oninput="filterToeicModules()" 
-                        autocomplete="new-password"
-                        placeholder="快速检索：输入单词序号直达单元..." 
-                        class="w-full pl-11 pr-32 py-3 bg-white rounded-xl border border-[#E1DBC9] text-base text-slate-800 focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10 placeholder-slate-400 transition-all shadow-sm"
-                    >
-                    <div id="search-lock-badge" class="absolute right-3 flex items-center pointer-events-none transition-all duration-300 opacity-0 scale-75"></div>
-                </div>
-            </section>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3 overflow-y-auto pr-1 pb-2 transition-all duration-300 max-h-[52vh] lg:max-h-[46vh] min-h-[300px]" id="modulesGridContainer"></div>
-
-            <div id="search-empty-state" class="hidden text-center bg-white rounded-2xl border border-[#EAE6D9] border-dashed space-y-3 shadow-sm transition-all flex flex-col justify-center items-center p-6 min-h-[260px]"></div>
-            
-        </div>
-
-        <div class="lg:col-span-7 w-full flex flex-col gap-4 items-center lg:items-start h-full justify-start overflow-visible">
-            
-            <div class="w-full flex justify-center items-start overflow-visible h-[240px] sm:h-[320px] lg:h-auto">
-                <div id="deskAssetWrapper" class="scale-anchor-container w-[640px] h-[380px] bg-white rounded-[24px] border border-[#EAE6D9] shadow-sm relative overflow-hidden shrink-0 select-none">
-                    <img src="table.jpg" alt="TOEIC Data Table Dashboard" class="w-full h-full object-cover block" draggable="false">
-                </div>
-            </div>
-
-            <section class="bg-amber-50/40 border border-amber-200/60 rounded-2xl p-4 shadow-sm grid grid-cols-1 sm:grid-cols-12 gap-4 max-w-2xl w-full shrink-0 mt-4 lg:mt-0">
-                <div class="sm:col-span-5 flex flex-col justify-between border-b sm:border-b-0 sm:border-r border-amber-200/60 pb-3 sm:pb-0 pr-0 sm:pr-4 gap-3">
-                    <div class="space-y-1.5">
-                        <div class="flex items-center space-x-2">
-                            <div class="w-6 h-6 rounded-lg bg-amber-500 flex items-center justify-center text-white shadow-xs">
-                                <i data-lucide="megaphone" class="w-3.5 h-3.5"></i>
-                            </div>
-                            <h4 class="text-xs font-black text-slate-900 tracking-tight">南南伴你学！学搭俱乐部</h4>
-                        </div>
-                        <p class="text-[10px] text-slate-400 font-medium flex items-center flex-wrap gap-x-1">
-                            <span>群主: Minami | 博客:</span>
-                            <a href="https://minami.ac.cn/" target="_blank" class="text-amber-700 font-bold hover:text-amber-800 hover:underline inline-flex items-center space-x-0.5 transition-colors">
-                                <span>minami.ac.cn</span>
-                                <i data-lucide="external-link" class="w-2.5 h-2.5 inline"></i>
-                            </a>
-                        </p>
-                    </div>
-                    
-                    <div>
-                        <div class="bg-white/95 border border-amber-200 rounded-xl p-2 flex items-center justify-between shadow-xs">
-                            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wide px-1">添加微信加群</span>
-                            <span class="text-xs font-mono font-black text-amber-700 select-all tracking-wide bg-amber-50 px-2.5 py-0.5 rounded border border-amber-200/40">nowminami</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="sm:col-span-7 flex flex-col justify-between space-y-2.5 pl-0 sm:pl-1">
-                    <p class="text-[11px] text-slate-600 leading-relaxed font-medium">
-                        👥 成员主要来自<strong>小红书</strong>，专注高效执行力与持续成长。理性互助，抱团在 <span class="text-amber-700 font-bold">IT / 英语 / 会计 / 投资</span> 等硬核跨界领域全速推进！
-                    </p>
-                    
-                    <div class="flex flex-wrap gap-1.5 text-[9px] text-amber-700 font-bold pt-0.5">
-                        <span class="bg-amber-100/60 px-2 py-0.5 rounded flex items-center space-x-0.5">💻 <span>IT 架构 · 云原生</span></span>
-                        <span class="bg-amber-100/60 px-2 py-0.5 rounded flex items-center space-x-0.5">💡 <span>定期分享答疑</span></span>
-                        <span class="bg-amber-100/60 px-2 py-0.5 rounded flex items-center space-x-0.5">💬 <span>免费人生咨询</span></span>
-                    </div>
-                </div>
-            </section>
-        </div>
-        
-    </main>
-
-    <footer class="border-t border-[#EAE6D9] bg-[#F3EFE3]/30 py-3 text-center text-[10px] text-slate-400 tracking-wide font-mono relative z-10 shrink-0">
-        Southern Ghost TOEIC Platform Engine • Powered by config.js URL Router
-    </footer>
-
-    <div id="login-modal" class="hidden fixed inset-0 bg-black/40 backdrop-blur-xs flex items-center justify-center z-50 p-4">
-        <form onsubmit="event.preventDefault();" class="bg-[#FAF9F5] border border-[#EAE6D9] p-6 rounded-2xl w-full max-w-sm shadow-2xl text-slate-800 relative">
-            <h3 class="text-base font-bold mb-1 text-center text-slate-900 flex items-center justify-center gap-1.5">
-                🔑 <span id="auth-modal-title">Create Account (注册新账号)</span>
-            </h3>
-            <p id="auth-modal-desc" class="text-[11px] text-slate-500 text-center mb-4 leading-normal">
-                Sign up first to activate your cloud sync space and protect your local training data.<br>
-                <span class="text-amber-700 font-medium">请先注册以激活云端同步，防止刷题进度丢失。</span>
-            </p>
-            
-            <input type="email" id="modal-email" placeholder="Email Address (邮箱地址)" class="w-full p-2.5 bg-white border border-[#E1DBC9] rounded-xl mb-2 text-xs focus:outline-none focus:border-amber-500 text-slate-800 font-medium">
-            
-            <div class="w-full relative mb-4">
-                <input type="password" id="modal-password" placeholder="Password (常用密码 8-18位字母+数字)" class="w-full p-2.5 bg-white border border-[#E1DBC9] rounded-xl text-xs focus:outline-none focus:border-amber-500 text-slate-800 font-medium">
-                <button id="auth-forgot-btn" onclick="switchToForgotMode()" class="hidden absolute right-3 top-2.5 text-[10px] text-slate-400 hover:text-amber-700 font-semibold tracking-tight transition-colors cursor-pointer">
-                    Forgot? / 忘记密码
-                </button>
-            </div>
-            
-            <button id="auth-submit-btn" onclick="submitAuth('register')" class="w-full bg-slate-900 text-white py-2.5 rounded-xl font-bold hover:bg-amber-600 transition text-xs cursor-pointer shadow-sm text-center block">
-                Get Started & Sign Up (立即注册并开始)
-            </button>
-            
-            <div class="mt-4 pt-3 border-t border-slate-200/60 flex flex-col items-center gap-2">
-                <p class="text-[11px] text-slate-500 text-center">
-                    <span id="auth-switch-text">Already have an account? (已有账号？)</span>
-                    <button id="auth-switch-btn" onclick="toggleAuthMode()" class="text-amber-700 font-bold hover:underline ml-1 cursor-pointer">Sign In (去登录)</button>
-                </p>
-                <button type="button" onclick="closeLoginModal()" class="text-slate-400 text-[10px] mt-1 hover:text-slate-600 transition cursor-pointer">Keep Local & Close (暂不登录)</button>
-            </div>
-        </form>
+    <div class="filter-section">
+        <div class="filter-label">📅 年度から選ぶ</div>
+        <div class="tag-container" id="year-tags"></div>
     </div>
+
+    <div class="filter-section">
+        <div class="filter-label">🏷️ 分野から選ぶ</div>
+        <div class="tag-container" id="topic-tags"></div>
+    </div>
+
+    <main id="app-main"></main>
+
+    <script src="config.js"></script>
     <script>
-        let localConfigRegistry = [];
-        let currentBookFilter = 'progress'; 
+        const container = document.getElementById('app-main');
+        const yearTags = document.getElementById('year-tags');
+        const topicTags = document.getElementById('topic-tags');
+        
+        let selectedYear = 'all';
+        let selectedTopic = 'all';
 
-        document.addEventListener('DOMContentLoaded', () => {
-            if (typeof toeicModulesConfig === 'undefined') {
-                console.error("Router Core Error: 'toeicModulesConfig' missing.");
-                return;
-            }
-            localConfigRegistry = [...toeicModulesConfig];
-            
-            handleMobileScale();
-            window.addEventListener('resize', handleMobileScale);
-            
-            // 🛠️ 核心修改：检测 URL 中是否带有返回的书本参数，如果有则直接锁定，否则走默认的 progress
-            const urlParams = new URLSearchParams(window.location.search);
-            const returnBook = urlParams.get('book');
-            if (returnBook) {
-                window.setBookFilter(returnBook);
-            } else {
-                window.setBookFilter('progress');
-            }
-        });
+        const topics = ['問1 情報セキュリティ', '問2 経営戦略', '問5 ネットワーク', '問9 プロジェクトマネジメント', '問10 サービスマネジメント'];
 
-        function handleMobileScale() {
-            const container = document.getElementById('deskAssetWrapper');
-            if (!container || window.innerWidth >= 1024) {
-                if(container) container.style.transform = '';
-                return;
-            }
-            const availableWidth = window.innerWidth - 48; 
-            const scaleRatio = availableWidth / 640; 
-            container.style.transform = `scale(${scaleRatio})`;
-            container.parentElement.style.height = `${380 * scaleRatio}px`;
+        function getTopic(q) {
+            if (q.id.includes('Q01') || q.title.includes('セキュリティ')) return '問1 情報セキュリティ';
+            if (q.id.includes('Q02') || q.title.includes('経営')) return '問2 経営戦略';
+            if (q.id.includes('Q05') || q.title.includes('ネットワーク')) return '問5 ネットワーク';
+            if (q.id.includes('Q09') || q.title.includes('プロジェクト')) return '問9 プロジェクトマネジメント';
+            if (q.id.includes('Q10') || q.title.includes('サービス')) return '問10 サービスマネジメント';
+            return null;
         }
 
-        function calculateAndRenderStats() {
-            let perfectUnitsCount = 0;
-            let attemptedUnitsCount = 0;
-            let globalTotalCorrect = 0;
+        // 🌟 元号（和暦）と「元年」を正確に西暦数値にシミュレートする関数
+        function getAbsoluteYear(yearStr) {
+            const match = yearStr.match(/(令和|平成)\s*([0-9元]+)年度?/);
+            if (!match) return 0;
+            const era = match[1];
+            let numStr = match[2];
+            let num = numStr === '元' ? 1 : parseInt(numStr, 10);
+            
+            if (era === '令和') {
+                return 2018 + num; // 令和1年（元年）= 2019年, 令和7年 = 2025年
+            } else if (era === '平成') {
+                return 1988 + num; // 平成29年 = 2017年, 平成31年 = 2019年
+            }
+            return 0;
+        }
 
-            localConfigRegistry.forEach(mod => {
-                const total = parseInt(localStorage.getItem(`toeic_total_${mod.unit}`) || '0', 10);
-                const correct = parseInt(localStorage.getItem(`toeic_correct_${mod.unit}`) || '0', 10);
+        // 🌟 全キーを「本物の直近順」にソートする関数
+        function getSortedKeys() {
+            return Object.keys(EXAM_DATA).sort((a, b) => {
+                const nameA = EXAM_DATA[a].yearName; 
+                const nameB = EXAM_DATA[b].yearName; 
+                
+                const ya = getAbsoluteYear(cleanYearName(nameA));
+                const yb = getAbsoluteYear(cleanYearName(nameB));
+                
+                if (ya !== yb) {
+                    return yb - ya;
+                }
+                
+                // 同じ年（例: 2019年）の場合は、令和を平成より優先
+                const isRaiwaA = nameA.includes('令和');
+                const isRaiwaB = nameB.includes('令和');
+                if (isRaiwaA && !isRaiwaB) return -1;
+                if (!isRaiwaA && isRaiwaB) return 1;
 
-                if (total > 0) {
-                    attemptedUnitsCount++;
-                    globalTotalCorrect += correct;
-                    if (correct === total) perfectUnitsCount++;
+                // 秋期を春期より優先
+                const isAutumnA = nameA.includes('秋');
+                const isAutumnB = nameB.includes('秋');
+                if (isAutumnA && !isAutumnB) return -1;
+                if (!isAutumnA && isAutumnB) return 1;
+                return 0;
+            });
+        }
+
+        // 🌟 「令和◯年度」の純粋な年度文字列を抽出する関数
+        function cleanYearName(name) {
+            return name.replace(/(春期|秋期|春|秋).*$/, '').trim();
+        }
+
+        // 🌟 データを「年度」単位に確実にグループ化
+        function getGroupedExams() {
+            const groups = {};
+            
+            Object.keys(EXAM_DATA).forEach(key => {
+                const data = EXAM_DATA[key];
+                const name = data.yearName;
+                const yearTitle = cleanYearName(name);
+                const absoluteYear = getAbsoluteYear(yearTitle);
+                
+                const groupKey = key.replace(/_(Autumn|Spring)$/, '');
+                
+                if (!groups[groupKey]) {
+                    groups[groupKey] = {
+                        key: groupKey,
+                        yearTitle: yearTitle,
+                        absoluteYear: absoluteYear,
+                        isRaiwa: yearTitle.includes('令和'),
+                        autumn: null,
+                        spring: null
+                    };
+                }
+                
+                if (key.endsWith('_Autumn')) {
+                    groups[groupKey].autumn = { key: key, questions: data.questions };
+                } else if (key.endsWith('_Spring')) {
+                    groups[groupKey].spring = { key: key, questions: data.questions };
                 }
             });
-
-            document.getElementById('stat-attempted-units').textContent = attemptedUnitsCount;
-            document.getElementById('stat-perfect-progress').textContent = perfectUnitsCount;
-            document.getElementById('stat-correct-count').textContent = globalTotalCorrect;
             
-            const totalCount = localConfigRegistry.length;
-            document.getElementById('stat-total-units-left').textContent = `/ ${totalCount}`;
-            document.getElementById('stat-total-units-right').textContent = `/ ${totalCount}`;
-            
-            const maxId = localConfigRegistry.length > 0 ? Math.max(...localConfigRegistry.map(mod => mod.id)) : 0;
-            const totalQuestions = maxId * 18;
-            document.getElementById('stat-total-questions-header').textContent = totalQuestions.toLocaleString();
+            // 年度の新しい順にソート
+            return Object.values(groups).sort((a, b) => {
+                if (b.absoluteYear !== a.absoluteYear) {
+                    return b.absoluteYear - a.absoluteYear;
+                }
+                if (b.isRaiwa && !a.isRaiwa) return 1;
+                if (!b.isRaiwa && a.isRaiwa) return -1;
+                return 0;
+            });
         }
 
-function renderConsoleGrid(modulesList) {
-            const container = document.getElementById('modulesGridContainer');
-            const emptyState = document.getElementById('search-empty-state');
-            const counterText = document.getElementById('global-counter-txt');
-            
-            if (!container) return;
-            container.innerHTML = '';
-            counterText.textContent = `Total: ${modulesList.length} Units`;
-
-            if (modulesList.length === 0) {
-                container.classList.add('hidden');
-                emptyState.classList.remove('hidden');
-                
-                if (currentBookFilter === 'progress') {
-                    emptyState.innerHTML = `
-                        <div class="w-10 h-10 bg-amber-50 text-amber-500 border border-amber-200 rounded-full flex items-center justify-center mx-auto animate-pulse shadow-xs">
-                            <i data-lucide="history" class="w-5 h-5"></i>
-                        </div>
-                        <h4 class="text-xs font-black text-slate-800 tracking-tight mt-3">还没有生成过特训历史</h4>
-                        <p class="text-[11px] text-slate-500 px-6 leading-relaxed font-medium mt-1">
-                            你目前尚未开启 any 单元的魔鬼特训！快去<strong class="text-amber-700">双击单本书籍</strong>或者空白处解锁全量章节吧！🔥
-                        </p>
-                    `;
-                } else {
-                    emptyState.innerHTML = `
-                        <div class="w-10 h-10 bg-[#FAF9F5] text-slate-400 rounded-full flex items-center justify-center mx-auto border border-dashed border-[#EAE6D9]">
-                            <i data-lucide="alert-circle" class="w-5 h-5"></i>
-                        </div>
-                        <h4 class="text-xs font-bold text-slate-700 mt-3">未找到相关特训单元</h4>
-                        <p class="text-[11px] text-slate-400 mt-1">该书籍中未检索到此序列单元。</p>
-                    `;
+        function initUI() {
+            const uniqueYears = [];
+            Object.keys(EXAM_DATA).forEach(key => {
+                const name = EXAM_DATA[key].yearName;
+                const yearPart = cleanYearName(name); 
+                if (yearPart && !uniqueYears.includes(yearPart)) {
+                    uniqueYears.push(yearPart);
                 }
-                if (typeof lucide !== 'undefined') { lucide.createIcons(); }
-                return;
-            }
+            });
+            
+            // 📅 「年度から選ぶ」タグバーも直近順に美しく並べ替え
+            uniqueYears.sort((a, b) => {
+                const ya = getAbsoluteYear(a);
+                const yb = getAbsoluteYear(b);
+                if (ya !== yb) return yb - ya;
+                if (a.includes('令和') && b.includes('平成')) return -1;
+                if (a.includes('平成') && b.includes('令和')) return 1;
+                return 0;
+            });
 
-            container.classList.remove('hidden');
-            emptyState.classList.add('hidden');
+            // 年度タグ作成
+            yearTags.innerHTML = `<button class="tag-btn active" data-type="year" data-val="all">全年度</button>`;
+            uniqueYears.forEach(y => {
+                yearTags.innerHTML += `<button class="tag-btn" data-type="year" data-val="${y}">${y}</button>`;
+            });
 
-            modulesList.forEach(mod => {
-                const cardAnchor = document.createElement('a');
-                const total = parseInt(localStorage.getItem(`toeic_total_${mod.unit}`) || '0', 10);
-                const correct = parseInt(localStorage.getItem(`toeic_correct_${mod.unit}`) || '0', 10);
-                
-                cardAnchor.href = "javascript:void(0);";
-                // 🛠️ 修改后的点击跳转逻辑：带上当前的 mod.book
-                cardAnchor.onclick = (e) => {
-                    e.preventDefault();
-                    if (typeof window.checkAuthPermission === 'function') {
-                        if (window.checkAuthPermission(mod.unit)) {
-                            window.location.href = `test.html?unit=${encodeURIComponent(mod.unit)}&book=${encodeURIComponent(mod.book)}`;
-                        }
+            // 分野タグ作成
+            topicTags.innerHTML = `<button class="tag-btn active" data-type="topic" data-val="all">全分野</button>`;
+            topics.forEach(t => {
+                topicTags.innerHTML += `<button class="tag-btn" data-type="topic" data-val="${t}">${t}</button>`;
+            });
+
+            document.querySelectorAll('.tag-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const type = e.target.dataset.type;
+                    const val = e.target.dataset.val;
+                    
+                    if (type === 'year') {
+                        selectedYear = val;
+                        selectedTopic = 'all';
+                        
+                        document.querySelectorAll('[data-type="topic"]').forEach(b => b.classList.remove('active'));
+                        document.querySelector('[data-type="topic"][data-val="all"]').classList.add('active');
+                        
+                        document.querySelectorAll('[data-type="year"]').forEach(b => b.classList.remove('active'));
+                        e.target.classList.add('active');
                     } else {
-                        window.location.href = `test.html?unit=${encodeURIComponent(mod.unit)}&book=${encodeURIComponent(mod.book)}`;
+                        selectedTopic = val;
+                        selectedYear = 'all';
+                        
+                        document.querySelectorAll('[data-type="year"]').forEach(b => b.classList.remove('active'));
+                        document.querySelector('[data-type="year"][data-val="all"]').classList.add('active');
+                        
+                        document.querySelectorAll('[data-type="topic"]').forEach(b => b.classList.remove('active'));
+                        e.target.classList.add('active');
                     }
-                };
-                
-                let stateBadgeHtml = "";
-                // 稳健修复：使用 >= 规避未来可能出现的多端同步数据错位风险
-                let isPerfect = (total > 0 && correct >= total);
+                    render();
+                });
+            });
 
-                let scoreText = "";
-                let scoreBg = "";
-                if (mod.section === 'score600') { scoreText = "600分"; scoreBg = "bg-emerald-50 text-emerald-700 border-emerald-200"; }
-                else if (mod.section === 'score730') { scoreText = "730分"; scoreBg = "bg-blue-50 text-blue-700 border-blue-200"; }
-                else if (mod.section === 'score860') { scoreText = "860分"; scoreBg = "bg-orange-50 text-amber-700 border-amber-200"; }
-                else if (mod.section === 'score990') { scoreText = "990分"; scoreBg = "bg-purple-50 text-purple-700 border-purple-200"; }
+            render();
+        }
+
+        function render() {
+            container.innerHTML = '';
+            const groupedExams = getGroupedExams();
+            const arrowSvg = `<svg class="arrow-icon" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>`;
+
+            if (selectedYear !== 'all') {
+                const filtered = groupedExams.filter(g => g.yearTitle === selectedYear);
                 
-                if (total === 0) {
-                    if (mod.type === 'standard') {
-                        stateBadgeHtml = `<span class="text-[9px] font-black tracking-wide ${scoreBg} px-1.5 py-0.5 rounded border">${scoreText}</span>`;
-                    } else if (mod.type && mod.type.startsWith('supplement')) {
-                        let suppNum = mod.type.replace('supplement', '');
-                        let cnNum = suppNum === '1' ? '①' : suppNum === '2' ? '②' : suppNum === '3' ? '③' : suppNum === '4' ? '④' : suppNum;
-                        stateBadgeHtml = `<span class="text-[9px] font-black tracking-wide bg-rose-50 text-rose-600 px-1.5 py-0.5 rounded border border-rose-200/60">${scoreText}·补${cnNum}</span>`;
+                filtered.forEach(g => {
+                    const el = document.createElement('section');
+                    el.className = 'card';
+                    
+                    let autumnHtml = '';
+                    if (g.autumn && g.autumn.questions?.length) {
+                        autumnHtml = `
+                            <div class="card-column">
+                                <div class="column-header">🍁 秋期試験</div>
+                                <div class="list">
+                                    ${g.autumn.questions.map(q => `<a class="item" href="test.html?year=${g.autumn.key}&question=${q.id}"><span>${q.title}</span>${arrowSvg}</a>`).join('')}
+                                </div>
+                            </div>
+                        `;
                     }
-                } else if (isPerfect) {
-                    // 🔥 这里修改为了“已通过”金牌徽章
-                    stateBadgeHtml = `<span class="text-[9px] font-black tracking-wide bg-amber-100 text-amber-800 px-1.5 py-0.5 rounded border border-amber-400 shadow-sm flex items-center space-x-0.5"><span>🏆</span> <span>已通过</span></span>`;
-                } else {
-                    stateBadgeHtml = `<span class="text-[9px] font-black tracking-wide bg-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded border border-emerald-300 flex items-center space-x-0.5"><span>✓</span> <span>已特训</span></span>`;
-                }
+                    
+                    let springHtml = '';
+                    if (g.spring && g.spring.questions?.length) {
+                        springHtml = `
+                            <div class="card-column">
+                                <div class="column-header">🌸 春期試験</div>
+                                <div class="list">
+                                    ${g.spring.questions.map(q => `<a class="item" href="test.html?year=${g.spring.key}&question=${q.id}"><span>${q.title}</span>${arrowSvg}</a>`).join('')}
+                                </div>
+                            </div>
+                        `;
+                    }
 
-                const bookMeta = (typeof my3DBooksDataset !== 'undefined') ? my3DBooksDataset.find(b => b.bookId === mod.book) : null;
-                const themeClass = isPerfect ? "border-amber-300 hover:border-amber-500 bg-amber-50/5 shadow-sm" : (bookMeta?.cardTheme || "border-[#EAE6D9] bg-white hover:border-amber-400 hover:shadow-md");
-                const dotColor = isPerfect ? "bg-amber-500 shadow-amber-500/50" : (total > 0 ? "bg-emerald-500" : (bookMeta?.dotColor || "bg-slate-400 shadow-slate-400/50"));
-
-                cardAnchor.className = `${themeClass} p-3 sm:p-4 rounded-xl border bg-white active:scale-[0.98] transition-all flex items-center justify-between group cursor-pointer`;
-                cardAnchor.innerHTML = `
-                    <div class="flex flex-col min-w-0 pr-1 py-0.5 w-full">
-                        <div class="flex items-center space-x-1 flex-wrap gap-y-0.5">
-                            ${stateBadgeHtml}
-                            <span class="w-1.5 h-1.5 rounded-full ${dotColor}"></span>
-                            <span class="text-[9px] font-mono font-black text-slate-500 bg-slate-200/60 px-1 rounded border border-slate-300/40 uppercase tracking-tighter">ID: ${mod.id}</span>
+                    el.innerHTML = `
+                        <h2 class="card-title">📅 ${g.yearTitle}</h2>
+                        <div class="card-columns">
+                            ${autumnHtml}
+                            ${springHtml}
                         </div>
-                        <span class="text-sm font-black text-slate-700 group-hover:text-amber-600 transition-colors block break-words leading-tight mt-1.5 tracking-tight">${mod.title}</span>
-                    </div>
-                    <div class="w-6 h-6 rounded-md bg-[#F3EFE3] group-hover:bg-amber-50 flex items-center justify-center shrink-0 transition-colors">
-                        <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-slate-400 group-hover:text-amber-600 transform group-hover:translate-x-0.5 transition-all"></i>
-                    </div>
-                `;
-                container.appendChild(cardAnchor);
-            });
-
-            if (typeof lucide !== 'undefined') { lucide.createIcons(); }
-        }
-
-        function filterToeicModules() {
-            const query = document.getElementById('searchConsoleInput').value.trim();
-            const filtered = localConfigRegistry.filter(mod => {
-                const total = parseInt(localStorage.getItem(`toeic_total_${mod.unit}`) || '0', 10);
-                if (currentBookFilter === 'progress' && total === 0) return false;
-                if (currentBookFilter !== 'all' && currentBookFilter !== 'progress' && mod.book !== currentBookFilter) return false;
-                if (!query) return true;
+                    `;
+                    container.appendChild(el);
+                });
+            } else if (selectedTopic !== 'all') {
+                const el = document.createElement('section');
+                el.className = 'card';
+                el.innerHTML = `<h2 class="card-title">🏷️ ${selectedTopic}</h2><div class="list" style="margin-top: 1rem;"></div>`;
+                const list = el.querySelector('.list');
                 
-                if (/^\d+$/.test(query)) {
-                    const targetNum = parseInt(query, 10);
-                    const rangeRegex = /(\d+)\s*[-–—]\s*(\d+)/g;
-                    let match;
+                const sortedYearsKeys = getSortedKeys();
+                sortedYearsKeys.forEach(yKey => {
+                    EXAM_DATA[yKey].questions?.forEach(q => {
+                        if (getTopic(q) === selectedTopic) {
+                            list.innerHTML += `<a class="item" href="test.html?year=${yKey}&question=${q.id}"><span>${q.title}</span><span style="display:flex; align-items:center;"><span class="badge">${EXAM_DATA[yKey].yearName}</span>${arrowSvg}</span></a>`;
+                        }
+                    });
+                });
+                container.appendChild(el);
+            } else {
+                groupedExams.forEach(g => {
+                    const el = document.createElement('section');
+                    el.className = 'card';
                     
-                    while ((match = rangeRegex.exec(mod.title)) !== null) {
-                        if (targetNum >= parseInt(match[1], 10) && targetNum <= parseInt(match[2], 10)) return true;
-                    }
-                    rangeRegex.lastIndex = 0;
-                    while ((match = rangeRegex.exec(mod.unit)) !== null) {
-                        if (targetNum >= parseInt(match[1], 10) && targetNum <= parseInt(match[2], 10)) return true;
+                    let autumnHtml = '';
+                    if (g.autumn && g.autumn.questions?.length) {
+                        autumnHtml = `
+                            <div class="card-column">
+                                <div class="column-header">🍁 秋期試験</div>
+                                <div class="list">
+                                    ${g.autumn.questions.map(q => `<a class="item" href="test.html?year=${g.autumn.key}&question=${q.id}"><span>${q.title}</span>${arrowSvg}</a>`).join('')}
+                                </div>
+                            </div>
+                        `;
                     }
                     
-                    const singleNumRegex = /\d+/g;
-                    let numMatch;
-                    while ((numMatch = singleNumRegex.exec(mod.title)) !== null) {
-                        if (parseInt(numMatch[0], 10) === targetNum) return true;
+                    let springHtml = '';
+                    if (g.spring && g.spring.questions?.length) {
+                        springHtml = `
+                            <div class="card-column">
+                                <div class="column-header">🌸 春期試験</div>
+                                <div class="list">
+                                    ${g.spring.questions.map(q => `<a class="item" href="test.html?year=${g.spring.key}&question=${q.id}"><span>${q.title}</span>${arrowSvg}</a>`).join('')}
+                                </div>
+                            </div>
+                        `;
                     }
-                    singleNumRegex.lastIndex = 0;
-                    while ((numMatch = singleNumRegex.exec(mod.unit)) !== null) {
-                        if (parseInt(numMatch[0], 10) === targetNum) return true;
-                    }
-                    return false; 
-                }
-                return mod.title.includes(query) || mod.unit.includes(query);
-            });
-            renderConsoleGrid(filtered);
+
+                    el.innerHTML = `
+                        <h2 class="card-title">📅 ${g.yearTitle}</h2>
+                        <div class="card-columns">
+                            ${autumnHtml}
+                            ${springHtml}
+                        </div>
+                    `;
+                    container.appendChild(el);
+                });
+            }
         }
-
-        window.setBookFilter = function(bookId) {
-            currentBookFilter = bookId;
-            const statsPanel = document.getElementById('statsDashboardSection');
-            const gridContainer = document.getElementById('modulesGridContainer');
-            
-            if (bookId === 'progress') {
-                statsPanel.classList.remove('hidden'); 
-                gridContainer.style.maxHeight = "calc(100vh - 22rem)";
-            } else {
-                statsPanel.classList.add('hidden');    
-                gridContainer.style.maxHeight = "calc(100vh - 16rem)";
-            }
-
-            const badge = document.getElementById('search-lock-badge');
-            const inputEl = document.getElementById('searchConsoleInput');
-            const dataset = (typeof my3DBooksDataset !== 'undefined') ? my3DBooksDataset : [];
-            const bookMeta = dataset.find(b => b.bookId === bookId);
-            
-            if (bookMeta && bookId !== 'progress') {
-                badge.innerHTML = `<span class="text-[10px] font-black px-2 py-0.5 rounded-md ${bookMeta.lockBadgeStyle}">🔒 SCOPE: ${bookMeta.scopeCode}</span>`;
-                badge.classList.remove('opacity-0', 'scale-75');
-                badge.classList.add('opacity-100', 'scale-100');
-                inputEl.placeholder = "已锁定区间范围 | 输入要定位的序号...";
-            } else {
-                badge.classList.remove('opacity-100', 'scale-100');
-                badge.classList.add('opacity-0', 'scale-75');
-                inputEl.placeholder = "快速检索：输入单词序号直达单元...";
-            }
-            
-            calculateAndRenderStats();
-            filterToeicModules();
-        };
-
-        document.addEventListener('dblclick', (e) => {
-            if (!e.target.closest('.book-3d-space')) {
-                window.setBookFilter('all');
-                document.getElementById('searchConsoleInput').value = ''; 
-                if (typeof window.resetBookVisuals === 'function') window.resetBookVisuals();
-            }
-        });
+        initUI();
     </script>
 </body>
 </html>

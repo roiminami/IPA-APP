@@ -1,145 +1,40 @@
-// ============================================================================
-// [ROUTER CONFIG] 南式TOEIC鬼特训 - 中央路由中心 (config.js)
-// ============================================================================
+// docs/config.js
 
-const toeicModulesConfig = [
-    // ========================================================================
-    // 🎯 SCORE 600 分段家族（主线 1 - 400 词 + 专属支线）
-    // ========================================================================
-    { id: 1,   title: "第 1 - 10 词",     unit: "g1-10",       book: "gold", section: "score600", type: "standard" },
-    { id: 2,   title: "第 11 - 20 词",    unit: "g11-20",      book: "gold", section: "score600", type: "standard" },
-    { id: 3,   title: "第 21 - 30 词",    unit: "g21-30",      book: "gold", section: "score600", type: "standard" },
-    { id: 4,   title: "第 31 - 40 词",    unit: "g31-40",      book: "gold", section: "score600", type: "standard" },
-    { id: 5,   title: "第 41 - 50 词",    unit: "g41-50",      book: "gold", section: "score600", type: "standard" },
-    { id: 6,   title: "第 51 - 60 词",    unit: "g51-60",      book: "gold", section: "score600", type: "standard" },
-    { id: 7,   title: "第 61 - 70 词",    unit: "g61-70",      book: "gold", section: "score600", type: "standard" },
-    { id: 8,   title: "第 71 - 80 词",    unit: "g71-80",      book: "gold", section: "score600", type: "standard" },
-    { id: 9,   title: "第 81 - 90 词",    unit: "g81-90",      book: "gold", section: "score600", type: "standard" },
-    { id: 10,  title: "第 91 - 100 词",   unit: "g91-100",     book: "gold", section: "score600", type: "standard" },
-    { id: 11,  title: "第 101 - 110 词",  unit: "g101-110",    book: "gold", section: "score600", type: "standard" },
-    { id: 12,  title: "第 111 - 120 词",  unit: "g111-120",    book: "gold", section: "score600", type: "standard" },
-    { id: 13,  title: "第 121 - 130 词",  unit: "g121-130",    book: "gold", section: "score600", type: "standard" },
-    { id: 14,  title: "第 131 - 140 词",  unit: "g131-140",    book: "gold", section: "score600", type: "standard" },
-    { id: 15,  title: "第 141 - 150 词",  unit: "g141-150",    book: "gold", section: "score600", type: "standard" },
-    { id: 16,  title: "第 151 - 160 词",  unit: "g151-160",    book: "gold", section: "score600", type: "standard" },
-    { id: 17,  title: "第 161 - 170 词",  unit: "g161-170",    book: "gold", section: "score600", type: "standard" },
-    { id: 18,  title: "第 171 - 180 词",  unit: "g171-180",    book: "gold", section: "score600", type: "standard" },
-    { id: 19,  title: "第 181 - 190 词",  unit: "g181-190",    book: "gold", section: "score600", type: "standard" },
-    { id: 20,  title: "第 191 - 200 词",  unit: "g191-200",    book: "gold", section: "score600", type: "standard" },
-    { id: 21,  title: "第 201 - 210 词",  unit: "g201-210",    book: "gold", section: "score600", type: "standard" },
-    { id: 22,  title: "第 211 - 220 词",  unit: "g211-220",    book: "gold", section: "score600", type: "standard" },
-    { id: 23,  title: "第 221 - 230 词",  unit: "g221-230",    book: "gold", section: "score600", type: "standard" },
-    { id: 24,  title: "第 231 - 240 词",  unit: "g231-240",    book: "gold", section: "score600", type: "standard" },
-    { id: 25,  title: "第 241 - 250 词",  unit: "g241-250",    book: "gold", section: "score600", type: "standard" },
-    { id: 26,  title: "第 251 - 260 词",  unit: "g251-260",    book: "gold", section: "score600", type: "standard" },
-    { id: 27,  title: "第 261 - 270 词",  unit: "g261-270",    book: "gold", section: "score600", type: "standard" },
-    { id: 28,  title: "第 271 - 280 词",  unit: "g271-280",    book: "gold", section: "score600", type: "standard" },
-    { id: 29,  title: "第 281 - 290 词",  unit: "g281-290",    book: "gold", section: "score600", type: "standard" },
-    { id: 30,  title: "第 291 - 300 词",  unit: "g291-300",    book: "gold", section: "score600", type: "standard" },
-    { id: 31,  title: "第 301 - 310 词",  unit: "g301-310",    book: "gold", section: "score600", type: "standard" },
-    { id: 32,  title: "第 311 - 320 词",  unit: "g311-320",    book: "gold", section: "score600", type: "standard" },
-    { id: 33,  title: "第 321 - 330 词",  unit: "g321-330",    book: "gold", section: "score600", type: "standard" },
-    { id: 34,  title: "第 331 - 340 词",  unit: "g331-340",    book: "gold", section: "score600", type: "standard" },
-    { id: 35,  title: "第 341 - 350 词",  unit: "g341-350",    book: "gold", section: "score600", type: "standard" },
-    { id: 36,  title: "第 351 - 360 词",  unit: "g351-360",    book: "gold", section: "score600", type: "standard" },
-    { id: 37,  title: "第 361 - 370 词",  unit: "g361-370",    book: "gold", section: "score600", type: "standard" },
-    { id: 38,  title: "第 371 - 380 词",  unit: "g371-380",    book: "gold", section: "score600", type: "standard" },
-    { id: 39,  title: "第 381 - 390 词",  unit: "g381-390",    book: "gold", section: "score600", type: "standard" },
-    { id: 40,  title: "第 391 - 400 词",  unit: "g391-400",    book: "gold", section: "score600", type: "standard" },
-    
-    // 🧩 600分专属支线
-    { id: 101, title: "600-补①：1 - 100 词", unit: "g-600-supp1-1-100", book: "gold", section: "score600", type: "supplement1" },
-    { id: 102, title: "600-补②：1 - 100 词", unit: "g-600-supp2-1-100", book: "gold", section: "score600", type: "supplement2" },
-    { id: 103, title: "600-补③：1 - 100 词", unit: "g-600-supp3-1-100", book: "gold", section: "score600", type: "supplement3" },
-    { id: 104, title: "600-补④：1 - 100 词", unit: "g-600-supp4-1-100", book: "gold", section: "score600", type: "supplement4" },
-
-    // ========================================================================
-    // 🚀 SCORE 730 分段家族（主线 401 - 700 词 + 专属支线）
-    // ========================================================================
-    { id: 41,  title: "第 401 - 410 词",  unit: "g401-410",    book: "gold", section: "score730", type: "standard" },
-    { id: 42,  title: "第 411 - 420 词",  unit: "g411-420",    book: "gold", section: "score730", type: "standard" },
-    { id: 43,  title: "第 421 - 430 词",  unit: "g421-430",    book: "gold", section: "score730", type: "standard" },
-    { id: 44,  title: "第 431 - 440 词",  unit: "g431-440",    book: "gold", section: "score730", type: "standard" },
-    { id: 45,  title: "第 441 - 450 词",  unit: "g441-450",    book: "gold", section: "score730", type: "standard" },
-    { id: 46,  title: "第 451 - 460 词",  unit: "g451-460",    book: "gold", section: "score730", type: "standard" },
-    { id: 47,  title: "第 461 - 470 词",  unit: "g461-470",    book: "gold", section: "score730", type: "standard" },
-    { id: 48,  title: "第 471 - 480 词",  unit: "g471-480",    book: "gold", section: "score730", type: "standard" },
-    { id: 49,  title: "第 481 - 490 词",  unit: "g481-490",    book: "gold", section: "score730", type: "standard" },
-    { id: 50,  title: "第 491 - 500 词",  unit: "g491-500",    book: "gold", section: "score730", type: "standard" },
-    { id: 51,  title: "第 501 - 510 词",  unit: "g501-510",    book: "gold", section: "score730", type: "standard" },
-    { id: 52,  title: "第 511 - 520 词",  unit: "g511-520",    book: "gold", section: "score730", type: "standard" },
-    { id: 53,  title: "第 521 - 530 词",  unit: "g521-530",    book: "gold", section: "score730", type: "standard" },
-    { id: 54,  title: "第 531 - 540 词",  unit: "g531-540",    book: "gold", section: "score730", type: "standard" },
-    { id: 55,  title: "第 541 - 550 词",  unit: "g541-550",    book: "gold", section: "score730", type: "standard" },
-    { id: 56,  title: "第 551 - 560 词",  unit: "g551-560",    book: "gold", section: "score730", type: "standard" },
-    { id: 57,  title: "第 561 - 570 词",  unit: "g561-570",    book: "gold", section: "score730", type: "standard" },
-    { id: 58,  title: "第 571 - 580 词",  unit: "g571-580",    book: "gold", section: "score730", type: "standard" },
-    { id: 59,  title: "第 581 - 590 词",  unit: "g581-590",    book: "gold", section: "score730", type: "standard" },
-    { id: 60,  title: "第 591 - 600 词",  unit: "g591-600",    book: "gold", section: "score730", type: "standard" },
-    { id: 61,  title: "第 601 - 610 词",  unit: "g601-610",    book: "gold", section: "score730", type: "standard" },
-    { id: 62,  title: "第 611 - 620 词",  unit: "g611-620",    book: "gold", section: "score730", type: "standard" },
-    { id: 63,  title: "第 621 - 630 词",  unit: "g621-630",    book: "gold", section: "score730", type: "standard" },
-    { id: 64,  title: "第 611 - 620 词",  unit: "g611-620",    book: "gold", section: "score730", type: "standard" }, // 注：原稿中此处单元名重复，保留原貌
-    { id: 65,  title: "第 641 - 650 词",  unit: "g641-650",    book: "gold", section: "score730", type: "standard" },
-    { id: 66,  title: "第 651 - 660 词",  unit: "g651-660",    book: "gold", section: "score730", type: "standard" },
-    { id: 67,  title: "第 661 - 670 词",  unit: "g661-670",    book: "gold", section: "score730", type: "standard" },
-    { id: 68,  title: "第 671 - 680 词",  unit: "g671-680",    book: "gold", section: "score730", type: "standard" },
-    { id: 69,  title: "第 681 - 690 词",  unit: "g681-690",    book: "gold", section: "score730", type: "standard" },
-    { id: 70,  title: "第 691 - 700 词",  unit: "g691-700",    book: "gold", section: "score730", type: "standard" },
-    
-    // 🧩 730分专属支线
-    { id: 105, title: "730-补①：1 - 100 词", unit: "g-730-supp1-1-100", book: "gold", section: "score730", type: "supplement1" },
-    { id: 106, title: "730-补②：1 - 100 词", unit: "g-730-supp2-1-100", book: "gold", section: "score730", type: "supplement2" },
-    { id: 107, title: "730-补③：1 - 100 词", unit: "g-730-supp3-1-100", book: "gold", section: "score730", type: "supplement3" },
-    { id: 108, title: "730-补④：1 - 100 词", unit: "g-730-supp4-1-100", book: "gold", section: "score730", type: "supplement4" },
-
-    // ========================================================================
-    // ⚡ SCORE 860 顶峰突击段（主线 701 - 900 词）
-    // ========================================================================
-    { id: 71,  title: "第 701 - 710 词",  unit: "g701-710",    book: "gold", section: "score860", type: "standard" },
-    { id: 72,  title: "第 711 - 720 词",  unit: "g711-720",    book: "gold", section: "score860", type: "standard" },
-    { id: 73,  title: "第 721 - 730 词",  unit: "g721-730",    book: "gold", section: "score860", type: "standard" },
-    { id: 74,  title: "第 731 - 740 词",  unit: "g731-740",    book: "gold", section: "score860", type: "standard" },
-    { id: 75,  title: "第 741 - 750 词",  unit: "g741-750",    book: "gold", section: "score860", type: "standard" },
-    { id: 76,  title: "第 751 - 760 词",  unit: "g751-760",    book: "gold", section: "score860", type: "standard" },
-    { id: 77,  title: "第 761 - 770 词",  unit: "g761-770",    book: "gold", section: "score860", type: "standard" },
-    { id: 78,  title: "第 771 - 780 词",  unit: "g771-780",    book: "gold", section: "score860", type: "standard" },
-    { id: 79,  title: "第 781 - 790 词",  unit: "g781-790",    book: "gold", section: "score860", type: "standard" },
-    { id: 80,  title: "第 791 - 800 词",  unit: "g791-800",    book: "gold", section: "score860", type: "standard" },
-    { id: 81,  title: "第 801 - 810 词",  unit: "g801-810",    book: "gold", section: "score860", type: "standard" },
-    { id: 82,  title: "第 811 - 820 词",  unit: "g811-820",    book: "gold", section: "score860", type: "standard" },
-    { id: 83,  title: "第 821 - 830 词",  unit: "g821-830",    book: "gold", section: "score860", type: "standard" },
-    { id: 84,  title: "第 831 - 840 词",  unit: "g831-840",    book: "gold", section: "score860", type: "standard" },
-    { id: 85,  title: "第 841 - 850 词",  unit: "g841-850",    book: "gold", section: "score860", type: "standard" },
-    { id: 86,  title: "第 851 - 860 词",  unit: "g851-860",    book: "gold", section: "score860", type: "standard" },
-    { id: 87,  title: "第 861 - 870 词",  unit: "g861-870",    book: "gold", section: "score860", type: "standard" },
-    { id: 88,  title: "第 871 - 880 词",  unit: "g871-880",    book: "gold", section: "score860", type: "standard" },
-    { id: 89,  title: "第 881 - 890 词",  unit: "g881-890",    book: "gold", section: "score860", type: "standard" },
-    { id: 90,  title: "第 891 - 900 词",  unit: "g891-900",    book: "gold", section: "score860", type: "standard" },
-
-    // 🧩 860分专属支线
-    { id: 109, title: "860-补①：1 - 100 词", unit: "g-860-supp1-1-100", book: "gold", section: "score860", type: "supplement1" },
-    { id: 110, title: "860-补②：1 - 100 词", unit: "g-860-supp2-1-100", book: "gold", section: "score860", type: "supplement2" },
-    { id: 111, title: "860-补③：1 - 100 词", unit: "g-860-supp3-1-100", book: "gold", section: "score860", type: "supplement3" },
-    { id: 112, title: "860-补④：1 - 100 词", unit: "g-860-supp4-1-100", book: "gold", section: "score860", type: "supplement4" },
-
-    // ========================================================================
-    // 👑 SCORE 990 满分通关段（主线 901 - 1000 词）
-    // ========================================================================
-    { id: 91,  title: "第 901 - 910 词",  unit: "g901-910",    book: "gold", section: "score990", type: "standard" },
-    { id: 92,  title: "第 911 - 920 词",  unit: "g911-920",    book: "gold", section: "score990", type: "standard" },
-    { id: 93,  title: "第 921 - 930 词",  unit: "g921-930",    book: "gold", section: "score990", type: "standard" },
-    { id: 94,  title: "第 931 - 940 词",  unit: "g931-940",    book: "gold", section: "score990", type: "standard" },
-    { id: 95,  title: "第 941 - 950 词",  unit: "g941-950",    book: "gold", section: "score990", type: "standard" },
-    { id: 96,  title: "第 951 - 960 词",  unit: "g951-960",    book: "gold", section: "score990", type: "standard" },
-    { id: 97,  title: "第 961 - 970 词",  unit: "g961-970",    book: "gold", section: "score990", type: "standard" },
-    { id: 98,  title: "第 971 - 980 词",  unit: "g971-980",    book: "gold", section: "score990", type: "standard" },
-    { id: 99,  title: "第 981 - 990 词",  unit: "g981-990",    book: "gold", section: "score990", type: "standard" },
-    { id: 100, title: "第 991 - 1000 词", unit: "g991-1000",   book: "gold", section: "score990", type: "standard" },
-    
-    // 🧩 990分专属支线
-    { id: 113, title: "990-补①：1 - 100 词", unit: "g-990-supp1-1-100", book: "gold", section: "score990", type: "supplement1" },
-    { id: 114, title: "990-补②：1 - 100 词", unit: "g-990-supp2-1-100", book: "gold", section: "score990", type: "supplement2" },
-    { id: 115, title: "990-补③：1 - 100 词", unit: "g-990-supp3-1-100", book: "gold", section: "score990", type: "supplement3" },
-    { id: 116, title: "990-补④：1 - 100 词", unit: "g-990-supp4-1-100", book: "gold", section: "score990", type: "supplement4" }
+// 1. 定义真题年份列表（严格对应您的 data 目录名称）
+const YEARS_LIST = [
+  { id: "Heisei_29_Spring", name: "平成29年度 春期" },
+  { id: "Heisei_29_Autumn", name: "平成29年度 秋期" },
+  { id: "Heisei_30_Spring", name: "平成30年度 春期" },
+  { id: "Heisei_30_Autumn", name: "平成30年度 秋期" },
+  { id: "Heisei_31_Spring", name: "平成31年度 春期" },
+  { id: "Reiwa_1_Autumn",  name: "令和元年度 秋期" },
+  { id: "Reiwa_2_Autumn",  name: "令和2年度 秋期" },
+  { id: "Reiwa_3_Spring",  name: "令和3年度 春期" },
+  { id: "Reiwa_3_Autumn",  name: "令和3年度 秋期" },
+  { id: "Reiwa_4_Spring",  name: "令和4年度 春期" },
+  { id: "Reiwa_4_Autumn",  name: "令和4年度 秋期" },
+  { id: "Reiwa_5_Spring",  name: "令和5年度 春期" },
+  { id: "Reiwa_5_Autumn",  name: "令和5年度 秋期" },
+  { id: "Reiwa_6_Spring",  name: "令和6年度 春期" },
+  { id: "Reiwa_6_Autumn",  name: "令和6年度 秋期" },
+  { id: "Reiwa_7_Spring",  name: "令和7年度 春期" },
+  { id: "Reiwa_7_Autumn",  name: "令和7年度 秋期" }
 ];
+
+// 2. 定义科目B 5大核心题型
+const QUESTIONS_LIST = [
+  { id: "Q01_Information_Security", title: "問1 情報セキュリティ" },
+  { id: "Q02_Business_Strategy",    title: "問2 経営戦略" },
+  { id: "Q05_Network",              title: "問5 ネットワーク" },
+  { id: "Q09_Project_Management",   title: "問9 プロジェクトマネジメント" },
+  { id: "Q10_Service_Management",   title: "問10 サービスマネジメント" }
+];
+
+// 自动输出系统数据源
+const EXAM_DATA = {};
+YEARS_LIST.forEach(year => {
+  EXAM_DATA[year.id] = {
+    yearName: year.name,
+    questions: QUESTIONS_LIST
+  };
+});
