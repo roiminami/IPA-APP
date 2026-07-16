@@ -4,15 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>学習システム | 南式応用情報速攻！</title>
-    <!-- 引入大厂轻量化前端渲染栈 -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght=300;400;500;600;700&family=Noto+Sans+SC:wght=300;400;500;700&family=Noto+Sans+JP:wght=300;400;500;700&display=swap');
+        /* 导入中日英完美的字族：Inter (英文) + Noto Sans JP (日文) + Noto Sans SC (中文) */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+JP:wght@300;400;500;700;900&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap');
         
-        /* 🌟 全页无缝打通：允许全网页随手势向下拉动，使表头自然滚出屏幕隐藏，释放最大做题与看图面积 */
         body {
-            font-family: 'Inter', 'Noto Sans SC', 'Noto Sans JP', sans-serif;
+            font-family: 'Inter', 'Noto Sans JP', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang SC", "Hiragino Sans", "Microsoft YaHei", sans-serif;
             background-color: #FAF9F5;
             min-height: 100vh;
         }
@@ -24,11 +23,28 @@
         .tab-panel { display: none !important; }
         .tab-panel.active { display: flex !important; width: 100%; }
 
-        /* 纯色彩暗示对错高亮（无任何多余文字说教）[cite: 2] */
+        /* 防止重复点击 */
+        .disabled-clicks {
+            pointer-events: none !important;
+            cursor: default !important;
+        }
+
+        /* 选项卡片物理阻尼动效 */
+        .option-item-card {
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .option-item-card:not(.disabled-clicks):hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.04);
+            border-color: #cbd5e1 !important;
+        }
+
+        /* 选项对错高亮 */
         .option-item-card.correct {
             border-color: #10b981 !important; 
             background-color: #f0fdf4 !important; 
             color: #065f46 !important;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.06);
         }
         .option-item-card.correct .option-prefix {
             background-color: #10b981 !important;
@@ -36,35 +52,38 @@
         }
 
         .option-item-card.incorrect {
-            border-color: #ef4444 !important; 
-            background-color: #fdf2f2 !important; 
-            color: #991b1b !important;
+            border-color: #f43f5e !important; 
+            background-color: #fff1f2 !important; 
+            color: #9f1239 !important;
+            box-shadow: 0 4px 12px rgba(244, 63, 94, 0.06);
         }
         .option-item-card.incorrect .option-prefix {
-            background-color: #ef4444 !important;
+            background-color: #f43f5e !important;
             color: white !important;
         }
 
-        /* 微细精致滚动条，保证在独立滑动时极具空气感 */
-        .scroll-beauty::-webkit-scrollbar {
-            width: 5px;
+        /* 保证切题回弹时，避开顶部 sticky 导航栏 */
+        #quiz-box-card {
+            scroll-margin-top: 100px;
         }
-        .scroll-beauty::-webkit-scrollbar-track {
-            background: transparent;
+
+        .animate-fade-in {
+            animation: fadeIn 0.35s cubic-bezier(0.4, 0, 0.2, 1) forwards;
         }
-        .scroll-beauty::-webkit-scrollbar-thumb {
-            background: #E2E8F0;
-            border-radius: 10px;
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-        .scroll-beauty::-webkit-scrollbar-thumb:hover {
-            background: #CBD5E1;
-        }
+
+        .scroll-beauty::-webkit-scrollbar { width: 5px; }
+        .scroll-beauty::-webkit-scrollbar-track { background: transparent; }
+        .scroll-beauty::-webkit-scrollbar-thumb { background: #E2E8F0; border-radius: 10px; }
+        .scroll-beauty::-webkit-scrollbar-thumb:hover { background: #CBD5E1; }
     </style>
 </head>
 <body class="text-slate-800 flex flex-col antialiased select-none">
 
-    <!-- 顶部 Header (向下拉动做题时自然向上滚出屏幕隐藏)[cite: 2] -->
-    <header class="border-b border-[#EAE6D9] bg-[#FAF9F5]/90 backdrop-blur-md shrink-0">
+    <header class="border-b border-[#EAE6D9] bg-[#FAF9F5]/90 backdrop-blur-md shrink-0 sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
             <a href="index.html" class="flex items-center space-x-3 hover:opacity-80 transition-all">
                 <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-500 to-amber-600 flex items-center justify-center text-white font-black text-lg shadow-md shadow-orange-500/20">
@@ -78,193 +97,222 @@
                 </div>
             </a>
 
-            <div id="page-title" class="text-xs sm:text-sm font-bold text-slate-600 bg-[#F3EFE3] px-4 py-2 rounded-xl border border-[#E1D9C9] max-w-[50%] truncate">
-                Loading...
+            <div class="flex items-center gap-2.5">
+                <div class="hidden sm:flex items-center gap-1.5 text-xs font-mono font-bold text-slate-500 bg-slate-100/80 px-3 py-2 rounded-xl border border-slate-200/60 shadow-inner">
+                    <i data-lucide="timer" class="w-3.5 h-3.5 text-slate-400"></i>
+                    <span id="global-timer-display">00:00:00</span>
+                </div>
+                <div id="page-title" class="text-xs sm:text-sm font-black text-slate-700 bg-[#F3EFE3] px-4 py-2 rounded-xl border border-[#E1D9C9] max-w-[280px] sm:max-w-[400px] truncate shadow-sm">
+                    読み込み中...
+                </div>
             </div>
         </div>
     </header>
 
-    <!-- 四大步骤 Tab 切换栏 (向下拉动时会自然随页面一同隐去)[cite: 2] -->
     <nav class="max-w-7xl w-full mx-auto px-4 pt-4 flex space-x-1 border-b border-[#EAE6D9] shrink-0">
-        <button data-target="tab-01" class="tab-btn px-4 py-2.5 font-bold text-xs sm:text-sm border-b-2 border-amber-600 text-amber-600 focus:outline-none transition-all flex items-center space-x-1.5">
+        <button data-target="tab-01" class="tab-btn px-4 py-2.5 font-black text-xs sm:text-sm border-b-2 border-amber-600 bg-amber-50/50 text-amber-800 focus:outline-none transition-all flex items-center space-x-1.5 rounded-t-xl">
             <i data-lucide="award" class="w-4 h-4"></i>
             <span>① 試験前知識チャージ</span>
         </button>
-        <button data-target="tab-02" class="tab-btn px-4 py-2.5 font-bold text-xs sm:text-sm border-b-2 border-transparent text-slate-500 hover:text-slate-800 focus:outline-none transition-all flex items-center space-x-1.5">
+        <button data-target="tab-02" class="tab-btn px-4 py-2.5 font-bold text-xs sm:text-sm border-b-2 border-transparent text-slate-500 hover:text-slate-800 hover:bg-[#FAF9F5]/80 focus:outline-none transition-all flex items-center space-x-1.5 rounded-t-xl">
             <i data-lucide="compass" class="w-4 h-4"></i>
             <span>② 過去問演習</span>
         </button>
-        <button data-target="tab-03" class="tab-btn px-4 py-2.5 font-bold text-xs sm:text-sm border-b-2 border-transparent text-slate-500 hover:text-slate-800 focus:outline-none transition-all flex items-center space-x-1.5">
+        <button data-target="tab-03" class="tab-btn px-4 py-2.5 font-bold text-xs sm:text-sm border-b-2 border-transparent text-slate-500 hover:text-slate-800 hover:bg-[#FAF9F5]/80 focus:outline-none transition-all flex items-center space-x-1.5 rounded-t-xl">
             <i data-lucide="search" class="w-4 h-4"></i>
             <span>③ 解答例</span>
         </button>
-        <button data-target="tab-04" class="tab-btn px-4 py-2.5 font-bold text-xs sm:text-sm border-b-2 border-transparent text-slate-500 hover:text-slate-800 focus:outline-none transition-all flex items-center space-x-1.5">
+        <button data-target="tab-04" class="tab-btn px-4 py-2.5 font-bold text-xs sm:text-sm border-b-2 border-transparent text-slate-500 hover:text-slate-800 hover:bg-[#FAF9F5]/80 focus:outline-none transition-all flex items-center space-x-1.5 rounded-t-xl">
             <i data-lucide="shield-alert" class="w-4 h-4"></i>
             <span>④ 南さんのノート</span>
         </button>
     </nav>
 
-    <!-- 工作主视口空间[cite: 2] -->
     <main class="flex-1 max-w-7xl w-full mx-auto px-4 py-4 flex flex-col min-h-0">
 
-        <!-- ====================================================== -->
-        <!-- 💡 Tab 01: 智能单题推进自测（横版 45:55 黄金分割比例 + 修复无法滑动的局部滚动条 bug） -->
-        <!-- ====================================================== -->
         <div id="tab-01" class="tab-panel active w-full flex-col pb-16">
             <div class="w-full max-w-6xl mx-auto mt-4">
                 
-                <!-- 主做题双栏卡片（显式限制高度并在中等及以上屏幕下锁死，以激活内部滚动） -->
-                <div class="bg-white border border-[#EAE6D9] rounded-2xl shadow-sm flex flex-col md:flex-row overflow-hidden animate-fade-in md:h-[580px]" id="quiz-box-card">
+                <div class="w-full flex flex-col md:flex-row gap-6 items-start animate-fade-in hidden" id="quiz-box-card">
                     
-                    <!-- 左侧栏：题干、大进度条与控制台（占 45% 宽度，背景卡布奇诺浅色底纸，高度完全贴合父容器） -->
-                    <div class="w-full md:w-[45%] bg-[#FAF9F5] border-r border-[#EAE6D9] p-6 flex flex-col justify-between gap-6 shrink-0 h-full">
-                        <div class="flex flex-col gap-3">
+                    <div class="w-full md:w-[35%] bg-white border border-[#EAE6D9] rounded-2xl p-6 flex flex-col gap-6 shrink-0 md:sticky md:top-20 shadow-xs">
+                        <div class="flex flex-col gap-4">
                             <div class="flex items-center justify-between">
-                                <span class="bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-[10px] font-black tracking-wider border border-blue-200 uppercase">
-                                    事前知識自測
+                                <span class="bg-amber-50 text-amber-700 px-3 py-1 rounded-full text-[10px] font-black tracking-wider border border-amber-200 uppercase">
+                                    知識の最速チャージ
                                 </span>
                                 <div class="text-xs font-bold text-slate-500">
                                     第 <span id="q-current-idx" class="text-slate-900 font-extrabold text-sm">1</span> / <span id="q-total-count">10</span> 問
                                 </div>
                             </div>
-                            
-                            <!-- 进度条[cite: 2] -->
                             <div class="w-full bg-slate-200/60 h-2 rounded-full overflow-hidden">
-                                <div id="q-progress-bar" class="bg-gradient-to-r from-blue-600 to-amber-500 h-full w-0 transition-all duration-300"></div>
+                                <div id="q-progress-bar" class="bg-gradient-to-r from-orange-500 to-amber-600 h-full w-0 transition-all duration-300"></div>
                             </div>
-
-                            <!-- 题干文本区[cite: 2] -->
-                            <div class="mt-4">
-                                <div id="q-question-text" class="text-sm sm:text-base font-black text-slate-800 leading-relaxed whitespace-pre-wrap">Loading...</div>
+                            <div class="mt-2">
+                                <div id="q-question-text" class="text-base md:text-lg font-bold text-slate-800 leading-relaxed whitespace-pre-wrap tracking-tight">Loading...</div>
                             </div>
                         </div>
 
-                        <!-- 底部常驻控制面板[cite: 2] -->
                         <div class="flex flex-col gap-3 border-t border-[#EAE6D9]/60 pt-4 mt-auto">
-                            <!-- 提示抽屉盒子[cite: 2] -->
-                            <div class="hidden rounded-xl p-3 text-xs leading-relaxed bg-amber-50 border border-dashed border-amber-200 text-amber-800 transition-all" id="q-hint-box"></div>
-                            
+                            <div class="hidden rounded-xl p-3.5 text-xs leading-relaxed bg-amber-50 border border-dashed border-amber-200 text-amber-800 transition-all" id="q-hint-box"></div>
                             <div class="flex items-center justify-between gap-2">
-                                <button class="text-xs font-bold text-amber-800 bg-amber-100/60 border border-amber-200 px-3.5 py-2 rounded-xl hover:bg-amber-100 active:scale-95 transition-all" id="q-action-hint-btn">
+                                <button class="text-xs font-bold text-amber-800 bg-amber-100/60 border border-amber-200 px-3.5 py-2.5 rounded-xl hover:bg-amber-100 active:scale-95 transition-all" id="q-action-hint-btn">
                                     <span class="flex items-center gap-1"><i data-lucide="help-circle" class="w-3.5 h-3.5"></i>ヒント</span>
                                 </button>
-                                
-                                <!-- 左右翻页核心控制组 -->
                                 <div class="flex items-center gap-2">
                                     <button class="bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 font-bold text-xs p-2.5 rounded-xl active:scale-95 disabled:opacity-40 disabled:pointer-events-none transition-all" id="q-action-prev-btn" title="前の問題">
                                         <i data-lucide="chevron-left" class="w-4 h-4"></i>
                                     </button>
-                                    <button class="bg-slate-900 hover:bg-blue-600 text-white font-bold text-xs px-4 py-2.5 rounded-xl active:scale-95 transition-all shadow-sm flex items-center gap-1" id="q-action-next-btn">
-                                        <span>次の問題</span> <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                                    <button class="bg-slate-900 hover:bg-amber-600 text-white font-bold text-xs px-4 py-2.5 rounded-xl active:scale-95 transition-all shadow-sm flex items-center gap-1" id="q-action-next-btn">
+                                        <span>NEXT</span> <i data-lucide="chevron-right" class="w-4 h-4"></i>
                                     </button>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- 右侧栏：【核心Bug修复】外层容器强制 min-h-0 h-full 溢出裁剪，内层激活滚动 -->
-                    <div class="flex-1 min-h-0 h-full bg-white overflow-hidden relative flex flex-col">
-                        <div class="flex-1 overflow-y-auto scroll-beauty p-6 overscroll-y-contain flex flex-col justify-start">
-                            <div class="flex flex-col gap-3 w-full py-2 my-auto" id="q-options-list">
-                                <!-- 动态注入选项[cite: 2] -->
-                            </div>
-                        </div>
+                    <div class="flex-1 w-full bg-white border border-[#EAE6D9] rounded-2xl p-6 md:p-8 shadow-xs flex flex-col gap-4">
+                        <div class="text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-1">選択肢</div>
+                        <div class="flex flex-col gap-4 w-full" id="q-options-list"></div>
                     </div>
+
                 </div>
 
-                <!-- 最终判定报告单[cite: 2] -->
-                <div class="bg-white border-2 border-blue-200 rounded-2xl p-8 shadow-md text-center flex flex-col items-center gap-5 hidden max-w-2xl mx-auto animate-fade-in" id="quiz-report-panel">
+                <div class="bg-white border-2 border-amber-200 rounded-2xl p-8 shadow-md text-center flex flex-col items-center gap-5 hidden max-w-2xl mx-auto animate-fade-in" id="quiz-report-panel">
                     <span class="bg-orange-50 px-4 py-1.5 rounded-full text-orange-700 text-[10px] font-bold tracking-wider border border-orange-200">南式・合格判定ポータル</span>
                     <h2 class="font-black text-slate-900 text-lg">事前知識チェック完了！</h2>
-                    
                     <div class="text-4xl font-black text-slate-900">
-                        <span id="report-correct-num" class="text-5xl text-blue-600 font-black">0</span> <span class="text-sm font-medium text-slate-400">/ 10 問 正解</span>
+                        <span id="report-correct-num" class="text-5xl text-amber-600 font-black">0</span> <span class="text-sm font-medium text-slate-400">/ 10 問 正解</span>
                     </div>
-
                     <div class="bg-[#FAF9F5] p-4 rounded-xl border border-[#EAE6D9] text-left w-full space-y-1">
                         <h4 id="report-eval-title" class="font-bold text-xs text-amber-700">🤖 総合評価</h4>
                         <p id="report-eval-content" class="text-[11px] text-slate-600 leading-relaxed whitespace-pre-wrap">--</p>
                     </div>
-
                     <div class="flex gap-3 w-full mt-2">
                         <button class="flex-1 py-2.5 bg-slate-100 hover:bg-slate-200 border border-slate-300 text-slate-700 text-xs font-bold rounded-lg transition-all" id="report-retry-btn">再挑戦</button>
-                        <button class="flex-1 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-lg transition-all" id="report-go-tab2-btn">STEP 02 真題へ ➔[cite: 2]</button>
+                        <button class="flex-1 py-2.5 bg-gradient-to-r from-orange-500 to-amber-600 text-white text-xs font-bold rounded-lg transition-all shadow-md shadow-orange-500/10 hover:opacity-90" id="report-go-tab2-btn">STEP 02 真題へ ➔</button>
                     </div>
                 </div>
 
+                <div id="quiz-empty-panel" class="bg-white border border-[#EAE6D9] rounded-2xl p-10 shadow-sm text-center flex flex-col items-center justify-center gap-5 max-w-xl mx-auto animate-fade-in hidden">
+                    <div class="w-16 h-16 rounded-full bg-amber-50 flex items-center justify-center text-amber-600 shadow-inner">
+                        <i data-lucide="hourglass" class="w-8 h-8 animate-pulse"></i>
+                    </div>
+                    <span class="bg-amber-50 px-4 py-1.5 rounded-full text-amber-800 text-[10px] font-black tracking-wider border border-amber-200 uppercase">
+                        UNDER CONSTRUCTION
+                    </span>
+                    <h2 class="font-black text-slate-900 text-lg">事前知識チャージ 準備中！</h2>
+                    <p class="text-xs sm:text-sm text-slate-600 leading-relaxed max-w-sm">
+                        現在、管理人がこの问题に関する「重要用語・前提知識コンテンツ」を鋭意作成・調整中です！📚<br>
+                        完成次第、即時アップデートして共有（シェア）いたします。今しばらくお待ちください！まずは「② 過去問演習」から挑戦してみましょう！☕
+                    </p>
+                    <button class="py-2.5 px-6 bg-gradient-to-r from-orange-500 to-amber-600 text-white text-xs font-bold rounded-lg transition-all shadow-md shadow-orange-500/10 hover:opacity-90" id="empty-go-tab2-btn">
+                        STEP 02 過去問演習へ ➔
+                    </button>
+                </div>
+
             </div>
         </div>
 
-        <!-- ====================================================== -->
-        <!-- 📂 Tab 02: 过去问演习 PDF 大面积自适应拉伸填充 + 内置常驻纯文本草稿箱[cite: 2] -->
-        <!-- ====================================================== -->
         <div id="tab-02" class="tab-panel w-full flex flex-col md:flex-row gap-4 h-[96vh] relative">
             <div class="loading-overlay absolute inset-0 bg-white flex flex-col items-center justify-center z-20 text-xs text-slate-400" id="loading-02">
-                <div class="w-8 h-8 border-2 border-slate-200 border-t-blue-600 rounded-full animate-spin mb-2"></div>
+                <div class="w-8 h-8 border-2 border-slate-200 border-t-amber-600 rounded-full animate-spin mb-2"></div>
                 <p>真題 02_Test.pdf 読込中...</p>
             </div>
             
-            <!-- 左侧：全屏幕高宽完全自适应拉伸的 PDF 真题视窗[cite: 2] -->
             <div class="flex-1 h-full flex flex-col gap-1.5">
                 <div class="text-[10px] text-slate-400 font-medium px-1 flex items-center justify-between">
                     <span>💡 下へスクロールするとヘッダーが隠れ、問題エリアがさらに広がります。</span>
-                    <a id="test-pdf-external" href="#" target="_blank" class="text-blue-600 hover:underline flex items-center gap-0.5">モバイル全画面表示 ↗</a>
+                    <a id="test-pdf-external" href="#" target="_blank" class="text-amber-600 hover:text-amber-700 hover:underline flex items-center gap-0.5">モバイル全画面表示 ↗</a>
                 </div>
-                <div id="test-pdf-container" class="flex-1 bg-white rounded-2xl border border-[#EAE6D9] overflow-hidden shadow-xs"></div>
+                
+                <div id="test-pdf-container" class="flex-1 bg-white rounded-2xl border border-[#EAE6D9] overflow-hidden shadow-xs relative">
+                    <div id="test-empty-panel" class="absolute inset-0 bg-white flex flex-col items-center justify-center gap-4 text-center p-6 hidden">
+                        <div class="w-16 h-16 rounded-full bg-amber-50 flex items-center justify-center text-amber-600">
+                            <i data-lucide="file-warning" class="w-8 h-8"></i>
+                        </div>
+                        <h3 class="font-black text-slate-900 text-base">過去問PDF 準備中</h3>
+                        <p class="text-xs text-slate-500 max-w-md leading-relaxed">
+                            こちらの過去問題PDFは現在、管理人がスキャン・レイアウト整理中です！完成次第即アップデートしシェアします。☕
+                        </p>
+                    </div>
+                </div>
             </div>
             
-            <!-- 右侧：常驻在页面主布局内的纯文本草稿箱（带一键AP官方格式文字模板注入）[cite: 2] -->
             <div class="w-full md:w-80 bg-white border border-[#EAE6D9] rounded-2xl p-4 shadow-xs flex flex-col gap-3 shrink-0 h-auto md:h-full">
                 <div class="text-xs font-black text-slate-900 tracking-wider uppercase border-b border-slate-100 pb-2 flex items-center justify-between">
                     <span>📝 解答メモ (草稿・自己採点)</span>
-                    <button onclick="insertAnswerTemplate('memo-input-tab2')" class="text-[10px] text-blue-600 bg-blue-50 border border-blue-200 px-2 py-0.5 rounded hover:bg-blue-100 transition-all font-bold">枠を挿入</button>
+                    <button onclick="insertAnswerTemplate('memo-input-tab2')" class="text-[10px] text-amber-700 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded hover:bg-amber-100/80 transition-all font-bold">枠を挿入</button>
                 </div>
                 <div class="flex-1 flex flex-col gap-3">
-                    <textarea id="memo-input-tab2" class="w-full flex-1 bg-[#FAF9F5] border border-[#E1DBC9] rounded-xl p-3 text-xs font-medium text-slate-800 focus:outline-none focus:border-blue-500 focus:bg-white resize-none shadow-inner min-h-[150px]" placeholder="ここに自分の解答を入力してください...&#10;（右上のボタンから公式採点枠を挿入できます）"></textarea>
-                    <button id="submit-memo-btn-tab2" class="w-full bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-black py-2.5 rounded-xl text-xs shadow-md shadow-emerald-600/10 hover:opacity-90 active:scale-95 transition-all text-center">提出して答え合わせ ➔</button>
+                    <textarea id="memo-input-tab2" class="w-full flex-1 bg-[#FAF9F5] border border-[#E1DBC9] rounded-xl p-3 text-xs font-medium text-slate-800 focus:outline-none focus:border-amber-500 focus:bg-white resize-none shadow-inner min-h-[180px]" placeholder="ここに自分の解答を入力してください...&#10;（右上のボタンから公式採点枠を挿入できます）"></textarea>
+                    <button id="submit-memo-btn-tab2" class="w-full bg-gradient-to-r from-orange-500 to-amber-600 text-white font-black py-2.5 rounded-xl text-xs shadow-md shadow-orange-500/10 hover:opacity-90 active:scale-95 transition-all text-center">提出して答え合わせ ➔</button>
                 </div>
             </div>
         </div>
 
-        <!-- ====================================================== -->
-        <!-- 🖼️ Tab 03: 解答例 高精图自适应大面积视窗 + 内置纯文本草稿箱[cite: 2] -->
-        <!-- ====================================================== -->
         <div id="tab-03" class="tab-panel w-full flex flex-col md:flex-row gap-4 h-[96vh] overflow-hidden">
-            <!-- 左侧：完全包裹拉伸适应的答案解析图[cite: 2] -->
-            <div class="flex-1 h-full overflow-auto bg-slate-100/50 rounded-2xl border border-[#EAE6D9] flex items-start justify-center p-4">
-                <img id="answer-image" src="" alt="解答例" class="max-h-full w-auto select-none rounded-xl shadow-xs border border-slate-200" />
+            <div class="flex-1 h-full overflow-auto bg-[#FAF9F5]/40 rounded-2xl border border-[#EAE6D9] flex items-start justify-center p-4 relative">
+                <div id="loading-03" class="absolute inset-0 bg-white flex flex-col items-center justify-center z-20 text-xs text-slate-400">
+                    <div class="w-8 h-8 border-2 border-slate-200 border-t-amber-600 rounded-full animate-spin mb-2"></div>
+                    <p>解答例イメージ 読込中...</p>
+                </div>
+                <img id="answer-image" src="" alt="解答例" class="max-h-full w-auto select-none rounded-xl shadow-sm border border-slate-200 hidden" />
+                
+                <div id="answer-empty-panel" class="bg-white border border-[#EAE6D9] rounded-2xl p-8 shadow-sm text-center flex flex-col items-center justify-center gap-5 max-w-xl my-auto animate-fade-in hidden">
+                    <div class="w-14 h-14 rounded-full bg-amber-50 flex items-center justify-center text-amber-600">
+                        <i data-lucide="image-off" class="w-6 h-6"></i>
+                    </div>
+                    <span class="bg-amber-50 px-4 py-1.5 rounded-full text-amber-800 text-[10px] font-black tracking-wider border border-amber-200">NO IMAGE</span>
+                    <h3 class="font-black text-slate-900 text-base">解答例イメージ 準備中</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed max-w-xs">
+                        現在、管理人が解答例の抽出・作成を行っています！今しばらくお待ちください。📝
+                    </p>
+                </div>
             </div>
 
-            <!-- 右侧：常驻专属草稿箱（同步联动展示刚才在Tab2写下的纯文字解答，一目了然）[cite: 2] -->
             <div class="w-full md:w-80 bg-white border border-[#EAE6D9] rounded-2xl p-4 shadow-xs flex flex-col gap-3 shrink-0 h-auto md:h-full">
                 <div class="text-xs font-black text-slate-900 tracking-wider uppercase border-b border-slate-100 pb-2 flex items-center justify-between">
                     <span>📝 記入した解答の確認</span>
-                    <button onclick="insertAnswerTemplate('memo-input-tab3')" class="text-[10px] text-blue-600 bg-blue-50 border border-blue-200 px-2 py-0.5 rounded hover:bg-blue-100 transition-all font-bold">枠を挿入</button>
+                    <button onclick="insertAnswerTemplate('memo-input-tab3')" class="text-[10px] text-amber-700 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded hover:bg-amber-100/80 transition-all font-bold">枠を挿入</button>
                 </div>
                 <div class="flex-1 flex flex-col gap-3">
-                    <textarea id="memo-input-tab3" class="w-full flex-1 bg-[#FAF9F5] border border-[#E1DBC9] rounded-xl p-3 text-xs font-medium text-slate-800 focus:outline-none focus:border-blue-500 focus:bg-white resize-none shadow-inner min-h-[150px]" placeholder="ここに自己的解答を入力してください..."></textarea>
-                    <div class="text-[10px] text-slate-400 text-center font-medium bg-slate-50 p-2 rounded-lg border border-slate-100">
+                    <textarea id="memo-input-tab3" class="w-full flex-1 bg-[#FAF9F5] border border-[#E1DBC9] rounded-xl p-3 text-xs font-medium text-slate-800 focus:outline-none focus:border-amber-500 focus:bg-white resize-none shadow-inner min-h-[180px]" placeholder="ここに目的的解答を入力してください..."></textarea>
+                    <div class="text-[10px] text-amber-800/90 text-center font-medium bg-amber-50/50 p-2.5 rounded-xl border border-amber-100">
                         💡 左側の解答例画像と自分の草稿を比較・採点できます。
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- ====================================================== -->
-        <!-- 📂 Tab 04: 南さんのノート PDF 全画幅拉伸大面积填充视窗[cite: 2] -->
-        <!-- ====================================================== -->
         <div id="tab-04" class="tab-panel w-full flex flex-col h-[96vh] relative">
             <div class="loading-overlay absolute inset-0 bg-white flex flex-col items-center justify-center z-20 text-xs text-slate-400" id="loading-04">
-                <div class="w-8 h-8 border-2 border-slate-200 border-t-blue-600 rounded-full animate-spin mb-2"></div>
+                <div class="w-8 h-8 border-2 border-slate-200 border-t-amber-600 rounded-full animate-spin mb-2"></div>
                 <p>秘籍 04_minamis_note.pdf 読込中...</p>
             </div>
+            
             <div class="flex-1 h-full flex flex-col gap-1.5">
                 <div class="text-[10px] text-slate-400 font-medium px-1 flex items-center justify-between">
-                    <span>💡 攻略ノートを大画面で確認しながら、重要スタンスを脳に叩き込みましょう。</span>
-                    <a id="note-pdf-external" href="#" target="_blank" class="text-blue-600 hover:underline flex items-center gap-0.5">モバイル全画面表示 ↗</a>
+                    <span>💡 攻略ノートを大画面で確認しながら、重要スタンスを脑に叩き込みましょう。</span>
+                    <a id="note-pdf-external" href="#" target="_blank" class="text-amber-600 hover:text-amber-700 hover:underline flex items-center gap-0.5">モバイル全画面表示 ↗</a>
                 </div>
-                <div class="w-full flex-1 bg-white rounded-2xl border border-[#EAE6D9] overflow-hidden shadow-xs">
+                
+                <div class="w-full flex-1 bg-white rounded-2xl border border-[#EAE6D9] overflow-hidden shadow-xs flex flex-col justify-center items-center">
                     <div id="note-pdf-container" class="w-full h-full"></div>
+                    
+                    <div id="note-empty-panel" class="bg-white border border-[#EAE6D9] rounded-2xl p-10 shadow-sm text-center flex flex-col items-center justify-center gap-5 max-w-xl mx-auto my-auto animate-fade-in hidden">
+                        <div class="w-16 h-16 rounded-full bg-amber-50 flex items-center justify-center text-amber-600 shadow-inner">
+                            <i data-lucide="edit-3" class="w-8 h-8 animate-bounce"></i>
+                        </div>
+                        <span class="bg-amber-50 px-4 py-1.5 rounded-full text-amber-800 text-[10px] font-black tracking-wider border border-amber-200">
+                            COMING SOON
+                        </span>
+                        <h2 class="font-black text-slate-900 text-lg">南さんのノート 絶賛執筆中！</h2>
+                        <p class="text-xs sm:text-sm text-slate-600 leading-relaxed max-w-sm">
+                            「南さんの攻略ノート」は現在、管理人が直筆スキャン・解説作成などのアップデート作業を鋭意進めております！📝<br>
+                            最速かつ強力なトレース手法・スマート攻略プロセスをお届けするまで、今しばらくお待ちください。完成次第、即時シェアします！🔥
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -275,11 +323,34 @@
     <script src="ai_links.js"></script>
     <script>
         let quizQuestions = [];
+        let originalQuizQuestions = []; // 备份原始数据，支持重新挑战时Reshuffle
         let currentQuestionIdx = 0;
         let currentScore = 0;
         let currentIsAnswered = false;
 
-        // 🌟 核心升级：废除表格符号线，直接生成干净、极简的纯文字设问空行模板[cite: 2]
+        // Fisher-Yates 随机置乱算法
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function getInteractiveQuiz(year, question) {
+            return [];
+        }
+
+        async function fileExists(url) {
+            try {
+                const response = await fetch(url, { method: 'HEAD' });
+                if (response.status === 404) return false;
+                return true;
+            } catch (e) {
+                return true;
+            }
+        }
+
         function insertAnswerTemplate(textareaId) {
             const txtarea = document.getElementById(textareaId);
             if (!txtarea) return;
@@ -287,18 +358,19 @@
             const textTemplate = `【南式 AP科目B 自己採点表】
 
 設問１：
-a: [ ]
-b: [ ]
-d: [ ]
-e: [ ]
+a:
+b:
+d:
+e:
 
 設問２：
-c: [ ]
+（1）:
+（2）:
 
 設問３：
-（1）: [ ]
-（2）: [ ]
-（3）: [ ]
+（1）:
+（2）:
+（3）:
 
 ★ 自己採点得点：     点 / 100点\n`;
             
@@ -328,8 +400,11 @@ c: [ ]
                 return;
             }
 
-            const displayYear = year.replace(/_/g, ' ');
-            const displayQuestion = question.replace(/_/g, ' ');
+            const foundYear = YEARS_LIST.find(y => y.id === year);
+            const foundQuestion = QUESTIONS_LIST.find(q => q.id === question);
+            const displayYear = foundYear ? foundYear.name : year.replace(/_/g, ' ');
+            const displayQuestion = foundQuestion ? foundQuestion.title : question.replace(/_/g, ' ');
+            
             document.getElementById('page-title').textContent = `${displayYear} / ${displayQuestion}`;
 
             const basePath = `data/${year}/${question}`;
@@ -350,7 +425,6 @@ c: [ ]
                 if (timerEl) timerEl.textContent = `${h}:${m}:${s}`;
             }, 1000);
 
-            // --- 📝 内置常稿箱实时跨板双向一致性镜像绑定[cite: 2] ---
             const memoInputTab2 = document.getElementById('memo-input-tab2');
             const memoInputTab3 = document.getElementById('memo-input-tab3');
             const submitBtnTab2 = document.getElementById('submit-memo-btn-tab2');
@@ -372,11 +446,10 @@ c: [ ]
                 memoInputTab2.value = memoInputTab3.value;
             });
 
-            // 提交草稿，自动切换秒切跳转到 Tab 3[cite: 2]
             submitBtnTab2.addEventListener('click', () => {
                 localStorage.setItem(storageKey, memoInputTab2.value);
                 submitBtnTab2.textContent = "送信完了！解答例へ...";
-                submitBtnTab2.style.background = "#059669";
+                submitBtnTab2.style.background = "linear-gradient(to bottom right, #f97316, #d97706)";
 
                 setTimeout(() => {
                     submitBtnTab2.textContent = "提出して答え合わせ ➔";
@@ -388,46 +461,67 @@ c: [ ]
 
 
             // ==========================================
-            // 🤖 Tab 1: 题目单卡有序推进引擎（已完美支持横版双栏、双向左右自由切页、记录作答状态、独立内容上下滑动）
+            // 🤖 Tab 1: 完美无灰度高分辨率学习引擎
             // ==========================================
             const injectScript = document.createElement('script');
             injectScript.src = `${basePath}/quiz_data.js`;
             
-            // 记录每一题用户的选择，以便在左右翻页切换时能完整复原已作答卡片的颜色状态与解析
             let userAnswers = {}; 
 
             injectScript.onload = () => {
                 if (window.CURRENT_INTERACTIVE_QUIZ && window.CURRENT_INTERACTIVE_QUIZ.length > 0) {
-                    quizQuestions = window.CURRENT_INTERACTIVE_QUIZ;
+                    originalQuizQuestions = window.CURRENT_INTERACTIVE_QUIZ;
                 } else {
-                    quizQuestions = getInteractiveQuiz(year, question);
+                    originalQuizQuestions = getInteractiveQuiz(year, question);
                 }
                 startQuizEngine();
             };
             
             injectScript.onerror = () => {
-                quizQuestions = getInteractiveQuiz(year, question);
+                originalQuizQuestions = getInteractiveQuiz(year, question);
                 startQuizEngine();
             };
             document.body.appendChild(injectScript);
 
             function startQuizEngine() {
+                if (!originalQuizQuestions || originalQuizQuestions.length === 0) {
+                    document.getElementById('quiz-box-card').classList.add('hidden');
+                    document.getElementById('quiz-report-panel').classList.add('hidden');
+                    document.getElementById('quiz-empty-panel').classList.remove('hidden');
+                    
+                    const goBtn = document.getElementById('empty-go-tab2-btn');
+                    if (goBtn) {
+                        goBtn.addEventListener('click', () => {
+                            const tab02Btn = document.querySelector('button[data-target="tab-02"]');
+                            if (tab02Btn) tab02Btn.click();
+                        });
+                    }
+                    if (typeof lucide !== 'undefined') lucide.createIcons();
+                    return;
+                }
+
+                // 深度复制原始题目，并打乱题目顺序与选项顺序
+                quizQuestions = JSON.parse(JSON.stringify(originalQuizQuestions));
+                shuffleArray(quizQuestions);
+                quizQuestions.forEach(q => {
+                    shuffleArray(q.answerOptions);
+                });
+
+                document.getElementById('quiz-empty-panel').classList.add('hidden');
                 currentQuestionIdx = 0;
                 currentScore = 0;
-                userAnswers = {}; // 清空历史作答状态
+                userAnswers = {};
                 document.getElementById('quiz-box-card').classList.remove('hidden');
                 document.getElementById('quiz-report-panel').classList.add('hidden');
                 renderQuizQuestionCard();
             }
 
             function renderQuizQuestionCard() {
-                // 重置提示盒子
                 document.getElementById('q-hint-box').classList.add('hidden');
                 document.getElementById('q-action-hint-btn').textContent = "ヒントを見る";
 
                 const currentQuiz = quizQuestions[currentQuestionIdx];
 
-                // 绑定左侧面板进度数据
                 document.getElementById('q-current-idx').textContent = currentQuestionIdx + 1;
                 document.getElementById('q-total-count').textContent = quizQuestions.length;
                 const pct = ((currentQuestionIdx + 1) / quizQuestions.length) * 100;
@@ -435,15 +529,12 @@ c: [ ]
                 document.getElementById('q-question-text').textContent = currentQuiz.question;
                 document.getElementById('q-hint-box').innerHTML = `<strong>💡 ヒント:</strong> ${currentQuiz.hint}`;
 
-                // 动态更新上一页翻页按键状态
                 const prevBtn = document.getElementById('q-action-prev-btn');
                 prevBtn.disabled = currentQuestionIdx === 0;
 
-                // 动态更新右侧选项卡片
                 const optsWrapper = document.getElementById('q-options-list');
                 optsWrapper.innerHTML = '';
 
-                // 检查当前题是否已经被作答过
                 const hasAnswered = userAnswers[currentQuestionIdx] !== undefined;
                 const savedSelectedIdx = userAnswers[currentQuestionIdx];
 
@@ -451,36 +542,39 @@ c: [ ]
                     const letter = String.fromCharCode(65 + oIdx);
                     const optCard = document.createElement('div');
                     
-                    // 默认选项卡片基础样式
-                    optCard.className = "option-item-card bg-white border-2 border-slate-100 p-3.5 rounded-xl cursor-pointer flex flex-col items-start gap-1 font-semibold text-xs sm:text-sm text-slate-700 transition-all hover:bg-slate-50/50 hover:border-slate-200 active:scale-[0.99]";
+                    optCard.className = "option-item-card bg-white border-2 border-slate-200 p-5 rounded-2xl cursor-pointer flex flex-col items-start gap-1 font-semibold text-xs sm:text-sm text-slate-700 shadow-sm";
                     
                     optCard.innerHTML = `
                         <div class="option-top-row flex items-center gap-3 w-full font-bold">
-                            <div class="option-prefix bg-slate-100 text-slate-500 w-6 h-6 rounded-md flex items-center justify-center text-[10px] font-black shrink-0">${letter}</div>
-                            <div class="flex-1 break-words">${option.text}</div>
+                            <div class="option-prefix bg-slate-100 text-slate-500 w-6 h-6 rounded-md flex items-center justify-center text-[10px] font-black shrink-0 transition-colors">${letter}</div>
+                            <div class="flex-1 break-words text-slate-800 text-sm sm:text-base">${option.text}</div>
                         </div>
                     `;
 
-                    // 如果已经作答过，渲染静态解析态（移除点击，显示正确与否，铺开 Rationale）
                     if (hasAnswered) {
                         optCard.classList.add('disabled-clicks');
                         if (option.isCorrect) {
-                            optCard.className = optCard.className.replace('border-slate-100', '') + ' correct';
+                            optCard.className = optCard.className.replace('border-slate-200', '') + ' correct';
                         } else if (oIdx === savedSelectedIdx) {
-                            optCard.className = optCard.className.replace('border-slate-100', '') + ' incorrect';
+                            optCard.className = optCard.className.replace('border-slate-200', '') + ' incorrect';
                         }
                         
-                        // 插入解析
+                        // 🛠️ 优化：移除了所有的文字标签，直接干净地注入原本的 rationale 文本内容
                         const inlineBox = document.createElement('div');
-                        inlineBox.className = "w-full mt-2 pt-2 border-t border-dashed border-black/5 text-[11px] font-medium text-slate-500 whitespace-pre-wrap leading-relaxed";
-                        inlineBox.textContent = option.rationale;
+                        if (option.isCorrect) {
+                            inlineBox.className = "w-full mt-4 p-4 bg-emerald-50 border border-emerald-200/60 rounded-xl text-xs sm:text-sm font-medium text-emerald-900 whitespace-pre-wrap leading-relaxed animate-fade-in";
+                        } else if (oIdx === savedSelectedIdx) {
+                            inlineBox.className = "w-full mt-4 p-4 bg-rose-50 border border-rose-200/60 rounded-xl text-xs sm:text-sm font-medium text-rose-900 whitespace-pre-wrap leading-relaxed animate-fade-in";
+                        } else {
+                            inlineBox.className = "w-full mt-4 p-4 bg-slate-50 border border-slate-200/60 rounded-xl text-xs sm:text-sm font-medium text-slate-700 whitespace-pre-wrap leading-relaxed animate-fade-in";
+                        }
+                        inlineBox.textContent = option.rationale; // 直接渲染纯净文本
                         optCard.appendChild(inlineBox);
-                    } 
-                    
-                    // 如果尚未作答，绑定点击评测事件
-                    else {
+                    } else {
                         optCard.addEventListener('click', () => {
-                            userAnswers[currentQuestionIdx] = oIdx; // 存入本题选择记录
+                            if (userAnswers[currentQuestionIdx] !== undefined) return;
+
+                            userAnswers[currentQuestionIdx] = oIdx;
 
                             const allCards = optsWrapper.querySelectorAll('.option-item-card');
                             allCards.forEach(c => c.classList.add('disabled-clicks'));
@@ -488,15 +582,22 @@ c: [ ]
                             currentQuiz.answerOptions.forEach((opt, loopIdx) => {
                                 const targetCard = allCards[loopIdx];
                                 if (opt.isCorrect) {
-                                    targetCard.className = targetCard.className.replace('border-slate-100', '') + ' correct';
-                                    if (loopIdx === oIdx) currentScore++; // 仅在首次选择正确时累加分数
+                                    targetCard.className = targetCard.className.replace('border-slate-200', '') + ' correct';
+                                    if (loopIdx === oIdx) currentScore++;
                                 } else if (loopIdx === oIdx) {
-                                    targetCard.className = targetCard.className.replace('border-slate-100', '') + ' incorrect';
+                                    targetCard.className = targetCard.className.replace('border-slate-200', '') + ' incorrect';
                                 }
 
+                                // 🛠️ 同样直接渲染纯净 rationale 文本，不再附加任何多余前缀
                                 const inlineBox = document.createElement('div');
-                                inlineBox.className = "w-full mt-2 pt-2 border-t border-dashed border-black/5 text-[11px] font-medium text-slate-500 whitespace-pre-wrap leading-relaxed";
-                                inlineBox.textContent = opt.rationale;
+                                if (opt.isCorrect) {
+                                    inlineBox.className = "w-full mt-4 p-4 bg-emerald-50 border border-emerald-200/60 rounded-xl text-xs sm:text-sm font-medium text-emerald-900 whitespace-pre-wrap leading-relaxed animate-fade-in";
+                                } else if (loopIdx === oIdx) {
+                                    inlineBox.className = "w-full mt-4 p-4 bg-rose-50 border border-rose-200/60 rounded-xl text-xs sm:text-sm font-medium text-rose-900 whitespace-pre-wrap leading-relaxed animate-fade-in";
+                                } else {
+                                    inlineBox.className = "w-full mt-4 p-4 bg-slate-50 border border-slate-200/60 rounded-xl text-xs sm:text-sm font-medium text-slate-700 whitespace-pre-wrap leading-relaxed animate-fade-in";
+                                }
+                                inlineBox.textContent = opt.rationale; // 直接渲染纯净文本
                                 targetCard.appendChild(inlineBox);
                             });
 
@@ -507,43 +608,41 @@ c: [ ]
                     optsWrapper.appendChild(optCard);
                 });
 
-                // 切换题目时，自动将右侧滑动容器滚回到最顶部，确保流畅的阅读起始感
-                const rightScrollContainer = optsWrapper.parentElement;
-                if (rightScrollContainer) rightScrollContainer.scrollTop = 0;
+                // 页面平滑重置滚轮
+                const cardEl = document.getElementById('quiz-box-card');
+                if (cardEl) {
+                    cardEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
 
                 updateNextButtonState();
                 if (typeof lucide !== 'undefined') lucide.createIcons();
             }
 
-            // 控制右下角切换按键的文字状态
             function updateNextButtonState() {
                 const nextBtn = document.getElementById('q-action-next-btn');
                 const hasAnswered = userAnswers[currentQuestionIdx] !== undefined;
 
                 if (currentQuestionIdx === quizQuestions.length - 1) {
-                    // 最后一题且已做完，显示报告入口
                     if (hasAnswered) {
                         nextBtn.innerHTML = `<span>判定を見る</span> <i data-lucide="award" class="w-4 h-4"></i>`;
-                        nextBtn.className = "bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs px-4 py-2.5 rounded-xl active:scale-95 transition-all shadow-sm flex items-center gap-1";
+                        nextBtn.className = "bg-gradient-to-r from-orange-500 to-amber-600 text-white font-bold text-xs px-4 py-2.5 rounded-xl active:scale-95 transition-all shadow-sm shadow-orange-500/10 hover:opacity-90 flex items-center gap-1";
                     } else {
                         nextBtn.innerHTML = `<span>最終問</span> <i data-lucide="chevron-right" class="w-4 h-4"></i>`;
-                        nextBtn.className = "bg-slate-900 hover:bg-blue-600 text-white font-bold text-xs px-4 py-2.5 rounded-xl active:scale-95 transition-all shadow-sm flex items-center gap-1";
+                        nextBtn.className = "bg-slate-900 hover:bg-amber-600 text-white font-bold text-xs px-4 py-2.5 rounded-xl active:scale-95 transition-all shadow-sm flex items-center gap-1";
                     }
                 } else {
-                    nextBtn.innerHTML = `<span>次の問題</span> <i data-lucide="chevron-right" class="w-4 h-4"></i>`;
-                    nextBtn.className = "bg-slate-900 hover:bg-blue-600 text-white font-bold text-xs px-4 py-2.5 rounded-xl active:scale-95 transition-all shadow-sm flex items-center gap-1";
+                    nextBtn.innerHTML = `<span>NEXT</span> <i data-lucide="chevron-right" class="w-4 h-4"></i>`;
+                    nextBtn.className = "bg-slate-900 hover:bg-amber-600 text-white font-bold text-xs px-4 py-2.5 rounded-xl active:scale-95 transition-all shadow-sm flex items-center gap-1";
                 }
                 if (typeof lucide !== 'undefined') lucide.createIcons();
             }
 
-            // 提示开关[cite: 2]
             document.getElementById('q-action-hint-btn').addEventListener('click', () => {
                 const hint = document.getElementById('q-hint-box');
                 const isHidden = hint.classList.toggle('hidden');
                 document.getElementById('q-action-hint-btn').textContent = isHidden ? "ヒントを見る" : "ヒントを閉じる";
             });
 
-            // 上一题翻页
             document.getElementById('q-action-prev-btn').addEventListener('click', () => {
                 if (currentQuestionIdx > 0) {
                     currentQuestionIdx--;
@@ -551,7 +650,6 @@ c: [ ]
                 }
             });
 
-            // 下一题翻页 / 提交报告
             document.getElementById('q-action-next-btn').addEventListener('click', () => {
                 const hasAnswered = userAnswers[currentQuestionIdx] !== undefined;
                 
@@ -559,7 +657,6 @@ c: [ ]
                     currentQuestionIdx++;
                     renderQuizQuestionCard();
                 } else {
-                    // 如果最后一题作答完毕，点击进入评估报告
                     if (hasAnswered) {
                         renderFinalScoreReport();
                     } else {
@@ -582,10 +679,10 @@ c: [ ]
                     content = "満点合格です！情報セキュリティやアルゴリズム性能的前提知識は完全に頭に入っています。自信を持ってSTEP 02の真題演習に進み、実践的な擬似言語トレース特訓を開始してください！";
                 } else if (currentScore >= passLine) {
                     title = "🌟 高評価：合格安全圏内";
-                    content = "素晴らしい！正答率80%以上を達成しました。基礎は完全に固まっています。間違えた選択肢の解説だけ再度见直したら、次の過去問演習へスマートにステップアップしましょう！";
+                    content = "素晴らしい！正答率80%以上を達成しました。基礎は完全に固まっています。間違えた選択肢の解説だけ再度确认したら、次の過去問演習へスマートにステップアップしましょう！";
                 } else {
                     title = "🔥 伸びしろ十分：特訓エール";
-                    content = "事前知識チェックで少々罠に引っかかってしまったようです。焦る必要は全くありません！各選択肢の下に鋪開された解説をじっくり熟読し、知識をチャージしてから過去問に挑みましょう！";
+                    content = "事前知識チェックで少々罠に引っかかってしまったようです。焦る必要は全くありません！各選択肢の下に展開された解説をじっくり熟読し、知識をチャージしてから過去問に挑みましょう！";
                 }
 
                 document.getElementById('report-eval-title').textContent = `🤖 ${title}`;
@@ -603,7 +700,7 @@ c: [ ]
 
 
             // ==========================================
-            // 🗂️ iframe 大文件全画幅自适应注入模块[cite: 2]
+            // 🗂️ タブ切り替え & 動的ファイル存在チェック
             // ==========================================
             const loadedStates = { 'tab-01': true, 'tab-02': false, 'tab-03': false, 'tab-04': false };
 
@@ -613,30 +710,69 @@ c: [ ]
                 if (tabId === 'tab-02') {
                     const container = document.getElementById('test-pdf-container');
                     const loader = document.getElementById('loading-02');
+                    const emptyPanel = document.getElementById('test-empty-panel');
                     
-                    const iframe = document.createElement('iframe');
-                    iframe.src = testPdfUrl;
-                    iframe.className = "w-full h-full block border-none";
-                    iframe.onload = () => loader.classList.add('hidden');
-                    container.appendChild(iframe);
-                    loadedStates['tab-02'] = true;
+                    fileExists(testPdfUrl).then(exists => {
+                        loader.classList.add('hidden');
+                        container.innerHTML = ''; 
+                        container.appendChild(emptyPanel);
+
+                        if (exists) {
+                            emptyPanel.classList.add('hidden');
+                            const iframe = document.createElement('iframe');
+                            iframe.src = testPdfUrl;
+                            iframe.className = "w-full h-full block border-none animate-fade-in";
+                            container.appendChild(iframe);
+                        } else {
+                            emptyPanel.classList.remove('hidden');
+                            if (typeof lucide !== 'undefined') lucide.createIcons();
+                        }
+                        loadedStates['tab-02'] = true;
+                    });
                 }
 
                 else if (tabId === 'tab-03') {
-                    document.getElementById('answer-image').src = answerImgUrl;
-                    loadedStates['tab-03'] = true;
+                    const img = document.getElementById('answer-image');
+                    const loader = document.getElementById('loading-03');
+                    const emptyPanel = document.getElementById('answer-empty-panel');
+
+                    fileExists(answerImgUrl).then(exists => {
+                        loader.classList.add('hidden');
+                        if (exists) {
+                            img.src = answerImgUrl;
+                            img.classList.remove('hidden');
+                            emptyPanel.classList.add('hidden');
+                        } else {
+                            img.classList.add('hidden');
+                            emptyPanel.classList.remove('hidden');
+                            if (typeof lucide !== 'undefined') lucide.createIcons();
+                        }
+                        loadedStates['tab-03'] = true;
+                    });
                 }
 
                 else if (tabId === 'tab-04') {
                     const container = document.getElementById('note-pdf-container');
                     const loader = document.getElementById('loading-04');
+                    const emptyPanel = document.getElementById('note-empty-panel');
                     
-                    const iframe = document.createElement('iframe');
-                    iframe.src = minamiPdfUrl;
-                    iframe.className = "w-full h-full block border-none";
-                    iframe.onload = () => loader.classList.add('hidden');
-                    container.appendChild(iframe);
-                    loadedStates['tab-04'] = true;
+                    fileExists(minamiPdfUrl).then(exists => {
+                        loader.classList.add('hidden');
+                        container.innerHTML = ''; 
+                        container.appendChild(emptyPanel);
+
+                        if (exists) {
+                            emptyPanel.classList.add('hidden');
+                            const iframe = document.createElement('iframe');
+                            iframe.src = minamiPdfUrl;
+                            iframe.className = "w-full h-full block border-none animate-fade-in";
+                            container.appendChild(iframe);
+                        } else {
+                            emptyPanel.classList.remove('hidden');
+                            if (typeof lucide !== 'undefined') lucide.createIcons();
+                        }
+                        loadedStates['tab-04'] = true;
+                    });
                 }
             }
 
@@ -648,10 +784,10 @@ c: [ ]
                     const targetId = btn.getAttribute('data-target');
 
                     tabButtons.forEach(b => {
-                        b.classList.remove('border-amber-600', 'text-amber-600');
-                        b.classList.add('border-transparent', 'text-slate-500');
+                        b.className = "tab-btn px-4 py-2.5 font-bold text-xs sm:text-sm border-b-2 border-transparent text-slate-500 hover:text-slate-800 hover:bg-[#FAF9F5]/80 focus:outline-none transition-all flex items-center space-x-1.5 rounded-t-xl";
                     });
-                    btn.classList.add('border-amber-600', 'text-amber-600');
+
+                    btn.className = "tab-btn px-4 py-2.5 font-black text-xs sm:text-sm border-b-2 border-amber-600 bg-amber-50/50 text-amber-800 focus:outline-none transition-all flex items-center space-x-1.5 rounded-t-xl";
 
                     tabPanels.forEach(panel => {
                         panel.classList.toggle('active', panel.id === targetId);

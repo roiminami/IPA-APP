@@ -3,536 +3,346 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>南式応用情報速攻！科目B突破システム</title>
+    <title>ポータル | 南式応用情報速攻！</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        :root {
-            --primary: #2563eb;
-            --primary-light: #3b82f6;
-            --primary-bg: #f0f6ff;
-            --bg-color: #f8fafc;
-            --card-bg: #ffffff;
-            --text-main: #0f172a;
-            --text-sub: #475569;
-            --border: #e2e8f0;
-            
-            --radius-lg: 16px;
-            --radius-md: 10px;
-            
-            --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
-            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -2px rgba(0,0,0,0.05);
-            --shadow-lg: 0 10px 25px -5px rgba(0,0,0,0.05), 0 8px 10px -6px rgba(0,0,0,0.05);
-        }
-
-        * { 
-            box-sizing: border-box; 
-            margin: 0; 
-            padding: 0; 
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            -webkit-font-smoothing: antialiased;
-        }
+        /* 导入英、中、日三款精致且和谐的字库 */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=Noto+Sans+JP:wght@400;500;700;900&family=Noto+Sans+SC:wght@400;500;700;900&display=swap');
         
-        body { 
-            background-color: var(--bg-color); 
-            color: var(--text-main); 
-            padding: 3rem 2rem; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
+        body {
+            /* 智能中日双语优雅回退字体栈，避免简中字符被错误解析为日文汉字字形 */
+            font-family: 'Inter', 'Noto Sans SC', 'Noto Sans JP', -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans", "Microsoft YaHei", sans-serif;
+            background-color: #FAF9F5;
+            min-height: 100vh;
         }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #FAF9F5; }
+        ::-webkit-scrollbar-thumb { background: #E6E1D3; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #D1C9B7; }
 
-        header { 
-            text-align: center; 
-            margin-bottom: 3rem; 
-            width: 100%;
-            max-width: 1200px;
-        }
-        h1 { 
-            font-size: 2.2rem; 
-            font-weight: 850; 
-            color: #1e3a8a;
-            letter-spacing: -0.03em;
-            margin-bottom: 0.6rem;
-        }
-        .subtitle {
-            font-size: 0.95rem;
-            color: var(--text-sub);
-            font-weight: 500;
-        }
-
-        .filter-section { 
-            width: 100%; 
-            max-width: 1200px; 
-            margin-bottom: 1.5rem; 
-            background: var(--card-bg);
-            padding: 1.2rem 1.5rem;
-            border-radius: var(--radius-lg);
-            border: 1px solid var(--border);
-            box-shadow: var(--shadow-sm);
-        }
-        .filter-label { 
-            font-size: 0.85rem; 
-            font-weight: 800; 
-            color: #1e40af; 
-            margin-bottom: 0.8rem; 
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        .tag-container { 
-            display: flex; 
-            flex-wrap: wrap; 
-            gap: 0.6rem; 
-            width: 100%; 
-        }
-
-        .tag-btn { 
-            padding: 0.5rem 1.2rem; 
-            border: 1px solid var(--border); 
-            border-radius: 9999px; 
-            background: white; 
-            font-size: 0.85rem; 
-            font-weight: 700; 
-            color: var(--text-sub); 
-            cursor: pointer; 
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); 
-            box-shadow: var(--shadow-sm);
-        }
-        .tag-btn:hover {
-            border-color: var(--primary-light);
-            color: var(--primary);
-            background-color: var(--primary-bg);
-            transform: translateY(-1px);
-            box-shadow: var(--shadow-md);
-        }
-        .tag-btn.active { 
-            background: var(--primary); 
-            color: white; 
-            border-color: var(--primary); 
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
-        }
-
-        main { 
-            width: 100%; 
-            max-width: 1200px; 
-            display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(500px, 1fr)); 
-            gap: 2rem; 
-            margin-top: 1rem;
-        }
-
-        .card { 
-            background: var(--card-bg); 
-            border: 1px solid var(--border); 
-            border-radius: var(--radius-lg); 
-            padding: 1.8rem; 
-            box-shadow: var(--shadow-md);
-            transition: transform 0.25s ease, box-shadow 0.25s ease;
-            animation: fadeIn 0.35s ease-out;
-            display: flex;
-            flex-direction: column;
-        }
-        .card:hover {
-            transform: translateY(-3px);
-            box-shadow: var(--shadow-lg);
+        .animate-fade-in {
+            animation: fadeIn 0.4s ease-out forwards;
         }
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(8px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .card-title { 
-            font-size: 1.3rem; 
-            font-weight: 850; 
-            margin-bottom: 1.5rem; 
-            color: #1e3a8a; 
-            border-left: 4px solid var(--primary);
-            padding-left: 0.7rem;
-            line-height: 1.2;
+        @keyframes spinSlow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
         }
-
-        .card-columns {
-            display: flex;
-            gap: 1.5rem;
-        }
-        .card-column {
-            flex: 1;
-            min-width: 0;
-        }
-        
-        .column-header {
-            font-size: 0.9rem;
-            font-weight: 800;
-            color: var(--text-sub);
-            margin-bottom: 0.8rem;
-            padding-bottom: 0.4rem;
-            border-bottom: 2px solid var(--border);
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-        }
-        
-        .list {
-            display: flex;
-            flex-direction: column;
-            gap: 0.6rem;
-        }
-
-        .item { 
-            background: #ffffff; 
-            border: 1px solid var(--border); 
-            padding: 0.8rem 1rem; 
-            border-radius: var(--radius-md); 
-            text-decoration: none; 
-            color: var(--text-main); 
-            font-size: 0.85rem; 
-            font-weight: 700; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: var(--shadow-sm);
-            border-left: 3px solid transparent;
-        }
-        .item:hover { 
-            border-color: var(--primary-light); 
-            border-left-color: var(--primary);
-            color: var(--primary); 
-            transform: translateX(3px);
-            box-shadow: var(--shadow-md);
-            background-color: var(--primary-bg);
-        }
-
-        .arrow-icon {
-            width: 16px;
-            height: 16px;
-            fill: none;
-            stroke: var(--text-sub);
-            stroke-width: 2.5;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-            transition: transform 0.2s ease, stroke 0.2s ease;
-            flex-shrink: 0;
-        }
-        .item:hover .arrow-icon {
-            stroke: var(--primary);
-            transform: translateX(4px);
-        }
-
-        .badge { 
-            font-size: 0.7rem; 
-            background: #f1f5f9; 
-            padding: 0.15rem 0.4rem; 
-            border-radius: 6px; 
-            color: var(--text-sub); 
-            margin-left: 0.5rem;
-            flex-shrink: 0;
-            border: 1px solid #e2e8f0;
-        }
-
-        @media (max-width: 640px) {
-            body { padding: 1.5rem 1rem; }
-            main { grid-template-columns: 1fr; }
-            .card-columns {
-                flex-direction: column;
-                gap: 1.5rem;
-            }
+        .animate-spin-slow {
+            animation: spinSlow 12s linear infinite;
         }
     </style>
 </head>
-<body>
+<body class="text-slate-800 flex flex-col antialiased select-none pb-16">
 
-    <header>
-        <h1>南式応用情報速攻！科目B</h1>
-        <p class="subtitle">効率よく、スマートに過去問を突破しよう</p>
+    <header class="border-b border-[#EAE6D9] bg-[#FAF9F5]/90 backdrop-blur-md shrink-0 sticky top-0 z-50 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <a href="index.html" class="flex items-center space-x-3 hover:opacity-90 transition-all">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-500 to-amber-600 flex items-center justify-center text-white font-black text-lg shadow-md shadow-orange-500/30">
+                    南
+                </div>
+                <div>
+                    <h1 class="text-base font-black text-slate-900 tracking-tight flex items-center gap-1.5">
+                        南式応用情報速攻！<span class="text-[10px] bg-amber-100 text-amber-800 font-bold px-2 py-0.5 rounded-full border border-amber-200">科目B専用</span>
+                    </h1>
+                    <p class="text-[9px] text-amber-600 font-bold tracking-wider uppercase">過去問演習・スマート学習システム</p>
+                </div>
+            </a>
+
+            <div class="text-xs font-bold text-slate-600 bg-[#F3EFE3] px-4 py-2 rounded-xl border border-[#E1D9C9] flex items-center gap-1.5 shadow-sm">
+                <i data-lucide="award" class="w-4 h-4 text-amber-600 animate-pulse"></i>
+                <span>合格への最短ルート</span>
+            </div>
+        </div>
     </header>
 
-    <div class="filter-section">
-        <div class="filter-label">📅 年度から選ぶ</div>
-        <div class="tag-container" id="year-tags"></div>
-    </div>
+    <main class="flex-1 max-w-5xl w-full mx-auto px-4 py-8 flex flex-col gap-6">
+        
+        <!-- ================== 🌟 自然柔和 · 主理人共学卡片 ================== -->
+        <section class="bg-white border border-[#EAE6D9]/80 rounded-2xl p-6 md:p-7 shadow-xs hover:shadow-md transition-all duration-300 relative overflow-hidden flex flex-col md:flex-row gap-6 items-stretch animate-fade-in">
+            <!-- 柔和浅琥珀色光晕背景 -->
+            <div class="absolute -left-12 -top-12 w-48 h-48 bg-amber-100/20 rounded-full blur-3xl pointer-events-none"></div>
+            
+            <!-- 左侧：温润有温度的共学邀约 -->
+            <div class="flex-1 flex flex-col justify-between gap-5 relative z-10">
+                <div class="flex flex-col gap-3">
+                    <div class="flex flex-wrap items-center gap-2">
+                        <span class="inline-flex items-center gap-1 text-[11px] font-bold bg-[#F3EFE3] text-amber-800 border border-[#E1D9C9]/60 px-2.5 py-0.5 rounded-full shadow-2xs">
+                            <span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span>
+                            在日 IT 必刷 · 応用情報 AP
+                        </span>
+                        <span class="inline-flex items-center gap-1 text-[11px] font-bold text-slate-400">
+                            <i data-lucide="coffee" class="w-3.5 h-3.5"></i>
+                            Coffee & Code
+                        </span>
+                    </div>
 
-    <div class="filter-section">
-        <div class="filter-label">🏷️ 分野から選ぶ</div>
-        <div class="tag-container" id="topic-tags"></div>
-    </div>
+                    <h2 class="text-base sm:text-lg font-black text-slate-950 tracking-tight leading-snug">
+                        更适合在日中国宝宝体质的「応用情報」通关小窝
+                    </h2>
 
-    <main id="app-main"></main>
+                    <div class="text-xs text-slate-600 space-y-2.5 leading-relaxed font-medium">
+                        <p>
+                            日文教程生涩难懂？下午题（科目B）长篇日语死磕太痛苦？别怕，你不是一个人。
+                        </p>
+                        <p>
+                            群主 <strong class="text-slate-900 font-bold">Minami</strong> 正在<strong>「边学、边教、边分享」</strong>。我们用简单易懂的大白话和中文逻辑，帮你拆解日考中的逻辑陷阱与专业术语。
+                        </p>
+                        <p>
+                            在这里，<strong>「学搭俱乐部」</strong>的伙伴主要来自小红书，专注高效执行与长期主义。不吹水，不闲聊，大家在 <span class="text-slate-900 font-bold bg-[#FAF9F5] border border-[#EAE6D9] px-1.5 py-0.5 rounded mx-0.5">IT 架构</span>、<span class="text-slate-900 font-bold bg-[#FAF9F5] border border-[#EAE6D9] px-1.5 py-0.5 rounded mx-0.5">云原生</span>、<span class="text-slate-900 font-bold bg-[#FAF9F5] border border-[#EAE6D9] px-1.5 py-0.5 rounded mx-0.5">英语</span>、<span class="text-slate-900 font-bold bg-[#FAF9F5] border border-[#EAE6D9] px-1.5 py-0.5 rounded mx-0.5">会计</span> 与 <span class="text-slate-900 font-bold bg-[#FAF9F5] border border-[#EAE6D9] px-1.5 py-0.5 rounded mx-0.5">投资</span> 等硬核赛道中理性互助，全速抱团成长。
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 温馨底栏提示 -->
+                <div class="flex items-center gap-2 text-[11px] font-bold text-amber-800 bg-[#F5EFE1]/40 border border-[#E1D9C9]/50 rounded-xl p-2.5">
+                    <i data-lucide="sparkles" class="w-4 h-4 text-amber-600 shrink-0 animate-pulse"></i>
+                    <span>携手打造你在日 IT 职业发展的开挂起点！</span>
+                </div>
+            </div>
+
+            <!-- 右侧：微信一键复制卡片 -->
+            <div class="w-full md:w-[230px] shrink-0 bg-[#FAF9F5] border border-[#EAE6D9] rounded-2xl p-4 flex flex-col justify-between gap-4 relative z-10 hover:border-amber-400 transition-colors duration-300 shadow-2xs">
+                <div class="flex flex-col gap-2">
+                    <div class="flex items-center gap-2.5">
+                        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-orange-500 to-amber-600 flex items-center justify-center text-white font-black text-xs shadow-md shadow-orange-500/20">
+                            南
+                        </div>
+                        <div>
+                            <h4 class="text-xs font-black text-slate-900">学搭俱乐部</h4>
+                            <a href="https://minami.ac.cn" target="_blank" class="text-[10px] text-slate-400 font-bold hover:text-amber-700 flex items-center gap-0.5 mt-0.5">
+                                <span>minami.ac.cn</span>
+                                <i data-lucide="arrow-up-right" class="w-2.5 h-2.5"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <p class="text-[10px] text-slate-500 leading-relaxed font-medium">
+                        聚集高效执行力的在日华人，理性互助，共同成长。
+                    </p>
+                </div>
+
+                <div class="flex flex-col gap-2">
+                    <div class="bg-white border border-[#EAE6D9] rounded-xl p-2.5 flex flex-col gap-1 shadow-2xs">
+                        <span class="text-[9px] text-slate-400 font-bold tracking-wider uppercase">添加微信加群</span>
+                        <div class="flex items-center justify-between">
+                            <code class="text-xs font-black text-slate-800 tracking-wide font-mono">nowminami</code>
+                            <span class="text-[8px] font-black text-amber-700 bg-amber-50 border border-amber-200/80 px-1 py-0.5 rounded">备注：AP / IT 备考</span>
+                        </div>
+                    </div>
+                    
+                    <button onclick="copyWechatID()" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold text-[11px] py-2 px-3 rounded-xl flex items-center justify-center gap-1.5 transition-all active:scale-98">
+                        <i data-lucide="copy" class="w-3 h-3"></i>
+                        <span id="copy-btn-text">复制微信号</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================== 📅 年度选择 ================== -->
+        <section class="bg-white border border-[#EAE6D9] rounded-2xl p-6 shadow-sm animate-fade-in">
+            <div class="flex items-center gap-2 mb-5">
+                <i data-lucide="calendar" class="w-5 h-5 text-amber-600 animate-bounce"></i>
+                <h2 class="text-xs font-black text-slate-900 tracking-wider uppercase">年度から選ぶ</h2>
+            </div>
+            
+            <div id="year-filters" class="flex flex-wrap gap-2.5"></div>
+        </section>
+
+        <section id="exam-cards-container" class="flex flex-col gap-6 animate-fade-in" style="animation-delay: 100ms;"></section>
+
+    </main>
 
     <script src="config.js"></script>
     <script>
-        const container = document.getElementById('app-main');
-        const yearTags = document.getElementById('year-tags');
-        const topicTags = document.getElementById('topic-tags');
-        
-        let selectedYear = 'all';
-        let selectedTopic = 'all';
-
-        const topics = ['問1 情報セキュリティ', '問2 経営戦略', '問5 ネットワーク', '問9 プロジェクトマネジメント', '問10 サービスマネジメント'];
-
-        function getTopic(q) {
-            if (q.id.includes('Q01') || q.title.includes('セキュリティ')) return '問1 情報セキュリティ';
-            if (q.id.includes('Q02') || q.title.includes('経営')) return '問2 経営戦略';
-            if (q.id.includes('Q05') || q.title.includes('ネットワーク')) return '問5 ネットワーク';
-            if (q.id.includes('Q09') || q.title.includes('プロジェクト')) return '問9 プロジェクトマネジメント';
-            if (q.id.includes('Q10') || q.title.includes('サービス')) return '問10 サービスマネジメント';
-            return null;
-        }
-
-        // 🌟 元号（和暦）と「元年」を正確に西暦数値にシミュレートする関数
-        function getAbsoluteYear(yearStr) {
-            const match = yearStr.match(/(令和|平成)\s*([0-9元]+)年度?/);
-            if (!match) return 0;
-            const era = match[1];
-            let numStr = match[2];
-            let num = numStr === '元' ? 1 : parseInt(numStr, 10);
-            
-            if (era === '令和') {
-                return 2018 + num; // 令和1年（元年）= 2019年, 令和7年 = 2025年
-            } else if (era === '平成') {
-                return 1988 + num; // 平成29年 = 2017年, 平成31年 = 2019年
-            }
-            return 0;
-        }
-
-        // 🌟 全キーを「本物の直近順」にソートする関数
-        function getSortedKeys() {
-            return Object.keys(EXAM_DATA).sort((a, b) => {
-                const nameA = EXAM_DATA[a].yearName; 
-                const nameB = EXAM_DATA[b].yearName; 
-                
-                const ya = getAbsoluteYear(cleanYearName(nameA));
-                const yb = getAbsoluteYear(cleanYearName(nameB));
-                
-                if (ya !== yb) {
-                    return yb - ya;
-                }
-                
-                // 同じ年（例: 2019年）の場合は、令和を平成より優先
-                const isRaiwaA = nameA.includes('令和');
-                const isRaiwaB = nameB.includes('令和');
-                if (isRaiwaA && !isRaiwaB) return -1;
-                if (!isRaiwaA && isRaiwaB) return 1;
-
-                // 秋期を春期より優先
-                const isAutumnA = nameA.includes('秋');
-                const isAutumnB = nameB.includes('秋');
-                if (isAutumnA && !isAutumnB) return -1;
-                if (!isAutumnA && isAutumnB) return 1;
-                return 0;
+        // 微信复制交互机制
+        function copyWechatID() {
+            navigator.clipboard.writeText('nowminami').then(() => {
+                const btnText = document.getElementById('copy-btn-text');
+                btnText.textContent = '微信号已复制！';
+                setTimeout(() => {
+                    btnText.textContent = '复制微信号';
+                }, 2000);
+            }).catch(err => {
+                alert('微信号复制失败，请手动搜索 nowminami');
             });
         }
 
-        // 🌟 「令和◯年度」の純粋な年度文字列を抽出する関数
-        function cleanYearName(name) {
-            return name.replace(/(春期|秋期|春|秋).*$/, '').trim();
-        }
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof lucide !== 'undefined') lucide.createIcons();
 
-        // 🌟 データを「年度」単位に確実にグループ化
-        function getGroupedExams() {
+            // 1. 数据结构预处理
             const groups = {};
             
-            Object.keys(EXAM_DATA).forEach(key => {
-                const data = EXAM_DATA[key];
-                const name = data.yearName;
-                const yearTitle = cleanYearName(name);
-                const absoluteYear = getAbsoluteYear(yearTitle);
+            YEARS_LIST.forEach(year => {
+                const parts = year.name.split(' ');
+                const yearBase = parts[0];   // e.g. "令和7年度"
+                const semester = parts[1];   // e.g. "春期" or "秋期"
                 
-                const groupKey = key.replace(/_(Autumn|Spring)$/, '');
-                
-                if (!groups[groupKey]) {
-                    groups[groupKey] = {
-                        key: groupKey,
-                        yearTitle: yearTitle,
-                        absoluteYear: absoluteYear,
-                        isRaiwa: yearTitle.includes('令和'),
-                        autumn: null,
-                        spring: null
-                    };
+                if (!groups[yearBase]) {
+                    groups[yearBase] = { yearBase: yearBase };
                 }
                 
-                if (key.endsWith('_Autumn')) {
-                    groups[groupKey].autumn = { key: key, questions: data.questions };
-                } else if (key.endsWith('_Spring')) {
-                    groups[groupKey].spring = { key: key, questions: data.questions };
+                if (semester.includes("春期")) {
+                    groups[yearBase].spring = year;
+                } else if (semester.includes("秋期")) {
+                    groups[yearBase].autumn = year;
                 }
             });
+
+            // 2. 提取并排序列出所有的物理年度
+            const uniqueYearBases = [...new Set(YEARS_LIST.map(y => y.name.split(' ')[0]))].reverse();
+
+            // 3. 动态渲染「年度から選ぶ」过滤器
+            const filtersContainer = document.getElementById('year-filters');
             
-            // 年度の新しい順にソート
-            return Object.values(groups).sort((a, b) => {
-                if (b.absoluteYear !== a.absoluteYear) {
-                    return b.absoluteYear - a.absoluteYear;
-                }
-                if (b.isRaiwa && !a.isRaiwa) return 1;
-                if (!b.isRaiwa && a.isRaiwa) return -1;
-                return 0;
-            });
-        }
+            // 创建 "全年度" 胶囊
+            const allBtn = document.createElement('button');
+            allBtn.className = "filter-btn px-4 py-2.5 text-xs font-black rounded-xl transition-all shadow-md active:scale-95 bg-gradient-to-br from-orange-500 to-amber-600 text-white shadow-orange-500/10";
+            allBtn.textContent = "全年度";
+            allBtn.setAttribute('data-filter', 'all');
+            filtersContainer.appendChild(allBtn);
 
-        function initUI() {
-            const uniqueYears = [];
-            Object.keys(EXAM_DATA).forEach(key => {
-                const name = EXAM_DATA[key].yearName;
-                const yearPart = cleanYearName(name); 
-                if (yearPart && !uniqueYears.includes(yearPart)) {
-                    uniqueYears.push(yearPart);
-                }
-            });
-            
-            // 📅 「年度から選ぶ」タグバーも直近順に美しく並べ替え
-            uniqueYears.sort((a, b) => {
-                const ya = getAbsoluteYear(a);
-                const yb = getAbsoluteYear(b);
-                if (ya !== yb) return yb - ya;
-                if (a.includes('令和') && b.includes('平成')) return -1;
-                if (a.includes('平成') && b.includes('令和')) return 1;
-                return 0;
+            // 循环注入其它年度
+            uniqueYearBases.forEach(yearBase => {
+                const btn = document.createElement('button');
+                btn.className = "filter-btn px-4 py-2.5 text-xs font-bold rounded-xl border border-[#EAE6D9] bg-white text-slate-600 hover:bg-[#FAF9F5] hover:border-slate-400 transition-all shadow-sm active:scale-95";
+                btn.textContent = yearBase;
+                btn.setAttribute('data-filter', yearBase);
+                filtersContainer.appendChild(btn);
             });
 
-            // 年度タグ作成
-            yearTags.innerHTML = `<button class="tag-btn active" data-type="year" data-val="all">全年度</button>`;
-            uniqueYears.forEach(y => {
-                yearTags.innerHTML += `<button class="tag-btn" data-type="year" data-val="${y}">${y}</button>`;
-            });
-
-            // 分野タグ作成
-            topicTags.innerHTML = `<button class="tag-btn active" data-type="topic" data-val="all">全分野</button>`;
-            topics.forEach(t => {
-                topicTags.innerHTML += `<button class="tag-btn" data-type="topic" data-val="${t}">${t}</button>`;
-            });
-
-            document.querySelectorAll('.tag-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const type = e.target.dataset.type;
-                    const val = e.target.dataset.val;
-                    
-                    if (type === 'year') {
-                        selectedYear = val;
-                        selectedTopic = 'all';
-                        
-                        document.querySelectorAll('[data-type="topic"]').forEach(b => b.classList.remove('active'));
-                        document.querySelector('[data-type="topic"][data-val="all"]').classList.add('active');
-                        
-                        document.querySelectorAll('[data-type="year"]').forEach(b => b.classList.remove('active'));
-                        e.target.classList.add('active');
-                    } else {
-                        selectedTopic = val;
-                        selectedYear = 'all';
-                        
-                        document.querySelectorAll('[data-type="year"]').forEach(b => b.classList.remove('active'));
-                        document.querySelector('[data-type="year"][data-val="all"]').classList.add('active');
-                        
-                        document.querySelectorAll('[data-type="topic"]').forEach(b => b.classList.remove('active'));
-                        e.target.classList.add('active');
-                    }
-                    render();
-                });
-            });
-
-            render();
-        }
-
-        function render() {
+            // 4. 动态渲染考题面板
+            const container = document.getElementById('exam-cards-container');
             container.innerHTML = '';
-            const groupedExams = getGroupedExams();
-            const arrowSvg = `<svg class="arrow-icon" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>`;
 
-            if (selectedYear !== 'all') {
-                const filtered = groupedExams.filter(g => g.yearTitle === selectedYear);
+            uniqueYearBases.forEach(yearBase => {
+                const group = groups[yearBase];
                 
-                filtered.forEach(g => {
-                    const el = document.createElement('section');
-                    el.className = 'card';
-                    
-                    let autumnHtml = '';
-                    if (g.autumn && g.autumn.questions?.length) {
-                        autumnHtml = `
-                            <div class="card-column">
-                                <div class="column-header">🍁 秋期試験</div>
-                                <div class="list">
-                                    ${g.autumn.questions.map(q => `<a class="item" href="test.html?year=${g.autumn.key}&question=${q.id}"><span>${q.title}</span>${arrowSvg}</a>`).join('')}
-                                </div>
-                            </div>
+                const card = document.createElement('div');
+                card.className = "year-card bg-white border border-[#EAE6D9] rounded-2xl shadow-sm p-6 flex flex-col gap-6 transition-all duration-300 hover:shadow-md";
+                card.setAttribute('data-year-base', yearBase);
+                
+                let cardHtml = `
+                <div class="border-l-[6px] border-amber-500 pl-3.5 py-0.5">
+                    <h3 class="font-black text-slate-900 text-base sm:text-lg tracking-wide">${yearBase}</h3>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                `;
+                
+                // ================== 🌸 春期試験 ==================
+                cardHtml += `
+                <div class="flex flex-col gap-4">
+                    <div class="flex items-center gap-2 text-xs font-black text-pink-700 bg-pink-50 border border-pink-100 rounded-lg px-3 py-1.5 w-fit">
+                        <span>🌸</span>
+                        <span>春期試験</span>
+                    </div>
+                    <div class="flex flex-col gap-2.5">
+                `;
+                if (group.spring) {
+                    QUESTIONS_LIST.forEach(q => {
+                        cardHtml += `
+                        <a href="test.html?year=${group.spring.id}&question=${q.id}" class="group bg-[#FAF9F5] hover:bg-white border border-[#EAE6D9] hover:border-amber-500 rounded-xl p-4 flex items-center justify-between font-bold text-xs sm:text-sm text-slate-700 transition-all hover:shadow-md duration-200 hover:-translate-y-0.5">
+                            <span class="group-hover:text-amber-700 transition-colors">${q.title}</span>
+                            <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400 group-hover:text-amber-600 group-hover:translate-x-0.5 transition-all"></i>
+                        </a>
                         `;
-                    }
-                    
-                    let springHtml = '';
-                    if (g.spring && g.spring.questions?.length) {
-                        springHtml = `
-                            <div class="card-column">
-                                <div class="column-header">🌸 春期試験</div>
-                                <div class="list">
-                                    ${g.spring.questions.map(q => `<a class="item" href="test.html?year=${g.spring.key}&question=${q.id}"><span>${q.title}</span>${arrowSvg}</a>`).join('')}
-                                </div>
-                            </div>
-                        `;
-                    }
-
-                    el.innerHTML = `
-                        <h2 class="card-title">📅 ${g.yearTitle}</h2>
-                        <div class="card-columns">
-                            ${autumnHtml}
-                            ${springHtml}
+                    });
+                } else {
+                    cardHtml += `
+                    <div class="bg-amber-50/20 border border-dashed border-amber-200 rounded-xl p-5 text-center flex flex-col items-center justify-center gap-1.5 animate-fade-in">
+                        <div class="flex items-center gap-1 text-[11px] font-black text-amber-800">
+                            <i data-lucide="sparkles" class="w-4 h-4 text-amber-500 animate-spin-slow"></i>
+                            <span>教材データ準備中</span>
                         </div>
+                        <p class="text-[10px] text-slate-400 leading-relaxed text-center">
+                            管理人が真題・事前知識・ノートを現在鋭意作成中！<br>
+                            完成次第、順次アップデートしてシェアします。
+                        </p>
+                    </div>
                     `;
-                    container.appendChild(el);
-                });
-            } else if (selectedTopic !== 'all') {
-                const el = document.createElement('section');
-                el.className = 'card';
-                el.innerHTML = `<h2 class="card-title">🏷️ ${selectedTopic}</h2><div class="list" style="margin-top: 1rem;"></div>`;
-                const list = el.querySelector('.list');
+                }
+                cardHtml += `
+                    </div>
+                </div>
+                `;
                 
-                const sortedYearsKeys = getSortedKeys();
-                sortedYearsKeys.forEach(yKey => {
-                    EXAM_DATA[yKey].questions?.forEach(q => {
-                        if (getTopic(q) === selectedTopic) {
-                            list.innerHTML += `<a class="item" href="test.html?year=${yKey}&question=${q.id}"><span>${q.title}</span><span style="display:flex; align-items:center;"><span class="badge">${EXAM_DATA[yKey].yearName}</span>${arrowSvg}</span></a>`;
+                // ================== 🍁 秋期試験 ==================
+                cardHtml += `
+                <div class="flex flex-col gap-4">
+                    <div class="flex items-center gap-2 text-xs font-black text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-3 py-1.5 w-fit">
+                        <span>🍁</span>
+                        <span>秋期試験</span>
+                    </div>
+                    <div class="flex flex-col gap-2.5">
+                `;
+                if (group.autumn) {
+                    QUESTIONS_LIST.forEach(q => {
+                        cardHtml += `
+                        <a href="test.html?year=${group.autumn.id}&question=${q.id}" class="group bg-[#FAF9F5] hover:bg-white border border-[#EAE6D9] hover:border-amber-500 rounded-xl p-4 flex items-center justify-between font-bold text-xs sm:text-sm text-slate-700 transition-all hover:shadow-md duration-200 hover:-translate-y-0.5">
+                            <span class="group-hover:text-amber-700 transition-colors">${q.title}</span>
+                            <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400 group-hover:text-amber-600 group-hover:translate-x-0.5 transition-all"></i>
+                        </a>
+                        `;
+                    });
+                } else {
+                    cardHtml += `
+                    <div class="bg-amber-50/20 border border-dashed border-amber-200 rounded-xl p-5 text-center flex flex-col items-center justify-center gap-1.5 animate-fade-in">
+                        <div class="flex items-center gap-1 text-[11px] font-black text-amber-800">
+                            <i data-lucide="sparkles" class="w-4 h-4 text-amber-500 animate-spin-slow"></i>
+                            <span>教材データ準備中</span>
+                        </div>
+                        <p class="text-[10px] text-slate-400 leading-relaxed text-center">
+                            管理人が真題・事前知識・ノートを現在鋭意作成中！<br>
+                            完成次第、順次アップデートしてシェアします。
+                        </p>
+                    </div>
+                    `;
+                }
+                cardHtml += `
+                    </div>
+                </div>
+                `;
+                
+                cardHtml += `
+                </div>
+                `;
+                
+                card.innerHTML = cardHtml;
+                container.appendChild(card);
+            });
+
+            // 5. 过滤器交互
+            const filterBtns = filtersContainer.querySelectorAll('.filter-btn');
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    filterBtns.forEach(b => {
+                        b.className = "filter-btn px-4 py-2.5 text-xs font-bold rounded-xl border border-[#EAE6D9] bg-white text-slate-600 hover:bg-[#FAF9F5] hover:border-slate-400 transition-all shadow-sm active:scale-95";
+                    });
+                    
+                    btn.className = "filter-btn px-4 py-2.5 text-xs font-black rounded-xl transition-all shadow-md active:scale-95 bg-gradient-to-br from-orange-500 to-amber-600 text-white shadow-orange-500/10";
+                    
+                    const filterVal = btn.getAttribute('data-filter');
+                    const cards = document.querySelectorAll('.year-card');
+                    
+                    cards.forEach(card => {
+                        const cardYear = card.getAttribute('data-year-base');
+                        if (filterVal === 'all' || cardYear === filterVal) {
+                            card.style.display = 'flex';
+                            card.classList.add('animate-fade-in');
+                        } else {
+                            card.style.display = 'none';
                         }
                     });
                 });
-                container.appendChild(el);
-            } else {
-                groupedExams.forEach(g => {
-                    const el = document.createElement('section');
-                    el.className = 'card';
-                    
-                    let autumnHtml = '';
-                    if (g.autumn && g.autumn.questions?.length) {
-                        autumnHtml = `
-                            <div class="card-column">
-                                <div class="column-header">🍁 秋期試験</div>
-                                <div class="list">
-                                    ${g.autumn.questions.map(q => `<a class="item" href="test.html?year=${g.autumn.key}&question=${q.id}"><span>${q.title}</span>${arrowSvg}</a>`).join('')}
-                                </div>
-                            </div>
-                        `;
-                    }
-                    
-                    let springHtml = '';
-                    if (g.spring && g.spring.questions?.length) {
-                        springHtml = `
-                            <div class="card-column">
-                                <div class="column-header">🌸 春期試験</div>
-                                <div class="list">
-                                    ${g.spring.questions.map(q => `<a class="item" href="test.html?year=${g.spring.key}&question=${q.id}"><span>${q.title}</span>${arrowSvg}</a>`).join('')}
-                                </div>
-                            </div>
-                        `;
-                    }
+            });
 
-                    el.innerHTML = `
-                        <h2 class="card-title">📅 ${g.yearTitle}</h2>
-                        <div class="card-columns">
-                            ${autumnHtml}
-                            ${springHtml}
-                        </div>
-                    `;
-                    container.appendChild(el);
-                });
-            }
-        }
-        initUI();
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        });
     </script>
 </body>
 </html>
