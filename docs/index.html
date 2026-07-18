@@ -13,13 +13,13 @@
         body {
             /* 智能中日双语优雅回退字体栈，避免简中字符被错误解析为日文汉字字形 */
             font-family: 'Inter', 'Noto Sans SC', 'Noto Sans JP', -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans", "Microsoft YaHei", sans-serif;
-            background-color: #FAF9F5;
+            background-color: #F8FAFC;
             min-height: 100vh;
         }
         ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: #FAF9F5; }
-        ::-webkit-scrollbar-thumb { background: #E6E1D3; border-radius: 3px; }
-        ::-webkit-scrollbar-thumb:hover { background: #D1C9B7; }
+        ::-webkit-scrollbar-track { background: #F8FAFC; }
+        ::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94A3B8; }
 
         .animate-fade-in {
             animation: fadeIn 0.4s ease-out forwards;
@@ -40,22 +40,22 @@
 </head>
 <body class="text-slate-800 flex flex-col antialiased select-none pb-16">
 
-    <header class="border-b border-[#EAE6D9] bg-[#FAF9F5]/90 backdrop-blur-md shrink-0 sticky top-0 z-50 shadow-sm">
+    <header class="border-b border-slate-200 bg-white/90 backdrop-blur-md shrink-0 sticky top-0 z-50 shadow-xs">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
             <a href="index.html" class="flex items-center space-x-3 hover:opacity-90 transition-all">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-500 to-amber-600 flex items-center justify-center text-white font-black text-lg shadow-md shadow-orange-500/30">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-600 to-teal-500 flex items-center justify-center text-white font-black text-lg shadow-sm">
                     南
                 </div>
                 <div>
                     <h1 class="text-base font-black text-slate-900 tracking-tight flex items-center gap-1.5">
-                        南式応用情報速攻！<span class="text-[10px] bg-amber-100 text-amber-800 font-bold px-2 py-0.5 rounded-full border border-amber-200">科目B専用</span>
+                        南式応用情報速攻！<span class="text-[10px] bg-teal-50 text-teal-700 font-bold px-2 py-0.5 rounded-full border border-teal-200">科目B専用</span>
                     </h1>
-                    <p class="text-[9px] text-amber-600 font-bold tracking-wider uppercase">過去問演習・スマート学習システム</p>
+                    <p class="text-[9px] text-teal-600 font-bold tracking-wider uppercase">過去問演習・スマート学習システム</p>
                 </div>
             </a>
 
-            <div class="text-xs font-bold text-slate-600 bg-[#F3EFE3] px-4 py-2 rounded-xl border border-[#E1D9C9] flex items-center gap-1.5 shadow-sm">
-                <i data-lucide="award" class="w-4 h-4 text-amber-600 animate-pulse"></i>
+            <div class="text-xs font-bold text-slate-600 bg-slate-100 px-4 py-2 rounded-xl border border-slate-200 flex items-center gap-1.5">
+                <i data-lucide="award" class="w-4 h-4 text-teal-600 animate-pulse"></i>
                 <span>合格への最短ルート</span>
             </div>
         </div>
@@ -64,16 +64,16 @@
     <main class="flex-1 max-w-5xl w-full mx-auto px-4 py-8 flex flex-col gap-6">
         
         <!-- ================== 🌟 自然柔和 · 主理人共学卡片 ================== -->
-        <section class="bg-white border border-[#EAE6D9]/80 rounded-2xl p-6 md:p-7 shadow-xs hover:shadow-md transition-all duration-300 relative overflow-hidden flex flex-col md:flex-row gap-6 items-stretch animate-fade-in">
-            <!-- 柔和浅琥珀色光晕背景 -->
-            <div class="absolute -left-12 -top-12 w-48 h-48 bg-amber-100/20 rounded-full blur-3xl pointer-events-none"></div>
+        <section class="bg-white border border-slate-200 rounded-2xl p-6 md:p-7 shadow-xs hover:shadow-md transition-all duration-300 relative overflow-hidden flex flex-col md:flex-row gap-6 items-stretch animate-fade-in">
+            <!-- 极简冷调薄荷色浅晕 -->
+            <div class="absolute -left-12 -top-12 w-48 h-48 bg-teal-50 rounded-full blur-3xl pointer-events-none"></div>
             
             <!-- 左侧：温润有温度的共学邀约 -->
             <div class="flex-1 flex flex-col justify-between gap-5 relative z-10">
                 <div class="flex flex-col gap-3">
                     <div class="flex flex-wrap items-center gap-2">
-                        <span class="inline-flex items-center gap-1 text-[11px] font-bold bg-[#F3EFE3] text-amber-800 border border-[#E1D9C9]/60 px-2.5 py-0.5 rounded-full shadow-2xs">
-                            <span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span>
+                        <span class="inline-flex items-center gap-1 text-[11px] font-bold bg-slate-100 text-slate-700 border border-slate-200 px-2.5 py-0.5 rounded-full shadow-2xs">
+                            <span class="w-1.5 h-1.5 rounded-full bg-teal-500 animate-pulse"></span>
                             在日 IT 必刷 · 応用情報 AP
                         </span>
                         <span class="inline-flex items-center gap-1 text-[11px] font-bold text-slate-400">
@@ -82,7 +82,7 @@
                         </span>
                     </div>
 
-                    <h2 class="text-base sm:text-lg font-black text-slate-950 tracking-tight leading-snug">
+                    <h2 class="text-base sm:text-lg font-black text-slate-900 tracking-tight leading-snug">
                         更适合在日中国宝宝体质的「応用情報」通关小窝
                     </h2>
 
@@ -94,28 +94,28 @@
                             群主 <strong class="text-slate-900 font-bold">Minami</strong> 正在<strong>「边学、边教、边分享」</strong>。我们用简单易懂的大白话和中文逻辑，帮你拆解日考中的逻辑陷阱与专业术语。
                         </p>
                         <p>
-                            在这里，<strong>「学搭俱乐部」</strong>的伙伴主要来自小红书，专注高效执行与长期主义。不吹水，不闲聊，大家在 <span class="text-slate-900 font-bold bg-[#FAF9F5] border border-[#EAE6D9] px-1.5 py-0.5 rounded mx-0.5">IT 架构</span>、<span class="text-slate-900 font-bold bg-[#FAF9F5] border border-[#EAE6D9] px-1.5 py-0.5 rounded mx-0.5">云原生</span>、<span class="text-slate-900 font-bold bg-[#FAF9F5] border border-[#EAE6D9] px-1.5 py-0.5 rounded mx-0.5">英语</span>、<span class="text-slate-900 font-bold bg-[#FAF9F5] border border-[#EAE6D9] px-1.5 py-0.5 rounded mx-0.5">会计</span> 与 <span class="text-slate-900 font-bold bg-[#FAF9F5] border border-[#EAE6D9] px-1.5 py-0.5 rounded mx-0.5">投资</span> 等硬核赛道中理性互助，全速抱团成长。
+                            在这里，<strong>「学搭俱乐部」</strong>的伙伴主要来自小红书，专注高效执行与长期主义。不吹水，不闲聊，大家在 <span class="text-slate-900 font-bold bg-slate-50 border border-slate-200 px-1.5 py-0.5 rounded mx-0.5">IT 架构</span>、<span class="text-slate-900 font-bold bg-slate-50 border border-slate-200 px-1.5 py-0.5 rounded mx-0.5">云原生</span>、<span class="text-slate-900 font-bold bg-slate-50 border border-slate-200 px-1.5 py-0.5 rounded mx-0.5">英语</span>、<span class="text-slate-900 font-bold bg-slate-50 border border-slate-200 px-1.5 py-0.5 rounded mx-0.5">会计</span> 与 <span class="text-slate-900 font-bold bg-slate-50 border border-slate-200 px-1.5 py-0.5 rounded mx-0.5">投资</span> 等硬核赛道中理性互助，全速抱团成长。
                         </p>
                     </div>
                 </div>
 
                 <!-- 温馨底栏提示 -->
-                <div class="flex items-center gap-2 text-[11px] font-bold text-amber-800 bg-[#F5EFE1]/40 border border-[#E1D9C9]/50 rounded-xl p-2.5">
-                    <i data-lucide="sparkles" class="w-4 h-4 text-amber-600 shrink-0 animate-pulse"></i>
+                <div class="flex items-center gap-2 text-[11px] font-bold text-teal-800 bg-teal-50 border border-teal-100 rounded-xl p-2.5">
+                    <i data-lucide="sparkles" class="w-4 h-4 text-teal-600 shrink-0 animate-pulse"></i>
                     <span>携手打造你在日 IT 职业发展的开挂起点！</span>
                 </div>
             </div>
 
             <!-- 右侧：微信一键复制卡片 -->
-            <div class="w-full md:w-[230px] shrink-0 bg-[#FAF9F5] border border-[#EAE6D9] rounded-2xl p-4 flex flex-col justify-between gap-4 relative z-10 hover:border-amber-400 transition-colors duration-300 shadow-2xs">
+            <div class="w-full md:w-[230px] shrink-0 bg-slate-50 border border-slate-200 rounded-2xl p-4 flex flex-col justify-between gap-4 relative z-10 hover:border-indigo-400 transition-colors duration-300 shadow-2xs">
                 <div class="flex flex-col gap-2">
                     <div class="flex items-center gap-2.5">
-                        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-orange-500 to-amber-600 flex items-center justify-center text-white font-black text-xs shadow-md shadow-orange-500/20">
+                        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-600 to-teal-500 flex items-center justify-center text-white font-black text-xs shadow-sm">
                             南
                         </div>
                         <div>
                             <h4 class="text-xs font-black text-slate-900">学搭俱乐部</h4>
-                            <a href="https://minami.ac.cn" target="_blank" class="text-[10px] text-slate-400 font-bold hover:text-amber-700 flex items-center gap-0.5 mt-0.5">
+                            <a href="https://minami.ac.cn" target="_blank" class="text-[10px] text-slate-400 font-bold hover:text-indigo-700 flex items-center gap-0.5 mt-0.5">
                                 <span>minami.ac.cn</span>
                                 <i data-lucide="arrow-up-right" class="w-2.5 h-2.5"></i>
                             </a>
@@ -127,11 +127,11 @@
                 </div>
 
                 <div class="flex flex-col gap-2">
-                    <div class="bg-white border border-[#EAE6D9] rounded-xl p-2.5 flex flex-col gap-1 shadow-2xs">
+                    <div class="bg-white border border-slate-200 rounded-xl p-2.5 flex flex-col gap-1 shadow-2xs">
                         <span class="text-[9px] text-slate-400 font-bold tracking-wider uppercase">添加微信加群</span>
                         <div class="flex items-center justify-between">
                             <code class="text-xs font-black text-slate-800 tracking-wide font-mono">nowminami</code>
-                            <span class="text-[8px] font-black text-amber-700 bg-amber-50 border border-amber-200/80 px-1 py-0.5 rounded">备注：AP / IT 备考</span>
+                            <span class="text-[8px] font-black text-indigo-700 bg-indigo-50 border border-indigo-100 px-1 py-0.5 rounded">备注：AP / IT 备考</span>
                         </div>
                     </div>
                     
@@ -144,9 +144,9 @@
         </section>
 
         <!-- ================== 📅 年度选择 ================== -->
-        <section class="bg-white border border-[#EAE6D9] rounded-2xl p-6 shadow-sm animate-fade-in">
+        <section class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm animate-fade-in">
             <div class="flex items-center gap-2 mb-5">
-                <i data-lucide="calendar" class="w-5 h-5 text-amber-600 animate-bounce"></i>
+                <i data-lucide="calendar" class="w-5 h-5 text-indigo-600 animate-bounce"></i>
                 <h2 class="text-xs font-black text-slate-900 tracking-wider uppercase">年度から選ぶ</h2>
             </div>
             
@@ -202,7 +202,7 @@
             
             // 创建 "全年度" 胶囊
             const allBtn = document.createElement('button');
-            allBtn.className = "filter-btn px-4 py-2.5 text-xs font-black rounded-xl transition-all shadow-md active:scale-95 bg-gradient-to-br from-orange-500 to-amber-600 text-white shadow-orange-500/10";
+            allBtn.className = "filter-btn px-4 py-2.5 text-xs font-black rounded-xl transition-all shadow-md active:scale-95 bg-gradient-to-br from-indigo-600 to-teal-500 text-white";
             allBtn.textContent = "全年度";
             allBtn.setAttribute('data-filter', 'all');
             filtersContainer.appendChild(allBtn);
@@ -210,7 +210,7 @@
             // 循环注入其它年度
             uniqueYearBases.forEach(yearBase => {
                 const btn = document.createElement('button');
-                btn.className = "filter-btn px-4 py-2.5 text-xs font-bold rounded-xl border border-[#EAE6D9] bg-white text-slate-600 hover:bg-[#FAF9F5] hover:border-slate-400 transition-all shadow-sm active:scale-95";
+                btn.className = "filter-btn px-4 py-2.5 text-xs font-bold rounded-xl border border-slate-200 bg-white text-slate-600 hover:bg-slate-50 hover:border-slate-400 transition-all shadow-sm active:scale-95";
                 btn.textContent = yearBase;
                 btn.setAttribute('data-filter', yearBase);
                 filtersContainer.appendChild(btn);
@@ -224,11 +224,11 @@
                 const group = groups[yearBase];
                 
                 const card = document.createElement('div');
-                card.className = "year-card bg-white border border-[#EAE6D9] rounded-2xl shadow-sm p-6 flex flex-col gap-6 transition-all duration-300 hover:shadow-md";
+                card.className = "year-card bg-white border border-slate-200 rounded-2xl shadow-sm p-6 flex flex-col gap-6 transition-all duration-300 hover:shadow-md";
                 card.setAttribute('data-year-base', yearBase);
                 
                 let cardHtml = `
-                <div class="border-l-[6px] border-amber-500 pl-3.5 py-0.5">
+                <div class="border-l-[6px] border-indigo-600 pl-3.5 py-0.5">
                     <h3 class="font-black text-slate-900 text-base sm:text-lg tracking-wide">${yearBase}</h3>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -237,7 +237,7 @@
                 // ================== 🌸 春期試験 ==================
                 cardHtml += `
                 <div class="flex flex-col gap-4">
-                    <div class="flex items-center gap-2 text-xs font-black text-pink-700 bg-pink-50 border border-pink-100 rounded-lg px-3 py-1.5 w-fit">
+                    <div class="flex items-center gap-2 text-xs font-black text-slate-700 bg-slate-100 border border-slate-200 rounded-lg px-3 py-1.5 w-fit">
                         <span>🌸</span>
                         <span>春期試験</span>
                     </div>
@@ -246,17 +246,17 @@
                 if (group.spring) {
                     QUESTIONS_LIST.forEach(q => {
                         cardHtml += `
-                        <a href="test.html?year=${group.spring.id}&question=${q.id}" class="group bg-[#FAF9F5] hover:bg-white border border-[#EAE6D9] hover:border-amber-500 rounded-xl p-4 flex items-center justify-between font-bold text-xs sm:text-sm text-slate-700 transition-all hover:shadow-md duration-200 hover:-translate-y-0.5">
-                            <span class="group-hover:text-amber-700 transition-colors">${q.title}</span>
-                            <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400 group-hover:text-amber-600 group-hover:translate-x-0.5 transition-all"></i>
+                        <a href="test.html?year=${group.spring.id}&question=${q.id}" class="group bg-slate-50 hover:bg-white border border-slate-200 hover:border-indigo-500 rounded-xl p-4 flex items-center justify-between font-bold text-xs sm:text-sm text-slate-700 transition-all hover:shadow-md duration-200 hover:-translate-y-0.5">
+                            <span class="group-hover:text-indigo-600 transition-colors">${q.title}</span>
+                            <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400 group-hover:text-indigo-600 group-hover:translate-x-0.5 transition-all"></i>
                         </a>
                         `;
                     });
                 } else {
                     cardHtml += `
-                    <div class="bg-amber-50/20 border border-dashed border-amber-200 rounded-xl p-5 text-center flex flex-col items-center justify-center gap-1.5 animate-fade-in">
-                        <div class="flex items-center gap-1 text-[11px] font-black text-amber-800">
-                            <i data-lucide="sparkles" class="w-4 h-4 text-amber-500 animate-spin-slow"></i>
+                    <div class="bg-slate-50/50 border border-dashed border-slate-200 rounded-xl p-5 text-center flex flex-col items-center justify-center gap-1.5 animate-fade-in">
+                        <div class="flex items-center gap-1 text-[11px] font-black text-slate-700">
+                            <i data-lucide="sparkles" class="w-4 h-4 text-slate-500 animate-spin-slow"></i>
                             <span>教材データ準備中</span>
                         </div>
                         <p class="text-[10px] text-slate-400 leading-relaxed text-center">
@@ -274,7 +274,7 @@
                 // ================== 🍁 秋期試験 ==================
                 cardHtml += `
                 <div class="flex flex-col gap-4">
-                    <div class="flex items-center gap-2 text-xs font-black text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-3 py-1.5 w-fit">
+                    <div class="flex items-center gap-2 text-xs font-black text-slate-700 bg-slate-100 border border-slate-200 rounded-lg px-3 py-1.5 w-fit">
                         <span>🍁</span>
                         <span>秋期試験</span>
                     </div>
@@ -283,17 +283,17 @@
                 if (group.autumn) {
                     QUESTIONS_LIST.forEach(q => {
                         cardHtml += `
-                        <a href="test.html?year=${group.autumn.id}&question=${q.id}" class="group bg-[#FAF9F5] hover:bg-white border border-[#EAE6D9] hover:border-amber-500 rounded-xl p-4 flex items-center justify-between font-bold text-xs sm:text-sm text-slate-700 transition-all hover:shadow-md duration-200 hover:-translate-y-0.5">
-                            <span class="group-hover:text-amber-700 transition-colors">${q.title}</span>
-                            <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400 group-hover:text-amber-600 group-hover:translate-x-0.5 transition-all"></i>
+                        <a href="test.html?year=${group.autumn.id}&question=${q.id}" class="group bg-slate-50 hover:bg-white border border-slate-200 hover:border-indigo-500 rounded-xl p-4 flex items-center justify-between font-bold text-xs sm:text-sm text-slate-700 transition-all hover:shadow-md duration-200 hover:-translate-y-0.5">
+                            <span class="group-hover:text-indigo-600 transition-colors">${q.title}</span>
+                            <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400 group-hover:text-indigo-600 group-hover:translate-x-0.5 transition-all"></i>
                         </a>
                         `;
                     });
                 } else {
                     cardHtml += `
-                    <div class="bg-amber-50/20 border border-dashed border-amber-200 rounded-xl p-5 text-center flex flex-col items-center justify-center gap-1.5 animate-fade-in">
-                        <div class="flex items-center gap-1 text-[11px] font-black text-amber-800">
-                            <i data-lucide="sparkles" class="w-4 h-4 text-amber-500 animate-spin-slow"></i>
+                    <div class="bg-slate-50/50 border border-dashed border-slate-200 rounded-xl p-5 text-center flex flex-col items-center justify-center gap-1.5 animate-fade-in">
+                        <div class="flex items-center gap-1 text-[11px] font-black text-slate-700">
+                            <i data-lucide="sparkles" class="w-4 h-4 text-slate-500 animate-spin-slow"></i>
                             <span>教材データ準備中</span>
                         </div>
                         <p class="text-[10px] text-slate-400 leading-relaxed text-center">
@@ -321,10 +321,10 @@
             filterBtns.forEach(btn => {
                 btn.addEventListener('click', () => {
                     filterBtns.forEach(b => {
-                        b.className = "filter-btn px-4 py-2.5 text-xs font-bold rounded-xl border border-[#EAE6D9] bg-white text-slate-600 hover:bg-[#FAF9F5] hover:border-slate-400 transition-all shadow-sm active:scale-95";
+                        b.className = "filter-btn px-4 py-2.5 text-xs font-bold rounded-xl border border-slate-200 bg-white text-slate-600 hover:bg-slate-50 hover:border-slate-400 transition-all shadow-sm active:scale-95";
                     });
                     
-                    btn.className = "filter-btn px-4 py-2.5 text-xs font-black rounded-xl transition-all shadow-md active:scale-95 bg-gradient-to-br from-orange-500 to-amber-600 text-white shadow-orange-500/10";
+                    btn.className = "filter-btn px-4 py-2.5 text-xs font-black rounded-xl transition-all shadow-md active:scale-95 bg-gradient-to-br from-indigo-600 to-teal-500 text-white";
                     
                     const filterVal = btn.getAttribute('data-filter');
                     const cards = document.querySelectorAll('.year-card');

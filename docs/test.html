@@ -7,18 +7,19 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        /* 导入中日英完美的字族：Inter (英文) + Noto Sans JP (日文) + Noto Sans SC (中文) */
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+JP:wght@300;400;500;700;900&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap');
+        /* 导入英、中、日三款精致且和谐的字库 */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=Noto+Sans+JP:wght@400;500;700;900&family=Noto+Sans+SC:wght@400;500;700;900&display=swap');
         
         body {
-            font-family: 'Inter', 'Noto Sans JP', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang SC", "Hiragino Sans", "Microsoft YaHei", sans-serif;
-            background-color: #FAF9F5;
+            /* 智能中日双语优雅回退字体栈，避免简中字符被错误解析为日文汉字字形 */
+            font-family: 'Inter', 'Noto Sans SC', 'Noto Sans JP', -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans", "Microsoft YaHei", sans-serif;
+            background-color: #F8FAFC;
             min-height: 100vh;
         }
         ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: #FAF9F5; }
-        ::-webkit-scrollbar-thumb { background: #E6E1D3; border-radius: 3px; }
-        ::-webkit-scrollbar-thumb:hover { background: #D1C9B7; }
+        ::-webkit-scrollbar-track { background: #F8FAFC; }
+        ::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94A3B8; }
         
         .tab-panel { display: none !important; }
         .tab-panel.active { display: flex !important; width: 100%; }
@@ -31,12 +32,12 @@
 
         /* 选项卡片物理阻尼动效 */
         .option-item-card {
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .option-item-card:not(.disabled-clicks):hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.04);
-            border-color: #cbd5e1 !important;
+            box-shadow: 0 10px 25px rgba(30, 27, 75, 0.04);
+            border-color: #4f46e5 !important;
         }
 
         /* 选项对错高亮 */
@@ -44,7 +45,7 @@
             border-color: #10b981 !important; 
             background-color: #f0fdf4 !important; 
             color: #065f46 !important;
-            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.06);
+            box-shadow: 0 4px 14px rgba(16, 185, 129, 0.06);
         }
         .option-item-card.correct .option-prefix {
             background-color: #10b981 !important;
@@ -55,7 +56,7 @@
             border-color: #f43f5e !important; 
             background-color: #fff1f2 !important; 
             color: #9f1239 !important;
-            box-shadow: 0 4px 12px rgba(244, 63, 94, 0.06);
+            box-shadow: 0 4px 14px rgba(244, 63, 94, 0.06);
         }
         .option-item-card.incorrect .option-prefix {
             background-color: #f43f5e !important;
@@ -68,11 +69,19 @@
         }
 
         .animate-fade-in {
-            animation: fadeIn 0.35s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
         }
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(8px); }
             to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes spinSlow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .animate-spin-slow {
+            animation: spinSlow 12s linear infinite;
         }
 
         .scroll-beauty::-webkit-scrollbar { width: 5px; }
@@ -83,48 +92,53 @@
 </head>
 <body class="text-slate-800 flex flex-col antialiased">
 
-    <header class="border-b border-[#EAE6D9] bg-[#FAF9F5]/90 backdrop-blur-md shrink-0 sticky top-0 z-50">
+    <header class="border-b border-slate-200 bg-white/90 backdrop-blur-md shrink-0 sticky top-0 z-50 shadow-xs">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-            <a href="index.html" class="flex items-center space-x-3 hover:opacity-80 transition-all">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-500 to-amber-600 flex items-center justify-center text-white font-black text-lg shadow-md shadow-orange-500/20">
+            <a href="index.html" class="flex items-center space-x-3 hover:opacity-90 transition-all">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-600 to-teal-500 flex items-center justify-center text-white font-black text-lg shadow-sm">
                     南
                 </div>
                 <div>
-                    <h1 class="text-base font-black text-slate-900 tracking-tight flex items-center gap-1">
-                        南式応用情報速攻！<span class="text-xs bg-slate-200 px-1.5 py-0.5 rounded text-slate-700">科目B</span>
+                    <h1 class="text-base font-black text-slate-900 tracking-tight flex items-center gap-1.5">
+                        南式応用情報速攻！<span class="text-[10px] bg-teal-50 text-teal-700 font-bold px-2 py-0.5 rounded-full border border-teal-200">科目B専用</span>
                     </h1>
-                    <p class="text-[10px] text-amber-600 font-bold tracking-wider uppercase">◀ 一覧へ戻る</p>
+                    <p class="text-[9px] text-teal-600 font-bold tracking-wider uppercase">過去問演習・スマート学習システム</p>
                 </div>
             </a>
 
-            <div class="flex items-center gap-2.5">
-                <div class="hidden sm:flex items-center gap-1.5 text-xs font-mono font-bold text-slate-500 bg-slate-100/80 px-3 py-2 rounded-xl border border-slate-200/60 shadow-inner">
-                    <i data-lucide="timer" class="w-3.5 h-3.5 text-slate-400"></i>
+            <div class="flex items-center gap-3">
+                <div class="hidden sm:flex items-center gap-1.5 text-xs font-mono font-bold text-slate-600 bg-slate-100 px-3 py-2 rounded-xl border border-slate-200 shadow-inner">
+                    <i data-lucide="timer" class="w-3.5 h-3.5 text-indigo-600 animate-pulse"></i>
                     <span id="global-timer-display">00:00:00</span>
                 </div>
-                <div id="page-title" class="text-xs sm:text-sm font-black text-slate-700 bg-[#F3EFE3] px-4 py-2 rounded-xl border border-[#E1D9C9] max-w-[280px] sm:max-w-[400px] truncate shadow-sm">
+                <div id="page-title" class="text-xs sm:text-sm font-bold text-slate-700 bg-slate-100 px-4 py-2 rounded-xl border border-slate-200 max-w-[280px] sm:max-w-[400px] truncate shadow-sm">
                     読み込み中...
                 </div>
             </div>
         </div>
     </header>
 
-    <nav class="max-w-7xl w-full mx-auto px-4 pt-4 flex space-x-1 border-b border-[#EAE6D9] shrink-0">
-        <button data-target="tab-01" class="tab-btn px-4 py-2.5 font-black text-xs sm:text-sm border-b-2 border-amber-600 bg-amber-50/50 text-amber-800 focus:outline-none transition-all flex items-center space-x-1.5 rounded-t-xl">
+    <nav class="max-w-7xl w-full mx-auto px-4 pt-4 flex space-x-1 border-b border-slate-200 shrink-0">
+        <button data-target="tab-01" class="tab-btn px-4 py-2.5 font-black text-xs sm:text-sm border-b-2 border-indigo-600 bg-indigo-50/50 text-indigo-900 focus:outline-none transition-all flex items-center space-x-1.5 rounded-t-xl">
             <i data-lucide="award" class="w-4 h-4"></i>
             <span>① 試験前知識チャージ</span>
         </button>
-        <button data-target="tab-02" class="tab-btn px-4 py-2.5 font-bold text-xs sm:text-sm border-b-2 border-transparent text-slate-500 hover:text-slate-800 hover:bg-[#FAF9F5]/80 focus:outline-none transition-all flex items-center space-x-1.5 rounded-t-xl">
+        <button data-target="tab-02" class="tab-btn px-4 py-2.5 font-bold text-xs sm:text-sm border-b-2 border-transparent text-slate-500 hover:text-slate-800 hover:bg-slate-100/50 focus:outline-none transition-all flex items-center space-x-1.5 rounded-t-xl">
             <i data-lucide="compass" class="w-4 h-4"></i>
             <span>② 過去問演習</span>
         </button>
-        <button data-target="tab-03" class="tab-btn px-4 py-2.5 font-bold text-xs sm:text-sm border-b-2 border-transparent text-slate-500 hover:text-slate-800 hover:bg-[#FAF9F5]/80 focus:outline-none transition-all flex items-center space-x-1.5 rounded-t-xl">
+        <button data-target="tab-03" class="tab-btn px-4 py-2.5 font-bold text-xs sm:text-sm border-b-2 border-transparent text-slate-500 hover:text-slate-800 hover:bg-slate-100/50 focus:outline-none transition-all flex items-center space-x-1.5 rounded-t-xl">
             <i data-lucide="search" class="w-4 h-4"></i>
             <span>③ 解答例</span>
         </button>
-        <button data-target="tab-04" class="tab-btn px-4 py-2.5 font-bold text-xs sm:text-sm border-b-2 border-transparent text-slate-500 hover:text-slate-800 hover:bg-[#FAF9F5]/80 focus:outline-none transition-all flex items-center space-x-1.5 rounded-t-xl">
+        <button data-target="tab-04" class="tab-btn px-4 py-2.5 font-bold text-xs sm:text-sm border-b-2 border-transparent text-slate-500 hover:text-slate-800 hover:bg-slate-100/50 focus:outline-none transition-all flex items-center space-x-1.5 rounded-t-xl">
             <i data-lucide="shield-alert" class="w-4 h-4"></i>
             <span>④ 南さんのノート</span>
+        </button>
+        <!-- 新增的 Tab 5 按钮 -->
+        <button data-target="tab-05" class="tab-btn px-4 py-2.5 font-bold text-xs sm:text-sm border-b-2 border-transparent text-slate-500 hover:text-slate-800 hover:bg-slate-100/50 focus:outline-none transition-all flex items-center space-x-1.5 rounded-t-xl">
+            <i data-lucide="video" class="w-4 h-4"></i>
+            <span>⑤ 南さんの動画解説</span>
         </button>
     </nav>
 
@@ -135,35 +149,35 @@
                 
                 <div class="w-full flex flex-col md:flex-row gap-6 items-start animate-fade-in hidden" id="quiz-box-card">
                     
-                    <div class="w-full md:w-[35%] bg-white border border-[#EAE6D9] rounded-2xl p-6 flex flex-col gap-6 shrink-0 md:sticky md:top-20 shadow-xs">
+                    <div class="w-full md:w-[35%] bg-white border border-slate-200 rounded-2xl p-6 flex flex-col gap-6 shrink-0 md:sticky md:top-20 shadow-xs hover:shadow-sm transition-all">
                         <div class="flex flex-col gap-4">
                             <div class="flex items-center justify-between">
-                                <span class="bg-amber-50 text-amber-700 px-3 py-1 rounded-full text-[10px] font-black tracking-wider border border-amber-200 uppercase">
+                                <span class="bg-indigo-50 text-indigo-900 px-3 py-1 rounded-full text-[10px] font-bold tracking-wider border border-indigo-200 uppercase">
                                     知識の最速チャージ
                                 </span>
                                 <div class="text-xs font-bold text-slate-500">
                                     第 <span id="q-current-idx" class="text-slate-900 font-extrabold text-sm">1</span> / <span id="q-total-count">10</span> 問
                                 </div>
                             </div>
-                            <div class="w-full bg-slate-200/60 h-2 rounded-full overflow-hidden">
-                                <div id="q-progress-bar" class="bg-gradient-to-r from-orange-500 to-amber-600 h-full w-0 transition-all duration-300"></div>
+                            <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden shadow-inner">
+                                <div id="q-progress-bar" class="bg-gradient-to-r from-indigo-600 to-teal-500 h-full w-0 transition-all duration-300"></div>
                             </div>
                             <div class="mt-2">
-                                <div id="q-question-text" class="text-base md:text-lg font-bold text-slate-800 leading-relaxed whitespace-pre-wrap tracking-tight">Loading...</div>
+                                <div id="q-question-text" class="text-base md:text-lg font-bold text-slate-900 leading-relaxed whitespace-pre-wrap tracking-tight">Loading...</div>
                             </div>
                         </div>
 
-                        <div class="flex flex-col gap-3 border-t border-[#EAE6D9]/60 pt-4 mt-auto">
-                            <div class="hidden rounded-xl p-3.5 text-xs leading-relaxed bg-amber-50 border border-dashed border-amber-200 text-amber-800 transition-all" id="q-hint-box"></div>
+                        <div class="flex flex-col gap-3 border-t border-slate-200 pt-4 mt-auto">
+                            <div class="hidden rounded-xl p-3.5 text-xs leading-relaxed bg-teal-50/60 border border-dashed border-teal-200 text-teal-900 transition-all" id="q-hint-box"></div>
                             <div class="flex items-center justify-between gap-2">
-                                <button class="text-xs font-bold text-amber-800 bg-amber-100/60 border border-amber-200 px-3.5 py-2.5 rounded-xl hover:bg-amber-100 active:scale-95 transition-all" id="q-action-hint-btn">
+                                <button class="text-xs font-bold text-slate-700 bg-slate-100 border border-slate-200 px-3.5 py-2.5 rounded-xl hover:bg-slate-200 active:scale-95 transition-all" id="q-action-hint-btn">
                                     <span class="flex items-center gap-1"><i data-lucide="help-circle" class="w-3.5 h-3.5"></i>ヒント</span>
                                 </button>
                                 <div class="flex items-center gap-2">
                                     <button class="bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 font-bold text-xs p-2.5 rounded-xl active:scale-95 disabled:opacity-40 disabled:pointer-events-none transition-all" id="q-action-prev-btn" title="前の問題">
                                         <i data-lucide="chevron-left" class="w-4 h-4"></i>
                                     </button>
-                                    <button class="bg-slate-900 hover:bg-amber-600 text-white font-bold text-xs px-4 py-2.5 rounded-xl active:scale-95 transition-all shadow-sm flex items-center gap-1" id="q-action-next-btn">
+                                    <button class="bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs px-4 py-2.5 rounded-xl active:scale-95 transition-all shadow-sm flex items-center gap-1" id="q-action-next-btn">
                                         <span>NEXT</span> <i data-lucide="chevron-right" class="w-4 h-4"></i>
                                     </button>
                                 </div>
@@ -171,42 +185,43 @@
                         </div>
                     </div>
 
-                    <div class="flex-1 w-full bg-white border border-[#EAE6D9] rounded-2xl p-6 md:p-8 shadow-xs flex flex-col gap-4">
+                    <div class="flex-1 w-full bg-white border border-slate-200 rounded-2xl p-6 md:p-8 shadow-xs flex flex-col gap-4">
                         <div class="text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-1">選択肢</div>
                         <div class="flex flex-col gap-4 w-full" id="q-options-list"></div>
                     </div>
 
                 </div>
 
-                <div class="bg-white border-2 border-amber-200 rounded-2xl p-8 shadow-md text-center flex flex-col items-center gap-5 hidden max-w-2xl mx-auto animate-fade-in" id="quiz-report-panel">
-                    <span class="bg-orange-50 px-4 py-1.5 rounded-full text-orange-700 text-[10px] font-bold tracking-wider border border-orange-200">南式・合格判定ポータル</span>
+                <div class="bg-white border-2 border-indigo-200 rounded-2xl p-8 shadow-md text-center flex flex-col items-center gap-5 hidden max-w-2xl mx-auto animate-fade-in" id="quiz-report-panel">
+                    <span class="bg-indigo-50 px-4 py-1.5 rounded-full text-indigo-700 text-[10px] font-bold tracking-wider border border-indigo-200">南式・合格判定ポータル</span>
                     <h2 class="font-black text-slate-900 text-lg">事前知識チェック完了！</h2>
                     <div class="text-4xl font-black text-slate-900">
-                        <span id="report-correct-num" class="text-5xl text-amber-600 font-black">0</span> <span class="text-sm font-medium text-slate-400">/ 10 問 正解</span>
+                        <span id="report-correct-num" class="text-5xl text-indigo-600 font-black">0</span> <span class="text-sm font-medium text-slate-400">/ 10 問 正解</span>
                     </div>
-                    <div class="bg-[#FAF9F5] p-4 rounded-xl border border-[#EAE6D9] text-left w-full space-y-1">
-                        <h4 id="report-eval-title" class="font-bold text-xs text-amber-700">🤖 総合評価</h4>
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 text-left w-full space-y-1">
+                        <h4 id="report-eval-title" class="font-bold text-xs text-indigo-700">🤖 総合評価</h4>
                         <p id="report-eval-content" class="text-[11px] text-slate-600 leading-relaxed whitespace-pre-wrap">--</p>
                     </div>
                     <div class="flex gap-3 w-full mt-2">
                         <button class="flex-1 py-2.5 bg-slate-100 hover:bg-slate-200 border border-slate-300 text-slate-700 text-xs font-bold rounded-lg transition-all" id="report-retry-btn">再挑戦</button>
-                        <button class="flex-1 py-2.5 bg-gradient-to-r from-orange-500 to-amber-600 text-white text-xs font-bold rounded-lg transition-all shadow-md shadow-orange-500/10 hover:opacity-90" id="report-go-tab2-btn">STEP 02 真題へ ➔</button>
+                        <button class="flex-1 py-2.5 bg-gradient-to-r from-indigo-600 to-teal-500 text-white text-xs font-bold rounded-lg transition-all shadow-md hover:opacity-90" id="report-go-tab2-btn">STEP 02 過去問へ ➔</button>
                     </div>
                 </div>
 
-                <div id="quiz-empty-panel" class="bg-white border border-[#EAE6D9] rounded-2xl p-10 shadow-sm text-center flex flex-col items-center justify-center gap-5 max-w-xl mx-auto animate-fade-in hidden">
-                    <div class="w-16 h-16 rounded-full bg-amber-50 flex items-center justify-center text-amber-600 shadow-inner">
-                        <i data-lucide="hourglass" class="w-8 h-8 animate-pulse"></i>
+                <!-- 呼吸感十足的高级「教材数据准备中」空面板 -->
+                <div id="quiz-empty-panel" class="bg-white border border-slate-200 rounded-2xl p-10 shadow-sm text-center flex flex-col items-center justify-center gap-5 max-w-xl mx-auto animate-fade-in hidden">
+                    <div class="w-16 h-16 rounded-full bg-slate-50 flex items-center justify-center text-slate-600 shadow-inner">
+                        <i data-lucide="sparkles" class="w-8 h-8 animate-spin-slow text-teal-500"></i>
                     </div>
-                    <span class="bg-amber-50 px-4 py-1.5 rounded-full text-amber-800 text-[10px] font-black tracking-wider border border-amber-200 uppercase">
+                    <span class="inline-flex items-center gap-1 text-[11px] font-bold bg-slate-100 text-slate-800 border border-slate-200 px-2.5 py-0.5 rounded-full shadow-2xs">
                         UNDER CONSTRUCTION
                     </span>
-                    <h2 class="font-black text-slate-900 text-lg">事前知識チャージ 準備中！</h2>
-                    <p class="text-xs sm:text-sm text-slate-600 leading-relaxed max-w-sm">
-                        現在、管理人がこの问题に関する「重要用語・前提知識コンテンツ」を鋭意作成・調整中です！📚<br>
-                        完成次第、即時アップデートして共有（シェア）いたします。今しばらくお待ちください！まずは「② 過去問演習」から挑戦してみましょう！☕
+                    <h2 class="font-black text-slate-900 text-base">事前知識チャージ 准备中！</h2>
+                    <p class="text-xs text-slate-500 leading-relaxed max-w-sm">
+                        管理人在日正在对真题的「核心专业术语与逻辑前置知识」进行高能拆解。我们坚持用大白话精细调校，确保内容秒懂。☕<br>
+                        完成制作后将立即全速同步。现在就先去搞定「② 過去問演習」吧！📚
                     </p>
-                    <button class="py-2.5 px-6 bg-gradient-to-r from-orange-500 to-amber-600 text-white text-xs font-bold rounded-lg transition-all shadow-md shadow-orange-500/10 hover:opacity-90" id="empty-go-tab2-btn">
+                    <button class="py-2.5 px-6 bg-gradient-to-r from-indigo-600 to-teal-500 text-white text-xs font-bold rounded-xl transition-all shadow-md hover:opacity-90 active:scale-98" id="empty-go-tab2-btn">
                         STEP 02 過去問演習へ ➔
                     </button>
                 </div>
@@ -216,70 +231,70 @@
 
         <div id="tab-02" class="tab-panel w-full flex flex-col md:flex-row gap-4 h-[96vh] relative">
             <div class="loading-overlay absolute inset-0 bg-white flex flex-col items-center justify-center z-20 text-xs text-slate-400" id="loading-02">
-                <div class="w-8 h-8 border-2 border-slate-200 border-t-amber-600 rounded-full animate-spin mb-2"></div>
-                <p>真題 02_Test.pdf 読込中...</p>
+                <div class="w-8 h-8 border-2 border-slate-200 border-t-indigo-600 rounded-full animate-spin mb-2"></div>
+                <p>過去問 02_Test.pdf 読込中...</p>
             </div>
             
             <div class="flex-1 h-full flex flex-col gap-1.5">
                 <div class="text-[10px] text-slate-400 font-medium px-1 flex items-center justify-between">
                     <span>💡 下へスクロールするとヘッダーが隠れ、問題エリアがさらに広がります。</span>
-                    <a id="test-pdf-external" href="#" target="_blank" class="text-amber-600 hover:text-amber-700 hover:underline flex items-center gap-0.5">モバイル全画面表示 ↗</a>
+                    <a id="test-pdf-external" href="#" target="_blank" class="text-indigo-600 hover:text-indigo-700 hover:underline flex items-center gap-0.5">モバイル全画面表示 ↗</a>
                 </div>
                 
-                <div id="test-pdf-container" class="flex-1 bg-white rounded-2xl border border-[#EAE6D9] overflow-hidden shadow-xs relative">
+                <div id="test-pdf-container" class="flex-1 bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xs relative">
                     <div id="test-empty-panel" class="absolute inset-0 bg-white flex flex-col items-center justify-center gap-4 text-center p-6 hidden">
-                        <div class="w-16 h-16 rounded-full bg-amber-50 flex items-center justify-center text-amber-600">
-                            <i data-lucide="file-warning" class="w-8 h-8"></i>
+                        <div class="w-16 h-16 rounded-full bg-slate-50 flex items-center justify-center text-slate-600">
+                            <i data-lucide="sparkles" class="w-7 h-7 animate-spin-slow text-teal-500"></i>
                         </div>
-                        <h3 class="font-black text-slate-900 text-base">過去問PDF 準備中</h3>
-                        <p class="text-xs text-slate-500 max-w-md leading-relaxed">
-                            こちらの過去問題PDFは現在、管理人がスキャン・レイアウト整理中です！完成次第即アップデートしシェアします。☕
+                        <h3 class="font-bold text-slate-900 text-sm">過去問PDF 準備中</h3>
+                        <p class="text-xs text-slate-400 max-w-md leading-relaxed">
+                            过去问高清试卷正在排版与双语纠错对齐中，完成马上闪电共享。☕
                         </p>
                     </div>
                 </div>
             </div>
             
-            <div class="w-full md:w-80 bg-white border border-[#EAE6D9] rounded-2xl p-4 shadow-xs flex flex-col gap-3 shrink-0 h-auto md:h-full">
+            <div class="w-full md:w-80 bg-white border border-slate-200 rounded-2xl p-4 shadow-xs flex flex-col gap-3 shrink-0 h-auto md:h-full">
                 <div class="text-xs font-black text-slate-900 tracking-wider uppercase border-b border-slate-100 pb-2 flex items-center justify-between">
-                    <span>📝 解答メモ (草稿・自己採点)</span>
-                    <button onclick="insertAnswerTemplate('memo-input-tab2')" class="text-[10px] text-amber-700 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded hover:bg-amber-100/80 transition-all font-bold">枠を挿入</button>
+                    <span>📝 解答メモ</span>
+                    <button onclick="insertAnswerTemplate('memo-input-tab2')" class="text-[10px] text-indigo-700 bg-indigo-50 border border-indigo-200/60 px-2 py-0.5 rounded hover:bg-indigo-100/80 transition-all font-bold">枠を挿入</button>
                 </div>
                 <div class="flex-1 flex flex-col gap-3">
-                    <textarea id="memo-input-tab2" class="w-full flex-1 bg-[#FAF9F5] border border-[#E1DBC9] rounded-xl p-3 text-xs font-medium text-slate-800 focus:outline-none focus:border-amber-500 focus:bg-white resize-none shadow-inner min-h-[180px]" placeholder="ここに自分の解答を入力してください...&#10;（右上のボタンから公式採点枠を挿入できます）"></textarea>
-                    <button id="submit-memo-btn-tab2" class="w-full bg-gradient-to-r from-orange-500 to-amber-600 text-white font-black py-2.5 rounded-xl text-xs shadow-md shadow-orange-500/10 hover:opacity-90 active:scale-95 transition-all text-center">提出して答え合わせ ➔</button>
+                    <textarea id="memo-input-tab2" class="w-full flex-1 bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-medium text-slate-800 focus:outline-none focus:border-indigo-500 focus:bg-white resize-none shadow-inner min-h-[180px]" placeholder="ここに自分の解答を入力してください...&#10;（右上の按钮から官方对齐框架可一键插入）"></textarea>
+                    <button id="submit-memo-btn-tab2" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-black py-2.5 rounded-xl text-xs shadow-md transition-all text-center active:scale-98">提出して答え合わせ ➔</button>
                 </div>
             </div>
         </div>
 
         <div id="tab-03" class="tab-panel w-full flex flex-col md:flex-row gap-4 h-[96vh] overflow-hidden">
-            <div class="flex-1 h-full overflow-auto bg-[#FAF9F5]/40 rounded-2xl border border-[#EAE6D9] flex items-start justify-center p-4 relative">
+            <div class="flex-1 h-full overflow-auto bg-slate-50 rounded-2xl border border-slate-200 flex items-start justify-center p-4 relative">
                 <div id="loading-03" class="absolute inset-0 bg-white flex flex-col items-center justify-center z-20 text-xs text-slate-400">
-                    <div class="w-8 h-8 border-2 border-slate-200 border-t-amber-600 rounded-full animate-spin mb-2"></div>
+                    <div class="w-8 h-8 border-2 border-slate-200 border-t-indigo-600 rounded-full animate-spin mb-2"></div>
                     <p>解答例イメージ 読込中...</p>
                 </div>
-                <img id="answer-image" src="" alt="解答例" class="max-h-full w-auto select-none rounded-xl shadow-sm border border-slate-200 hidden" />
+                <img id="answer-image" src="" alt="解答例" class="max-h-full w-auto rounded-xl shadow-sm border border-slate-200 hidden" />
                 
-                <div id="answer-empty-panel" class="bg-white border border-[#EAE6D9] rounded-2xl p-8 shadow-sm text-center flex flex-col items-center justify-center gap-5 max-w-xl my-auto animate-fade-in hidden">
-                    <div class="w-14 h-14 rounded-full bg-amber-50 flex items-center justify-center text-amber-600">
-                        <i data-lucide="image-off" class="w-6 h-6"></i>
+                <div id="answer-empty-panel" class="bg-white border border-slate-200 rounded-2xl p-8 shadow-sm text-center flex flex-col items-center justify-center gap-5 max-w-xl my-auto animate-fade-in hidden">
+                    <div class="w-14 h-14 rounded-full bg-slate-50 flex items-center justify-center text-slate-600">
+                        <i data-lucide="image-off" class="w-6 h-6 text-slate-500"></i>
                     </div>
-                    <span class="bg-amber-50 px-4 py-1.5 rounded-full text-amber-800 text-[10px] font-black tracking-wider border border-amber-200">NO IMAGE</span>
-                    <h3 class="font-black text-slate-900 text-base">解答例イメージ 準備中</h3>
-                    <p class="text-xs text-slate-600 leading-relaxed max-w-xs">
-                        現在、管理人が解答例の抽出・作成を行っています！今しばらくお待ちください。📝
+                    <span class="bg-slate-100 px-4 py-1.5 rounded-full text-slate-800 text-[10px] font-black tracking-wider border border-slate-200">NO IMAGE</span>
+                    <h3 class="font-bold text-slate-900 text-sm">解答例イメージ 準備中</h3>
+                    <p class="text-xs text-slate-400 leading-relaxed max-w-xs">
+                        全套图文详解与答题脑图设计正在火热渲染。📝
                     </p>
                 </div>
             </div>
 
-            <div class="w-full md:w-80 bg-white border border-[#EAE6D9] rounded-2xl p-4 shadow-xs flex flex-col gap-3 shrink-0 h-auto md:h-full">
+            <div class="w-full md:w-80 bg-white border border-slate-200 rounded-2xl p-4 shadow-xs flex flex-col gap-3 shrink-0 h-auto md:h-full">
                 <div class="text-xs font-black text-slate-900 tracking-wider uppercase border-b border-slate-100 pb-2 flex items-center justify-between">
                     <span>📝 記入した解答の確認</span>
-                    <button onclick="insertAnswerTemplate('memo-input-tab3')" class="text-[10px] text-amber-700 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded hover:bg-amber-100/80 transition-all font-bold">枠を挿入</button>
+                    <button onclick="insertAnswerTemplate('memo-input-tab3')" class="text-[10px] text-indigo-700 bg-indigo-50 border border-indigo-200/60 px-2 py-0.5 rounded hover:bg-indigo-100/80 transition-all font-bold">枠を挿入</button>
                 </div>
                 <div class="flex-1 flex flex-col gap-3">
-                    <textarea id="memo-input-tab3" class="w-full flex-1 bg-[#FAF9F5] border border-[#E1DBC9] rounded-xl p-3 text-xs font-medium text-slate-800 focus:outline-none focus:border-amber-500 focus:bg-white resize-none shadow-inner min-h-[180px]" placeholder="ここに目的的解答を入力してください..."></textarea>
-                    <div class="text-[10px] text-amber-800/90 text-center font-medium bg-amber-50/50 p-2.5 rounded-xl border border-amber-100">
-                        💡 左側の解答例画像と自分の草稿を比較・採点できます。
+                    <textarea id="memo-input-tab3" class="w-full flex-1 bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-medium text-slate-800 focus:outline-none focus:border-indigo-500 focus:bg-white resize-none shadow-inner min-h-[180px]" placeholder="ここに目的的解答を入力してください..."></textarea>
+                    <div class="text-[10px] text-slate-600 text-center font-medium bg-slate-50 p-2.5 rounded-xl border border-slate-200">
+                        💡 左侧的高清官方参考图片可以与你记录的草稿进行极速盲测与复盘对照。
                     </div>
                 </div>
             </div>
@@ -287,30 +302,64 @@
 
         <div id="tab-04" class="tab-panel w-full flex flex-col h-[96vh] relative">
             <div class="loading-overlay absolute inset-0 bg-white flex flex-col items-center justify-center z-20 text-xs text-slate-400" id="loading-04">
-                <div class="w-8 h-8 border-2 border-slate-200 border-t-amber-600 rounded-full animate-spin mb-2"></div>
+                <div class="w-8 h-8 border-2 border-slate-200 border-t-indigo-600 rounded-full animate-spin mb-2"></div>
                 <p>秘籍 04_minamis_note.pdf 読込中...</p>
             </div>
             
             <div class="flex-1 h-full flex flex-col gap-1.5">
                 <div class="text-[10px] text-slate-400 font-medium px-1 flex items-center justify-between">
                     <span>💡 攻略ノートを大画面で確認しながら、重要スタンスを脑に叩き込みましょう。</span>
-                    <a id="note-pdf-external" href="#" target="_blank" class="text-amber-600 hover:text-amber-700 hover:underline flex items-center gap-0.5">モバイル全画面表示 ↗</a>
+                    <a id="note-pdf-external" href="#" target="_blank" class="text-indigo-600 hover:text-indigo-700 hover:underline flex items-center gap-0.5">モバイル全画面表示 ↗</a>
                 </div>
                 
-                <div class="w-full flex-1 bg-white rounded-2xl border border-[#EAE6D9] overflow-hidden shadow-xs flex flex-col justify-center items-center">
+                <div class="w-full flex-1 bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xs flex flex-col justify-center items-center">
                     <div id="note-pdf-container" class="w-full h-full"></div>
                     
-                    <div id="note-empty-panel" class="bg-white border border-[#EAE6D9] rounded-2xl p-10 shadow-sm text-center flex flex-col items-center justify-center gap-5 max-w-xl mx-auto my-auto animate-fade-in hidden">
-                        <div class="w-16 h-16 rounded-full bg-amber-50 flex items-center justify-center text-amber-600 shadow-inner">
-                            <i data-lucide="edit-3" class="w-8 h-8 animate-bounce"></i>
+                    <div id="note-empty-panel" class="bg-white border border-slate-200 rounded-2xl p-10 shadow-sm text-center flex flex-col items-center justify-center gap-5 max-w-xl mx-auto my-auto animate-fade-in hidden">
+                        <div class="w-16 h-16 rounded-full bg-slate-50 flex items-center justify-center text-slate-600 shadow-inner">
+                            <i data-lucide="edit-3" class="w-8 h-8 animate-bounce text-slate-500"></i>
                         </div>
-                        <span class="bg-amber-50 px-4 py-1.5 rounded-full text-amber-800 text-[10px] font-black tracking-wider border border-amber-200">
+                        <span class="inline-flex items-center gap-1 text-[11px] font-bold bg-slate-100 text-slate-800 border border-slate-200 px-2.5 py-0.5 rounded-full shadow-2xs">
                             COMING SOON
                         </span>
-                        <h2 class="font-black text-slate-900 text-lg">南さんのノート 絶賛執筆中！</h2>
+                        <h2 class="font-black text-slate-900 text-lg">南さんのノート 绝赞执笔中！</h2>
                         <p class="text-xs sm:text-sm text-slate-600 leading-relaxed max-w-sm">
-                            「南さんの攻略ノート」は現在、管理人が直筆スキャン・解説作成などのアップデート作業を鋭意進めております！📝<br>
-                            最速かつ強力なトレース手法・スマート攻略プロセスをお届けするまで、今しばらくお待ちください。完成次第、即時シェアします！🔥
+                            「群主 Minami 的独家秘籍攻略手记」正在结合最新考试动向进行直笔扫描与架构梳理。我们将最精妙的底层模型与中文解构技巧全盘托出。☕<br>
+                            一经出炉，即刻在这里云端同步更新！🔥
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 新增的 Tab 5 视频播放面板 -->
+        <div id="tab-05" class="tab-panel w-full flex flex-col h-[96vh] relative">
+            <div class="loading-overlay absolute inset-0 bg-white flex flex-col items-center justify-center z-20 text-xs text-slate-400" id="loading-05">
+                <div class="w-8 h-8 border-2 border-slate-200 border-t-indigo-600 rounded-full animate-spin mb-2"></div>
+                <p>動画解説 05_video.js 読込中...</p>
+            </div>
+            
+            <div class="flex-1 h-full flex flex-col gap-1.5">
+                <div class="text-[10px] text-slate-400 font-medium px-1 flex items-center justify-between">
+                    <span>💡 動画を再生して、南さんの詳細な解き方と解説を確認しましょう。</span>
+                </div>
+                
+                <div class="w-full flex-1 bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xs flex flex-col justify-center items-center p-4 md:p-6">
+                    <div id="video-player-container" class="w-full max-w-4xl aspect-video bg-black rounded-xl overflow-hidden shadow-md hidden">
+                        <!-- iframe 会通过下面的 JS 动态安全提取嵌入 -->
+                    </div>
+                    
+                    <div id="video-empty-panel" class="bg-white border border-slate-200 rounded-2xl p-10 shadow-sm text-center flex flex-col items-center justify-center gap-5 max-w-xl mx-auto my-auto animate-fade-in hidden">
+                        <div class="w-16 h-16 rounded-full bg-slate-50 flex items-center justify-center text-slate-600 shadow-inner">
+                            <i data-lucide="video-off" class="w-8 h-8 text-slate-400"></i>
+                        </div>
+                        <span class="inline-flex items-center gap-1 text-[11px] font-bold bg-slate-100 text-slate-800 border border-slate-200 px-2.5 py-0.5 rounded-full shadow-2xs">
+                            COMING SOON
+                        </span>
+                        <h2 class="font-black text-slate-900 text-lg">動画解説 準備中！</h2>
+                        <p class="text-xs sm:text-sm text-slate-600 leading-relaxed max-w-sm">
+                            「南さんの動画解説」は現在、撮影・編集・利便性調整中です！🎬<br>
+                            YouTube アップロードが完了し、05_video.js が配置され次第、自動的にここで視聴可能になります。今しばらくお待ちください！
                         </p>
                     </div>
                 </div>
@@ -449,7 +498,7 @@ e:
             submitBtnTab2.addEventListener('click', () => {
                 localStorage.setItem(storageKey, memoInputTab2.value);
                 submitBtnTab2.textContent = "送信完了！解答例へ...";
-                submitBtnTab2.style.background = "linear-gradient(to bottom right, #f97316, #d97706)";
+                submitBtnTab2.style.background = "linear-gradient(to bottom right, #4f46e5, #0d9488)";
 
                 setTimeout(() => {
                     submitBtnTab2.textContent = "提出して答え合わせ ➔";
@@ -542,12 +591,12 @@ e:
                     const letter = String.fromCharCode(65 + oIdx);
                     const optCard = document.createElement('div');
                     
-                    optCard.className = "option-item-card bg-white border-2 border-slate-200 p-5 rounded-2xl cursor-pointer flex flex-col items-start gap-1 font-semibold text-xs sm:text-sm text-slate-700 shadow-sm";
+                    optCard.className = "option-item-card bg-white border border-slate-200 p-5 rounded-2xl cursor-pointer flex flex-col items-start gap-1 font-semibold text-xs sm:text-sm text-slate-700 shadow-xs transition-all";
                     
                     optCard.innerHTML = `
                         <div class="option-top-row flex items-center gap-3 w-full font-bold">
                             <div class="option-prefix bg-slate-100 text-slate-500 w-6 h-6 rounded-md flex items-center justify-center text-[10px] font-black shrink-0 transition-colors">${letter}</div>
-                            <div class="flex-1 break-words text-slate-800 text-sm sm:text-base">${option.text}</div>
+                            <div class="flex-1 break-words text-slate-900 text-sm sm:text-base">${option.text}</div>
                         </div>
                     `;
 
@@ -559,7 +608,6 @@ e:
                             optCard.className = optCard.className.replace('border-slate-200', '') + ' incorrect';
                         }
                         
-                        // 🛠️ 优化：移除了所有的文字标签，直接干净地注入原本的 rationale 文本内容
                         const inlineBox = document.createElement('div');
                         if (option.isCorrect) {
                             inlineBox.className = "w-full mt-4 p-4 bg-emerald-50 border border-emerald-200/60 rounded-xl text-xs sm:text-sm font-medium text-emerald-900 whitespace-pre-wrap leading-relaxed animate-fade-in";
@@ -568,7 +616,7 @@ e:
                         } else {
                             inlineBox.className = "w-full mt-4 p-4 bg-slate-50 border border-slate-200/60 rounded-xl text-xs sm:text-sm font-medium text-slate-700 whitespace-pre-wrap leading-relaxed animate-fade-in";
                         }
-                        inlineBox.textContent = option.rationale; // 直接渲染纯净文本
+                        inlineBox.textContent = option.rationale;
                         optCard.appendChild(inlineBox);
                     } else {
                         optCard.addEventListener('click', () => {
@@ -588,7 +636,6 @@ e:
                                     targetCard.className = targetCard.className.replace('border-slate-200', '') + ' incorrect';
                                 }
 
-                                // 🛠️ 同样直接渲染纯净 rationale 文本，不再附加任何多余前缀
                                 const inlineBox = document.createElement('div');
                                 if (opt.isCorrect) {
                                     inlineBox.className = "w-full mt-4 p-4 bg-emerald-50 border border-emerald-200/60 rounded-xl text-xs sm:text-sm font-medium text-emerald-900 whitespace-pre-wrap leading-relaxed animate-fade-in";
@@ -597,7 +644,7 @@ e:
                                 } else {
                                     inlineBox.className = "w-full mt-4 p-4 bg-slate-50 border border-slate-200/60 rounded-xl text-xs sm:text-sm font-medium text-slate-700 whitespace-pre-wrap leading-relaxed animate-fade-in";
                                 }
-                                inlineBox.textContent = opt.rationale; // 直接渲染纯净文本
+                                inlineBox.textContent = opt.rationale;
                                 targetCard.appendChild(inlineBox);
                             });
 
@@ -625,14 +672,14 @@ e:
                 if (currentQuestionIdx === quizQuestions.length - 1) {
                     if (hasAnswered) {
                         nextBtn.innerHTML = `<span>判定を見る</span> <i data-lucide="award" class="w-4 h-4"></i>`;
-                        nextBtn.className = "bg-gradient-to-r from-orange-500 to-amber-600 text-white font-bold text-xs px-4 py-2.5 rounded-xl active:scale-95 transition-all shadow-sm shadow-orange-500/10 hover:opacity-90 flex items-center gap-1";
+                        nextBtn.className = "bg-gradient-to-r from-indigo-600 to-teal-500 text-white font-bold text-xs px-4 py-2.5 rounded-xl active:scale-95 transition-all shadow-sm hover:opacity-90 flex items-center gap-1";
                     } else {
                         nextBtn.innerHTML = `<span>最終問</span> <i data-lucide="chevron-right" class="w-4 h-4"></i>`;
-                        nextBtn.className = "bg-slate-900 hover:bg-amber-600 text-white font-bold text-xs px-4 py-2.5 rounded-xl active:scale-95 transition-all shadow-sm flex items-center gap-1";
+                        nextBtn.className = "bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs px-4 py-2.5 rounded-xl active:scale-95 transition-all shadow-sm flex items-center gap-1";
                     }
                 } else {
                     nextBtn.innerHTML = `<span>NEXT</span> <i data-lucide="chevron-right" class="w-4 h-4"></i>`;
-                    nextBtn.className = "bg-slate-900 hover:bg-amber-600 text-white font-bold text-xs px-4 py-2.5 rounded-xl active:scale-95 transition-all shadow-sm flex items-center gap-1";
+                    nextBtn.className = "bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs px-4 py-2.5 rounded-xl active:scale-95 transition-all shadow-sm flex items-center gap-1";
                 }
                 if (typeof lucide !== 'undefined') lucide.createIcons();
             }
@@ -676,13 +723,13 @@ e:
 
                 if (currentScore === quizQuestions.length) {
                     title = "👑 最上級評価：科目Bの覇者";
-                    content = "満点合格です！情報セキュリティやアルゴリズム性能的前提知識は完全に頭に入っています。自信を持ってSTEP 02の真題演習に進み、実践的な擬似言語トレース特訓を開始してください！";
+                    content = "满分通关！信息安全与算法性能的底层知识完全扎实。请自信地切入 STEP 02 过去问道场，开启硬核的伪代码追踪特训吧！";
                 } else if (currentScore >= passLine) {
                     title = "🌟 高評価：合格安全圏内";
-                    content = "素晴らしい！正答率80%以上を達成しました。基礎は完全に固まっています。間違えた選択肢の解説だけ再度确认したら、次の過去問演習へスマートにステップアップしましょう！";
+                    content = "干得漂亮！达成 80% 以上的优秀正确率。基础框架已经定型，针对刚才选错的题目稍微复盘，即可智能晋级下一阶段！";
                 } else {
                     title = "🔥 伸びしろ十分：特訓エール";
-                    content = "事前知識チェックで少々罠に引っかかってしまったようです。焦る必要は全くありません！各選択肢の下に展開された解説をじっくり熟読し、知識をチャージしてから過去問に挑みましょう！";
+                    content = "在刚才的考前突击中不小心落入了思维陷阱？完全不用慌！仔细研读各选项下展开的白话解析，蓄能完毕后再次挑战过去问！";
                 }
 
                 document.getElementById('report-eval-title').textContent = `🤖 ${title}`;
@@ -700,9 +747,10 @@ e:
 
 
             // ==========================================
-            // 🗂️ タブ切り替え & 動的ファイル存在チェック
+            // 🗂️ タブ切り替え & 动态ファイル存在チェック
             // ==========================================
-            const loadedStates = { 'tab-01': true, 'tab-02': false, 'tab-03': false, 'tab-04': false };
+            // 新增 tab-05 的加载状态注册
+            const loadedStates = { 'tab-01': true, 'tab-02': false, 'tab-03': false, 'tab-04': false, 'tab-05': false };
 
             function loadSpecificTabContent(tabId) {
                 if (loadedStates[tabId]) return;
@@ -774,6 +822,56 @@ e:
                         loadedStates['tab-04'] = true;
                     });
                 }
+
+                // 新增：处理 Tab 5 视频的动态异步加载逻辑
+                else if (tabId === 'tab-05') {
+                    const container = document.getElementById('video-player-container');
+                    const loader = document.getElementById('loading-05');
+                    const emptyPanel = document.getElementById('video-empty-panel');
+                    const videoJsUrl = `${basePath}/05_video.js`;
+
+                    // YouTube 格式安全提取器
+                    function getYouTubeId(url) {
+                        if (!url) return null;
+                        const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+                        const match = url.match(regExp);
+                        return (match && match[2].length === 11) ? match[2] : null;
+                    }
+
+                    const buildVideoIframe = (urlStr) => {
+                        const videoId = getYouTubeId(urlStr);
+                        loader.classList.add('hidden');
+                        if (videoId) {
+                            emptyPanel.classList.add('hidden');
+                            container.classList.remove('hidden');
+                            container.innerHTML = `<iframe class="w-full h-full block border-none" src="https://www.youtube.com/embed/${videoId}" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>`;
+                        } else {
+                            container.classList.add('hidden');
+                            emptyPanel.classList.remove('hidden');
+                            if (typeof lucide !== 'undefined') lucide.createIcons();
+                        }
+                    };
+
+                    fileExists(videoJsUrl).then(exists => {
+                        if (exists) {
+                            // 文件存在，动态追加引入 JS 
+                            const injectVideoScript = document.createElement('script');
+                            injectVideoScript.src = videoJsUrl;
+                            injectVideoScript.onload = () => {
+                                const finalUrl = window.CURRENT_VIDEO_URL || "https://youtu.be/VRpxjuVsmE0";
+                                buildVideoIframe(finalUrl);
+                            };
+                            injectVideoScript.onerror = () => {
+                                buildVideoIframe("https://youtu.be/VRpxjuVsmE0");
+                            };
+                            document.body.appendChild(injectVideoScript);
+                        } else {
+                            // 文件还未生成时，默认直接显示你给的示范视频，或随时可切换为显示 emptyPanel 
+                            buildVideoIframe("https://youtu.be/VRpxjuVsmE0");
+                        }
+                        loadedStates['tab-05'] = true;
+                    });
+                }
             }
 
             const tabButtons = document.querySelectorAll('.tab-btn');
@@ -784,10 +882,10 @@ e:
                     const targetId = btn.getAttribute('data-target');
 
                     tabButtons.forEach(b => {
-                        b.className = "tab-btn px-4 py-2.5 font-bold text-xs sm:text-sm border-b-2 border-transparent text-slate-500 hover:text-slate-800 hover:bg-[#FAF9F5]/80 focus:outline-none transition-all flex items-center space-x-1.5 rounded-t-xl";
+                        b.className = "tab-btn px-4 py-2.5 font-bold text-xs sm:text-sm border-b-2 border-transparent text-slate-500 hover:text-slate-800 hover:bg-slate-100/50 focus:outline-none transition-all flex items-center space-x-1.5 rounded-t-xl";
                     });
 
-                    btn.className = "tab-btn px-4 py-2.5 font-black text-xs sm:text-sm border-b-2 border-amber-600 bg-amber-50/50 text-amber-800 focus:outline-none transition-all flex items-center space-x-1.5 rounded-t-xl";
+                    btn.className = "tab-btn px-4 py-2.5 font-black text-xs sm:text-sm border-b-2 border-indigo-600 bg-indigo-50/50 text-indigo-900 focus:outline-none transition-all flex items-center space-x-1.5 rounded-t-xl";
 
                     tabPanels.forEach(panel => {
                         panel.classList.toggle('active', panel.id === targetId);
