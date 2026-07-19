@@ -1,0 +1,1 @@
+window.CURRENT_VIDEO_URL = "https://youtu.be/VRpxjuVsmE0";
