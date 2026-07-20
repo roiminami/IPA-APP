@@ -8,7 +8,7 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         /* 导入英、中、日三款精致且和谐的字库 */
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=Noto+Sans+JP:wght@400;500;700;900&family=Noto+Sans+SC:wght@400;500;700;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght=400;500;600;700;900&family=Noto+Sans+JP:wght=400;500;700;900&family=Noto+Sans+SC:wght=400;500;700;900&display=swap');
         
         body {
             /* 智能中日双语优雅回退字体栈，避免简中字符被错误解析为日文汉字字形 */
@@ -84,10 +84,23 @@
             animation: spinSlow 12s linear infinite;
         }
 
-        .scroll-beauty::-webkit-scrollbar { width: 5px; }
+        /* 🛠️ 响应用户反馈：将全局美化拉条加粗至 10px，更方便鼠标精准抓取和拖拽 */
+        .scroll-beauty::-webkit-scrollbar { width: 10px; height: 10px; }
         .scroll-beauty::-webkit-scrollbar-track { background: transparent; }
-        .scroll-beauty::-webkit-scrollbar-thumb { background: #E2E8F0; border-radius: 10px; }
-        .scroll-beauty::-webkit-scrollbar-thumb:hover { background: #CBD5E1; }
+        .scroll-beauty::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 10px; border: 2px solid transparent; background-clip: padding-box; }
+        .scroll-beauty::-webkit-scrollbar-thumb:hover { background: #94A3B8; border: 2px solid transparent; background-clip: padding-box; }
+
+        /* 可折叠 Diagram 样式组件 */
+        .diagram-collapsed {
+            min-height: 38px !important;
+            height: 38px !important;
+            resize: none !important;
+            overflow: hidden !important;
+            padding-bottom: 0 !important;
+        }
+        .diagram-collapsed pre {
+            display: none !important;
+        }
     </style>
 </head>
 <body class="text-slate-800 flex flex-col antialiased">
@@ -135,7 +148,6 @@
             <i data-lucide="shield-alert" class="w-4 h-4"></i>
             <span>④ 南さんのノート</span>
         </button>
-        <!-- 新增的 Tab 5 按钮 -->
         <button data-target="tab-05" class="tab-btn px-4 py-2.5 font-bold text-xs sm:text-sm border-b-2 border-transparent text-slate-500 hover:text-slate-800 hover:bg-slate-100/50 focus:outline-none transition-all flex items-center space-x-1.5 rounded-t-xl">
             <i data-lucide="video" class="w-4 h-4"></i>
             <span>⑤ 南さんの動画解説</span>
@@ -149,7 +161,8 @@
                 
                 <div class="w-full flex flex-col md:flex-row gap-6 items-start animate-fade-in hidden" id="quiz-box-card">
                     
-                    <div class="w-full md:w-[35%] bg-white border border-slate-200 rounded-2xl p-6 flex flex-col gap-6 shrink-0 md:sticky md:top-20 shadow-xs hover:shadow-sm transition-all">
+                    <!-- 左侧核心舱：宽度从原有的 35% 扩容至 42% 以完美包容网络架构流向图 -->
+                    <div class="w-full md:w-[42%] bg-white border border-slate-200 rounded-2xl p-6 flex flex-col gap-5 shrink-0 md:sticky md:top-20 shadow-xs hover:shadow-sm transition-all">
                         <div class="flex flex-col gap-4">
                             <div class="flex items-center justify-between">
                                 <span class="bg-indigo-50 text-indigo-900 px-3 py-1 rounded-full text-[10px] font-bold tracking-wider border border-indigo-200 uppercase">
@@ -162,8 +175,16 @@
                             <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden shadow-inner">
                                 <div id="q-progress-bar" class="bg-gradient-to-r from-indigo-600 to-teal-500 h-full w-0 transition-all duration-300"></div>
                             </div>
-                            <div class="mt-2">
-                                <div id="q-question-text" class="text-base md:text-lg font-bold text-slate-900 leading-relaxed whitespace-pre-wrap tracking-tight">Loading...</div>
+                            <div class="mt-1">
+                                <div id="q-question-text" class="text-base font-bold text-slate-900 leading-relaxed whitespace-pre-wrap tracking-tight">Loading...</div>
+                            </div>
+
+                            <!-- 🛠️ 优化升级后的流式图解舱：默认加入 diagram-collapsed 保持闭合 -->
+                            <div id="q-diagram-box" class="hidden diagram-collapsed w-full bg-slate-50 border border-slate-200 rounded-xl p-4 font-mono text-[11px] sm:text-xs text-slate-700 shadow-inner select-all scroll-beauty relative pt-10 mt-2" style="resize: both; overflow: auto; min-height: 160px; max-width: 100%;">
+                                <div id="q-diagram-toggle" class="absolute top-2.5 left-3 text-[9px] font-black tracking-wider text-slate-500 bg-slate-200/80 px-2 py-0.5 rounded-md uppercase cursor-pointer select-none flex items-center gap-1 hover:bg-slate-300 transition-colors">
+                                    <i data-lucide="image" class="w-3 h-3 text-slate-600"></i>Question Diagram <i data-lucide="chevron-down" class="w-3 h-3 text-slate-600 transition-transform duration-200" id="q-diagram-arrow"></i>
+                                </div>
+                                <pre id="q-diagram-content" class="whitespace-pre font-mono leading-relaxed text-slate-800 text-left block w-full overflow-visible select-text"></pre>
                             </div>
                         </div>
 
@@ -185,6 +206,7 @@
                         </div>
                     </div>
 
+                    <!-- 右侧选项舱：自适应承接剩余宽度 -->
                     <div class="flex-1 w-full bg-white border border-slate-200 rounded-2xl p-6 md:p-8 shadow-xs flex flex-col gap-4">
                         <div class="text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-1">選択肢</div>
                         <div class="flex flex-col gap-4 w-full" id="q-options-list"></div>
@@ -208,7 +230,6 @@
                     </div>
                 </div>
 
-                <!-- 呼吸感十足的高级「教材数据准备中」空面板 -->
                 <div id="quiz-empty-panel" class="bg-white border border-slate-200 rounded-2xl p-10 shadow-sm text-center flex flex-col items-center justify-center gap-5 max-w-xl mx-auto animate-fade-in hidden">
                     <div class="w-16 h-16 rounded-full bg-slate-50 flex items-center justify-center text-slate-600 shadow-inner">
                         <i data-lucide="sparkles" class="w-8 h-8 animate-spin-slow text-teal-500"></i>
@@ -236,7 +257,7 @@
             
             <div class="flex-1 h-full flex flex-col gap-1.5">
                 <div class="text-[10px] text-slate-400 font-medium px-1 flex items-center justify-between">
-                    <span>💡 下へスクロールするとヘッダーが隠れ、問題エリアがさらに広がります。</span>
+                    <span>💡 下へスクロールするとヘッダーが隠れ、问题エリアがさらに広がります。</span>
                     <a id="test-pdf-external" href="#" target="_blank" class="text-indigo-600 hover:text-indigo-700 hover:underline flex items-center gap-0.5">モバイル全画面表示 ↗</a>
                 </div>
                 
@@ -259,7 +280,7 @@
                     <button onclick="insertAnswerTemplate('memo-input-tab2')" class="text-[10px] text-indigo-700 bg-indigo-50 border border-indigo-200/60 px-2 py-0.5 rounded hover:bg-indigo-100/80 transition-all font-bold">枠を挿入</button>
                 </div>
                 <div class="flex-1 flex flex-col gap-3">
-                    <textarea id="memo-input-tab2" class="w-full flex-1 bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-medium text-slate-800 focus:outline-none focus:border-indigo-500 focus:bg-white resize-none shadow-inner min-h-[180px]" placeholder="ここに自分の解答を入力してください...&#10;（右上的按钮から官方对齐框架可一键插入）"></textarea>
+                    <textarea id="memo-input-tab2" class="w-full flex-1 bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-medium text-slate-800 focus:outline-none focus:border-indigo-500 focus:bg-white resize-none shadow-inner min-h-[180px]" placeholder="ここに自己的解答を入力してください...&#10;（右上的按钮から官方对齐框架可一键插入）"></textarea>
                     <button id="submit-memo-btn-tab2" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-black py-2.5 rounded-xl text-xs shadow-md transition-all text-center active:scale-98">提出して答え合わせ ➔</button>
                 </div>
             </div>
@@ -331,7 +352,6 @@
             </div>
         </div>
 
-        <!-- 新增的 Tab 5 视频播放面板 -->
         <div id="tab-05" class="tab-panel w-full flex flex-col h-[96vh] relative">
             <div class="loading-overlay absolute inset-0 bg-white flex flex-col items-center justify-center z-20 text-xs text-slate-400" id="loading-05">
                 <div class="w-8 h-8 border-2 border-slate-200 border-t-indigo-600 rounded-full animate-spin mb-2"></div>
@@ -344,9 +364,7 @@
                 </div>
                 
                 <div class="w-full flex-1 bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xs flex flex-col justify-center items-center p-4 md:p-6">
-                    <div id="video-player-container" class="w-full max-w-4xl aspect-video bg-black rounded-xl overflow-hidden shadow-md hidden">
-                        <!-- iframe 会通过下面的 JS 动态安全提取嵌入 -->
-                    </div>
+                    <div id="video-player-container" class="w-full max-w-4xl aspect-video bg-black rounded-xl overflow-hidden shadow-md hidden"></div>
                     
                     <div id="video-empty-panel" class="bg-white border border-slate-200 rounded-2xl p-10 shadow-sm text-center flex flex-col items-center justify-center gap-5 max-w-xl mx-auto my-auto animate-fade-in hidden">
                         <div class="w-16 h-16 rounded-full bg-slate-50 flex items-center justify-center text-slate-600 shadow-inner">
@@ -436,6 +454,24 @@ e:
 
         document.addEventListener('DOMContentLoaded', () => {
             if (typeof lucide !== 'undefined') lucide.createIcons();
+
+            // Question Diagram 折叠与展开联动逻辑
+            const diagBox = document.getElementById('q-diagram-box');
+            const diagToggle = document.getElementById('q-diagram-toggle');
+            const diagArrow = document.getElementById('q-diagram-arrow');
+            if (diagToggle) {
+                diagToggle.addEventListener('click', () => {
+                    const isCollapsed = diagBox.classList.toggle('diagram-collapsed');
+                    if (diagArrow) {
+                        if (isCollapsed) {
+                            diagArrow.setAttribute('data-lucide', 'chevron-down');
+                        } else {
+                            diagArrow.setAttribute('data-lucide', 'chevron-up');
+                        }
+                        if (typeof lucide !== 'undefined') lucide.createIcons();
+                    }
+                });
+            }
 
             const urlParams = new URLSearchParams(window.location.search);
             const year = urlParams.get('year');
@@ -573,7 +609,37 @@ e:
                 document.getElementById('q-total-count').textContent = quizQuestions.length;
                 const pct = ((currentQuestionIdx + 1) / quizQuestions.length) * 100;
                 document.getElementById('q-progress-bar').style.width = `${pct}%`;
-                document.getElementById('q-question-text').textContent = currentQuiz.question;
+
+                // 🔥 智能拓扑分离引擎：自动切分纯文本情境题干与底层文本拓扑图
+                const diagramBox = document.getElementById('q-diagram-box');
+                const diagramContent = document.getElementById('q-diagram-content');
+                const questionTextEl = document.getElementById('q-question-text');
+
+                // 切题时重置为默认折叠状态
+                diagramBox.classList.add('diagram-collapsed');
+                const diagramArrow = document.getElementById('q-diagram-arrow');
+                if (diagramArrow) diagramArrow.setAttribute('data-lucide', 'chevron-down');
+
+                if (currentQuiz.diagram) {
+                    questionTextEl.textContent = currentQuiz.question;
+                    diagramContent.textContent = currentQuiz.diagram;
+                    diagramBox.classList.remove('hidden');
+                } else if (currentQuiz.question.includes('【') && (currentQuiz.question.includes('│') || currentQuiz.question.includes('▼'))) {
+                    // 正则捕获：根据常见的文本图解标志块（如【网络路径拓扑】、【邮件中继流量流向】等）实施断门切分
+                    const parts = currentQuiz.question.split(/(?=【[^】]+拓扑】|【[^】]+流向】|【[^】]+位置】|【[^】]+架构】)/);
+                    if (parts.length > 1) {
+                        questionTextEl.textContent = parts[0].trim();
+                        diagramContent.textContent = parts.slice(1).join('\n').trim();
+                        diagramBox.classList.remove('hidden');
+                    } else {
+                        questionTextEl.textContent = currentQuiz.question;
+                        diagramBox.classList.add('hidden');
+                    }
+                } else {
+                    questionTextEl.textContent = currentQuiz.question;
+                    diagramBox.classList.add('hidden');
+                }
+
                 document.getElementById('q-hint-box').innerHTML = `<strong>💡 ヒント:</strong> ${currentQuiz.hint}`;
 
                 const prevBtn = document.getElementById('q-action-prev-btn');
@@ -747,7 +813,6 @@ e:
             // ==========================================
             // 🗂️ タブ切り替え & 动态ファイル存在チェック
             // ==========================================
-            // 新增 tab-05 的加载状态注册
             const loadedStates = { 'tab-01': true, 'tab-02': false, 'tab-03': false, 'tab-04': false, 'tab-05': false };
 
             function loadSpecificTabContent(tabId) {
@@ -821,14 +886,12 @@ e:
                     });
                 }
 
-                // 新增：处理 Tab 5 视频的动态异步加载逻辑
                 else if (tabId === 'tab-05') {
                     const container = document.getElementById('video-player-container');
                     const loader = document.getElementById('loading-05');
                     const emptyPanel = document.getElementById('video-empty-panel');
                     const videoJsUrl = `${basePath}/05_video.js`;
 
-                    // YouTube 格式安全提取器
                     function getYouTubeId(url) {
                         if (!url) return null;
                         const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
@@ -837,8 +900,8 @@ e:
                     }
 
                     const buildVideoIframe = (urlStr) => {
-                        const videoId = getYouTubeId(urlStr);
                         loader.classList.add('hidden');
+                        const videoId = getYouTubeId(urlStr);
                         if (videoId) {
                             emptyPanel.classList.add('hidden');
                             container.classList.remove('hidden');
@@ -852,7 +915,6 @@ e:
 
                     fileExists(videoJsUrl).then(exists => {
                         if (exists) {
-                            // 文件存在，动态追加引入 JS 
                             const injectVideoScript = document.createElement('script');
                             injectVideoScript.src = videoJsUrl;
                             injectVideoScript.onload = () => {
@@ -864,7 +926,6 @@ e:
                             };
                             document.body.appendChild(injectVideoScript);
                         } else {
-                            // 文件不存在时，直接传入 null 触发准备中面板显示
                             buildVideoIframe(null);
                         }
                         loadedStates['tab-05'] = true;
