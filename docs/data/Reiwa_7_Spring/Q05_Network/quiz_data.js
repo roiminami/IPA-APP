@@ -2,31 +2,31 @@
 window.CURRENT_INTERACTIVE_QUIZ = [
   {
     "questionNumber": 1,
-    "question": "在企业局域网中，当某台PC试图向同一网段内的另一台设备（如打印机）发送数据时，必须将目标的 IP 地址解析为数据链路层的物理地址（MACアドレス）。设备首先会查询本地的地址解析缓存表（ARPキャッシュテーブル），若未找到对应记录，则会在整个广播域内发送广播请求。收到请求的目标设备会以单播形式返回自身的物理地址。如果网网内存在设备手动误配了相同的 IP 地址，会导致缓存表被错误的映射覆盖，进而引发通信中断。这种在局域网内动态完成 IP 地址至 MAC 地址映射解析的关键协议是什么？",
+    "question": "在企业局域网（社内LAN）中，当某台 PC 试图向同一网段内的另一台设备（如打印机）发送数据时，必须将目标的 IP 地址（IPアドレス）解析为数据链路层的物理地址（MACアドレス）。设备首先会查询本地的地址解析缓存表（ARPキャッシュテーブル），若未找到对应记录，则会在整个广播域内发送广播请求。收到请求的目标设备会以单播形式返回自身的物理地址。如果网内存在设备手动误配了相同的 IP 地址，会导致缓存表被错误的映射覆盖，进而引发通信中断。这种在局域网内动态完成 IP 地址至 MAC 地址映射解析的关键协议是什么？",
     "diagram": "  [ 本地 PC (PC-C) ]\n         │ (查询目标 IP 对应的 MAC)\n         ▼\n  [ 发送 ARP 广播请求 ] (ARP Request)\n         │\n         ▼\n  [ 目标设备响应单播 ] (ARP Reply)\n         │\n         ▼\n  [ 更新本地 ARP 缓存表 ] (ARP Cache)",
     "answerOptions": [
       {
         "text": "ARP",
         "isCorrect": true,
-        "rationale": "地址解析协议（ARP／Address Resolution Protocol）负责将三层的 IP 地址映射解析为二层的 MAC 地址。局域网通信依赖 ARP 机制，当网内出现 IP 地址冲突（IPアドレス重複）时，ARP 缓存表会被错误的 MAC 地址覆盖，导致目标设备无法正常接收数据包。"
+        "rationale": "地址解析协议（ARP／Address Resolution Protocol）工作在 TCP/IP 模型的网络层与数据链路层交界处，专门负责将 3 层的 IP 地址（IPアドレス）转换为 2 层的物理硬件地址（MACアドレス）。在以太网通信中，数据帧最终必须通过 MAC 地址寻址。设备发起通信前会广播 ARP Request（广播地址为 FF-FF-FF-FF-FF-FF），目标设备响应单播 ARP Reply 并携带其 MAC 地址。若网内发生 IP 地址重复（IPアドレス重複），响应速度快的设备会覆盖本地 ARP 缓存表（ARPキャッシュテーブル），导致数据包发送至错误接收方而发生断网故障。"
       },
       {
         "text": "RARP",
         "isCorrect": false,
-        "rationale": "逆向地址解析协议（RARP／Reverse Address Resolution Protocol）作用与 ARP 相反，用于无盘工作站已知自身 MAC 地址时向服务器查询所分配的 IP 地址。"
+        "rationale": "逆向地址解析协议（RARP／Reverse Address Resolution Protocol）的功能与 ARP 完全相反，工作在数据链路层。它主要用于无盘工作站等没有本地存储介质的硬件设备在引导启动时，已知自身的 MAC 地址，向局域网内的 RARP 服务器查询并获取动态分配的 IP 地址。"
       },
       {
         "text": "NDP",
         "isCorrect": false,
-        "rationale": "邻居发现协议（NDP／Neighbor Discovery Protocol）是 IPv6 环境下用于替代 IPv4 中 ARP 和 ICMP 部分功能的协议，不适用于 IPv4 局域网。"
+        "rationale": "邻居发现协议（NDP／Neighbor Discovery Protocol）是运行于 IPv6 环境下的底层协议，依靠 ICMPv6 报文实现。它替代了 IPv4 中 ARP 的地址解析功能，并扩展了路由器发现、重定向和无状态地址自动配置（SLAAC）等高级功能，并不适用于传统的 IPv4 局域网。"
       },
       {
         "text": "IGMP",
         "isCorrect": false,
-        "rationale": "网际组管理协议（IGMP／Internet Group Management Protocol）用于 IP 组播（マルチキャスト）成员关系的建立与维护，不承担 IP 到 MAC 地址的解析职能。"
+        "rationale": "网际组管理协议（IGMP／Internet Group Management Protocol）工作于网络层，主要用于 IP 组播（マルチキャスト）通信中，管理主机与组播路由器之间的组播组成员资格。它负责加入或离开组播组的信息交互，完全不具备任何 IP 地址至 MAC 地址的解析职能。"
       }
     ],
-    "hint": "请关注题干中提到的<b>IP 地址转换为物理 MAC 地址</b>以及<b>局域网内广播查询与缓存表更新</b>的机制。在日本 AP 考试中，解决二层网络地址映射和 IP 重 conflict 排查的核心协议是 <b>ARP</b>。"
+    "hint": "请关注题干中提到的<b>IP 地址转换为物理 MAC 地址</b>以及<b>局域网内广播查询与缓存表更新</b>的机制。在日本 AP 考试中，解决二层网络地址映射和 IP 冲突排查的核心协议是 <b>ARP</b>。"
   },
   {
     "questionNumber": 2,
@@ -36,22 +36,22 @@ window.CURRENT_INTERACTIVE_QUIZ = [
       {
         "text": "IEEE 802.1X",
         "isCorrect": true,
-        "rationale": "IEEE 802.1X 是一种基于端口的局域网接入控制协议（ポートベース認証），结合 EAP 协议和 RADIUS 认证服务器，能够在设备连入网络的第一时间验证其身份，有效防止未经授权的终端接入企业内网。"
+        "rationale": "IEEE 802.1X 是一种基于端口的网络接入控制标准（ポートベース認証）。该标准定义了三方组件逻辑架构：申请者（Supplicant）、认证者（Authenticator／交换机或无线AP）以及认证服务器（認証サーバ／RADIUS服务器）。在认证成功之前，交换机的逻辑端口被划分为“未受控端口”（仅允许 EAPOL 局域网扩展可拓展认证协议报文通过）；认证通过后，“受控端口”开启，才允许正常的业务 IP 数据帧通过，实现了物理级和无线级的网络入口准入检疫。"
       },
       {
         "text": "IEEE 802.1Q",
         "isCorrect": false,
-        "rationale": "IEEE 802.1Q 是虚拟局域网（VLAN／Virtual LAN）的标签封装标准，用于在一条物理链路（Trunk 链路）上传输多个 VLAN 的数据流量，不具备终端身份认证功能。"
+        "rationale": "IEEE 802.1Q 是虚拟局域网（VLAN／Virtual LAN）的标准封装协议。它通过在以太网帧头插入 4 字节的 VLAN Tag（包含 Priority 和 VLAN ID）来实现跨交换机 Trunk 链路的数据带标透传与逻辑子网隔离，完全不具备终端身份认证与准入控制功能。"
       },
       {
         "text": "IEEE 802.11n",
         "isCorrect": false,
-        "rationale": "IEEE 802.11n 是无线局域网（無線LAN）的高吞吐量传输物理层与 MAC 层标准，属于 Wi-Fi 技术规范，而非网络接入身份认证标准。"
+        "rationale": "IEEE 802.11n（Wi-Fi 4）是无线局域网（無線LAN）物理层与 MAC 层的传输标准。它引入了多输入多输出（MIMO）技术与 40MHz 频宽绑定，旨在提升无线传输吞吐量（最高 600 Mbps），属于无线物理通信协议，而非网络接入身份认证标准。"
       },
       {
         "text": "IEEE 802.3ad",
         "isCorrect": false,
-        "rationale": "IEEE 802.3ad 是链路聚合（リンクアグリゲーション／Link Aggregation）标准，用于将多个物理网口绑定为一个逻辑高带宽通道，提高链路吞吐量与冗余度。"
+        "rationale": "IEEE 802.3ad 是链路聚合（リンクアグリゲーション／Link Aggregation）标准，通过 LACP（链路聚合控制协议）将多个物理以太网端口捆绑为一个逻辑上的高带宽通道，用以提高吞吐量与链路冗余避障，不涉及安全准入。"
       }
     ],
     "hint": "注意题干强调的<b>端口级网络接入控制</b>与结合<b>認証サーバ（RADIUS）</b>进行的安全校验。在 AP 网络大纲中，用于 LAN 检疫与终端身份准入的标准协议是 <b>IEEE 802.1X</b>。"
@@ -64,22 +64,22 @@ window.CURRENT_INTERACTIVE_QUIZ = [
       {
         "text": "ブロードキャストドメイン",
         "isCorrect": true,
-        "rationale": "广播域（ブロードキャストドメイン／Broadcast Domain）是指广播数据包能够到达的所有网段节点的集合。二层交换机默认会转发广播，而三层设备（如 L3 交换机或路由器）能够阻断广播，从而划分并隔离不同的广播域。"
+        "rationale": "广播域（ブロードキャストドメイン／Broadcast Domain）是指二层广播数据包（目的 MAC 为 FF-FF-FF-FF-FF-FF）在不经过三层路由的情况下所能扩散泛洪的最大网络范围。传统的二层交换机（L2SW）会盲目转发广播，导致整个局域网处于同一个广播域中；而三层设备（如 L3 交换机或路由器）基于 IP 寻址，会默认阻止广播帧跨子网传播，从而精准隔离广播域，防止广播风暴（ブロードキャストストーム）。"
       },
       {
         "text": "コリジョンドメイン",
         "isCorrect": false,
-        "rationale": "冲突域（コリジョンドメイン／Collision Domain）是指物理层多台设备竞争同一共享介质时可能发生数据碰撞的范围。二层交换机的每个端口都是一个独立的冲突域。"
+        "rationale": "冲突域（コリジョンドメイン／Collision Domain）是指物理层使用共享介质（如 Repeater Hub）时可能发生数据包碰撞的区域。二层交换机的每个端口均能独立隔离冲突域，在全双工模式下碰撞域概念不复存在，这与广播域跨交换机的传播范围有本质区别。"
       },
       {
         "text": "マルチキャストグループ",
         "isCorrect": false,
-        "rationale": "组播组（マルチキャストグループ／Multicast Group）是指接收特定组播数据流的特定主机集合，依赖 IGMP 等协议管理，并非二层广播的物理隔离范围。"
+        "rationale": "组播组（マルチキャストグループ／Multicast Group）是指接收特定组播 IP 地址数据流的一组特定主机的集合。组播通过 IGMP 和 PIM 协议精确分发流量，只送达订阅节点，并非以太网广播的物理边界。"
       },
       {
         "text": "VLANトランク",
         "isCorrect": false,
-        "rationale": "VLAN 中继（VLANトランク／VLAN Trunk）是指在交换机之间承载多个 VLAN 流量的物理骨干通道，其本身是传输介质而非广播作用域的定义。"
+        "rationale": "VLAN 中继链路（VLANトランク／VLAN Trunk）是指交换机之间用于承载和透传多个不同 VLAN 数据的物理通信干线。它是数据的传输通道，本身不是用来刻画广播作用域的范畴概念。"
       }
     ],
     "hint": "题干的核心在于<b>广播数据包能到达的范围</b>以及通过<b>子网划分（サブネット分割）</b>在三层设备上进行隔离。AP 考试中称此范围为<b>ブロードキャストドメイン</b>。"
@@ -92,22 +92,22 @@ window.CURRENT_INTERACTIVE_QUIZ = [
       {
         "text": "nslookup",
         "isCorrect": true,
-        "rationale": "nslookup 是标准的网络管理命令行工具，允许用户向指定的 DNS 服务器直接发起域名解析请求，返回 A 记录、PTR 记录等信息，是排查域名解析故障（名前解決障害）的首选诊断工具。"
+        "rationale": "nslookup（Name Server Lookup）是专门用于网络诊断和测试 DNS 域名解析（名前解決）的命令行工具。它允许管理员绕过操作系统本地的 DNS 缓存和 hosts 文件，直接向指定的 DNS 服务器构造并发送 DNS UDP/TCP 53 端口查询报文。它能详细返回正向解析（A/AAAA 记录）、反向解析（PTR 记录）或报错代码（如 NXDOMAIN、SERVFAIL），是定位 DNS 软件异常与服务挂起的核心诊断工具。"
       },
       {
         "text": "ping",
         "isCorrect": false,
-        "rationale": "ping 命令基于 ICMP 协议测试目标 IP 的网络连通性（疎通確認）与往返时延，虽然能顺便测试默认 DNS 解析，但无法指定 DNS 服务器或查看详细 DNS 记录。"
+        "rationale": "ping 命令利用 ICMP 协议测试目标 IP 地址的网络连通性（疎通確認）与往返延时（RTT）。虽然 ping 输入域名时会尝试触发默认解析，但它无法指定特定的 DNS 服务器发起诊断，也无法查看复杂的 DNS 资源记录细节。"
       },
       {
         "text": "tracert",
         "isCorrect": false,
-        "rationale": "tracert（或 traceroute）通过递增 ICMP/UDP 数据包的 TTL 值，用于追踪数据包从源端到达目的端所经过的路由器路径与每一跳的时延。"
+        "rationale": "tracert（Traceroute）通过逐次递增 ICMP/UDP 数据包的生存时间（TTL）值，利用沿途路由器返回的 ICMP Time Exceeded 报文来追踪数据包从源端到达目的地途经的路由节点及各跳延迟，不具备 DNS 诊断能力。"
       },
       {
         "text": "ipconfig",
         "isCorrect": false,
-        "rationale": "ipconfig（Linux 下为 ifconfig/ip）主要用于查看和刷新本地网卡的 IP 地址、子网掩码、默认网关和 DNS 配置，无法直接向远程 DNS 发起诊断查询。"
+        "rationale": "ipconfig 主要用于查看 Windows 操作系统本地网卡的 IP 地址、子网掩码、网关和 DNS 配置，或执行刷新本地 DNS 缓存（ipconfig /flushdns），其本身不能作为向远程服务器提交 DNS 查询请求的工具。"
       }
     ],
     "hint": "请注意题干提到的<b>专门用于查询 DNS 服务器并验证名前解決（域名解析）状态</b>的命令行工具。在 AP 网络运维考察中，该诊断命令是 <b>nslookup</b>。"
@@ -120,22 +120,22 @@ window.CURRENT_INTERACTIVE_QUIZ = [
       {
         "text": "DNSサーバの多重化",
         "isCorrect": true,
-        "rationale": "DNS 服务器的多重化/冗余化（冗長化／多重化）是指部署多台 DNS 服务器提供相同的解析服务。当单台服务器发生故障时，其他节点继续提供服务，有效保障了 DNS 服务的连续性与可靠性。"
+        "rationale": "DNS 服务器的多重化/冗余化（冗長化／多重化）是指通过部署两台及以上的 DNS 服务器组成集群或分布式架构。通过主从区域传送（Zone Transfer）保持记录同步，并在终端侧同时配置多个 DNS 地址。当主 DNS 服务器因软件 Bug 崩溃或宕机时，客户端 Resolver 解析器会自动切换至备用 DNS 服务器发起请求，彻底消除了单点故障（SPOF／Single Point of Failure），大幅保障了系统可用性。"
       },
       {
         "text": "DNSキャッシュのクリア",
         "isCorrect": false,
-        "rationale": "清除 DNS 缓存（DNSキャッシュのクリア）是指清空本地或服务器内存中暂存的解析记录，常用于解决 DNS 记录变更后未及时生效的问题，无法提供系统冗余。"
+        "rationale": "清除 DNS 缓存（DNSキャッシュのクリア）是指清空客户端或 DNS 服务器内存中暂存的映射记录，主要用于解决域名变更后本地未及时生效的问题，无法提供架构层面的服务冗余与容错。"
       },
       {
         "text": "DNSSECの導入",
         "isCorrect": false,
-        "rationale": "DNSSEC（DNS Security Extensions）是通过数字签名技术保护 DNS 解析数据完整性和真实性的安全扩展协议，防止 DNS 缓存污染攻击，而非冗余高可用方案。"
+        "rationale": "DNSSEC（DNS Security Extensions）是通过非对称加密公钥数字签名技术保障 DNS 解析数据真实性与完整性的安全协议，防止 DNS 缓存污染（DNSキャッシュポイズニング）攻击，不涉及高可用架构部署。"
       },
       {
         "text": "ゾーン転送の停止",
         "isCorrect": false,
-        "rationale": "停止区域传送（ゾーン転送の停止）是限制主从 DNS 服务器之间同步区域数据库的安全措施，防止外部攻击者获取完整的内网域名映射，与提高可用性无关。"
+        "rationale": "停止区域传送（ゾーン転送の停止）是限制 DNS 服务器向未授权 IP 导出整个 Zone 数据库文件的安全防护策略，防止内网拓扑泄露，与高可用容灾思想背道而驰。"
       }
     ],
     "hint": "关注题干中消除<b>单点故障（SPOF）</b>以及提升<b>系统故障时的业务连续性</b>。在午前考试的架构冗余设计考点中，这被称为 <b>DNSサーバの多重化</b>。"
@@ -148,22 +148,22 @@ window.CURRENT_INTERACTIVE_QUIZ = [
       {
         "text": "SNMPトラップ",
         "isCorrect": true,
-        "rationale": "SNMP Trap（SNMPトラップ）是 SNMP 协议中由 Agent（被管理设备）主动向 Manager（网管站）发送的异步事件通知，常用于在设备发生特定故障、阈值越界或状态异常时实现秒级实时告警。"
+        "rationale": "SNMP Trap（SNMPトラップ）是 SNMP 协议中由 Agent（被管理设备）主动向 Manager（网管站）发送的 UDP 162 端口异步事件告警报文。与网管站主动轮询（Polling）不同，Trap 采用事件驱动模式（Push），当交换机发生端口 LinkDown、CPU 过载或流量突破安全阈值（如 800 Mbps）时，设备能毫秒级主动通知网管站，极大提升了故障发现的时效性。"
       },
       {
         "text": "SNMP GetRequest",
         "isCorrect": false,
-        "rationale": "SNMP GetRequest 是由网管站主动发起的轮询请求，用于向被管理设备查询特定的 MIB 对象节点数值，属于被动拉取模式。"
+        "rationale": "SNMP GetRequest 是由网管站（SNMP Manager）发起的被动拉取（Pull）指令，通过 UDP 161 端口向 Agent 查询特定 MIB（管理信息库）变量的当前数值。"
       },
       {
         "text": "SNMP SetRequest",
         "isCorrect": false,
-        "rationale": "SNMP SetRequest 是由网管站发起的控制指令，用于修改被管理设备上的特定 MIB 变量配置（如关闭某个交换机端口）。"
+        "rationale": "SNMP SetRequest 是由网管站发起的控制指令，用于远程修改被管理设备上的特定 MIB 参数配置（例如远程关闭某个异常交换机端口）。"
       },
       {
         "text": "SNMP GetNextRequest",
         "isCorrect": false,
-        "rationale": "SNMP GetNextRequest 用于遍历被管理设备的 MIB 树结构，按顺序获取下一个节点的信息，同样属于网管站发起的轮询操作。"
+        "rationale": "SNMP GetNextRequest 用于遍历被管理设备的 MIB 字典树结构，按顺序获取下一个 MIB 节点的属性信息，同样属于网管站发起的轮询操作。"
       }
     ],
     "hint": "请注意区分<b>网管站主动轮询</b>与<b>设备在特定条件（如阈值超限）下自发主动告警</b>的区别。AP 考试中设备主动推送到网管站的机制称为 <b>SNMPトラップ</b>。"
@@ -176,22 +176,22 @@ window.CURRENT_INTERACTIVE_QUIZ = [
       {
         "text": "QoS",
         "isCorrect": true,
-        "rationale": "服务质量（QoS／Quality of Service）是网络通信中用于提供差别化服务质量保障的技术总称。通过流量分类、限速（帯域制限）、队列调度等手段，能够限制非关键流量并优先保障重要业务的带宽与延迟需求。"
+        "rationale": "服务质量（QoS／Quality of Service）是网络通信中提供差异化服务质量保障的技术体系。通过 DiffServ 标识、流量分类与标记、令牌桶监控（帯域制限／Policing & Shaping）以及严格优先队列（PQ/WFQ）调度，QoS 能够强行限制大文件传输等非关键流量的吞吐上限，优先保障延迟敏感业务的带宽与时延要求。"
       },
       {
         "text": "VLAN",
         "isCorrect": false,
-        "rationale": "虚拟局域网（VLAN／Virtual LAN）主要用于在二层逻辑上划分隔离不同的广播域和网段，并不直接提供通信带宽限速与优先级调度调度机制。"
+        "rationale": "虚拟局域网（VLAN）仅在二层上将物理网络划分为不同的逻辑广播域，不具备对流量进行细粒度分类、带宽限速（帯域制限）或队列调度的高级 QoS 管理能力。"
       },
       {
         "text": "NAT",
         "isCorrect": false,
-        "rationale": "网络地址转换（NAT／Network Address Translation）用于在私有 IP 地址与公网 IP 地址之间进行转换，解决 IP 地址不足与隐蔽内网拓扑的问题。"
+        "rationale": "网络地址转换（NAT）主要用于 IP 报头的源/目的地址重写，解决 IPv4 公网地址枯竭问题，与数据包的优先级控制和带宽配额限制无关。"
       },
       {
         "text": "STP",
         "isCorrect": false,
-        "rationale": "生成树协议（STP／Spanning Tree Protocol）用于在存在冗余链路的二层网络中阻塞备份端口，防止形成环路和广播风暴。"
+        "rationale": "生成树协议（STP）工作于数据链路层，通过阻塞冗余链路的端口来消除二层物理拓扑环路，防止广播风暴，不具备任何流量带宽管理机制。"
       }
     ],
     "hint": "注意题干中的<b>通信质量保障</b>、<b>流量限速（帯域制限）</b>以及对特定通信流量的<b>吞吐量控制</b>。在 AP 大纲中该技术缩写为 <b>QoS</b>。"
@@ -204,22 +204,22 @@ window.CURRENT_INTERACTIVE_QUIZ = [
       {
         "text": "NAPT",
         "isCorrect": true,
-        "rationale": "网络地址与端口转换（NAPT／Network Address Port Translation，在日系技术中常被称为 IP マスカレード）同时对 IP 地址和传输层端口号进行转换，实现多个私有 IP 地址共享同一个公网 IP 地址同时上网。"
+        "rationale": "网络地址与端口转换（NAPT／Network Address Port Translation，在日系 AP 体系中常称为 IP マスカレード）是一种同时重写三层 IP 地址和四层 TCP/UDP 端口号的技术。它在内网私有 IP（プライベートIP）与单一公网 IP（グローバルIP）之间维持动态映射表，使数百台内网 PC 能仅靠单个公网 IP 并发访问互联网，大幅节省了 IP 资源。"
       },
       {
         "text": "静的NAT",
         "isCorrect": false,
-        "rationale": "静态 NAT（静的NAT）建立私有 IP 与公网 IP 之间一对一的固定映射关系，无法实现多个内网 IP 共享单一公网 IP 的复用效果。"
+        "rationale": "静态 NAT（静的NAT）建立内网私有 IP 与外网公网 IP 之间固定的一对一（1:1）映射关系。每台内网设备都需要占用一个独占的公网 IP，无法实现多设备共享单一 IP 的复用效果。"
       },
       {
         "text": "DHCP",
         "isCorrect": false,
-        "rationale": "动态主机配置协议（DHCP）用于在局域网内自动向终端分发 IP 地址和网络配置，不涉及内网与外网之间的地址转换。"
+        "rationale": "动态主机配置协议（DHCP）用于在内网自动分发 IP 地址、网关和 DNS 配置，属于局域网配置管理协议，不涉及内网与外网之间的报文地址/端口转换。"
       },
       {
         "text": "PPPoE",
         "isCorrect": false,
-        "rationale": "以太网上的点对点协议（PPPoE／Point-to-Point Protocol over Ethernet）是将 PPP 帧封装在以太网帧中的链路层接入协议，常用于 ADSL 或光纤拨号上网。"
+        "rationale": "以太网上的点对点协议（PPPoE／Point-to-Point Protocol over Ethernet）是一种将 PPP 协议封装在以太网帧中的二层数据链路接入协议，常用于光纤拨号鉴权，并非地址转换机制。"
       }
     ],
     "hint": "请注意题干提到的<b>利用传输层端口号（Port）</b>实现<b>多台内网 PC 复用单公网 IP 地址</b>的技术。AP 午前考试中通常称为 <b>NAPT</b> 或 IP マスカレード。"
@@ -232,22 +232,22 @@ window.CURRENT_INTERACTIVE_QUIZ = [
       {
         "text": "SSL-VPN",
         "isCorrect": true,
-        "rationale": "SSL-VPN 是一种利用 SSL/TLS 协议构建加密虚拟专用网的技术。它通常直接工作在应用层/传输层，用户借助通用的 Web 浏览器即可实现安全的远程访问（暗号化リモートアクセス），部署和维护极为便捷。"
+        "rationale": "SSL-VPN 是一种基于 TLS/SSL 协议构建虚拟专用网的技术。它工作在传输层与应用层之间，主要优势在于免客户端或仅需轻量化插件，远程员工利用标准的 Web 浏览器即可在 Internet 上建立端到端的暗号化通道（暗号化リモートアクセス），轻松穿越防火墙与 NAT 设备的限制访问内网资源。"
       },
       {
         "text": "IPsec-VPN",
         "isCorrect": false,
-        "rationale": "IPsec-VPN 工作在网络层，常用于建立企业网总部与分支机构之间的网关到网关（Site-to-Site）永久加密隧道，移动终端接入配置较为繁琐。"
+        "rationale": "IPsec-VPN 工作在网络层（L3），主要用于建立企业网总部与分支机构之间的网关到网关（Site-to-Site）永久加密隧道。它对客户端配置要求较高，且在移动终端侧易受 NAT 穿越（NAT-Traversal）瓶颈约束。"
       },
       {
         "text": "PPTP",
         "isCorrect": false,
-        "rationale": "点对点隧道协议（PPTP）是一种较早期的二层 VPN 协议，因其加密算法安全性较低且容易被防火墙阻断，已逐渐被淘汰。"
+        "rationale": "点对点隧道协议（PPTP）是一种较早期的二层 VPN 协议，依赖 GRE 封装和 RC4 加密。由于其存在已知重大安全漏洞且易被防火墙屏蔽，在现代企业安全防护中已被淘汰。"
       },
       {
         "text": "L2TP",
         "isCorrect": false,
-        "rationale": "第二层隧道协议（L2TP）本身不提供任何加密保护机制，必须结合 IPsec 协议（即 L2TP/IPsec）才能提供数据传输安全性。"
+        "rationale": "第二层隧道协议（L2TP）本身仅提供数据包的二层封装和隧道化，完全不具备任何数据加密或保密性校验功能。必须结合 IPsec 协议（L2TP/IPsec）才能提供加密安全性。"
       }
     ],
     "hint": "题干强调<b>居家办公（テレワーク）环境</b>、<b>结合 Web 浏览器与传输层加密</b>接入内网服务器。日本 AP 考试中对应的网络考点是 <b>SSL-VPN</b>。"
@@ -260,22 +260,22 @@ window.CURRENT_INTERACTIVE_QUIZ = [
       {
         "text": "DMZ",
         "isCorrect": true,
-        "rationale": "非军事区（DMZ／Demilitarized Zone）是位于内部安全网络与外部不安全网络（如互联网）之间的隔离缓冲区域。公开服务器部署在 DMZ 中，即使受到攻击被入侵，也能利用防火墙策略将安全风险隔离在 DMZ 内，保护核心内网安全。"
+        "rationale": "非军事区（DMZ／Demilitarized Zone）是位于受信任内部网络（Trust）与不受信任外部网络（Untrust／Internet）之间的逻辑隔离缓冲区。通过防火墙策略，实施单向安全访问控制：允许外部和内网访问 DMZ 中的公开服务器（如 Proxy、DNS），但严格禁止 DMZ 区域的服务器向核心内网（社内LAN）主动发起 TCP/UDP 连接，从而实现风险隔离。"
       },
       {
         "text": "イントラネット",
         "isCorrect": false,
-        "rationale": "企业内部网（Intranet／イントラネット）是指完全建立在企业内部、不对外公开的内部局域网络环境。"
+        "rationale": "内部网（Intranet／イントラネット）是指完全建立在企业内部、采用 TCP/IP 协议不对外公开的安全私有网络环境，不承担面向外网公开服务的缓冲功能。"
       },
       {
         "text": "エクストラネット",
         "isCorrect": false,
-        "rationale": "外联网（Extranet／エクストラネット）是指企业利用 Internet 技术将内部网延伸与合作伙伴、供应商共享特定业务数据的网络。"
+        "rationale": "外联网（Extranet／エクストラネット）是指通过加密安全通道或专线将企业内部网延伸至特定合作伙伴、供应商的跨组织网络，不属于防火墙的三区隔离模型。"
       },
       {
         "text": "VLAN",
         "isCorrect": false,
-        "rationale": "虚拟局域网（VLAN）是在交换机上划分二层广播域的逻辑技术，本身不具备内置的对外/对内防火墙安全策略区分约束。"
+        "rationale": "虚拟局域网（VLAN）是二层交换机上的广播域隔离技术，它本身并不提供三层安全区域（Trust/Untrust/DMZ）划分与防火墙状态检测策略。"
       }
     ],
     "hint": "关注<b>公开服务器的隔离放置</b>以及<b>内网与外网之间的安全缓冲带</b>概念。AP 网络架构题中该隔离区域的标准术语是 <b>DMZ</b>。"
@@ -288,22 +288,22 @@ window.CURRENT_INTERACTIVE_QUIZ = [
       {
         "text": "DHCP",
         "isCorrect": true,
-        "rationale": "动态主机配置协议（DHCP／Dynamic Host Configuration Protocol）能够自动为网内终端动态分配 IP 地址、网关和 DNS 服务器等网络配置参数，极大降低了网络管理成本并避免了手动配置造成的 IP 冲突。"
+        "rationale": "动态主机配置协议（DHCP／Dynamic Host Configuration Protocol）基于 UDP 67/68 端口，利用标准的 DORA（Discover, Offer, Request, ACK）四步交互流程，为局域网内的客户端动态租借 IP 地址、子网掩码、默认网关和 DNS 服务器等配置。它能集中管理地址池，有效杜绝手动配置导致的 IP 重复（IPアドレス重複）与参数误配。"
       },
       {
         "text": "DNS",
         "isCorrect": false,
-        "rationale": "域名系统（DNS）负责将人类可读的域名解析为计算机可路由的 IP 地址，不负责终端 IP 地址的动态分发。"
+        "rationale": "域名系统（DNS）专门负责将人类易读的域名解析为计算机可路由的 IP 地址（名前解決），不具备为客户端自动分发网络配置参数的功能。"
       },
       {
         "text": "SNMP",
         "isCorrect": false,
-        "rationale": "简单网络管理协议（SNMP）用于网络管理员对设备状态进行监控、配置读取与自发告警收集。"
+        "rationale": "简单网络管理协议（SNMP）用于网络管理员对交换机、路由器等网络设备进行远程状态监控、性能数据采集与自发告警收集，不参与终端 IP 的分发。"
       },
       {
         "text": "NTP",
         "isCorrect": false,
-        "rationale": "网络时间协议（NTP／Network Time Protocol）用于在网络设备之间同步精确的系统标准时间。"
+        "rationale": "网络时间协议（NTP／Network Time Protocol）用于在分布式网络设备与服务器之间精准同步系统的 UTC 标准时间，与 IP 地址分配无关。"
       }
     ],
     "hint": "请关注<b>自动分发 IP 地址</b>以及<b>四步握手（Discover/Offer/Request/ACK）</b>机制。在日本 AP 考试中对应的基础协议是 <b>DHCP</b>。"
@@ -316,22 +316,22 @@ window.CURRENT_INTERACTIVE_QUIZ = [
       {
         "text": "ポートミラーリング",
         "isCorrect": true,
-        "rationale": "端口镜像（ポートミラーリング／Port Mirroring）是交换机的一项重要管理功能，它将指定端口的数据流量完整复制并发送到镜像端口，使数据包分析仪能够无干扰地捕获并分析网络报文，进行故障诊断或安全审计。"
+        "rationale": "端口镜像（ポートミラーリング／Port Mirroring，有时也称 SPAN）是交换机硬件层的关键管理功能。它利用交换机 ASIC 芯片将指定源端口的受控数据帧完整复制一份，发送到连接着数据包分析仪（パケットアナライザ）的镜像端口。这使得运维人员可以在不中断或干扰正常业务流量转发的前提下，进行无损深度抓包与故障分析。"
       },
       {
         "text": "ポートフォーワーディング",
         "isCorrect": false,
-        "rationale": "端口转发（ポートフォーワーディング／Port Forwarding）是路由器或防火墙将进入特定外网端口的流量重定向转发至内网指定 IP 和端口的技术。"
+        "rationale": "端口转发（ポートフォーワーディング／Port Forwarding）是 NAT 路由器将接收到的外网特定端口的数据包重定向映射转发至内网特定设备端口的技术，不具备流量复制监控功能。"
       },
       {
         "text": "ポートアグリゲーション",
         "isCorrect": false,
-        "rationale": "端口聚合（ポートアグリゲーション／Port Aggregation）是将多个物理端口绑定为一个逻辑高带宽链路的技术，增强链路带宽与容错性。"
+        "rationale": "端口聚合（ポートアグリゲーション／Port Aggregation）是将多个物理以太网端口绑定为一个逻辑通道的技术，旨在扩充链路带宽和提供故障冗余。"
       },
       {
         "text": "VLANトランキング",
         "isCorrect": false,
-        "rationale": "VLAN Trunking 是在交换机之间的一条链路上打上 IEEE 802.1Q 标签，用以传输多个不同 VLAN 数据的技术。"
+        "rationale": "VLAN 中继（VLAN Trunking）通过 IEEE 802.1Q 标签技术，实现一条物理干线上同时承载和透传多个不同 VLAN 的流量，不涉及流量的复制与监控。"
       }
     ],
     "hint": "关注<b>在交换机上复制端口流量</b>以供<b>パケットアナライザ（数据包分析仪）抓包诊断</b>的技术。AP 考试中该技术被称为 <b>ポートミラーリング</b>。"
@@ -344,22 +344,22 @@ window.CURRENT_INTERACTIVE_QUIZ = [
       {
         "text": "L3スイッチ",
         "isCorrect": true,
-        "rationale": "三层交换机（レイヤ3スイッチ／Layer 3 Switch）结合了二层交换的高速硬件转发能力与三层路由的包转发选择功能，基于 ASIC 芯片实现线速（Wire-Speed）的跨 VLAN 硬件路由，是企业 LAN 核心层的关键设备。"
+        "rationale": "三层交换机（レイヤ3スイッチ／Layer 3 Switch）将二层交换的高速硬件线速转发与三层路由寻址有机结合。它采用硬件 ASIC 芯片构建转发表（FIB），实现了“一次路由，多次交换”的高速数据转发机制，极大地消除了跨 VLAN 跨子网通信时的软件路由瓶颈，是企业 LAN 骨干层的核心设备。"
       },
       {
         "text": "L2スイッチ",
         "isCorrect": false,
-        "rationale": "二层交换机（レイヤ2スイッチ）仅能在同一个 VLAN 内基于 MAC 地址表进行二层帧转发，无法独立完成跨 VLAN/跨子网的 IP 路由功能。"
+        "rationale": "二层交换机（L2SW）仅工作在数据链路层，基于 MAC 地址表进行同 VLAN 内部的数据帧转发，完全不具备跨子网/跨 VLAN 的 IP 路由转发能力。"
       },
       {
         "text": "リピータハブ",
         "isCorrect": false,
-        "rationale": "中继集线器（Repeater Hub）工作在物理层，仅对电信号进行放大并盲目广播转发到所有端口，属于共享介质设备，早已被淘汰。"
+        "rationale": "中继集线器（Repeater Hub）工作在物理层（L1），仅对电信号进行放大并盲目泛洪到所有端口。它共享碰撞域与带宽，在现代网络中早已被淘汰。"
       },
       {
         "text": "ブリッジ",
         "isCorrect": false,
-        "rationale": "网桥（Bridge）是二层设备，用于连接两个不同的物理网段并基于 MAC 地址过滤流量，处理能力远低于现代硬件交换机。"
+        "rationale": "网桥（Bridge）是早期的二层设备，用于连接两个物理网段并基于 MAC 地址进行过滤和转发，处理性能和端口密度均远低于现代硬件交换机。"
       }
     ],
     "hint": "注意题干中提到的<b>跨 VLAN 高速硬件路由转发</b>以及基于 <b>ASIC 芯片线速交换</b>的核心设备。在 AP 考试中该设备被称为 <b>L3スイッチ</b>。"
@@ -372,22 +372,22 @@ window.CURRENT_INTERACTIVE_QUIZ = [
       {
         "text": "プロキシサーバ",
         "isCorrect": true,
-        "rationale": "代理服务器（プロキシサーバ／Proxy Server，在此特指 Forward Proxy 正向代理）作为内网客户端与外部互联网之间的中介，提供访问代理、网页缓存（キャッシュ）、URL 过滤与安全日志记录功能，有效提升带宽利用率与网络安全性。"
+        "rationale": "代理服务器（プロキシサーバ／Proxy Server，特指正向代理 Forward Proxy）作为内网客户端与外部 Internet 之间的应用层（L7）中介。它代替客户端向目标 Web 服务器发起连接，提供 URL 过滤、日志审计、隐藏内网 IP 地址以及对 Web 静态资源的本地缓存（キャッシュ）功能，能显著提升响应速度并降低出口带宽消耗。"
       },
       {
         "text": "キャッシュDNSサーバ",
         "isCorrect": false,
-        "rationale": "缓存 DNS 服务器仅用于暂时存储和处理域名与 IP 地址的名前解決映射关系，不承担 HTTP/HTTPS 网页内容的代理与缓存职能。"
+        "rationale": "缓存 DNS 服务器专职负责暂时存储域名至 IP 地址的解析结果（名前解決），不承担 HTTP/HTTPS 应用层网页内容的拉取、过滤和数据缓存。"
       },
       {
         "text": "ファイアウォール",
         "isCorrect": false,
-        "rationale": "防火墙（Firewall）主要基于 IP 地址、端口号及连接状态对网络层和传输层数据包进行访问控制策略的过滤，不负责 HTTP 应用层内容的代理与缓存。"
+        "rationale": "防火墙（Firewall）主要基于 IP 地址、端口号及 TCP 连接状态执行 ACL 策略拦截，通常不负责应用层网页内容的代理拉取与本地缓存。"
       },
       {
         "text": "ロードバランサ",
         "isCorrect": false,
-        "rationale": "负载均衡器（Load Balancer）通常部署在多台后端服务器前端，用于将外部并发请求按算法分发到各个服务器节点，而非代内网 PC 访问外网。"
+        "rationale": "负载均衡器（Load Balancer）作为反向组件部署在多台服务端前端，负责分发外部入站并发流量，与代理内网 PC 访问外网的方向完全相反。"
       }
     ],
     "hint": "请注意题干提到的<b>代表内网客户端访问外网</b>、<b>网页内容缓存（キャッシュ）</b>及<b>访问控制</b>的中介设备。AP 大纲中称此为 <b>プロキシサーバ</b>。"
@@ -400,22 +400,22 @@ window.CURRENT_INTERACTIVE_QUIZ = [
       {
         "text": "ICMP",
         "isCorrect": true,
-        "rationale": "网际控制报文协议（ICMP／Internet Control Message Protocol）配合 IP 协议工作，用于在 IP 网络中传递差错报告和控制信息。ping 和 traceroute 工具均依赖 ICMP 报文（如 Echo Request/Reply）来实现网络连通性确认（疎通確認）。"
+        "rationale": "网际控制报文协议（ICMP／Internet Control Message Protocol）直接封装于 IP 报文中（协议号 1）。它专用于在 IP 主机和路由器之间传递网络层控制信息与差错报告。其中 ping 命令正是基于 ICMP Echo Request（Type 8）和 Echo Reply（Type 0）报文来实现网络连通性测试（疎通確認）与往返延时（RTT）测量。"
       },
       {
         "text": "IGMP",
         "isCorrect": false,
-        "rationale": "网际组管理协议（IGMP）用于主机与组播路由器之间管理 IP 组播（Multicast）成员关系，与连通性测试命令无关。"
+        "rationale": "网际组管理协议（IGMP）工作在网络层，专门用于主机与组播路由器之间建立和维护 IP 组播（Multicast）成员身份，不提供 Echo 诊断与连通性测试。"
       },
       {
         "text": "ARP",
         "isCorrect": false,
-        "rationale": "地址解析协议（ARP）工作在数据链路层与网络层之间，仅用于获取指定 IP 地址对应的物理 MAC 地址，不包含 Echo 连通性测试机制。"
+        "rationale": "地址解析协议（ARP）工作在二层与三层交界，仅用于查询已知 IP 地址对应的物理 MAC 地址，本身不包含任何 Echo 请求应答与连通性诊断机制。"
       },
       {
         "text": "TCP",
         "isCorrect": false,
-        "rationale": "传输控制协议（TCP）是面向连接的传输层协议，提供可靠的数据流传输与三路握手机制，并非 ping 诊断命令直接使用的控制协议。"
+        "rationale": "传输控制协议（TCP）是面向连接的传输层（L4）可靠协议，通过三次握手建立连接，并非 ping 连通性测试命令直接使用的底层网络控制协议。"
       }
     ],
     "hint": "注意题干中提到的 <b>ping 命令底层依据</b>、<b>Echo Request/Reply 机制</b>以及<b>网络疎通確認</b>。AP 考试中该基础协议为 <b>ICMP</b>。"
