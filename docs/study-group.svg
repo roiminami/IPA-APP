@@ -1,0 +1,183 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <defs>
+    <!-- 极简白天科技风背景渐变 -->
+    <linearGradient id="bgGradDay" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F8FAFC"/>
+      <stop offset="50%" stop-color="#F1F5F9"/>
+      <stop offset="100%" stop-color="#E2E8F0"/>
+    </linearGradient>
+
+    <!-- 柔和科技氛围光源 -->
+    <radialGradient id="cyanGlow" cx="15%" cy="20%" r="50%">
+      <stop offset="0%" stop-color="#0284C7" stop-opacity="0.14"/>
+      <stop offset="100%" stop-color="#0284C7" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="indigoGlow" cx="85%" cy="80%" r="60%">
+      <stop offset="0%" stop-color="#6366F1" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#6366F1" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- MISSION 卡片发光渐变底衬 -->
+    <linearGradient id="cardBgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#EFF6FF"/>
+      <stop offset="50%" stop-color="#E0F2FE"/>
+      <stop offset="100%" stop-color="#EEF2FF"/>
+    </linearGradient>
+
+    <!-- 侧边 Accent 竖条渐变 -->
+    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#0284C7"/>
+      <stop offset="100%" stop-color="#4F46E5"/>
+    </linearGradient>
+
+    <!-- 悬浮阴影滤镜 -->
+    <filter id="softShadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="6" stdDeviation="14" flood-color="#0F172A" flood-opacity="0.06"/>
+    </filter>
+
+    <filter id="glowShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="10" stdDeviation="20" flood-color="#0284C7" flood-opacity="0.15"/>
+    </filter>
+  </defs>
+
+  <!-- 1. 背景层 -->
+  <rect width="1280" height="720" fill="url(#bgGradDay)"/>
+  <rect width="1280" height="720" fill="url(#cyanGlow)"/>
+  <rect width="1280" height="720" fill="url(#indigoGlow)"/>
+
+  <!-- 2. 浅色科技背景网格 -->
+  <g stroke="#0284C7" stroke-width="1" opacity="0.07">
+    <line x1="0" y1="80" x2="1280" y2="80"/>
+    <line x1="0" y1="200" x2="1280" y2="200"/>
+    <line x1="0" y1="360" x2="1280" y2="360"/>
+    <line x1="0" y1="520" x2="1280" y2="520"/>
+    <line x1="0" y1="640" x2="1280" y2="640"/>
+    <line x1="75" y1="0" x2="75" y2="720"/>
+    <line x1="380" y1="0" x2="380" y2="720"/>
+    <line x1="660" y1="0" x2="660" y2="720"/>
+    <line x1="1205" y1="0" x2="1205" y2="720"/>
+  </g>
+
+  <!-- 3. 右侧：VS Code Light 伪代码终端 (起点 X=660, 宽度 545px, 右留白 75px 绝对平衡) -->
+  <g transform="translate(660, 60)" filter="url(#softShadow)">
+    <rect width="545" height="600" rx="14" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.5"/>
+    
+    <!-- 窗口顶栏 -->
+    <path d="M 0,14 A 14,14 0 0,1 14,0 L 531,0 A 14,14 0 0,1 545,14 L 545,42 L 0,42 Z" fill="#F1F5F9"/>
+    <line x1="0" y1="42" x2="545" y2="42" stroke="#E2E8F0" stroke-width="1"/>
+    <circle cx="22" cy="21" r="5" fill="#EF4444"/>
+    <circle cx="38" cy="21" r="5" fill="#F59E0B"/>
+    <circle cx="54" cy="21" r="5" fill="#10B981"/>
+    <text x="80" y="25" font-family="monospace" font-size="12" font-weight="600" fill="#64748B">IPA_DX_Talent_Mission.pseudo</text>
+
+    <!-- 代码内容 -->
+    <g font-family="'PingFang SC', 'Noto Sans SC', Consolas, Monaco, monospace" font-size="13.5" xml:space="preserve">
+      <text x="24" y="78" fill="#0284C7" font-weight="700">// 核心理念 (Mission Statement):</text>
+      <text x="24" y="104" fill="#475569">// 在日外国人IT人材の成長を支援し、</text>
+      <text x="24" y="128" fill="#475569">// 社会・産業のDX推進に貢献する</text>
+      
+      <text x="24" y="172" fill="#7C3AED" font-weight="700">class <tspan fill="#0F172A">IT_Talent_Development</tspan> {</text>
+      <text x="44" y="208" fill="#64748B">target: <tspan fill="#059669" font-weight="600">"高度在日外国 IT 人才"</tspan>,</text>
+      <text x="44" y="238" fill="#64748B">goal: <tspan fill="#059669" font-weight="600">"IPA 科目B 速攻 &amp; 逻辑能力提升"</tspan>,</text>
+      
+      <text x="44" y="285" fill="#7C3AED" font-weight="700">function <tspan fill="#0284C7">studyTogether</tspan>() {</text>
+      <text x="68" y="325" fill="#0284C7" font-weight="700">// 科目B 解题核心双核：</text>
+      <text x="68" y="358" fill="#64748B">const <tspan fill="#D97706" font-weight="700">knowledge</tspan> = <tspan fill="#2563EB" font-weight="700">"专业知识 (15题热身)"</tspan>;</text>
+      <text x="68" y="390" fill="#64748B">const <tspan fill="#D97706" font-weight="700">readingSkill</tspan> = <tspan fill="#2563EB" font-weight="700">"读解能力 (真题拆解)"</tspan>;</text>
+      
+      <text x="68" y="440" fill="#7C3AED" font-weight="700">while <tspan fill="#334155">(learnAndGrowTogether)</tspan> {</text>
+      <text x="92" y="475" fill="#059669" font-weight="600">achieve("突破 IPA 科目B");</text>
+      <text x="92" y="508" fill="#0284C7" font-weight="700">return <tspan fill="#D97706">"Society 5.0 DX 高度人才"</tspan>;</text>
+      <text x="68" y="535" fill="#7C3AED">}</text>
+      <text x="44" y="555" fill="#7C3AED">}</text>
+      <text x="24" y="572" fill="#7C3AED">}</text>
+    </g>
+  </g>
+
+  <!-- 4. 左侧：主视觉排版区 (左留白 75px, 宽度 515px, 完美隔离不重叠) -->
+  <g transform="translate(75, 60)">
+    <!-- 左侧 Accent 竖条 -->
+    <rect x="0" y="0" width="6" height="600" rx="3" fill="url(#accentGrad)"/>
+
+    <g transform="translate(32, 0)">
+      
+      <!-- 1. 原生矢量 IPA 徽章 + 応用情報技術者試験 Tag -->
+      <g transform="translate(0, 0)">
+        <rect x="0" y="0" width="64" height="30" rx="6" fill="#0284C7"/>
+        <text x="32" y="20" font-family="'Noto Sans JP', 'Montserrat', sans-serif" font-size="13" font-weight="900" fill="#FFFFFF" text-anchor="middle" letter-spacing="1">IPA</text>
+
+        <g transform="translate(74, 0)">
+          <rect x="0" y="0" width="176" height="30" rx="6" fill="#EFF6FF" stroke="#0284C7" stroke-width="1.2"/>
+          <text x="12" y="20" font-family="'Noto Sans JP', 'PingFang SC', sans-serif" font-size="13.5" font-weight="800" fill="#0284C7" letter-spacing="0.5">応用情報技術者試験</text>
+        </g>
+      </g>
+
+      <!-- 2. 🔥 主标题：IPA 科目B 速攻学習会 (双色醒目对比) -->
+      <g transform="translate(0, 52)">
+        <text x="0" y="44" font-family="'Noto Sans JP', 'PingFang SC', sans-serif" font-size="42" font-weight="900" letter-spacing="1">
+          <tspan fill="#0284C7">IPA 科目B</tspan>
+          <tspan fill="#0F172A"> 速攻学習会</tspan>
+        </text>
+      </g>
+
+      <!-- 3. 🔥 核心理念 MISSION 卡片 (严格匹配，去除“理念”二字) -->
+      <g transform="translate(0, 122)" filter="url(#glowShadow)">
+        <rect x="0" y="0" width="515" height="240" rx="14" fill="url(#cardBgGrad)" stroke="#0284C7" stroke-width="2"/>
+        <rect x="4" y="4" width="507" height="232" rx="10" fill="none" stroke="#38BDF8" stroke-width="1" opacity="0.7"/>
+        
+        <!-- 右侧 DX 科技徽章 -->
+        <g transform="translate(428, 28)">
+          <circle cx="30" cy="30" r="26" fill="#0284C7" opacity="0.08"/>
+          <circle cx="30" cy="30" r="18" fill="none" stroke="#0284C7" stroke-width="1.5" opacity="0.25"/>
+          <text x="30" y="35" font-family="'Consolas', monospace" font-size="13" font-weight="900" fill="#0284C7" text-anchor="middle" opacity="0.6">DX</text>
+        </g>
+
+        <!-- MISSION 标章 (仅保留 MISSION) -->
+        <g transform="translate(20, 18)">
+          <rect x="0" y="0" width="82" height="26" rx="6" fill="#0284C7"/>
+          <text x="12" y="17" font-family="'Noto Sans JP', 'PingFang SC', sans-serif" font-size="12" font-weight="800" fill="#FFFFFF" letter-spacing="1">MISSION</text>
+        </g>
+
+        <!-- 日文原文理念 (主) -->
+        <text x="20" y="78" font-family="'Noto Sans JP', 'PingFang SC', sans-serif" font-size="20" font-weight="900" fill="#0369A1" letter-spacing="0.3">
+          在日外国人IT人材の成長を支援し、
+        </text>
+        <text x="20" y="110" font-family="'Noto Sans JP', 'PingFang SC', sans-serif" font-size="20" font-weight="900" fill="#0369A1" letter-spacing="0.3">
+          社会・産業のDX推進に貢献する
+        </text>
+        
+        <!-- 中文精译理念 (副) -->
+        <text x="20" y="162" font-family="'PingFang SC', 'Noto Sans SC', sans-serif" font-size="16.5" font-weight="800" fill="#1E3A8A" letter-spacing="0.2">
+          助力在日外国IT人才成长，
+        </text>
+        <text x="20" y="192" font-family="'PingFang SC', 'Noto Sans SC', sans-serif" font-size="16.5" font-weight="800" fill="#1E3A8A" letter-spacing="0.2">
+          为社会与产业数字化转型（DX）贡献力量。
+        </text>
+      </g>
+
+      <!-- 分割线 -->
+      <line x1="0" y1="388" x2="515" y2="388" stroke="#CBD5E1" stroke-width="1.2"/>
+
+      <!-- 4. 底部社群 Badge 与 署名 -->
+      <g transform="translate(0, 412)">
+        <!-- 在线学习会 胶囊 -->
+        <g transform="translate(0, 0)">
+          <rect x="0" y="0" width="195" height="42" rx="8" fill="#FFFFFF" stroke="#0284C7" stroke-width="1.5" filter="url(#softShadow)"/>
+          <circle cx="20" cy="21" r="4.5" fill="#0284C7"/>
+          <text x="34" y="26" font-family="'Noto Sans JP', 'PingFang SC', sans-serif" font-size="13.5" font-weight="700" fill="#0F172A">Online Study Session</text>
+        </g>
+
+        <!-- by 南 署名胶囊 -->
+        <g transform="translate(210, 0)">
+          <rect x="0" y="0" width="85" height="42" rx="8" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1"/>
+          <text x="20" y="26" font-family="'PingFang SC', sans-serif" font-size="13.5" font-weight="600" fill="#475569">by 南</text>
+        </g>
+      </g>
+
+      <!-- 底部社区标语 -->
+      <text x="0" y="492" font-family="'Noto Sans JP', 'PingFang SC', sans-serif" font-size="14.5" font-weight="700" fill="#475569" letter-spacing="0.6">
+        ▸ 互相督促 · 共同进步 · 突破 IPA 科目B
+      </text>
+    </g>
+  </g>
+</svg>

@@ -11,7 +11,7 @@
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=Noto+Sans+JP:wght@400;500;700;900&family=Noto+Sans+SC:wght@400;500;700;900&display=swap');
         
         body {
-            /* 智能中日双语优雅回退字体栈，避免简中字符被错误解析为日文汉字字形 */
+            /* 智能中日双语优雅回退字体栈 */
             font-family: 'Inter', 'Noto Sans SC', 'Noto Sans JP', -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans", "Microsoft YaHei", sans-serif;
             background-color: #F8FAFC;
             min-height: 100vh;
@@ -40,6 +40,7 @@
 </head>
 <body class="text-slate-800 flex flex-col antialiased select-none pb-16">
 
+    <!-- 页头 Nav -->
     <header class="border-b border-slate-200 bg-white/90 backdrop-blur-md shrink-0 sticky top-0 z-50 shadow-xs">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
             <a href="index.html" class="flex items-center space-x-3 hover:opacity-90 transition-all">
@@ -63,76 +64,104 @@
 
     <main class="flex-1 max-w-5xl w-full mx-auto px-4 py-8 flex flex-col gap-6">
         
-        <!-- ================== 🌟 自然柔和 · 主理人共学卡片 ================== -->
+
+<!-- ================== 🌟 自然柔和 · 主理人共学卡片 (带海报按钮版) ================== -->
         <section class="bg-white border border-slate-200 rounded-2xl p-6 md:p-7 shadow-xs hover:shadow-md transition-all duration-300 relative overflow-hidden flex flex-col md:flex-row gap-6 items-stretch animate-fade-in">
-            <!-- 极简冷调薄荷色浅晕 -->
-            <div class="absolute -left-12 -top-12 w-48 h-48 bg-teal-50 rounded-full blur-3xl pointer-events-none"></div>
+            <!-- 极简背景晕染 -->
+            <div class="absolute -left-12 -top-12 w-48 h-48 bg-teal-50/60 rounded-full blur-3xl pointer-events-none"></div>
             
-            <!-- 左侧：温润有温度的共学邀约 -->
+            <!-- 左侧：AP 备考专区 + MISSION 核心理念 -->
             <div class="flex-1 flex flex-col justify-between gap-5 relative z-10">
-                <div class="flex flex-col gap-3">
+                <div class="flex flex-col gap-3.5">
+                    
+                    <!-- 顶栏 Tag 组 (含 SVG 海报预览按钮) -->
                     <div class="flex flex-wrap items-center gap-2">
-                        <span class="inline-flex items-center gap-1 text-[11px] font-bold bg-slate-100 text-slate-700 border border-slate-200 px-2.5 py-0.5 rounded-full shadow-2xs">
+                        <span class="inline-flex items-center gap-1.5 text-[11px] font-bold bg-slate-100 text-slate-700 border border-slate-200/80 px-2.5 py-0.5 rounded-full shadow-2xs">
                             <span class="w-1.5 h-1.5 rounded-full bg-teal-500 animate-pulse"></span>
                             在日 IT 必刷 · 応用情報 AP
                         </span>
-                        <span class="inline-flex items-center gap-1 text-[11px] font-bold text-slate-400">
+                        <span class="inline-flex items-center gap-1.5 text-[11px] font-bold text-slate-400">
                             <i data-lucide="coffee" class="w-3.5 h-3.5"></i>
                             Coffee & Code
                         </span>
+
+                        <!-- 🎨 引入 SVG 海报弹窗按钮 -->
+                        <button onclick="openPreviewModal()" class="inline-flex items-center gap-1.5 text-[11px] font-bold bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200/80 px-2.5 py-0.5 rounded-full transition-all active:scale-95 shadow-2xs cursor-pointer">
+                            <i data-lucide="image" class="w-3.5 h-3.5 text-indigo-600"></i>
+                            <span>查看速攻海报</span>
+                        </button>
                     </div>
 
-                    <h2 class="text-base sm:text-lg font-black text-slate-900 tracking-tight leading-snug">
+                    <!-- 亲切主标题 -->
+                    <h2 class="text-base sm:text-xl font-black text-slate-900 tracking-tight leading-snug">
                         更适合在日中国宝宝体质的「応用情報」通关小窝
                     </h2>
 
-                    <div class="text-xs text-slate-600 space-y-2.5 leading-relaxed font-medium">
-                        <p>
-                            日文教程生涩难懂？下午题（科目B）长篇日语死磕太痛苦？别怕，你不是一个人。
+                    <!-- MISSION 核心理念 -->
+                    <div class="bg-gradient-to-r from-slate-50 via-teal-50/30 to-indigo-50/30 border border-slate-200/80 rounded-xl p-3.5 flex flex-col gap-1.5 shadow-2xs">
+                        <div class="flex items-center gap-1.5">
+                            <span class="bg-indigo-600 text-white text-[9px] font-black px-1.5 py-0.5 rounded tracking-wider uppercase">MISSION</span>
+                        </div>
+                        <p class="text-xs font-black text-slate-800 leading-snug">
+                            在日外国人IT人材の成長を支援し、社会・産業のDX推進に貢献する
                         </p>
-                        <p>
-                            群主 <strong class="text-slate-900 font-bold">Minami</strong> 正在<strong>「边学、边教、边分享」</strong>。我们用简单易懂的大白话和中文逻辑，帮你拆解日考中的逻辑陷阱与专业术语。
-                        </p>
-                        <p>
-                            在这里，<strong>「学搭俱乐部」</strong>的伙伴主要来自小红书，专注高效执行与长期主义。不吹水，不闲聊，大家在 <span class="text-slate-900 font-bold bg-slate-50 border border-slate-200 px-1.5 py-0.5 rounded mx-0.5">IT 架构</span>、<span class="text-slate-900 font-bold bg-slate-50 border border-slate-200 px-1.5 py-0.5 rounded mx-0.5">云原生</span>、<span class="text-slate-900 font-bold bg-slate-50 border border-slate-200 px-1.5 py-0.5 rounded mx-0.5">英语</span>、<span class="text-slate-900 font-bold bg-slate-50 border border-slate-200 px-1.5 py-0.5 rounded mx-0.5">会计</span> 与 <span class="text-slate-900 font-bold bg-slate-50 border border-slate-200 px-1.5 py-0.5 rounded mx-0.5">投资</span> 等硬核赛道中理性互助，全速抱团成长。
+                        <p class="text-[11px] font-bold text-indigo-700 leading-snug">
+                            助力在日外国 IT 人才成长，为社会与产业数字化转型（DX）贡献力量。
                         </p>
                     </div>
+
+                    <!-- 简洁备考说明 -->
+                    <p class="text-xs text-slate-600 font-medium leading-relaxed">
+                        群主 <strong class="text-slate-900 font-bold">Minami</strong> 正在「边学、边教、边分享」。对于很多在日中国人来说，学习 AP 科目B 最大的难点，不只是专业知识本身，更是如何读懂日语题目，并将知识灵活运用到实际场景中。因此，除了积累 IT 知识，还需要熟悉日本考试的表达方式，并通过真题训练提升解题能力。基于这个想法，我制作了这个面向在日中国人的 AP 科目B 学习网站，将专业知识、中文解析和真题训练结合起来，希望帮助大家更高效地学习，找到适合自己的备考方法，少走弯路。
+                    </p>
                 </div>
 
-                <!-- 温馨底栏提示 -->
-                <div class="flex items-center gap-2 text-[11px] font-bold text-teal-800 bg-teal-50 border border-teal-100 rounded-xl p-2.5">
+                <!-- 底部提示条 -->
+                <div class="flex items-center gap-2 text-[11px] font-bold text-teal-800 bg-teal-50 border border-teal-100/80 rounded-xl p-2.5">
                     <i data-lucide="sparkles" class="w-4 h-4 text-teal-600 shrink-0 animate-pulse"></i>
-                    <span>携手打造你在日 IT 职业发展的开挂起点！</span>
+                    <span>▸ 互相督促 · 共同进步 · 突破 IPA 科目 B</span>
                 </div>
             </div>
 
-            <!-- 右侧：微信一键复制卡片 -->
-            <div class="w-full md:w-[230px] shrink-0 bg-slate-50 border border-slate-200 rounded-2xl p-4 flex flex-col justify-between gap-4 relative z-10 hover:border-indigo-400 transition-colors duration-300 shadow-2xs">
-                <div class="flex flex-col gap-2">
-                    <div class="flex items-center gap-2.5">
-                        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-600 to-teal-500 flex items-center justify-center text-white font-black text-xs shadow-sm">
+            <!-- 右侧：学搭俱乐部 + 微信卡片 -->
+            <div class="w-full md:w-[290px] shrink-0 bg-slate-50 border border-slate-200 rounded-2xl p-4 flex flex-col justify-between gap-4 relative z-10 hover:border-indigo-300 transition-colors duration-300 shadow-2xs">
+                <!-- 头部与学搭俱乐部介绍 -->
+                <div class="flex flex-col gap-3">
+                    <div class="flex items-center gap-2.5 border-b border-slate-200/80 pb-2.5">
+                        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-600 to-teal-500 flex items-center justify-center text-white font-black text-sm shadow-xs shrink-0">
                             南
                         </div>
-                        <div>
-                            <h4 class="text-xs font-black text-slate-900">学搭俱乐部</h4>
-                            <a href="https://minami.ac.cn" target="_blank" class="text-[10px] text-slate-400 font-bold hover:text-indigo-700 flex items-center gap-0.5 mt-0.5">
-                                <span>minami.ac.cn</span>
+                        <div class="flex flex-col">
+                            <h4 class="text-xs font-black text-slate-900 leading-tight">学搭俱乐部</h4>
+                            <a href="https://minami.ac.cn" target="_blank" class="text-[10px] text-slate-500 font-bold hover:text-indigo-600 flex items-center gap-0.5 mt-0.5 transition-colors">
+                                <span>博客：minami.ac.cn</span>
                                 <i data-lucide="arrow-up-right" class="w-2.5 h-2.5"></i>
                             </a>
                         </div>
                     </div>
-                    <p class="text-[10px] text-slate-500 leading-relaxed font-medium">
-                        聚集高效执行力的在日华人，理性互助，共同成长。
-                    </p>
+
+                    <!-- 学搭俱乐部专属介绍 -->
+                    <div class="flex flex-col gap-2 text-[11px] font-medium text-slate-700 leading-relaxed">
+                        <p class="font-bold text-slate-800">
+                            🎥 汇聚高效执行力的在日华人，专注硬核跨界与长期成长。
+                        </p>
+                        <p class="text-slate-600 text-[10.5px]">
+                            💻 IT 架构 · 云原生 · 应用开发 · 英语 · 日语 · 投资 · 不动产...
+                        </p>
+                        <p class="text-teal-700 font-bold text-[10.5px]">
+                            💡 干货经验分享 · 在日职业成长交流
+                        </p>
+                    </div>
                 </div>
 
-                <div class="flex flex-col gap-2">
+                <!-- 微信一键复制区域 -->
+                <div class="flex flex-col gap-2 pt-2 border-t border-slate-200/80">
                     <div class="bg-white border border-slate-200 rounded-xl p-2.5 flex flex-col gap-1 shadow-2xs">
-                        <span class="text-[9px] text-slate-400 font-bold tracking-wider uppercase">添加微信加群</span>
                         <div class="flex items-center justify-between">
-                            <code class="text-xs font-black text-slate-800 tracking-wide font-mono">nowminami</code>
-                            <span class="text-[8px] font-black text-indigo-700 bg-indigo-50 border border-indigo-100 px-1 py-0.5 rounded">备注：AP / IT 备考</span>
+                            <span class="text-[9px] text-slate-400 font-bold tracking-wider uppercase">添加微信加群</span>
+                            <span class="text-[8px] font-black text-indigo-700 bg-indigo-50 border border-indigo-100 px-1.5 py-0.5 rounded">备注：AP / IT</span>
                         </div>
+                        <code class="text-xs font-black text-slate-800 tracking-wide font-mono mt-0.5">nowminami</code>
                     </div>
                     
                     <button onclick="copyWechatID()" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold text-[11px] py-2 px-3 rounded-xl flex items-center justify-center gap-1.5 transition-all active:scale-98">
@@ -143,7 +172,19 @@
             </div>
         </section>
 
-        <!-- ================== 📅 年度选择 ================== -->
+        <!-- 🔍 封面海报放大弹窗 (Lightbox Modal) -->
+        <div id="preview-modal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md hidden items-center justify-center p-4 transition-all duration-300 opacity-0" onclick="closePreviewModal()">
+            <div class="relative max-w-5xl w-full bg-white rounded-2xl overflow-hidden shadow-2xl border border-slate-700" onclick="event.stopPropagation()">
+                <button onclick="closePreviewModal()" class="absolute top-3 right-3 z-10 w-8 h-8 rounded-full bg-slate-900/80 hover:bg-slate-900 text-white flex items-center justify-center transition-all cursor-pointer">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
+                <div class="aspect-[16/9] w-full bg-slate-900">
+                    <img src="study-group.svg" alt="IPA 科目B 速攻学習会 全屏" class="w-full h-full object-contain">
+                </div>
+            </div>
+        </div>
+
+        <!-- ================== 📅 3. 年度选择 ================== -->
         <section class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm animate-fade-in">
             <div class="flex items-center gap-2 mb-5">
                 <i data-lucide="calendar" class="w-5 h-5 text-indigo-600 animate-bounce"></i>
@@ -153,12 +194,44 @@
             <div id="year-filters" class="flex flex-wrap gap-2.5"></div>
         </section>
 
+        <!-- ================== 📚 4. 考题容器 ================== -->
         <section id="exam-cards-container" class="flex flex-col gap-6 animate-fade-in" style="animation-delay: 100ms;"></section>
 
     </main>
 
+    <!-- 🔍 封面图片放大弹窗 (Lightbox) -->
+    <div id="preview-modal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md hidden items-center justify-center p-4 transition-all duration-300 opacity-0" onclick="closePreviewModal()">
+        <div class="relative max-w-5xl w-full bg-white rounded-2xl overflow-hidden shadow-2xl border border-slate-700" onclick="event.stopPropagation()">
+            <button onclick="closePreviewModal()" class="absolute top-3 right-3 z-10 w-8 h-8 rounded-full bg-slate-900/80 hover:bg-slate-900 text-white flex items-center justify-center transition-all">
+                <i data-lucide="x" class="w-4 h-4"></i>
+            </button>
+            <div class="aspect-[16/9] w-full bg-slate-900">
+                <img src="study-group.svg" alt="IPA 科目B 速攻学習会 全屏" class="w-full h-full object-contain">
+            </div>
+        </div>
+    </div>
+
     <script src="config.js"></script>
     <script>
+        // 全屏预览弹窗交互
+        function openPreviewModal() {
+            const modal = document.getElementById('preview-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+            }, 10);
+        }
+
+        function closePreviewModal() {
+            const modal = document.getElementById('preview-modal');
+            modal.classList.add('opacity-0');
+            setTimeout(() => {
+                modal.classList.remove('flex');
+                modal.classList.add('hidden');
+            }, 300);
+        }
+
         // 微信复制交互机制
         function copyWechatID() {
             navigator.clipboard.writeText('nowminami').then(() => {
