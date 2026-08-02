@@ -21,11 +21,6 @@
         ::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 3px; }
         ::-webkit-scrollbar-thumb:hover { background: #94A3B8; }
 
-        .scroll-beauty::-webkit-scrollbar { width: 8px; height: 8px; }
-        .scroll-beauty::-webkit-scrollbar-track { background: transparent; }
-        .scroll-beauty::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 8px; border: 2px solid transparent; background-clip: padding-box; }
-        .scroll-beauty::-webkit-scrollbar-thumb:hover { background: #94A3B8; border: 2px solid transparent; background-clip: padding-box; }
-
         .animate-fade-in {
             animation: fadeIn 0.4s ease-out forwards;
         }
@@ -176,49 +171,33 @@
             </div>
         </section>
 
-        <!-- ================== 🎬 2. 自动汇总全站视频播放列表 ================== -->
+        <!-- ================== 🎬 2. 直接嵌入 YouTube 播放列表 ================== -->
         <section class="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs hover:shadow-md transition-all duration-300 animate-fade-in flex flex-col gap-4">
             <div class="flex items-center justify-between border-b border-slate-100 pb-3">
                 <div class="flex items-center gap-2">
                     <i data-lucide="play-square" class="w-5 h-5 text-indigo-600"></i>
                     <h2 class="text-xs font-black text-slate-900 tracking-wider uppercase">科目B 動画解説 再生リスト合集</h2>
                 </div>
-                <span id="index-video-count" class="text-[10px] bg-teal-50 text-teal-700 font-bold px-2.5 py-0.5 rounded-full border border-teal-200">
-                    動画をスキャン中...
-                </span>
+                <a href="https://www.youtube.com/playlist?list=PLI9LZ_5sMCR4" target="_blank" class="text-[10px] bg-teal-50 hover:bg-teal-100 text-teal-700 font-bold px-2.5 py-0.5 rounded-full border border-teal-200 transition-colors flex items-center gap-1">
+                    <span>YouTube で開く</span>
+                    <i data-lucide="arrow-up-right" class="w-3 h-3"></i>
+                </a>
             </div>
 
-            <!-- 主内容区：左侧播放器，右侧列表 -->
-            <div class="w-full flex flex-col lg:flex-row gap-6 items-stretch">
-                <!-- 左侧：播放器 -->
-                <div class="flex-1 aspect-video bg-black rounded-xl overflow-hidden shadow-sm relative shrink-0">
-                    <iframe 
-                        id="main-index-player"
-                        class="w-full h-full block border-none hidden" 
-                        src="" 
-                        title="AP科目B 動画解説" 
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                        allowfullscreen>
-                    </iframe>
-                    <!-- 无视频/加载中占位图 -->
-                    <div id="index-video-empty" class="w-full h-full flex flex-col items-center justify-center bg-slate-900 text-slate-400 gap-3">
-                        <i data-lucide="video-off" class="w-8 h-8 text-slate-500"></i>
-                        <span class="text-xs font-bold" id="index-empty-text">動画を読み込み中...</span>
-                    </div>
-                </div>
-
-                <!-- 右侧：全自动提取的视频清单 -->
-                <div class="w-full lg:w-80 border-t lg:border-t-0 lg:border-l border-slate-200 pt-4 lg:pt-0 lg:pl-6 flex flex-col gap-3 shrink-0">
-                    <div class="text-[11px] font-black text-slate-400 tracking-wider uppercase flex items-center gap-1">
-                        <i data-lucide="list-video" class="w-3.5 h-3.5 text-indigo-600"></i>
-                        <span>解説動画一覧</span>
-                    </div>
-                    
-                    <div id="index-playlist-items" class="flex-1 overflow-y-auto space-y-2 max-h-[300px] lg:max-h-[380px] pr-1 scroll-beauty">
-                        <!-- JS 动态注入全站视频 -->
-                    </div>
-                </div>
+            <!-- 16:9 比例嵌入框 -->
+            <div class="w-full aspect-video bg-black rounded-xl overflow-hidden shadow-sm relative">
+                <iframe 
+                    class="w-full h-full block border-none" 
+                    src="https://www.youtube.com/embed/videoseries?list=PLI9LZ_5sMCR4" 
+                    title="AP科目B 動画解説 再生リスト" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                    allowfullscreen>
+                </iframe>
             </div>
+
+            <p class="text-xs text-slate-500 font-medium leading-relaxed">
+                💡 <strong>提示：</strong>点击播放器右上角的 <strong>「播放列表图标 (≡)」</strong>，可以在窗口内展开并挑选所有讲解视频。
+            </p>
         </section>
 
         <!-- ================== 📅 3. 年度选择 ================== -->
@@ -282,121 +261,8 @@
             });
         }
 
-        // 辅助函数：解析 YouTube Video ID
-        function getYouTubeId(url) {
-            if (!url) return null;
-            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-            const match = url.match(regExp);
-            return (match && match[2].length === 11) ? match[2] : null;
-        }
-
-        // 自动扫描并聚合全站所有 05_video.js
-        async function loadAllQuestionVideos() {
-            const aggregatedList = [];
-
-            for (const year of YEARS_LIST) {
-                for (const q of QUESTIONS_LIST) {
-                    const videoJsUrl = `data/${year.id}/${q.id}/05_video.js`;
-                    try {
-                        const res = await fetch(videoJsUrl, { method: 'GET' });
-                        if (res.ok) {
-                            const codeText = await res.text();
-                            
-                            // 匹配多视频 CURRENT_PLAYLIST 数组
-                            if (codeText.includes('CURRENT_PLAYLIST')) {
-                                const match = codeText.match(/CURRENT_PLAYLIST\s*=\s*(\[[\s\S]*?\]);/);
-                                if (match && match[1]) {
-                                    try {
-                                        const items = eval(match[1]);
-                                        items.forEach((item, idx) => {
-                                            aggregatedList.push({
-                                                title: `${year.name.split(' ')[0]} ${q.title} - ${item.title || ('Part ' + (idx + 1))}`,
-                                                url: typeof item === 'string' ? item : item.url,
-                                                duration: item.duration || ''
-                                            });
-                                        });
-                                    } catch (e) {}
-                                }
-                            } 
-                            // 匹配单视频 CURRENT_VIDEO_URL 字符串
-                            else if (codeText.includes('CURRENT_VIDEO_URL')) {
-                                const match = codeText.match(/CURRENT_VIDEO_URL\s*=\s*["']([^"']+)["']/);
-                                if (match && match[1]) {
-                                    aggregatedList.push({
-                                        title: `${year.name.split(' ')[0]} ${q.title}`,
-                                        url: match[1],
-                                        duration: ''
-                                    });
-                                }
-                            }
-                        }
-                    } catch (e) {
-                        // 忽略未创建的视频文件
-                    }
-                }
-            }
-
-            renderIndexPlaylist(aggregatedList);
-        }
-
-        // 渲染主页列表 UI
-        function renderIndexPlaylist(playlist) {
-            const listContainer = document.getElementById('index-playlist-items');
-            const playerIframe = document.getElementById('main-index-player');
-            const emptyBox = document.getElementById('index-video-empty');
-            const emptyText = document.getElementById('index-empty-text');
-            const countBadge = document.getElementById('index-video-count');
-
-            if (!playlist || playlist.length === 0) {
-                countBadge.textContent = "動画 0 本";
-                emptyText.textContent = "動画解説は準備中です。";
-                return;
-            }
-
-            countBadge.textContent = `全 ${playlist.length} 本動画`;
-            emptyBox.classList.add('hidden');
-            playerIframe.classList.remove('hidden');
-
-            // 默认播放列表第一条视频
-            const firstVid = getYouTubeId(playlist[0].url);
-            if (firstVid) {
-                playerIframe.src = `https://www.youtube.com/embed/${firstVid}?autoplay=0`;
-            }
-
-            listContainer.innerHTML = '';
-            playlist.forEach((item, index) => {
-                const vId = getYouTubeId(item.url);
-                if (!vId) return;
-
-                const itemEl = document.createElement('div');
-                itemEl.className = `playlist-item p-3 rounded-xl border cursor-pointer transition-all flex items-center justify-between gap-2 text-xs font-semibold ${index === 0 ? 'bg-indigo-50/80 border-indigo-500 text-indigo-900' : 'bg-white border-slate-200 text-slate-700 hover:border-indigo-500 hover:bg-indigo-50/30'}`;
-                
-                itemEl.innerHTML = `
-                    <div class="flex items-center gap-2 truncate">
-                        <span class="w-5 h-5 rounded-full bg-slate-100 text-slate-600 text-[10px] font-black flex items-center justify-center shrink-0">${index + 1}</span>
-                        <span class="truncate">${item.title}</span>
-                    </div>
-                    ${item.duration ? `<span class="text-[10px] text-slate-400 font-mono shrink-0">${item.duration}</span>` : ''}
-                `;
-
-                itemEl.addEventListener('click', () => {
-                    listContainer.querySelectorAll('.playlist-item').forEach((el, i) => {
-                        el.className = `playlist-item p-3 rounded-xl border cursor-pointer transition-all flex items-center justify-between gap-2 text-xs font-semibold ${i === index ? 'bg-indigo-50/80 border-indigo-500 text-indigo-900' : 'bg-white border-slate-200 text-slate-700 hover:border-indigo-500 hover:bg-indigo-50/30'}`;
-                    });
-                    playerIframe.src = `https://www.youtube.com/embed/${vId}?autoplay=1`;
-                });
-
-                listContainer.appendChild(itemEl);
-            });
-
-            if (typeof lucide !== 'undefined') lucide.createIcons();
-        }
-
         document.addEventListener('DOMContentLoaded', () => {
             if (typeof lucide !== 'undefined') lucide.createIcons();
-
-            // 触发自动扫描所有题目的 05_video.js
-            loadAllQuestionVideos();
 
             // 1. 数据结构预处理
             const groups = {};
