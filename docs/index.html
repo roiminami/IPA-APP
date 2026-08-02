@@ -21,6 +21,11 @@
         ::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 3px; }
         ::-webkit-scrollbar-thumb:hover { background: #94A3B8; }
 
+        .scroll-beauty::-webkit-scrollbar { width: 6px; height: 6px; }
+        .scroll-beauty::-webkit-scrollbar-track { background: transparent; }
+        .scroll-beauty::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 6px; }
+        .scroll-beauty::-webkit-scrollbar-thumb:hover { background: #94A3B8; }
+
         .animate-fade-in {
             animation: fadeIn 0.4s ease-out forwards;
         }
@@ -171,33 +176,48 @@
             </div>
         </section>
 
-        <!-- ================== 🎬 2. 直接嵌入 YouTube 播放列表 ================== -->
+        <!-- ================== 🎬 2. 交互式视频播放列表专区 ================== -->
         <section class="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs hover:shadow-md transition-all duration-300 animate-fade-in flex flex-col gap-4">
             <div class="flex items-center justify-between border-b border-slate-100 pb-3">
                 <div class="flex items-center gap-2">
                     <i data-lucide="play-square" class="w-5 h-5 text-indigo-600"></i>
                     <h2 class="text-xs font-black text-slate-900 tracking-wider uppercase">科目B 動画解説 再生リスト合集</h2>
                 </div>
-                <a href="https://www.youtube.com/playlist?list=PLI9LZ_5sMCR4" target="_blank" class="text-[10px] bg-teal-50 hover:bg-teal-100 text-teal-700 font-bold px-2.5 py-0.5 rounded-full border border-teal-200 transition-colors flex items-center gap-1">
-                    <span>YouTube で開く</span>
-                    <i data-lucide="arrow-up-right" class="w-3 h-3"></i>
+                <a href="https://www.youtube.com/playlist?list=PLI9LZ_5sMCR4" target="_blank" class="text-[10px] bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-bold px-2.5 py-1 rounded-full border border-indigo-200 transition-colors flex items-center gap-1">
+                    <span>YouTube 播放列表 ↗</span>
                 </a>
             </div>
 
-            <!-- 16:9 比例嵌入框 -->
-            <div class="w-full aspect-video bg-black rounded-xl overflow-hidden shadow-sm relative">
-                <iframe 
-                    class="w-full h-full block border-none" 
-                    src="https://www.youtube.com/embed/videoseries?list=PLI9LZ_5sMCR4" 
-                    title="AP科目B 動画解説 再生リスト" 
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                    allowfullscreen>
-                </iframe>
-            </div>
+            <!-- 双栏布局：左侧播放器，右侧真实可点击列表 (右侧调整为 lg:w-[380px] 给文字更充裕空间) -->
+            <div class="w-full flex flex-col lg:flex-row gap-5 items-stretch min-h-0">
+                <!-- 左侧播放器 -->
+                <div class="flex-1 aspect-video bg-black rounded-xl overflow-hidden shadow-sm relative min-w-0">
+                    <iframe 
+                        id="homepage-player"
+                        class="w-full h-full block border-none" 
+                        src="" 
+                        title="AP科目B 動画解説" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                        allowfullscreen>
+                    </iframe>
+                </div>
 
-            <p class="text-xs text-slate-500 font-medium leading-relaxed">
-                💡 <strong>提示：</strong>点击播放器右上角的 <strong>「播放列表图标 (≡)」</strong>，可以在窗口内展开并挑选所有讲解视频。
-            </p>
+                <!-- 右侧列表 (宽度扩至 380px) -->
+                <div class="w-full lg:w-[380px] border-t lg:border-t-0 lg:border-l border-slate-200 pt-4 lg:pt-0 lg:pl-5 flex flex-col gap-2.5 shrink-0">
+                    <div class="text-[11px] font-black text-slate-400 tracking-wider uppercase flex items-center justify-between pb-1 border-b border-slate-100">
+                        <span class="flex items-center gap-1">
+                            <i data-lucide="list-video" class="w-3.5 h-3.5 text-indigo-600"></i>
+                            再生リスト
+                        </span>
+                        <span id="homepage-playlist-count" class="text-[10px] text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded-full font-bold">0 本</span>
+                    </div>
+
+                    <!-- 滚动列表容器 -->
+                    <div id="homepage-playlist-container" class="flex-1 overflow-y-auto space-y-2 max-h-[300px] lg:max-h-[400px] pr-1 scroll-beauty">
+                        <!-- JS 动态注入列表 -->
+                    </div>
+                </div>
+            </div>
         </section>
 
         <!-- ================== 📅 3. 年度选择 ================== -->
@@ -229,6 +249,22 @@
 
     <script src="config.js"></script>
     <script>
+        // -------------------------------------------------------------
+        // 📺 主页视频列表数据（有新视频直接按格式往里加即可）
+        // -------------------------------------------------------------
+        const PLAYLIST_DATA = [
+            {
+                title: "令和7年度秋期 問1 情報セキュリティ 前編",
+                url: "https://youtu.be/xiU-pqbz4H0", 
+                duration: "25:10"
+            },
+            {
+                title: "令和7年度秋期 問1 情報セキュリティ 後編",
+                url: "https://youtu.be/xiU-pqbz4H0", // 替换为你的后编视频地址
+                duration: "1:07:19"
+            }
+        ];
+
         // 全屏预览弹窗交互
         function openPreviewModal() {
             const modal = document.getElementById('preview-modal');
@@ -261,8 +297,69 @@
             });
         }
 
+        // 解析 YouTube Video ID
+        function getYouTubeId(url) {
+            if (!url) return null;
+            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+            const match = url.match(regExp);
+            return (match && match[2].length === 11) ? match[2] : null;
+        }
+
+        // 渲染主页播放列表
+        function initHomepagePlaylist() {
+            const player = document.getElementById('homepage-player');
+            const container = document.getElementById('homepage-playlist-container');
+            const countEl = document.getElementById('homepage-playlist-count');
+
+            if (!container || !player || !PLAYLIST_DATA || PLAYLIST_DATA.length === 0) return;
+
+            countEl.textContent = `${PLAYLIST_DATA.length} 本`;
+            container.innerHTML = '';
+
+            // 默认播放第一个视频
+            const firstId = getYouTubeId(PLAYLIST_DATA[0].url);
+            if (firstId) {
+                player.src = `https://www.youtube.com/embed/${firstId}`;
+            }
+
+            PLAYLIST_DATA.forEach((item, index) => {
+                const vId = getYouTubeId(item.url);
+                const itemEl = document.createElement('div');
+                
+                // 改为 items-start (顶部对齐)，且标题去除 truncate，允许自然换行排版
+                itemEl.className = `playlist-item p-3 rounded-xl border cursor-pointer transition-all flex items-start justify-between gap-2.5 ${index === 0 ? 'bg-indigo-50/80 border-indigo-500 text-indigo-900' : 'bg-white border-slate-200 text-slate-700 hover:border-indigo-500 hover:bg-indigo-50/30'}`;
+                
+                itemEl.innerHTML = `
+                    <div class="flex items-start gap-2.5 flex-1 min-w-0">
+                        <span class="w-5 h-5 rounded-full bg-slate-100 text-slate-600 text-[10px] font-black flex items-center justify-center shrink-0 mt-0.5">${index + 1}</span>
+                        <span class="text-xs font-bold leading-snug break-words flex-1 text-slate-800">${item.title}</span>
+                    </div>
+                    ${item.duration ? `<span class="text-[10px] text-slate-400 font-mono shrink-0 mt-0.5">${item.duration}</span>` : ''}
+                `;
+
+                itemEl.addEventListener('click', () => {
+                    container.querySelectorAll('.playlist-item').forEach((el, i) => {
+                        if (i === index) {
+                            el.className = "playlist-item p-3 rounded-xl border border-indigo-500 bg-indigo-50/80 text-indigo-900 cursor-pointer transition-all flex items-start justify-between gap-2.5";
+                        } else {
+                            el.className = "playlist-item p-3 rounded-xl border border-slate-200 bg-white text-slate-700 cursor-pointer hover:border-indigo-500 hover:bg-indigo-50/30 transition-all flex items-start justify-between gap-2.5";
+                        }
+                    });
+
+                    if (vId) {
+                        player.src = `https://www.youtube.com/embed/${vId}?autoplay=1`;
+                    }
+                });
+
+                container.appendChild(itemEl);
+            });
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
             if (typeof lucide !== 'undefined') lucide.createIcons();
+
+            // 初始化主页播放列表
+            initHomepagePlaylist();
 
             // 1. 数据结构预处理
             const groups = {};
