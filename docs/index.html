@@ -8,7 +8,7 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         /* 导入英、中、日三款精致且和谐的字库 */
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=Noto+Sans+JP:wght@400;500;700;900&family=Noto+Sans+SC:wght@400;500;700;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght=400;500;600;700;900&family=Noto+Sans+JP:wght=400;500;700;900&family=Noto+Sans+SC:wght=400;500;700;900&display=swap');
         
         body {
             /* 智能中日双语优雅回退字体栈 */
@@ -64,8 +64,7 @@
 
     <main class="flex-1 max-w-5xl w-full mx-auto px-4 py-8 flex flex-col gap-6">
         
-
-<!-- ================== 🌟 自然柔和 · 主理人共学卡片 (带海报按钮版) ================== -->
+        <!-- ================== 🌟 自然柔和 · 主理人共学卡片 (带海报按钮版) ================== -->
         <section class="bg-white border border-slate-200 rounded-2xl p-6 md:p-7 shadow-xs hover:shadow-md transition-all duration-300 relative overflow-hidden flex flex-col md:flex-row gap-6 items-stretch animate-fade-in">
             <!-- 极简背景晕染 -->
             <div class="absolute -left-12 -top-12 w-48 h-48 bg-teal-50/60 rounded-full blur-3xl pointer-events-none"></div>
@@ -172,17 +171,33 @@
             </div>
         </section>
 
-        <!-- 🔍 封面海报放大弹窗 (Lightbox Modal) -->
-        <div id="preview-modal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md hidden items-center justify-center p-4 transition-all duration-300 opacity-0" onclick="closePreviewModal()">
-            <div class="relative max-w-5xl w-full bg-white rounded-2xl overflow-hidden shadow-2xl border border-slate-700" onclick="event.stopPropagation()">
-                <button onclick="closePreviewModal()" class="absolute top-3 right-3 z-10 w-8 h-8 rounded-full bg-slate-900/80 hover:bg-slate-900 text-white flex items-center justify-center transition-all cursor-pointer">
-                    <i data-lucide="x" class="w-4 h-4"></i>
-                </button>
-                <div class="aspect-[16/9] w-full bg-slate-900">
-                    <img src="study-group.svg" alt="IPA 科目B 速攻学習会 全屏" class="w-full h-full object-contain">
+        <!-- ================== 🎬 2. 视频合集播放列表卡片 ================== -->
+        <section class="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs hover:shadow-md transition-all duration-300 animate-fade-in flex flex-col gap-4">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                <div class="flex items-center gap-2">
+                    <i data-lucide="play-square" class="w-5 h-5 text-indigo-600"></i>
+                    <h2 class="text-xs font-black text-slate-900 tracking-wider uppercase">科目B 動画解説 再生リスト合集</h2>
                 </div>
+                <span class="text-[10px] bg-teal-50 text-teal-700 font-bold px-2.5 py-0.5 rounded-full border border-teal-200">
+                    再生リスト
+                </span>
             </div>
-        </div>
+
+            <!-- 16:9 YouTube 播放列表嵌入容器 -->
+            <div class="w-full aspect-video bg-black rounded-xl overflow-hidden shadow-sm relative">
+                <iframe 
+                    class="w-full h-full block border-none" 
+                    src="https://www.youtube.com/embed/videoseries?list=PLI9LZ_5sMCR4" 
+                    title="AP科目B 動画解説全集" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                    allowfullscreen>
+                </iframe>
+            </div>
+
+            <p class="text-xs text-slate-500 font-medium leading-relaxed">
+                💡 <strong>YouTube 連鎖再生：</strong>点击视频右上角的「播放列表图标（≡）」可自由选择和切换不同真题的视频讲解。
+            </p>
+        </section>
 
         <!-- ================== 📅 3. 年度选择 ================== -->
         <section class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm animate-fade-in">
@@ -202,7 +217,7 @@
     <!-- 🔍 封面图片放大弹窗 (Lightbox) -->
     <div id="preview-modal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md hidden items-center justify-center p-4 transition-all duration-300 opacity-0" onclick="closePreviewModal()">
         <div class="relative max-w-5xl w-full bg-white rounded-2xl overflow-hidden shadow-2xl border border-slate-700" onclick="event.stopPropagation()">
-            <button onclick="closePreviewModal()" class="absolute top-3 right-3 z-10 w-8 h-8 rounded-full bg-slate-900/80 hover:bg-slate-900 text-white flex items-center justify-center transition-all">
+            <button onclick="closePreviewModal()" class="absolute top-3 right-3 z-10 w-8 h-8 rounded-full bg-slate-900/80 hover:bg-slate-900 text-white flex items-center justify-center transition-all cursor-pointer">
                 <i data-lucide="x" class="w-4 h-4"></i>
             </button>
             <div class="aspect-[16/9] w-full bg-slate-900">

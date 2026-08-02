@@ -342,7 +342,7 @@
                         <span class="inline-flex items-center gap-1 text-[11px] font-bold bg-slate-100 text-slate-800 border border-slate-200 px-2.5 py-0.5 rounded-full shadow-2xs">
                             COMING SOON
                         </span>
-                        <h2 class="font-black text-slate-900 text-lg">南さんのノート 绝赞执笔中！</h2>
+                        <h2 class="font-black text-slate-900 text-lg">南さんのノート 绝賛執筆中！</h2>
                         <p class="text-xs sm:text-sm text-slate-600 leading-relaxed max-w-sm">
                             「群主 Minami 的独家秘籍攻略手记」正在结合最新考试动向进行直笔扫描与架构梳理。我们将最精妙的底层模型与中文解构技巧全盘托出。☕<br>
                             一经出炉，即刻在这里云端同步更新！🔥
@@ -358,26 +358,48 @@
                 <p>動画解説 05_video.js 読込中...</p>
             </div>
             
-            <div class="flex-1 h-full flex flex-col gap-1.5">
-                <div class="text-[10px] text-slate-400 font-medium px-1 flex items-center justify-between">
+            <div class="flex-1 h-full flex flex-col gap-1.5 min-h-0">
+                <div class="text-[10px] text-slate-400 font-medium px-1 flex items-center justify-between shrink-0">
                     <span>💡 動画を再生して、南さんの詳細な解き方と解説を確認しましょう。</span>
                 </div>
                 
-                <div class="w-full flex-1 bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xs flex flex-col justify-center items-center p-4 md:p-6">
-                    <div id="video-player-container" class="w-full max-w-4xl aspect-video bg-black rounded-xl overflow-hidden shadow-md hidden"></div>
+                <!-- 主内容区：采用响应式 Flex 布局，左侧播放器，右侧播放列表 -->
+                <div class="w-full flex-1 bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xs flex flex-col lg:flex-row p-4 md:p-6 gap-6 min-h-0">
                     
-                    <div id="video-empty-panel" class="bg-white border border-slate-200 rounded-2xl p-10 shadow-sm text-center flex flex-col items-center justify-center gap-5 max-w-xl mx-auto my-auto animate-fade-in hidden">
-                        <div class="w-16 h-16 rounded-full bg-slate-50 flex items-center justify-center text-slate-600 shadow-inner">
-                            <i data-lucide="video-off" class="w-8 h-8 text-slate-400"></i>
+                    <!-- 左侧：播放器核心舱 -->
+                    <div class="flex-1 flex flex-col items-center justify-center min-h-0">
+                        <div id="video-player-container" class="w-full aspect-video bg-black rounded-xl overflow-hidden shadow-md hidden"></div>
+                        
+                        <!-- 暂无视频时的占位面板 -->
+                        <div id="video-empty-panel" class="bg-white border border-slate-200 rounded-2xl p-10 shadow-sm text-center flex flex-col items-center justify-center gap-5 max-w-xl mx-auto my-auto animate-fade-in hidden">
+                            <div class="w-16 h-16 rounded-full bg-slate-50 flex items-center justify-center text-slate-600 shadow-inner">
+                                <i data-lucide="video-off" class="w-8 h-8 text-slate-400"></i>
+                            </div>
+                            <span class="inline-flex items-center gap-1 text-[11px] font-bold bg-slate-100 text-slate-800 border border-slate-200 px-2.5 py-0.5 rounded-full shadow-2xs">
+                                COMING SOON
+                            </span>
+                            <h2 class="font-black text-slate-900 text-lg">動画解説 準備中！</h2>
+                            <p class="text-xs sm:text-sm text-slate-600 leading-relaxed max-w-sm">
+                                この問題の「南さんの動画解説」は、余裕ができたら制作・公開する予定です。🎬<br>
+                            </p>
                         </div>
-                        <span class="inline-flex items-center gap-1 text-[11px] font-bold bg-slate-100 text-slate-800 border border-slate-200 px-2.5 py-0.5 rounded-full shadow-2xs">
-                            COMING SOON
-                        </span>
-                        <h2 class="font-black text-slate-900 text-lg">動画解説 準備中！</h2>
-                        <p class="text-xs sm:text-sm text-slate-600 leading-relaxed max-w-sm">
-                            この問題の「南さんの動画解説」は、余裕ができたら制作・公開する予定です。🎬<br>
-                        </p>
                     </div>
+
+                    <!-- 右侧：播放列表侧边栏 (默认隐藏，有多个视频或指定列表时显示) -->
+                    <div id="video-playlist-container" class="w-full lg:w-80 border-t lg:border-t-0 lg:border-l border-slate-200 pt-4 lg:pt-0 lg:pl-6 flex flex-col gap-3 shrink-0 hidden h-auto lg:h-full">
+                        <div class="text-xs font-black text-slate-900 tracking-wider uppercase flex items-center justify-between pb-2 border-b border-slate-100">
+                            <span class="flex items-center gap-1.5">
+                                <i data-lucide="list-video" class="w-4 h-4 text-indigo-600"></i>
+                                再生リスト
+                            </span>
+                            <span id="playlist-count" class="text-[10px] bg-indigo-50 text-indigo-700 px-2 py-0.5 rounded-full font-bold">0 本</span>
+                        </div>
+                        <!-- 可滚动的视频列表 -->
+                        <div id="video-playlist-items" class="flex-1 overflow-y-auto space-y-2.5 pr-1 scroll-beauty">
+                            <!-- 动态渲染列表项 -->
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -626,7 +648,7 @@ e:
                     diagramBox.classList.remove('hidden');
                 } else if (currentQuiz.question.includes('【') && (currentQuiz.question.includes('│') || currentQuiz.question.includes('▼'))) {
                     // 正则捕获：根据常见的文本图解标志块（如【网络路径拓扑】、【邮件中继流量流向】等）实施断门切分
-                    const parts = currentQuiz.question.split(/(?=【[^】]+拓扑】|【[^】]+流向】|【[^】]+位置】|【[^】]+架构】)/);
+                    const parts = currentQuiz.question.split(/(?=【[^】]+拓撲】|【[^】]+流向】|【[^】]+位置】|【[^】]+架構】)/);
                     if (parts.length > 1) {
                         questionTextEl.textContent = parts[0].trim();
                         diagramContent.textContent = parts.slice(1).join('\n').trim();
@@ -890,8 +912,12 @@ e:
                     const container = document.getElementById('video-player-container');
                     const loader = document.getElementById('loading-05');
                     const emptyPanel = document.getElementById('video-empty-panel');
+                    const playlistContainer = document.getElementById('video-playlist-container');
+                    const playlistItems = document.getElementById('video-playlist-items');
+                    const playlistCount = document.getElementById('playlist-count');
                     const videoJsUrl = `${basePath}/05_video.js`;
 
+                    // 辅助函数：解析 YouTube 视频 ID
                     function getYouTubeId(url) {
                         if (!url) return null;
                         const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
@@ -899,34 +925,93 @@ e:
                         return (match && match[2].length === 11) ? match[2] : null;
                     }
 
-                    const buildVideoIframe = (urlStr) => {
+                    // 播放指定 YouTube ID 的视频
+                    window.playYouTubeVideo = function(videoId) {
+                        container.innerHTML = `<iframe class="w-full h-full block border-none" src="https://www.youtube.com/embed/${videoId}?autoplay=1" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>`;
+                    };
+
+                    const buildVideoUI = () => {
                         loader.classList.add('hidden');
-                        const videoId = getYouTubeId(urlStr);
-                        if (videoId) {
+
+                        // 统一数据格式：支持数组 PLAYLIST 或单个 CURRENT_VIDEO_URL
+                        let playlist = [];
+
+                        if (window.CURRENT_PLAYLIST && Array.isArray(window.CURRENT_PLAYLIST) && window.CURRENT_PLAYLIST.length > 0) {
+                            playlist = window.CURRENT_PLAYLIST;
+                        } else if (window.CURRENT_VIDEO_URL) {
+                            playlist = [{ title: "本編解説", url: window.CURRENT_VIDEO_URL }];
+                        }
+
+                        // 过滤出有效的 YouTube 视频
+                        const validPlaylist = playlist.map((item, idx) => {
+                            const vId = getYouTubeId(typeof item === 'string' ? item : item.url);
+                            return {
+                                id: vId,
+                                title: (typeof item === 'object' && item.title) ? item.title : `動画解説 Part ${idx + 1}`,
+                                duration: (typeof item === 'object' && item.duration) ? item.duration : ''
+                            };
+                        }).filter(item => item.id !== null);
+
+                        if (validPlaylist.length > 0) {
                             emptyPanel.classList.add('hidden');
                             container.classList.remove('hidden');
-                            container.innerHTML = `<iframe class="w-full h-full block border-none" src="https://www.youtube.com/embed/${videoId}" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>`;
+
+                            // 默认播放第一个视频
+                            playYouTubeVideo(validPlaylist[0].id);
+
+                            // 如果视频数量大于 1，则渲染播放列表侧边栏
+                            if (validPlaylist.length > 1) {
+                                playlistContainer.classList.remove('hidden');
+                                playlistCount.textContent = `${validPlaylist.length} 本`;
+                                playlistItems.innerHTML = '';
+
+                                validPlaylist.forEach((item, index) => {
+                                    const itemEl = document.createElement('div');
+                                    itemEl.className = `playlist-item p-3 rounded-xl border border-slate-200 cursor-pointer hover:border-indigo-500 hover:bg-indigo-50/30 transition-all flex items-center justify-between gap-2 text-xs font-semibold ${index === 0 ? 'bg-indigo-50/80 border-indigo-500 text-indigo-900' : 'bg-white text-slate-700'}`;
+                                    
+                                    itemEl.innerHTML = `
+                                        <div class="flex items-center gap-2.5 truncate">
+                                            <span class="w-5 h-5 rounded-full bg-slate-100 text-slate-600 text-[10px] font-black flex items-center justify-center shrink-0 item-idx">${index + 1}</span>
+                                            <span class="truncate">${item.title}</span>
+                                        </div>
+                                        ${item.duration ? `<span class="text-[10px] text-slate-400 font-mono shrink-0">${item.duration}</span>` : ''}
+                                    `;
+
+                                    itemEl.addEventListener('click', () => {
+                                        // 高亮选中的列表项
+                                        playlistItems.querySelectorAll('.playlist-item').forEach((el, i) => {
+                                            if (i === index) {
+                                                el.className = "playlist-item p-3 rounded-xl border border-indigo-500 bg-indigo-50/80 text-indigo-900 cursor-pointer transition-all flex items-center justify-between gap-2 text-xs font-semibold";
+                                            } else {
+                                                el.className = "playlist-item p-3 rounded-xl border border-slate-200 bg-white text-slate-700 cursor-pointer hover:border-indigo-500 hover:bg-indigo-50/30 transition-all flex items-center justify-between gap-2 text-xs font-semibold";
+                                            }
+                                        });
+                                        playYouTubeVideo(item.id);
+                                    });
+
+                                    playlistItems.appendChild(itemEl);
+                                });
+                            } else {
+                                playlistContainer.classList.add('hidden');
+                            }
                         } else {
                             container.classList.add('hidden');
+                            playlistContainer.classList.add('hidden');
                             emptyPanel.classList.remove('hidden');
-                            if (typeof lucide !== 'undefined') lucide.createIcons();
                         }
+
+                        if (typeof lucide !== 'undefined') lucide.createIcons();
                     };
 
                     fileExists(videoJsUrl).then(exists => {
                         if (exists) {
                             const injectVideoScript = document.createElement('script');
                             injectVideoScript.src = videoJsUrl;
-                            injectVideoScript.onload = () => {
-                                const finalUrl = window.CURRENT_VIDEO_URL || null;
-                                buildVideoIframe(finalUrl);
-                            };
-                            injectVideoScript.onerror = () => {
-                                buildVideoIframe(null);
-                            };
+                            injectVideoScript.onload = buildVideoUI;
+                            injectVideoScript.onerror = buildVideoUI;
                             document.body.appendChild(injectVideoScript);
                         } else {
-                            buildVideoIframe(null);
+                            buildVideoUI();
                         }
                         loadedStates['tab-05'] = true;
                     });
