@@ -45,7 +45,7 @@
 
     <!-- ヘッダー Nav -->
     <header class="border-b border-slate-200 bg-white/90 backdrop-blur-md shrink-0 sticky top-0 z-50 shadow-xs">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
             <a href="index.html" class="flex items-center space-x-3 hover:opacity-90 transition-all">
                 <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-600 to-teal-500 flex items-center justify-center text-white font-black text-lg shadow-sm">
                     南
@@ -65,7 +65,7 @@
         </div>
     </header>
 
-    <main class="flex-1 max-w-5xl w-full mx-auto px-4 py-8 flex flex-col gap-6">
+    <main class="flex-1 max-w-6xl w-full mx-auto px-4 py-8 flex flex-col gap-6">
         
         <!-- ================== 🌟 1. コミュニティ・概要カード ================== -->
         <section class="bg-white border border-slate-200 rounded-2xl p-6 md:p-7 shadow-xs hover:shadow-md transition-all duration-300 relative overflow-hidden flex flex-col md:flex-row gap-6 items-stretch animate-fade-in">
@@ -461,44 +461,7 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                     `;
                     
-                    // 春期試験
-                    cardHtml += `
-                    <div class="flex flex-col gap-4">
-                        <div class="flex items-center gap-2 text-xs font-black text-slate-700 bg-slate-100 border border-slate-200 rounded-lg px-3 py-1.5 w-fit">
-                            <span>🌸</span>
-                            <span>春期試験</span>
-                        </div>
-                        <div class="flex flex-col gap-2.5">
-                    `;
-                    if (group.spring && typeof QUESTIONS_LIST !== 'undefined') {
-                        QUESTIONS_LIST.forEach(q => {
-                            cardHtml += `
-                            <a href="test.html?year=${group.spring.id}&question=${q.id}" class="group bg-slate-50 hover:bg-white border border-slate-200 hover:border-indigo-500 rounded-xl p-4 flex items-center justify-between font-bold text-xs sm:text-sm text-slate-700 transition-all hover:shadow-md duration-200 hover:-translate-y-0.5">
-                                <span class="group-hover:text-indigo-600 transition-colors">${q.title}</span>
-                                <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400 group-hover:text-indigo-600 group-hover:translate-x-0.5 transition-all"></i>
-                            </a>
-                            `;
-                        });
-                    } else {
-                        cardHtml += `
-                        <div class="bg-slate-50/50 border border-dashed border-slate-200 rounded-xl p-5 text-center flex flex-col items-center justify-center gap-1.5 animate-fade-in">
-                            <div class="flex items-center gap-1 text-[11px] font-black text-slate-700">
-                                <i data-lucide="sparkles" class="w-4 h-4 text-slate-500 animate-spin-slow"></i>
-                                <span>教材データ準備中</span>
-                            </div>
-                            <p class="text-[10px] text-slate-400 leading-relaxed text-center">
-                                過去問・事前知識・解説ノートを作成中です。<br>
-                                完成次第、順次公開していきます。
-                            </p>
-                        </div>
-                        `;
-                    }
-                    cardHtml += `
-                        </div>
-                    </div>
-                    `;
-                    
-                    // 秋期試験
+                    // 🍁 秋期試験 (左侧)
                     cardHtml += `
                     <div class="flex flex-col gap-4">
                         <div class="flex items-center gap-2 text-xs font-black text-slate-700 bg-slate-100 border border-slate-200 rounded-lg px-3 py-1.5 w-fit">
@@ -519,13 +482,48 @@
                     } else {
                         cardHtml += `
                         <div class="bg-slate-50/50 border border-dashed border-slate-200 rounded-xl p-5 text-center flex flex-col items-center justify-center gap-1.5 animate-fade-in">
-                            <div class="flex items-center gap-1 text-[11px] font-black text-slate-700">
-                                <i data-lucide="sparkles" class="w-4 h-4 text-slate-500 animate-spin-slow"></i>
-                                <span>教材データ準備中</span>
+                            <div class="flex items-center gap-1 text-[11px] font-bold text-slate-500">
+                                <i data-lucide="calendar-x" class="w-4 h-4 text-slate-400"></i>
+                                <span>試験未実施（対象外）</span>
                             </div>
                             <p class="text-[10px] text-slate-400 leading-relaxed text-center">
-                                過去問・事前知識・解説ノートを作成中です。<br>
-                                完成次第、順次公開していきます。
+                                当該時期は応用情報技術者試験の実施がありません。
+                            </p>
+                        </div>
+                        `;
+                    }
+                    cardHtml += `
+                        </div>
+                    </div>
+                    `;
+
+                    // 🌸 春期試験 (右侧)
+                    cardHtml += `
+                    <div class="flex flex-col gap-4">
+                        <div class="flex items-center gap-2 text-xs font-black text-slate-700 bg-slate-100 border border-slate-200 rounded-lg px-3 py-1.5 w-fit">
+                            <span>🌸</span>
+                            <span>春期試験</span>
+                        </div>
+                        <div class="flex flex-col gap-2.5">
+                    `;
+                    if (group.spring && typeof QUESTIONS_LIST !== 'undefined') {
+                        QUESTIONS_LIST.forEach(q => {
+                            cardHtml += `
+                            <a href="test.html?year=${group.spring.id}&question=${q.id}" class="group bg-slate-50 hover:bg-white border border-slate-200 hover:border-indigo-500 rounded-xl p-4 flex items-center justify-between font-bold text-xs sm:text-sm text-slate-700 transition-all hover:shadow-md duration-200 hover:-translate-y-0.5">
+                                <span class="group-hover:text-indigo-600 transition-colors">${q.title}</span>
+                                <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400 group-hover:text-indigo-600 group-hover:translate-x-0.5 transition-all"></i>
+                            </a>
+                            `;
+                        });
+                    } else {
+                        cardHtml += `
+                        <div class="bg-slate-50/50 border border-dashed border-slate-200 rounded-xl p-5 text-center flex flex-col items-center justify-center gap-1.5 animate-fade-in">
+                            <div class="flex items-center gap-1 text-[11px] font-bold text-slate-500">
+                                <i data-lucide="calendar-x" class="w-4 h-4 text-slate-400"></i>
+                                <span>試験未実施（対象外）</span>
+                            </div>
+                            <p class="text-[10px] text-slate-400 leading-relaxed text-center">
+                                当該時期は応用情報技術者試験（科目B）の実施がありません。
                             </p>
                         </div>
                         `;
