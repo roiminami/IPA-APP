@@ -7,12 +7,10 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        /* 导入英、中、日三款精致且和谐的字库 */
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=Noto+Sans+JP:wght@400;500;700;900&family=Noto+Sans+SC:wght@400;500;700;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap');
         
         body {
-            /* 智能中日双语优雅回退字体栈 */
-            font-family: 'Inter', 'Noto Sans SC', 'Noto Sans JP', -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans", "Microsoft YaHei", sans-serif;
+            font-family: 'Inter', 'Noto Sans JP', -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Meiryo", sans-serif;
             background-color: #F8FAFC;
             min-height: 100vh;
         }
@@ -21,7 +19,7 @@
         ::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 3px; }
         ::-webkit-scrollbar-thumb:hover { background: #94A3B8; }
 
-        .scroll-beauty::-webkit-scrollbar { width: 6px; height: 6px; }
+        .scroll-beauty::-webkit-scrollbar { width: 5px; height: 5px; }
         .scroll-beauty::-webkit-scrollbar-track { background: transparent; }
         .scroll-beauty::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 6px; }
         .scroll-beauty::-webkit-scrollbar-thumb:hover { background: #94A3B8; }
@@ -45,7 +43,7 @@
 </head>
 <body class="text-slate-800 flex flex-col antialiased select-none pb-16">
 
-    <!-- 页头 Nav -->
+    <!-- ヘッダー Nav -->
     <header class="border-b border-slate-200 bg-white/90 backdrop-blur-md shrink-0 sticky top-0 z-50 shadow-xs">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
             <a href="index.html" class="flex items-center space-x-3 hover:opacity-90 transition-all">
@@ -69,39 +67,32 @@
 
     <main class="flex-1 max-w-5xl w-full mx-auto px-4 py-8 flex flex-col gap-6">
         
-        <!-- ================== 🌟 自然柔和 · 主理人共学卡片 (带海报按钮版) ================== -->
+        <!-- ================== 🌟 1. コミュニティ・概要カード ================== -->
         <section class="bg-white border border-slate-200 rounded-2xl p-6 md:p-7 shadow-xs hover:shadow-md transition-all duration-300 relative overflow-hidden flex flex-col md:flex-row gap-6 items-stretch animate-fade-in">
-            <!-- 极简背景晕染 -->
             <div class="absolute -left-12 -top-12 w-48 h-48 bg-teal-50/60 rounded-full blur-3xl pointer-events-none"></div>
             
-            <!-- 左侧：AP 备考专区 + MISSION 核心理念 -->
             <div class="flex-1 flex flex-col justify-between gap-5 relative z-10">
                 <div class="flex flex-col gap-3.5">
-                    
-                    <!-- 顶栏 Tag 组 (含 SVG 海报预览按钮) -->
                     <div class="flex flex-wrap items-center gap-2">
                         <span class="inline-flex items-center gap-1.5 text-[11px] font-bold bg-slate-100 text-slate-700 border border-slate-200/80 px-2.5 py-0.5 rounded-full shadow-2xs">
                             <span class="w-1.5 h-1.5 rounded-full bg-teal-500 animate-pulse"></span>
-                            在日 IT 必刷 · 応用情報 AP
+                            在日ITエンジニア向け · 応用情報 AP
                         </span>
                         <span class="inline-flex items-center gap-1.5 text-[11px] font-bold text-slate-400">
                             <i data-lucide="coffee" class="w-3.5 h-3.5"></i>
                             Coffee & Code
                         </span>
 
-                        <!-- 🎨 引入 SVG 海报弹窗按钮 -->
                         <button onclick="openPreviewModal()" class="inline-flex items-center gap-1.5 text-[11px] font-bold bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200/80 px-2.5 py-0.5 rounded-full transition-all active:scale-95 shadow-2xs cursor-pointer">
                             <i data-lucide="image" class="w-3.5 h-3.5 text-indigo-600"></i>
-                            <span>查看速攻海报</span>
+                            <span>速攻ポスターを見る</span>
                         </button>
                     </div>
 
-                    <!-- 亲切主标题 -->
                     <h2 class="text-base sm:text-xl font-black text-slate-900 tracking-tight leading-snug">
-                        更适合在日中国宝宝体质的「応用情報」通关小窝
+                        在日中国人向けの「応用情報技術者」攻略ポータル
                     </h2>
 
-                    <!-- MISSION 核心理念 -->
                     <div class="bg-gradient-to-r from-slate-50 via-teal-50/30 to-indigo-50/30 border border-slate-200/80 rounded-xl p-3.5 flex flex-col gap-1.5 shadow-2xs">
                         <div class="flex items-center gap-1.5">
                             <span class="bg-indigo-600 text-white text-[9px] font-black px-1.5 py-0.5 rounded tracking-wider uppercase">MISSION</span>
@@ -110,118 +101,138 @@
                             在日外国人IT人材の成長を支援し、社会・産業のDX推進に貢献する
                         </p>
                         <p class="text-[11px] font-bold text-indigo-700 leading-snug">
-                            助力在日外国 IT 人才成长，为社会与产业数字化转型（DX）贡献力量。
+                            ITスキルの向上と日本市場でのキャリアアップを強力にサポートします。
                         </p>
                     </div>
 
-                    <!-- 简洁备考说明 -->
                     <p class="text-xs text-slate-600 font-medium leading-relaxed">
-                        群主 <strong class="text-slate-900 font-bold">Minami</strong> 正在「边学、边教、边分享」。对于很多在日中国人来说，学习 AP 科目B 最大的难点，不只是专业知识本身，更是如何读懂日语题目，并将知识灵活运用到实际场景中。因此，除了积累 IT 知识，还需要熟悉日本考试的表达方式，并通过真题训练提升解题能力。基于这个想法，我制作了这个面向在日中国人的 AP 科目B 学习网站，将专业知识、中文解析和真题训练结合起来，希望帮助大家更高效地学习，找到适合自己的备考方法，少走弯路。
+                        管理者の <strong class="text-slate-900 font-bold">Minami</strong> です。「学びながら、教え、共有する」をコンセプトに作成しました。応用情報科目Bの難所は、単なる専門知識だけでなく、長文問題の正確な読解と解法パターンの適用にあります。当サイトでは、過去問演習・ポイント解説・動画講義を組み合わせて効率的な学習環境を提供しています。
                     </p>
                 </div>
 
-                <!-- 底部提示条 -->
                 <div class="flex items-center gap-2 text-[11px] font-bold text-teal-800 bg-teal-50 border border-teal-100/80 rounded-xl p-2.5">
                     <i data-lucide="sparkles" class="w-4 h-4 text-teal-600 shrink-0 animate-pulse"></i>
-                    <span>▸ 互相督促 · 共同进步 · 突破 IPA 科目 B</span>
+                    <span>▸ 切磋琢磨 · 共に成長 · IPA 科目 B 突破</span>
                 </div>
             </div>
 
-            <!-- 右侧：学搭俱乐部 + 微信卡片 -->
+            <!-- 右側：コミュニティ ＆ 連絡先 -->
             <div class="w-full md:w-[290px] shrink-0 bg-slate-50 border border-slate-200 rounded-2xl p-4 flex flex-col justify-between gap-4 relative z-10 hover:border-indigo-300 transition-colors duration-300 shadow-2xs">
-                <!-- 头部与学搭俱乐部介绍 -->
                 <div class="flex flex-col gap-3">
                     <div class="flex items-center gap-2.5 border-b border-slate-200/80 pb-2.5">
                         <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-600 to-teal-500 flex items-center justify-center text-white font-black text-sm shadow-xs shrink-0">
                             南
                         </div>
                         <div class="flex flex-col">
-                            <h4 class="text-xs font-black text-slate-900 leading-tight">学搭俱乐部</h4>
+                            <h4 class="text-xs font-black text-slate-900 leading-tight">学習コミュニティ</h4>
                             <a href="https://minami.ac.cn" target="_blank" class="text-[10px] text-slate-500 font-bold hover:text-indigo-600 flex items-center gap-0.5 mt-0.5 transition-colors">
-                                <span>博客：minami.ac.cn</span>
+                                <span>ブログ：minami.ac.cn</span>
                                 <i data-lucide="arrow-up-right" class="w-2.5 h-2.5"></i>
                             </a>
                         </div>
                     </div>
 
-                    <!-- 学搭俱乐部专属介绍 -->
                     <div class="flex flex-col gap-2 text-[11px] font-medium text-slate-700 leading-relaxed">
                         <p class="font-bold text-slate-800">
-                            🎥 汇聚高效执行力的在日华人，专注硬核跨界与长期成长。
+                            🎥 実践力を高めるエンジニアのための成長コミュニティ
                         </p>
                         <p class="text-slate-600 text-[10.5px]">
-                            💻 IT 架构 · 云原生 · 应用开发 · 英语 · 日语 · 投资 · 不动产...
+                            💻 ITアーキテクチャ · クラウド · アプリ開発 · 語学 · キャリア形成
                         </p>
                         <p class="text-teal-700 font-bold text-[10.5px]">
-                            💡 干货经验分享 · 在日职业成长交流
+                            💡 実務ノウハウ共有 · ITキャリア交流会
                         </p>
                     </div>
                 </div>
 
-                <!-- 微信一键复制区域 -->
                 <div class="flex flex-col gap-2 pt-2 border-t border-slate-200/80">
                     <div class="bg-white border border-slate-200 rounded-xl p-2.5 flex flex-col gap-1 shadow-2xs">
                         <div class="flex items-center justify-between">
-                            <span class="text-[9px] text-slate-400 font-bold tracking-wider uppercase">添加微信加群</span>
-                            <span class="text-[8px] font-black text-indigo-700 bg-indigo-50 border border-indigo-100 px-1.5 py-0.5 rounded">备注：AP / IT</span>
+                            <span class="text-[9px] text-slate-400 font-bold tracking-wider uppercase">WeChatグループ参加</span>
+                            <span class="text-[8px] font-black text-indigo-700 bg-indigo-50 border border-indigo-100 px-1.5 py-0.5 rounded">備考：AP / IT</span>
                         </div>
                         <code class="text-xs font-black text-slate-800 tracking-wide font-mono mt-0.5">nowminami</code>
                     </div>
                     
-                    <button onclick="copyWechatID()" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold text-[11px] py-2 px-3 rounded-xl flex items-center justify-center gap-1.5 transition-all active:scale-98">
+                    <button onclick="copyWechatID()" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold text-[11px] py-2 px-3 rounded-xl flex items-center justify-center gap-1.5 transition-all active:scale-98 cursor-pointer">
                         <i data-lucide="copy" class="w-3 h-3"></i>
-                        <span id="copy-btn-text">复制微信号</span>
+                        <span id="copy-btn-text">WeChat IDをコピー</span>
                     </button>
                 </div>
             </div>
         </section>
 
-        <!-- ================== 🎬 2. 交互式视频播放列表专区 ================== -->
-        <section class="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs hover:shadow-md transition-all duration-300 animate-fade-in flex flex-col gap-4">
-            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
-                <div class="flex items-center gap-2">
-                    <i data-lucide="play-square" class="w-5 h-5 text-indigo-600"></i>
-                    <h2 class="text-xs font-black text-slate-900 tracking-wider uppercase">科目B 動画解説 再生リスト合集</h2>
-                </div>
-                <a href="https://www.youtube.com/playlist?list=PLI9LZ_5sMCR4" target="_blank" class="text-[10px] bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-bold px-2.5 py-1 rounded-full border border-indigo-200 transition-colors flex items-center gap-1">
-                    <span>YouTube 播放列表 ↗</span>
-                </a>
-            </div>
-
-            <!-- 双栏布局：左侧播放器，右侧真实可点击列表 (右侧调整为 lg:w-[380px] 给文字更充裕空间) -->
-            <div class="w-full flex flex-col lg:flex-row gap-5 items-stretch min-h-0">
-                <!-- 左侧播放器 -->
-                <div class="flex-1 aspect-video bg-black rounded-xl overflow-hidden shadow-sm relative min-w-0">
-                    <iframe 
-                        id="homepage-player"
-                        class="w-full h-full block border-none" 
-                        src="" 
-                        title="AP科目B 動画解説" 
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                        allowfullscreen>
-                    </iframe>
-                </div>
-
-                <!-- 右侧列表 (宽度扩至 380px) -->
-                <div class="w-full lg:w-[380px] border-t lg:border-t-0 lg:border-l border-slate-200 pt-4 lg:pt-0 lg:pl-5 flex flex-col gap-2.5 shrink-0">
-                    <div class="text-[11px] font-black text-slate-400 tracking-wider uppercase flex items-center justify-between pb-1 border-b border-slate-100">
-                        <span class="flex items-center gap-1">
-                            <i data-lucide="list-video" class="w-3.5 h-3.5 text-indigo-600"></i>
-                            再生リスト
-                        </span>
-                        <span id="homepage-playlist-count" class="text-[10px] text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded-full font-bold">0 本</span>
+        <!-- ================== 🎬 2. YouTube 自動取得再生リスト ================== -->
+        <section class="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs hover:shadow-md transition-all duration-300 animate-fade-in">
+            <div class="w-full flex flex-col lg:flex-row gap-6 items-start">
+                
+                <!-- 左側：プレーヤー ＆ 再生リスト情報 -->
+                <div class="w-full lg:w-[360px] shrink-0 bg-gradient-to-b from-neutral-800 via-neutral-900 to-neutral-950 text-white rounded-2xl p-5 flex flex-col justify-between gap-4 shadow-xl border border-neutral-800">
+                    <div class="w-full aspect-video rounded-xl overflow-hidden shadow-lg relative bg-black group border border-neutral-700/50">
+                        <iframe 
+                            id="homepage-player"
+                            class="w-full h-full block border-none" 
+                            src="" 
+                            title="AP科目B 動画解説" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                            allowfullscreen>
+                        </iframe>
                     </div>
 
-                    <!-- 滚动列表容器 -->
-                    <div id="homepage-playlist-container" class="flex-1 overflow-y-auto space-y-2 max-h-[300px] lg:max-h-[400px] pr-1 scroll-beauty">
-                        <!-- JS 动态注入列表 -->
+                    <div class="flex flex-col gap-2">
+                        <h2 class="text-xl font-black text-white tracking-tight">南式応用情報速攻学習会</h2>
+                        
+                        <div class="flex items-center gap-2 text-xs text-neutral-300 font-medium">
+                            <div class="w-6 h-6 rounded-full bg-rose-500 flex items-center justify-center text-white text-[10px] font-black shrink-0">南</div>
+                            <span class="truncate">作成者: <strong class="text-white">南くんと楽しく学べる教室</strong></span>
+                        </div>
+
+                        <div class="text-[11px] text-neutral-400 flex items-center gap-1.5 flex-wrap mt-0.5">
+                            <span class="bg-indigo-600/60 text-indigo-200 text-[10px] px-2 py-0.5 rounded font-bold">科目B 動画解説</span>
+                            <span>•</span>
+                            <!-- 動画数を自動更新 -->
+                            <span id="homepage-playlist-count" class="text-amber-400 font-bold">読み込み中...</span>
+                        </div>
+
+                        <p class="text-xs text-neutral-400 line-clamp-2 leading-relaxed mt-1">
+                            応用情報技術者試験（AP）科目Bの過去問をわかりやすく解説する再生リストです。
+                        </p>
+                    </div>
+
+                    <div class="flex items-center gap-2 pt-3 border-t border-neutral-800/80">
+                        <button id="play-all-btn" class="flex-1 bg-white hover:bg-neutral-200 text-black font-bold text-xs py-2.5 px-4 rounded-full flex items-center justify-center gap-2 transition-all active:scale-95 shadow-md cursor-pointer">
+                            <i data-lucide="play" class="w-4 h-4 fill-black"></i>
+                            <span>すべて再生</span>
+                        </button>
+                        <a href="https://www.youtube.com/playlist?list=PLI9LZ_5sMCR4" target="_blank" title="YouTubeで開く" class="w-9 h-9 rounded-full bg-neutral-800/80 hover:bg-neutral-700 text-neutral-200 flex items-center justify-center transition-colors cursor-pointer">
+                            <i data-lucide="external-link" class="w-4 h-4"></i>
+                        </a>
+                        <button onclick="copyPlaylistUrl()" title="共有する" class="w-9 h-9 rounded-full bg-neutral-800/80 hover:bg-neutral-700 text-neutral-200 flex items-center justify-center transition-colors cursor-pointer">
+                            <i data-lucide="share-2" class="w-4 h-4"></i>
+                        </button>
                     </div>
                 </div>
+
+                <!-- 右側：自動生成動画リスト -->
+                <div class="flex-1 w-full flex flex-col gap-3 min-w-0">
+                    <div class="flex items-center justify-between pb-2 border-b border-slate-100">
+                        <div class="flex items-center gap-2">
+                            <i data-lucide="list-video" class="w-4 h-4 text-indigo-600"></i>
+                            <span class="text-xs font-black text-slate-800 uppercase tracking-wider">動画再生リスト【毎週2本更新】</span>
+                        </div>
+                        <span class="text-[11px] text-slate-400 font-bold">選択すると上で即時再生します</span>
+                    </div>
+
+                    <div id="homepage-playlist-container" class="flex flex-col gap-2 max-h-[460px] overflow-y-auto pr-1 scroll-beauty">
+                        <!-- JSで自動挿入 -->
+                    </div>
+                </div>
+
             </div>
         </section>
 
-        <!-- ================== 📅 3. 年度选择 ================== -->
-        <section class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm animate-fade-in">
+        <!-- ================== 📅 3. 年度フィルター ================== -->
+        <section class="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs animate-fade-in">
             <div class="flex items-center gap-2 mb-5">
                 <i data-lucide="calendar" class="w-5 h-5 text-indigo-600 animate-bounce"></i>
                 <h2 class="text-xs font-black text-slate-900 tracking-wider uppercase">年度から選ぶ</h2>
@@ -230,49 +241,32 @@
             <div id="year-filters" class="flex flex-wrap gap-2.5"></div>
         </section>
 
-        <!-- ================== 📚 4. 考题容器 ================== -->
+        <!-- ================== 📚 4. 過去問カードコンテナ ================== -->
         <section id="exam-cards-container" class="flex flex-col gap-6 animate-fade-in" style="animation-delay: 100ms;"></section>
 
     </main>
 
-    <!-- 🔍 封面图片放大弹窗 (Lightbox) -->
+    <!-- モーダル (Lightbox) -->
     <div id="preview-modal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md hidden items-center justify-center p-4 transition-all duration-300 opacity-0" onclick="closePreviewModal()">
         <div class="relative max-w-5xl w-full bg-white rounded-2xl overflow-hidden shadow-2xl border border-slate-700" onclick="event.stopPropagation()">
             <button onclick="closePreviewModal()" class="absolute top-3 right-3 z-10 w-8 h-8 rounded-full bg-slate-900/80 hover:bg-slate-900 text-white flex items-center justify-center transition-all">
                 <i data-lucide="x" class="w-4 h-4"></i>
             </button>
             <div class="aspect-[16/9] w-full bg-slate-900">
-                <img src="study-group.svg" alt="IPA 科目B 速攻学習会 全屏" class="w-full h-full object-contain">
+                <img src="study-group.svg" alt="IPA 科目B 速攻学習会 全画面" class="w-full h-full object-contain">
             </div>
         </div>
     </div>
 
     <script src="config.js"></script>
     <script>
-        // -------------------------------------------------------------
-        // 📺 主页视频列表数据（有新视频直接按格式往里加即可）
-        // -------------------------------------------------------------
-        const PLAYLIST_DATA = [
-            {
-                title: "令和7年度秋期 問1 情報セキュリティ 前編",
-                url: "https://youtu.be/xiU-pqbz4H0", 
-                duration: "25:10"
-            },
-            {
-                title: "令和7年度秋期 問1 情報セキュリティ 後編",
-                url: "https://youtu.be/xiU-pqbz4H0", // 替换为你的后编视频地址
-                duration: "1:07:19"
-            }
-        ];
+        const PLAYLIST_ID = "PLI9LZ_5sMCR4";
 
-        // 全屏预览弹窗交互
         function openPreviewModal() {
             const modal = document.getElementById('preview-modal');
             modal.classList.remove('hidden');
             modal.classList.add('flex');
-            setTimeout(() => {
-                modal.classList.remove('opacity-0');
-            }, 10);
+            setTimeout(() => modal.classList.remove('opacity-0'), 10);
         }
 
         function closePreviewModal() {
@@ -284,20 +278,24 @@
             }, 300);
         }
 
-        // 微信复制交互机制
         function copyWechatID() {
             navigator.clipboard.writeText('nowminami').then(() => {
                 const btnText = document.getElementById('copy-btn-text');
-                btnText.textContent = '微信号已复制！';
+                btnText.textContent = 'コピーしました！';
                 setTimeout(() => {
-                    btnText.textContent = '复制微信号';
+                    btnText.textContent = 'WeChat IDをコピー';
                 }, 2000);
-            }).catch(err => {
-                alert('微信号复制失败，请手动搜索 nowminami');
+            }).catch(() => {
+                alert('コピーに失敗しました。直接 nowminami を検索してください。');
             });
         }
 
-        // 解析 YouTube Video ID
+        function copyPlaylistUrl() {
+            navigator.clipboard.writeText(`https://www.youtube.com/playlist?list=${PLAYLIST_ID}`).then(() => {
+                alert('再生リストのURLをコピーしました！');
+            });
+        }
+
         function getYouTubeId(url) {
             if (!url) return null;
             const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
@@ -305,227 +303,267 @@
             return (match && match[2].length === 11) ? match[2] : null;
         }
 
-        // 渲染主页播放列表
-        function initHomepagePlaylist() {
+        // YouTube RSSフィードから自動取得する関数
+        async function fetchYouTubePlaylist() {
+            const rssApiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(`https://www.youtube.com/feeds/videos.xml?playlist_id=${PLAYLIST_ID}`)}`;
+            
+            try {
+                const res = await fetch(rssApiUrl);
+                const data = await res.json();
+                if (data.status === 'ok' && data.items && data.items.length > 0) {
+                    return data.items.map(item => ({
+                        title: item.title,
+                        url: item.link,
+                        videoId: getYouTubeId(item.link),
+                        thumbnail: item.thumbnail || `https://img.youtube.com/vi/${getYouTubeId(item.link)}/mqdefault.jpg`
+                    }));
+                }
+            } catch (err) {
+                console.warn('YouTube RSSの自動取得に失敗したため、初期データを使用します:', err);
+            }
+
+            return DEFAULT_PLAYLIST_DATA.map(item => ({
+                ...item,
+                videoId: getYouTubeId(item.url),
+                thumbnail: `https://img.youtube.com/vi/${getYouTubeId(item.url)}/mqdefault.jpg`
+            }));
+        }
+
+        // 自動描画・初期化
+        async function initHomepagePlaylist() {
             const player = document.getElementById('homepage-player');
             const container = document.getElementById('homepage-playlist-container');
             const countEl = document.getElementById('homepage-playlist-count');
+            const playAllBtn = document.getElementById('play-all-btn');
 
-            if (!container || !player || !PLAYLIST_DATA || PLAYLIST_DATA.length === 0) return;
+            if (!container || !player) return;
 
-            countEl.textContent = `${PLAYLIST_DATA.length} 本`;
+            // 動画データを自動取得
+            const videoList = await fetchYouTubePlaylist();
+
+            // 動画数を動的に計算して更新
+            countEl.textContent = `${videoList.length} 本の動画`;
             container.innerHTML = '';
 
-            // 默认播放第一个视频
-            const firstId = getYouTubeId(PLAYLIST_DATA[0].url);
+            if (videoList.length === 0) return;
+
+            const firstId = videoList[0].videoId;
             if (firstId) {
                 player.src = `https://www.youtube.com/embed/${firstId}`;
             }
 
-            PLAYLIST_DATA.forEach((item, index) => {
-                const vId = getYouTubeId(item.url);
+            if (playAllBtn && firstId) {
+                playAllBtn.onclick = () => {
+                    player.src = `https://www.youtube.com/embed/${firstId}?autoplay=1`;
+                };
+            }
+
+            videoList.forEach((item, index) => {
                 const itemEl = document.createElement('div');
-                
-                // 改为 items-start (顶部对齐)，且标题去除 truncate，允许自然换行排版
-                itemEl.className = `playlist-item p-3 rounded-xl border cursor-pointer transition-all flex items-start justify-between gap-2.5 ${index === 0 ? 'bg-indigo-50/80 border-indigo-500 text-indigo-900' : 'bg-white border-slate-200 text-slate-700 hover:border-indigo-500 hover:bg-indigo-50/30'}`;
+                itemEl.className = `playlist-item group p-2 rounded-xl transition-all flex items-center gap-3 cursor-pointer border ${
+                    index === 0 ? 'bg-indigo-50/80 border-indigo-200' : 'bg-white border-transparent hover:bg-slate-50 hover:border-slate-200'
+                }`;
                 
                 itemEl.innerHTML = `
-                    <div class="flex items-start gap-2.5 flex-1 min-w-0">
-                        <span class="w-5 h-5 rounded-full bg-slate-100 text-slate-600 text-[10px] font-black flex items-center justify-center shrink-0 mt-0.5">${index + 1}</span>
-                        <span class="text-xs font-bold leading-snug break-words flex-1 text-slate-800">${item.title}</span>
+                    <span class="w-5 text-center text-xs font-bold text-slate-400 group-hover:text-slate-800 shrink-0">
+                        ${index + 1}
+                    </span>
+
+                    <div class="relative w-28 sm:w-32 aspect-video rounded-lg overflow-hidden bg-slate-900 shrink-0 shadow-2xs">
+                        <img src="${item.thumbnail}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
                     </div>
-                    ${item.duration ? `<span class="text-[10px] text-slate-400 font-mono shrink-0 mt-0.5">${item.duration}</span>` : ''}
+
+                    <div class="flex-1 min-w-0">
+                        <h4 class="text-xs sm:text-sm font-bold text-slate-800 leading-snug line-clamp-2 group-hover:text-indigo-600 transition-colors">
+                            ${item.title}
+                        </h4>
+                    </div>
+
+                    <button class="w-7 h-7 rounded-full hover:bg-slate-200/80 text-slate-400 hover:text-slate-700 flex items-center justify-center shrink-0 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <i data-lucide="more-vertical" class="w-3.5 h-3.5"></i>
+                    </button>
                 `;
 
                 itemEl.addEventListener('click', () => {
                     container.querySelectorAll('.playlist-item').forEach((el, i) => {
-                        if (i === index) {
-                            el.className = "playlist-item p-3 rounded-xl border border-indigo-500 bg-indigo-50/80 text-indigo-900 cursor-pointer transition-all flex items-start justify-between gap-2.5";
-                        } else {
-                            el.className = "playlist-item p-3 rounded-xl border border-slate-200 bg-white text-slate-700 cursor-pointer hover:border-indigo-500 hover:bg-indigo-50/30 transition-all flex items-start justify-between gap-2.5";
-                        }
+                        el.className = `playlist-item group p-2 rounded-xl transition-all flex items-center gap-3 cursor-pointer border ${
+                            i === index ? 'bg-indigo-50/80 border-indigo-200' : 'bg-white border-transparent hover:bg-slate-50 hover:border-slate-200'
+                        }`;
                     });
 
-                    if (vId) {
-                        player.src = `https://www.youtube.com/embed/${vId}?autoplay=1`;
+                    if (item.videoId) {
+                        player.src = `https://www.youtube.com/embed/${item.videoId}?autoplay=1`;
                     }
                 });
 
                 container.appendChild(itemEl);
             });
+
+            if (typeof lucide !== 'undefined') lucide.createIcons();
         }
 
         document.addEventListener('DOMContentLoaded', () => {
             if (typeof lucide !== 'undefined') lucide.createIcons();
 
-            // 初始化主页播放列表
             initHomepagePlaylist();
 
-            // 1. 数据结构预处理
             const groups = {};
             
-            YEARS_LIST.forEach(year => {
-                const parts = year.name.split(' ');
-                const yearBase = parts[0];   // e.g. "令和7年度"
-                const semester = parts[1];   // e.g. "春期" or "秋期"
-                
-                if (!groups[yearBase]) {
-                    groups[yearBase] = { yearBase: yearBase };
-                }
-                
-                if (semester.includes("春期")) {
-                    groups[yearBase].spring = year;
-                } else if (semester.includes("秋期")) {
-                    groups[yearBase].autumn = year;
-                }
-            });
+            if (typeof YEARS_LIST !== 'undefined') {
+                YEARS_LIST.forEach(year => {
+                    const parts = year.name.split(' ');
+                    const yearBase = parts[0];
+                    const semester = parts[1];
+                    
+                    if (!groups[yearBase]) {
+                        groups[yearBase] = { yearBase: yearBase };
+                    }
+                    
+                    if (semester.includes("春期")) {
+                        groups[yearBase].spring = year;
+                    } else if (semester.includes("秋期")) {
+                        groups[yearBase].autumn = year;
+                    }
+                });
 
-            // 2. 提取并排序列出所有的物理年度
-            const uniqueYearBases = [...new Set(YEARS_LIST.map(y => y.name.split(' ')[0]))].reverse();
+                const uniqueYearBases = [...new Set(YEARS_LIST.map(y => y.name.split(' ')[0]))].reverse();
 
-            // 3. 动态渲染「年度から選ぶ」过滤器
-            const filtersContainer = document.getElementById('year-filters');
-            
-            // 创建 "全年度" 胶囊
-            const allBtn = document.createElement('button');
-            allBtn.className = "filter-btn px-4 py-2.5 text-xs font-black rounded-xl transition-all shadow-md active:scale-95 bg-gradient-to-br from-indigo-600 to-teal-500 text-white";
-            allBtn.textContent = "全年度";
-            allBtn.setAttribute('data-filter', 'all');
-            filtersContainer.appendChild(allBtn);
-
-            // 循环注入其它年度
-            uniqueYearBases.forEach(yearBase => {
-                const btn = document.createElement('button');
-                btn.className = "filter-btn px-4 py-2.5 text-xs font-bold rounded-xl border border-slate-200 bg-white text-slate-600 hover:bg-slate-50 hover:border-slate-400 transition-all shadow-sm active:scale-95";
-                btn.textContent = yearBase;
-                btn.setAttribute('data-filter', yearBase);
-                filtersContainer.appendChild(btn);
-            });
-
-            // 4. 动态渲染考题面板
-            const container = document.getElementById('exam-cards-container');
-            container.innerHTML = '';
-
-            uniqueYearBases.forEach(yearBase => {
-                const group = groups[yearBase];
+                const filtersContainer = document.getElementById('year-filters');
                 
-                const card = document.createElement('div');
-                card.className = "year-card bg-white border border-slate-200 rounded-2xl shadow-sm p-6 flex flex-col gap-6 transition-all duration-300 hover:shadow-md";
-                card.setAttribute('data-year-base', yearBase);
-                
-                let cardHtml = `
-                <div class="border-l-[6px] border-indigo-600 pl-3.5 py-0.5">
-                    <h3 class="font-black text-slate-900 text-base sm:text-lg tracking-wide">${yearBase}</h3>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                `;
-                
-                // ================== 🌸 春期試験 ==================
-                cardHtml += `
-                <div class="flex flex-col gap-4">
-                    <div class="flex items-center gap-2 text-xs font-black text-slate-700 bg-slate-100 border border-slate-200 rounded-lg px-3 py-1.5 w-fit">
-                        <span>🌸</span>
-                        <span>春期試験</span>
+                const allBtn = document.createElement('button');
+                allBtn.className = "filter-btn px-4 py-2.5 text-xs font-black rounded-xl transition-all shadow-md active:scale-95 bg-gradient-to-br from-indigo-600 to-teal-500 text-white cursor-pointer";
+                allBtn.textContent = "全年度";
+                allBtn.setAttribute('data-filter', 'all');
+                filtersContainer.appendChild(allBtn);
+
+                uniqueYearBases.forEach(yearBase => {
+                    const btn = document.createElement('button');
+                    btn.className = "filter-btn px-4 py-2.5 text-xs font-bold rounded-xl border border-slate-200 bg-white text-slate-600 hover:bg-slate-50 hover:border-slate-400 transition-all shadow-sm active:scale-95 cursor-pointer";
+                    btn.textContent = yearBase;
+                    btn.setAttribute('data-filter', yearBase);
+                    filtersContainer.appendChild(btn);
+                });
+
+                const container = document.getElementById('exam-cards-container');
+                container.innerHTML = '';
+
+                uniqueYearBases.forEach(yearBase => {
+                    const group = groups[yearBase];
+                    
+                    const card = document.createElement('div');
+                    card.className = "year-card bg-white border border-slate-200 rounded-2xl shadow-sm p-6 flex flex-col gap-6 transition-all duration-300 hover:shadow-md";
+                    card.setAttribute('data-year-base', yearBase);
+                    
+                    let cardHtml = `
+                    <div class="border-l-[6px] border-indigo-600 pl-3.5 py-0.5">
+                        <h3 class="font-black text-slate-900 text-base sm:text-lg tracking-wide">${yearBase}</h3>
                     </div>
-                    <div class="flex flex-col gap-2.5">
-                `;
-                if (group.spring) {
-                    QUESTIONS_LIST.forEach(q => {
-                        cardHtml += `
-                        <a href="test.html?year=${group.spring.id}&question=${q.id}" class="group bg-slate-50 hover:bg-white border border-slate-200 hover:border-indigo-500 rounded-xl p-4 flex items-center justify-between font-bold text-xs sm:text-sm text-slate-700 transition-all hover:shadow-md duration-200 hover:-translate-y-0.5">
-                            <span class="group-hover:text-indigo-600 transition-colors">${q.title}</span>
-                            <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400 group-hover:text-indigo-600 group-hover:translate-x-0.5 transition-all"></i>
-                        </a>
-                        `;
-                    });
-                } else {
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    `;
+                    
+                    // 春期試験
                     cardHtml += `
-                    <div class="bg-slate-50/50 border border-dashed border-slate-200 rounded-xl p-5 text-center flex flex-col items-center justify-center gap-1.5 animate-fade-in">
-                        <div class="flex items-center gap-1 text-[11px] font-black text-slate-700">
-                            <i data-lucide="sparkles" class="w-4 h-4 text-slate-500 animate-spin-slow"></i>
-                            <span>教材データ準備中</span>
+                    <div class="flex flex-col gap-4">
+                        <div class="flex items-center gap-2 text-xs font-black text-slate-700 bg-slate-100 border border-slate-200 rounded-lg px-3 py-1.5 w-fit">
+                            <span>🌸</span>
+                            <span>春期試験</span>
                         </div>
-                        <p class="text-[10px] text-slate-400 leading-relaxed text-center">
-                            管理人が真題・事前知識・ノートを現在鋭意作成中！<br>
-                            完成次第、順次アップデートしてシェアします。
-                        </p>
+                        <div class="flex flex-col gap-2.5">
+                    `;
+                    if (group.spring && typeof QUESTIONS_LIST !== 'undefined') {
+                        QUESTIONS_LIST.forEach(q => {
+                            cardHtml += `
+                            <a href="test.html?year=${group.spring.id}&question=${q.id}" class="group bg-slate-50 hover:bg-white border border-slate-200 hover:border-indigo-500 rounded-xl p-4 flex items-center justify-between font-bold text-xs sm:text-sm text-slate-700 transition-all hover:shadow-md duration-200 hover:-translate-y-0.5">
+                                <span class="group-hover:text-indigo-600 transition-colors">${q.title}</span>
+                                <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400 group-hover:text-indigo-600 group-hover:translate-x-0.5 transition-all"></i>
+                            </a>
+                            `;
+                        });
+                    } else {
+                        cardHtml += `
+                        <div class="bg-slate-50/50 border border-dashed border-slate-200 rounded-xl p-5 text-center flex flex-col items-center justify-center gap-1.5 animate-fade-in">
+                            <div class="flex items-center gap-1 text-[11px] font-black text-slate-700">
+                                <i data-lucide="sparkles" class="w-4 h-4 text-slate-500 animate-spin-slow"></i>
+                                <span>教材データ準備中</span>
+                            </div>
+                            <p class="text-[10px] text-slate-400 leading-relaxed text-center">
+                                過去問・事前知識・解説ノートを作成中です。<br>
+                                完成次第、順次公開していきます。
+                            </p>
+                        </div>
+                        `;
+                    }
+                    cardHtml += `
+                        </div>
                     </div>
                     `;
-                }
-                cardHtml += `
-                    </div>
-                </div>
-                `;
-                
-                // ================== 🍁 秋期試験 ==================
-                cardHtml += `
-                <div class="flex flex-col gap-4">
-                    <div class="flex items-center gap-2 text-xs font-black text-slate-700 bg-slate-100 border border-slate-200 rounded-lg px-3 py-1.5 w-fit">
-                        <span>🍁</span>
-                        <span>秋期試験</span>
-                    </div>
-                    <div class="flex flex-col gap-2.5">
-                `;
-                if (group.autumn) {
-                    QUESTIONS_LIST.forEach(q => {
-                        cardHtml += `
-                        <a href="test.html?year=${group.autumn.id}&question=${q.id}" class="group bg-slate-50 hover:bg-white border border-slate-200 hover:border-indigo-500 rounded-xl p-4 flex items-center justify-between font-bold text-xs sm:text-sm text-slate-700 transition-all hover:shadow-md duration-200 hover:-translate-y-0.5">
-                            <span class="group-hover:text-indigo-600 transition-colors">${q.title}</span>
-                            <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400 group-hover:text-indigo-600 group-hover:translate-x-0.5 transition-all"></i>
-                        </a>
-                        `;
-                    });
-                } else {
+                    
+                    // 秋期試験
                     cardHtml += `
-                    <div class="bg-slate-50/50 border border-dashed border-slate-200 rounded-xl p-5 text-center flex flex-col items-center justify-center gap-1.5 animate-fade-in">
-                        <div class="flex items-center gap-1 text-[11px] font-black text-slate-700">
-                            <i data-lucide="sparkles" class="w-4 h-4 text-slate-500 animate-spin-slow"></i>
-                            <span>教材データ準備中</span>
+                    <div class="flex flex-col gap-4">
+                        <div class="flex items-center gap-2 text-xs font-black text-slate-700 bg-slate-100 border border-slate-200 rounded-lg px-3 py-1.5 w-fit">
+                            <span>🍁</span>
+                            <span>秋期試験</span>
                         </div>
-                        <p class="text-[10px] text-slate-400 leading-relaxed text-center">
-                            管理人が真題・事前知識・ノートを現在鋭意作成中！<br>
-                            完成次第、順次アップデートしてシェアします。
-                        </p>
+                        <div class="flex flex-col gap-2.5">
+                    `;
+                    if (group.autumn && typeof QUESTIONS_LIST !== 'undefined') {
+                        QUESTIONS_LIST.forEach(q => {
+                            cardHtml += `
+                            <a href="test.html?year=${group.autumn.id}&question=${q.id}" class="group bg-slate-50 hover:bg-white border border-slate-200 hover:border-indigo-500 rounded-xl p-4 flex items-center justify-between font-bold text-xs sm:text-sm text-slate-700 transition-all hover:shadow-md duration-200 hover:-translate-y-0.5">
+                                <span class="group-hover:text-indigo-600 transition-colors">${q.title}</span>
+                                <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400 group-hover:text-indigo-600 group-hover:translate-x-0.5 transition-all"></i>
+                            </a>
+                            `;
+                        });
+                    } else {
+                        cardHtml += `
+                        <div class="bg-slate-50/50 border border-dashed border-slate-200 rounded-xl p-5 text-center flex flex-col items-center justify-center gap-1.5 animate-fade-in">
+                            <div class="flex items-center gap-1 text-[11px] font-black text-slate-700">
+                                <i data-lucide="sparkles" class="w-4 h-4 text-slate-500 animate-spin-slow"></i>
+                                <span>教材データ準備中</span>
+                            </div>
+                            <p class="text-[10px] text-slate-400 leading-relaxed text-center">
+                                過去問・事前知識・解説ノートを作成中です。<br>
+                                完成次第、順次公開していきます。
+                            </p>
+                        </div>
+                        `;
+                    }
+                    cardHtml += `
+                        </div>
+                    </div>
                     </div>
                     `;
-                }
-                cardHtml += `
-                    </div>
-                </div>
-                `;
-                
-                cardHtml += `
-                </div>
-                `;
-                
-                card.innerHTML = cardHtml;
-                container.appendChild(card);
-            });
+                    
+                    card.innerHTML = cardHtml;
+                    container.appendChild(card);
+                });
 
-            // 5. 过滤器交互
-            const filterBtns = filtersContainer.querySelectorAll('.filter-btn');
-            filterBtns.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    filterBtns.forEach(b => {
-                        b.className = "filter-btn px-4 py-2.5 text-xs font-bold rounded-xl border border-slate-200 bg-white text-slate-600 hover:bg-slate-50 hover:border-slate-400 transition-all shadow-sm active:scale-95";
-                    });
-                    
-                    btn.className = "filter-btn px-4 py-2.5 text-xs font-black rounded-xl transition-all shadow-md active:scale-95 bg-gradient-to-br from-indigo-600 to-teal-500 text-white";
-                    
-                    const filterVal = btn.getAttribute('data-filter');
-                    const cards = document.querySelectorAll('.year-card');
-                    
-                    cards.forEach(card => {
-                        const cardYear = card.getAttribute('data-year-base');
-                        if (filterVal === 'all' || cardYear === filterVal) {
-                            card.style.display = 'flex';
-                            card.classList.add('animate-fade-in');
-                        } else {
-                            card.style.display = 'none';
-                        }
+                const filterBtns = filtersContainer.querySelectorAll('.filter-btn');
+                filterBtns.forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        filterBtns.forEach(b => {
+                            b.className = "filter-btn px-4 py-2.5 text-xs font-bold rounded-xl border border-slate-200 bg-white text-slate-600 hover:bg-slate-50 hover:border-slate-400 transition-all shadow-sm active:scale-95 cursor-pointer";
+                        });
+                        
+                        btn.className = "filter-btn px-4 py-2.5 text-xs font-black rounded-xl transition-all shadow-md active:scale-95 bg-gradient-to-br from-indigo-600 to-teal-500 text-white cursor-pointer";
+                        
+                        const filterVal = btn.getAttribute('data-filter');
+                        const cards = document.querySelectorAll('.year-card');
+                        
+                        cards.forEach(card => {
+                            const cardYear = card.getAttribute('data-year-base');
+                            if (filterVal === 'all' || cardYear === filterVal) {
+                                card.style.display = 'flex';
+                                card.classList.add('animate-fade-in');
+                            } else {
+                                card.style.display = 'none';
+                            }
+                        });
                     });
                 });
-            });
+            }
 
             if (typeof lucide !== 'undefined') lucide.createIcons();
         });
