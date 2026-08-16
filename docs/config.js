@@ -38,3 +38,6 @@ YEARS_LIST.forEach(year => {
     questions: QUESTIONS_LIST
   };
 });
+
+
+const CONFIG_YOUTUBE_API_KEY = "AIzaSyCsKBR5-KWs5UmlTdBqbkXgDxQcXCoUgt0";

@@ -190,7 +190,6 @@
                         <div class="text-[11px] text-neutral-400 flex items-center gap-1.5 flex-wrap mt-0.5">
                             <span class="bg-indigo-600/60 text-indigo-200 text-[10px] px-2 py-0.5 rounded font-bold">科目B 動画解説</span>
                             <span>•</span>
-                            <!-- 動画数を自動更新 -->
                             <span id="homepage-playlist-count" class="text-amber-400 font-bold">読み込み中...</span>
                         </div>
 
@@ -261,6 +260,7 @@
     <script src="config.js"></script>
     <script>
         const PLAYLIST_ID = "PLI9LZ_5sMCR4";
+        const YOUTUBE_API_KEY = typeof CONFIG_YOUTUBE_API_KEY !== 'undefined' ? CONFIG_YOUTUBE_API_KEY : "";
 
         function openPreviewModal() {
             const modal = document.getElementById('preview-modal');
@@ -303,30 +303,179 @@
             return (match && match[2].length === 11) ? match[2] : null;
         }
 
-        // YouTube RSSフィードから自動取得する関数
-        async function fetchYouTubePlaylist() {
-            const rssApiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(`https://www.youtube.com/feeds/videos.xml?playlist_id=${PLAYLIST_ID}`)}`;
+        // ISO 8601 時間形式 (例: PT1H2M30S, PT15M42S) を秒数に変換
+        function parseIsoDuration(duration) {
+            if (!duration) return 0;
+            const match = duration.match(/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/);
+            if (!match) return 0;
+            const hours = parseInt(match[1] || 0, 10);
+            const minutes = parseInt(match[2] || 0, 10);
+            const seconds = parseInt(match[3] || 0, 10);
+            return hours * 3600 + minutes * 60 + seconds;
+        }
+
+        // 秒数を "MM:SS" または "H:MM:SS" にフォーマット
+        function formatDuration(sec) {
+            if (!sec || isNaN(sec)) return '';
+            const h = Math.floor(sec / 3600);
+            const m = Math.floor((sec % 3600) / 60);
+            const s = sec % 60;
+            if (h > 0) {
+                return `${h}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+            }
+            return `${m}:${s.toString().padStart(2, '0')}`;
+        }
+
+        // 総再生時間を日本語フォーマットに変換 (例: "3時間25分" または "45分")
+        function formatTotalDuration(sec) {
+            if (!sec || isNaN(sec) || sec <= 0) return '';
+            const h = Math.floor(sec / 3600);
+            const m = Math.floor((sec % 3600) / 60);
+            const s = sec % 60;
+            if (h > 0) {
+                return m > 0 ? `${h}時間${m}分` : `${h}時間`;
+            }
+            return s > 0 ? `${m}分${s}秒` : `${m}分`;
+        }
+
+        // 文字列 "MM:SS" や "H:MM:SS" を秒数に変換
+        function parseDurationStringToSeconds(str) {
+            if (!str || typeof str !== 'string') return 0;
+            const parts = str.split(':').map(Number);
+            if (parts.some(isNaN)) return 0;
+            if (parts.length === 3) return parts[0] * 3600 + parts[1] * 60 + parts[2];
+            if (parts.length === 2) return parts[0] * 60 + parts[1];
+            return 0;
+        }
+
+        // YouTube Data API（全件ページネーション取得 ＋ 動画詳細・時間の一括取得）
+        async function fetchFromYouTubeDataApi(apiKey, playlistId) {
+            let allItems = [];
+            let nextPageToken = '';
             
+            try {
+                // 1. プレイリスト内の全アイテムを取得
+                do {
+                    const pageParam = nextPageToken ? `&pageToken=${nextPageToken}` : '';
+                    const url = `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&playlistId=${playlistId}${pageParam}&key=${apiKey}`;
+                    const res = await fetch(url);
+                    if (!res.ok) throw new Error(`YouTube API Error: ${res.status}`);
+                    const data = await res.json();
+                    
+                    if (data.items && data.items.length > 0) {
+                        const items = data.items
+                            .filter(item => item.snippet && item.snippet.title !== 'Private video' && item.snippet.title !== 'Deleted video')
+                            .map(item => {
+                                const videoId = item.snippet.resourceId ? item.snippet.resourceId.videoId : null;
+                                const thumb = item.snippet.thumbnails?.medium?.url 
+                                    || item.snippet.thumbnails?.high?.url 
+                                    || (videoId ? `https://img.youtube.com/vi/${videoId}/mqdefault.jpg` : '');
+                                return {
+                                    title: item.snippet.title,
+                                    url: `https://www.youtube.com/watch?v=${videoId}`,
+                                    videoId: videoId,
+                                    thumbnail: thumb,
+                                    durationSec: 0,
+                                    duration: ''
+                                };
+                            });
+                        allItems = allItems.concat(items);
+                    }
+                    nextPageToken = data.nextPageToken || '';
+                } while (nextPageToken);
+
+                if (allItems.length === 0) return null;
+
+                // 2. 各動画の再生時間（contentDetails.duration）を50件ずつバッチ取得
+                const videoIds = allItems.map(item => item.videoId).filter(Boolean);
+                const durationMap = {};
+
+                for (let i = 0; i < videoIds.length; i += 50) {
+                    const chunk = videoIds.slice(i, i + 50);
+                    try {
+                        const videoDetailsUrl = `https://www.googleapis.com/youtube/v3/videos?part=contentDetails&id=${chunk.join(',')}&key=${apiKey}`;
+                        const vRes = await fetch(videoDetailsUrl);
+                        if (vRes.ok) {
+                            const vData = await vRes.json();
+                            if (vData.items) {
+                                vData.items.forEach(vItem => {
+                                    const rawDuration = vItem.contentDetails?.duration;
+                                    const sec = parseIsoDuration(rawDuration);
+                                    durationMap[vItem.id] = {
+                                        durationSec: sec,
+                                        durationText: formatDuration(sec)
+                                    };
+                                });
+                            }
+                        }
+                    } catch (err) {
+                        console.warn('動画時間の取得に失敗しました (chunk):', err);
+                    }
+                }
+
+                // 3. 動画データに時間を紐付け
+                allItems.forEach(item => {
+                    if (item.videoId && durationMap[item.videoId]) {
+                        item.durationSec = durationMap[item.videoId].durationSec;
+                        item.duration = durationMap[item.videoId].durationText;
+                    }
+                });
+
+                return allItems;
+            } catch (err) {
+                console.warn('YouTube Data APIの取得に失敗しました:', err);
+                return null;
+            }
+        }
+
+        // プレイリスト動画データ取得（優先度：YouTube Data API -> DEFAULT_PLAYLIST_DATA -> RSS API）
+        async function fetchYouTubePlaylist() {
+            // 1. YouTube Data API Keyがある場合はAPIから全件取得
+            if (YOUTUBE_API_KEY) {
+                const apiVideos = await fetchFromYouTubeDataApi(YOUTUBE_API_KEY, PLAYLIST_ID);
+                if (apiVideos && apiVideos.length > 0) {
+                    return apiVideos;
+                }
+            }
+
+            // 2. config.js に DEFAULT_PLAYLIST_DATA が定義されている場合はそれを優先
+            if (typeof DEFAULT_PLAYLIST_DATA !== 'undefined' && Array.isArray(DEFAULT_PLAYLIST_DATA) && DEFAULT_PLAYLIST_DATA.length > 0) {
+                return DEFAULT_PLAYLIST_DATA.map(item => {
+                    const videoId = item.videoId || getYouTubeId(item.url);
+                    const durationSec = item.durationSec || parseDurationStringToSeconds(item.duration) || 0;
+                    return {
+                        ...item,
+                        videoId: videoId,
+                        thumbnail: item.thumbnail || (videoId ? `https://img.youtube.com/vi/${videoId}/mqdefault.jpg` : ''),
+                        durationSec: durationSec,
+                        duration: item.duration || formatDuration(durationSec)
+                    };
+                });
+            }
+
+            // 3. フォールバック: RSS APIから取得
+            const rssApiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(`https://www.youtube.com/feeds/videos.xml?playlist_id=${PLAYLIST_ID}`)}`;
             try {
                 const res = await fetch(rssApiUrl);
                 const data = await res.json();
                 if (data.status === 'ok' && data.items && data.items.length > 0) {
-                    return data.items.map(item => ({
-                        title: item.title,
-                        url: item.link,
-                        videoId: getYouTubeId(item.link),
-                        thumbnail: item.thumbnail || `https://img.youtube.com/vi/${getYouTubeId(item.link)}/mqdefault.jpg`
-                    }));
+                    return data.items.map(item => {
+                        const videoId = getYouTubeId(item.link);
+                        return {
+                            title: item.title,
+                            url: item.link,
+                            videoId: videoId,
+                            thumbnail: item.thumbnail || (videoId ? `https://img.youtube.com/vi/${videoId}/mqdefault.jpg` : ''),
+                            durationSec: 0,
+                            duration: ''
+                        };
+                    });
                 }
             } catch (err) {
-                console.warn('YouTube RSSの自動取得に失敗したため、初期データを使用します:', err);
+                console.warn('YouTube RSSの自動取得に失敗しました:', err);
             }
 
-            return DEFAULT_PLAYLIST_DATA.map(item => ({
-                ...item,
-                videoId: getYouTubeId(item.url),
-                thumbnail: `https://img.youtube.com/vi/${getYouTubeId(item.url)}/mqdefault.jpg`
-            }));
+            return [];
         }
 
         // 自動描画・初期化
@@ -338,14 +487,30 @@
 
             if (!container || !player) return;
 
-            // 動画データを自動取得
+            // 動画データを取得
             const videoList = await fetchYouTubePlaylist();
 
-            // 動画数を動的に計算して更新
-            countEl.textContent = `${videoList.length} 本の動画`;
+            // 総再生時間を計算
+            const totalSec = videoList.reduce((acc, item) => acc + (item.durationSec || 0), 0);
+            const totalDurationText = formatTotalDuration(totalSec);
+
+            // 動画数・総再生時間を動的に計算して更新
+            if (totalDurationText) {
+                countEl.innerHTML = `<span>${videoList.length} 本の動画</span> <span class="text-neutral-500 font-normal">|</span> <span class="text-teal-300 font-bold">総再生時間: ${totalDurationText}</span>`;
+            } else {
+                countEl.textContent = `${videoList.length} 本の動画`;
+            }
+
             container.innerHTML = '';
 
-            if (videoList.length === 0) return;
+            if (videoList.length === 0) {
+                container.innerHTML = `
+                    <div class="p-6 text-center text-slate-400 text-xs font-medium bg-slate-50 rounded-xl border border-dashed border-slate-200">
+                        動画がありません
+                    </div>
+                `;
+                return;
+            }
 
             const firstId = videoList[0].videoId;
             if (firstId) {
@@ -364,13 +529,21 @@
                     index === 0 ? 'bg-indigo-50/80 border-indigo-200' : 'bg-white border-transparent hover:bg-slate-50 hover:border-slate-200'
                 }`;
                 
+                // 動画時間のバッジ表示 (存在する場合のみ)
+                const durationBadge = item.duration ? `
+                    <span class="absolute bottom-1 right-1 bg-black/80 backdrop-blur-xs text-white text-[10px] font-bold font-mono px-1.5 py-0.2 rounded shadow-xs">
+                        ${item.duration}
+                    </span>
+                ` : '';
+
                 itemEl.innerHTML = `
                     <span class="w-5 text-center text-xs font-bold text-slate-400 group-hover:text-slate-800 shrink-0">
                         ${index + 1}
                     </span>
 
                     <div class="relative w-28 sm:w-32 aspect-video rounded-lg overflow-hidden bg-slate-900 shrink-0 shadow-2xs">
-                        <img src="${item.thumbnail}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                        <img src="${item.thumbnail}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" onerror="this.src='https://img.youtube.com/vi/${item.videoId}/mqdefault.jpg'">
+                        ${durationBadge}
                     </div>
 
                     <div class="flex-1 min-w-0">
