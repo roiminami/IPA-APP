@@ -12,243 +12,253 @@
         body {
             font-family: 'Inter', 'Noto Sans JP', -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Meiryo", sans-serif;
             background-color: #F8FAFC;
-            min-height: 100vh;
         }
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: #F8FAFC; }
+        ::-webkit-scrollbar { width: 5px; height: 5px; }
+        ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 3px; }
         ::-webkit-scrollbar-thumb:hover { background: #94A3B8; }
 
-        .scroll-beauty::-webkit-scrollbar { width: 5px; height: 5px; }
-        .scroll-beauty::-webkit-scrollbar-track { background: transparent; }
-        .scroll-beauty::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 6px; }
-        .scroll-beauty::-webkit-scrollbar-thumb:hover { background: #94A3B8; }
-
         .animate-fade-in {
-            animation: fadeIn 0.4s ease-out forwards;
+            animation: fadeIn 0.25s ease-out forwards;
         }
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(8px); }
+            from { opacity: 0; transform: translateY(-4px); }
             to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes spinSlow {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-        .animate-spin-slow {
-            animation: spinSlow 12s linear infinite;
         }
     </style>
 </head>
-<body class="text-slate-800 flex flex-col antialiased select-none pb-16">
+<body class="text-slate-800 flex flex-col min-h-screen lg:h-screen lg:overflow-hidden antialiased select-none">
 
-    <!-- ヘッダー Nav -->
-    <header class="border-b border-slate-200 bg-white/90 backdrop-blur-md shrink-0 sticky top-0 z-50 shadow-xs">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-            <a href="index.html" class="flex items-center space-x-3 hover:opacity-90 transition-all">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-600 to-teal-500 flex items-center justify-center text-white font-black text-lg shadow-sm">
-                    南
-                </div>
-                <div>
-                    <h1 class="text-base font-black text-slate-900 tracking-tight flex items-center gap-1.5">
-                        南式応用情報速攻！<span class="text-[10px] bg-teal-50 text-teal-700 font-bold px-2 py-0.5 rounded-full border border-teal-200">科目B専用</span>
-                    </h1>
-                    <p class="text-[9px] text-teal-600 font-bold tracking-wider uppercase">過去問演習・スマート学習システム</p>
-                </div>
-            </a>
+    <!-- コンパクトヘッダー Nav -->
+    <header class="border-b border-slate-200 bg-white/95 backdrop-blur-md shrink-0 sticky lg:static top-0 z-40 shadow-2xs">
+        <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-12 sm:h-14 flex items-center justify-between gap-2">
+            <!-- 左：サイドバー開閉ボタン ＋ ロゴ -->
+            <div class="flex items-center gap-2 min-w-0">
+                <button type="button" onclick="toggleSidebar()" title="サイドバーを開閉" class="w-8 h-8 rounded-lg bg-slate-100 hover:bg-indigo-50 text-slate-700 hover:text-indigo-600 flex items-center justify-center transition-colors cursor-pointer shrink-0">
+                    <i data-lucide="panel-left" class="w-4 h-4"></i>
+                </button>
 
-            <div class="text-xs font-bold text-slate-600 bg-slate-100 px-4 py-2 rounded-xl border border-slate-200 flex items-center gap-1.5">
-                <i data-lucide="award" class="w-4 h-4 text-teal-600 animate-pulse"></i>
-                <span>合格への最短ルート</span>
+                <a href="index.html" class="flex items-center space-x-2 hover:opacity-90 transition-all min-w-0">
+                    <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-600 to-teal-500 flex items-center justify-center text-white font-black text-sm shadow-xs shrink-0">
+                        南
+                    </div>
+                    <div class="flex items-center gap-1.5 min-w-0">
+                        <h1 class="text-sm sm:text-base font-black text-slate-900 tracking-tight truncate">
+                            南式応用情報速攻！
+                        </h1>
+                        <span class="hidden sm:inline-block text-[10px] bg-teal-50 text-teal-700 font-bold px-2 py-0.5 rounded-full border border-teal-200 shrink-0">科目B</span>
+                    </div>
+                </a>
+            </div>
+
+            <!-- 右：動画総数 ＋ 制作の背景 ＋ 速攻ポスター -->
+            <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
+                <span id="video-sync-status" class="hidden md:inline-flex text-[11px] font-bold text-teal-700 bg-teal-50 border border-teal-200/80 px-2.5 py-1 rounded-lg">動画読込中...</span>
+
+                <button onclick="openAboutModal()" class="inline-flex items-center gap-1 text-[11px] sm:text-xs font-bold bg-slate-100 hover:bg-slate-200/80 text-slate-700 border border-slate-200 px-2.5 sm:px-3 py-1.5 rounded-lg transition-all cursor-pointer">
+                    <i data-lucide="info" class="w-3.5 h-3.5 text-teal-600"></i>
+                    <span class="hidden sm:inline">制作の背景</span>
+                    <span class="sm:hidden">概要</span>
+                </button>
+
+                <button onclick="openPreviewModal()" class="inline-flex items-center gap-1 text-[11px] sm:text-xs font-bold bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 px-2.5 sm:px-3 py-1.5 rounded-lg transition-all cursor-pointer">
+                    <i data-lucide="image" class="w-3.5 h-3.5 text-indigo-600"></i>
+                    <span class="hidden sm:inline">速攻ポスター</span>
+                    <span class="sm:hidden">ポスター</span>
+                </button>
             </div>
         </div>
     </header>
 
-    <main class="flex-1 max-w-6xl w-full mx-auto px-4 py-8 flex flex-col gap-6">
-        
-        <!-- ================== 🌟 1. コミュニティ・概要カード ================== -->
-        <section class="bg-white border border-slate-200 rounded-2xl p-6 md:p-7 shadow-xs hover:shadow-md transition-all duration-300 relative overflow-hidden flex flex-col md:flex-row gap-6 items-stretch animate-fade-in">
-            <div class="absolute -left-12 -top-12 w-48 h-48 bg-teal-50/60 rounded-full blur-3xl pointer-events-none"></div>
+    <!-- メイン2ペインコンテナ -->
+    <div class="flex-1 lg:min-h-0 max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-3 lg:py-4 flex flex-col lg:flex-row gap-4 relative">
+
+        <!-- ================== 📌 折りたたみ式サイドバー ================== -->
+        <aside id="app-sidebar" class="hidden lg:flex w-full lg:w-[250px] shrink-0 lg:h-full lg:overflow-y-auto lg:pr-1 flex-col gap-3 pb-2 lg:pb-4 animate-fade-in">
             
-            <div class="flex-1 flex flex-col justify-between gap-5 relative z-10">
-                <div class="flex flex-col gap-3.5">
-                    <div class="flex flex-wrap items-center gap-2">
-                        <span class="inline-flex items-center gap-1.5 text-[11px] font-bold bg-slate-100 text-slate-700 border border-slate-200/80 px-2.5 py-0.5 rounded-full shadow-2xs">
-                            <span class="w-1.5 h-1.5 rounded-full bg-teal-500 animate-pulse"></span>
-                            在日ITエンジニア向け · 応用情報 AP
-                        </span>
-                        <span class="inline-flex items-center gap-1.5 text-[11px] font-bold text-slate-400">
-                            <i data-lucide="coffee" class="w-3.5 h-3.5"></i>
-                            Coffee & Code
-                        </span>
+            <!-- 1. 「年度を選択」1行ドロップダウン -->
+            <section class="bg-white border border-slate-200 rounded-xl p-3 shadow-sm lg:shadow-2xs flex items-center justify-between gap-2 shrink-0">
+                <label for="year-select" class="text-[11px] font-black text-slate-800 flex items-center gap-1.5 shrink-0 cursor-pointer">
+                    <i data-lucide="calendar" class="w-3.5 h-3.5 text-indigo-600"></i>
+                    <span>年度を選択</span>
+                </label>
 
-                        <button onclick="openPreviewModal()" class="inline-flex items-center gap-1.5 text-[11px] font-bold bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200/80 px-2.5 py-0.5 rounded-full transition-all active:scale-95 shadow-2xs cursor-pointer">
-                            <i data-lucide="image" class="w-3.5 h-3.5 text-indigo-600"></i>
-                            <span>速攻ポスターを見る</span>
-                        </button>
-                    </div>
-
-                    <h2 class="text-base sm:text-xl font-black text-slate-900 tracking-tight leading-snug">
-                        在日中国人向けの「応用情報技術者」攻略ポータル
-                    </h2>
-
-                    <div class="bg-gradient-to-r from-slate-50 via-teal-50/30 to-indigo-50/30 border border-slate-200/80 rounded-xl p-3.5 flex flex-col gap-1.5 shadow-2xs">
-                        <div class="flex items-center gap-1.5">
-                            <span class="bg-indigo-600 text-white text-[9px] font-black px-1.5 py-0.5 rounded tracking-wider uppercase">MISSION</span>
-                        </div>
-                        <p class="text-xs font-black text-slate-800 leading-snug">
-                            在日外国人IT人材の成長を支援し、社会・産業のDX推進に貢献する
-                        </p>
-                        <p class="text-[11px] font-bold text-indigo-700 leading-snug">
-                            ITスキルの向上と日本市場でのキャリアアップを強力にサポートします。
-                        </p>
-                    </div>
-
-                    <p class="text-xs text-slate-600 font-medium leading-relaxed">
-                        管理者の <strong class="text-slate-900 font-bold">Minami</strong> です。「学びながら、教え、共有する」をコンセプトに作成しました。応用情報科目Bの難所は、単なる専門知識だけでなく、長文問題の正確な読解と解法パターンの適用にあります。当サイトでは、過去問演習・ポイント解説・動画講義を組み合わせて効率的な学習環境を提供しています。
-                    </p>
+                <div class="relative flex-1 min-w-0">
+                    <select id="year-select" onchange="handleYearSelectChange(this.value)" class="w-full appearance-none bg-slate-50 hover:bg-indigo-50/60 border border-slate-200 hover:border-indigo-300 text-slate-800 font-black text-[11px] rounded-lg pl-2.5 pr-6 py-1.5 cursor-pointer focus:outline-none focus:ring-2 focus:ring-indigo-500/30 transition-all truncate">
+                        <option value="all">全年度</option>
+                    </select>
+                    <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-slate-500 absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none"></i>
                 </div>
+            </section>
 
-                <div class="flex items-center gap-2 text-[11px] font-bold text-teal-800 bg-teal-50 border border-teal-100/80 rounded-xl p-2.5">
-                    <i data-lucide="sparkles" class="w-4 h-4 text-teal-600 shrink-0 animate-pulse"></i>
-                    <span>▸ 切磋琢磨 · 共に成長 · IPA 科目 B 突破</span>
-                </div>
-            </div>
-
-            <!-- 右側：コミュニティ ＆ 連絡先 -->
-            <div class="w-full md:w-[290px] shrink-0 bg-slate-50 border border-slate-200 rounded-2xl p-4 flex flex-col justify-between gap-4 relative z-10 hover:border-indigo-300 transition-colors duration-300 shadow-2xs">
-                <div class="flex flex-col gap-3">
-                    <div class="flex items-center gap-2.5 border-b border-slate-200/80 pb-2.5">
-                        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-600 to-teal-500 flex items-center justify-center text-white font-black text-sm shadow-xs shrink-0">
+            <!-- 2. このサイトについて（制作の背景）＆ WeChat名片 -->
+            <section class="bg-white border border-slate-200 rounded-xl p-3.5 shadow-sm lg:shadow-2xs flex flex-col gap-2.5">
+                <div class="flex items-center justify-between border-b border-slate-100 pb-2">
+                    <div class="flex items-center gap-2 min-w-0">
+                        <div class="w-7 h-7 rounded-lg bg-gradient-to-br from-indigo-600 to-teal-500 flex items-center justify-center text-white font-black text-xs shrink-0">
                             南
                         </div>
-                        <div class="flex flex-col">
-                            <h4 class="text-xs font-black text-slate-900 leading-tight">学習コミュニティ</h4>
-                            <a href="https://minami.ac.cn" target="_blank" class="text-[10px] text-slate-500 font-bold hover:text-indigo-600 flex items-center gap-0.5 mt-0.5 transition-colors">
-                                <span>ブログ：minami.ac.cn</span>
+                        <div class="min-w-0">
+                            <h3 class="text-[11px] font-black text-slate-900 truncate">このサイトについて</h3>
+                            <a href="https://minami.ac.cn" target="_blank" class="text-[10px] text-slate-500 font-bold hover:text-indigo-600 flex items-center gap-0.5 transition-colors">
+                                <span>minami.ac.cn</span>
                                 <i data-lucide="arrow-up-right" class="w-2.5 h-2.5"></i>
                             </a>
                         </div>
                     </div>
+                    <span class="text-[9px] font-bold text-teal-700 bg-teal-50 border border-teal-200/80 px-1.5 py-0.5 rounded shrink-0">制作の背景</span>
+                </div>
 
-                    <div class="flex flex-col gap-2 text-[11px] font-medium text-slate-700 leading-relaxed">
-                        <p class="font-bold text-slate-800">
-                            🎥 実践力を高めるエンジニアのための成長コミュニティ
-                        </p>
-                        <p class="text-slate-600 text-[10.5px]">
-                            💻 ITアーキテクチャ · クラウド · アプリ開発 · 語学 · キャリア形成
-                        </p>
-                        <p class="text-teal-700 font-bold text-[10.5px]">
-                            💡 実務ノウハウ共有 · ITキャリア交流会
+                <!-- 制作の背景テキスト -->
+                <div class="text-[11px] text-slate-600 font-medium leading-relaxed flex flex-col gap-2">
+                    <p>
+                        管理者の <strong class="text-slate-900 font-bold">Minami</strong> です。応用情報技術者試験（科目B）の受験勉強を始めた際、この試験は単なるIT知識だけでなく、<strong class="text-indigo-700 font-bold">「高い日本語読解力」</strong>と<strong class="text-indigo-700 font-bold">「ケーススタディの論理的分析力」</strong>が合否を分けると痛感しました。
+                    </p>
+                    <p>
+                        そこで、私自身が学びながら重要ポイントを抽出し、ノート整理と動画解説をセットにして皆さんと共有するためにこのサイトを作りました。
+                    </p>
+                    <div class="bg-indigo-50/60 border border-indigo-100 rounded-lg p-2.5 text-[10.5px] text-slate-700 leading-relaxed">
+                        <p>
+                            また、科目Bの試験本番では<strong class="text-slate-900 font-bold">全12分野から5問を選択</strong>して解答します。本サイトでは、<strong class="text-teal-800 font-bold">「外国人受験生に優しく、読解力が中程度の文系出身者でも無理なく得点源にできる」</strong>という基準で厳選した5分野（情報セキュリティ・経営戦略・ネットワーク・プロジェクトマネジメント・サービスマネジメント）に特化して収録しています！
                         </p>
                     </div>
                 </div>
 
-                <div class="flex flex-col gap-2 pt-2 border-t border-slate-200/80">
-                    <div class="bg-white border border-slate-200 rounded-xl p-2.5 flex flex-col gap-1 shadow-2xs">
-                        <div class="flex items-center justify-between">
-                            <span class="text-[9px] text-slate-400 font-bold tracking-wider uppercase">WeChatグループ参加</span>
-                            <span class="text-[8px] font-black text-indigo-700 bg-indigo-50 border border-indigo-100 px-1.5 py-0.5 rounded">備考：AP / IT</span>
-                        </div>
-                        <code class="text-xs font-black text-slate-800 tracking-wide font-mono mt-0.5">nowminami</code>
+                <!-- WeChat参加ボックス -->
+                <div class="bg-slate-50 border border-slate-200/80 rounded-lg p-2.5 flex flex-col gap-1.5 mt-0.5">
+                    <div class="flex items-center justify-between">
+                        <span class="text-[9px] text-slate-500 font-bold uppercase tracking-wider">WeChatグループ参加</span>
+                        <span class="text-[8.5px] font-black text-indigo-700 bg-indigo-50 border border-indigo-100 px-1.5 py-0.2 rounded">備考：AP/IT</span>
                     </div>
-                    
-                    <button onclick="copyWechatID()" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold text-[11px] py-2 px-3 rounded-xl flex items-center justify-center gap-1.5 transition-all active:scale-98 cursor-pointer">
-                        <i data-lucide="copy" class="w-3 h-3"></i>
-                        <span id="copy-btn-text">WeChat IDをコピー</span>
+                    <div class="flex items-center justify-between gap-1.5">
+                        <code class="text-[11.5px] font-black text-slate-800 font-mono">nowminami</code>
+                        <button onclick="copyWechatID()" class="bg-slate-900 hover:bg-slate-800 text-white font-bold text-[10px] py-1 px-2.5 rounded-md flex items-center gap-1 transition-all cursor-pointer shrink-0">
+                            <i data-lucide="copy" class="w-2.5 h-2.5"></i>
+                            <span id="copy-btn-text">コピー</span>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+        </aside>
+
+        <!-- ================== 📚 右メインエリア（独立上下スクロール） ================== -->
+        <main class="flex-1 min-w-0 w-full lg:h-full lg:overflow-y-auto lg:pr-1.5 flex flex-col gap-3.5 pb-10">
+
+            <!-- 0. スリム化した「前回の続き」バー -->
+            <section id="resume-banner" class="hidden bg-gradient-to-r from-indigo-600 to-teal-600 text-white rounded-xl px-3 py-2 sm:px-4 sm:py-2.5 shadow-sm flex items-center justify-between gap-2 animate-fade-in shrink-0">
+                <div class="flex items-center gap-2 min-w-0">
+                    <i data-lucide="history" class="w-4 h-4 text-teal-100 shrink-0"></i>
+                    <span class="hidden sm:inline text-[10px] font-bold text-teal-100 shrink-0">前回の続き:</span>
+                    <p id="resume-title" class="text-xs font-black tracking-tight truncate"></p>
+                </div>
+                <div class="flex items-center gap-1.5 shrink-0">
+                    <a id="resume-link" href="#" class="bg-white text-indigo-700 hover:bg-indigo-50 font-black text-[11px] px-2.5 py-1 rounded-lg shadow-2xs transition-all active:scale-95 whitespace-nowrap">
+                        再開 →
+                    </a>
+                    <button type="button" onclick="clearStudyProgress()" title="閉じる" class="w-6 h-6 rounded-lg bg-white/15 hover:bg-white/25 text-white flex items-center justify-center transition-colors cursor-pointer shrink-0">
+                        <i data-lucide="x" class="w-3.5 h-3.5"></i>
+                    </button>
+                </div>
+            </section>
+
+            <!-- 1. 年度別・ポイント演習＆動画解説カード -->
+            <section id="exam-cards-container" class="flex flex-col gap-3.5 animate-fade-in"></section>
+
+            <!-- 2. 特別講義アーカイブ（「小南伴你学」ライブ回） -->
+            <section id="special-lectures-section" class="hidden bg-white border border-slate-200 rounded-xl shadow-2xs overflow-hidden animate-fade-in shrink-0">
+                <button onclick="toggleSpecialLectures()" class="w-full p-4 flex items-center justify-between text-left hover:bg-slate-50 transition-colors cursor-pointer">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-lg bg-rose-50 border border-rose-200 text-rose-600 flex items-center justify-center shrink-0">
+                            <i data-lucide="tv" class="w-4 h-4"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xs sm:text-sm font-black text-slate-900 flex items-center flex-wrap gap-1.5">
+                                <span>特別講義：「小南伴你学」ライブ解説</span>
+                                <span id="special-count-badge" class="text-[10px] bg-rose-100 text-rose-700 px-2 py-0.5 rounded-full font-bold">全10回</span>
+                            </h3>
+                            <p class="text-[11px] text-slate-500 font-medium mt-0.5">科目Bの総合対策・ライブ配信アーカイブ（クリックして展開）</p>
+                        </div>
+                    </div>
+                    <i id="special-chevron" data-lucide="chevron-down" class="w-5 h-5 text-slate-400 transition-transform duration-200 shrink-0"></i>
+                </button>
+                <div id="special-lectures-list" class="hidden border-t border-slate-100 p-4 bg-slate-50/50 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                    <!-- JSで自動挿入 -->
+                </div>
+            </section>
+
+        </main>
+
+    </div>
+
+    <!-- 📖 このサイトについて（制作の背景）モーダル -->
+    <div id="about-modal" class="fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-sm hidden items-center justify-center p-3 sm:p-4 transition-all duration-200 opacity-0" onclick="closeAboutModal()">
+        <div class="relative max-w-xl w-full bg-white rounded-2xl overflow-hidden shadow-2xl border border-slate-200 flex flex-col" onclick="event.stopPropagation()">
+            <div class="px-5 py-4 bg-gradient-to-r from-indigo-600 to-teal-600 text-white flex items-center justify-between">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-8 h-8 rounded-lg bg-white/20 flex items-center justify-center font-black text-sm">南</div>
+                    <div>
+                        <h3 class="text-sm sm:text-base font-black tracking-tight">このサイトについて（制作の背景）</h3>
+                        <p class="text-[10px] text-teal-100 font-bold">南式応用情報速攻！ 科目B ポータル</p>
+                    </div>
+                </div>
+                <button onclick="closeAboutModal()" class="w-8 h-8 rounded-lg bg-white/15 hover:bg-white/25 text-white flex items-center justify-center transition-colors cursor-pointer">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
+            </div>
+            <div class="p-5 sm:p-6 text-xs sm:text-[13px] text-slate-700 font-medium leading-relaxed flex flex-col gap-3.5 max-h-[80vh] overflow-y-auto">
+                <p>
+                    管理者の <strong class="text-slate-900 font-black">Minami</strong> です。応用情報技術者試験（科目B）の受験勉強を始めた際、この試験は単なるIT知識だけでなく、<strong class="text-indigo-700 font-bold">「高い日本語読解力」</strong>と<strong class="text-indigo-700 font-bold">「ケーススタディの論理的分析力」</strong>が合否を分けると痛感しました。
+                </p>
+                <p>
+                    そこで、私自身が学びながら重要ポイントを抽出し、ノート整理と動画解説をセットにして皆さんと共有するためにこのサイトを作りました。
+                </p>
+                <div class="bg-indigo-50/70 border border-indigo-200/80 rounded-xl p-3.5 text-slate-800">
+                    <p>
+                        また、科目Bの試験本番では<strong class="text-slate-900 font-black">全12分野から5問を選択</strong>して解答します。本サイトでは、<strong class="text-teal-800 font-bold">「外国人受験生に優しく、読解力が中程度の文系出身者でも無理なく得点源にできる」</strong>という基準で厳選した5分野（情報セキュリティ・経営戦略・ネットワーク・プロジェクトマネジメント・サービスマネジメント）に特化して収録しています！
+                    </p>
+                </div>
+                <div class="border-t border-slate-100 pt-3 flex flex-wrap items-center justify-between gap-2 text-[11px]">
+                    <a href="https://minami.ac.cn" target="_blank" class="text-indigo-600 hover:text-indigo-800 font-bold inline-flex items-center gap-1">
+                        <span>ブログ：minami.ac.cn</span>
+                        <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i>
+                    </a>
+                    <div class="flex items-center gap-2 bg-slate-100 px-2.5 py-1 rounded-lg">
+                        <span class="text-slate-500 font-bold">WeChat (備考: AP/IT):</span>
+                        <code class="font-black text-slate-900 font-mono">nowminami</code>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 🎬 軽量動画再生モーダル -->
+    <div id="video-modal" class="fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-sm hidden items-center justify-center p-3 sm:p-4 transition-all duration-200 opacity-0" onclick="closeVideoModal()">
+        <div class="relative max-w-4xl w-full bg-neutral-900 rounded-2xl overflow-hidden shadow-2xl border border-neutral-700 flex flex-col" onclick="event.stopPropagation()">
+            <div class="px-3.5 sm:px-4 py-2.5 sm:py-3 bg-neutral-950 border-b border-neutral-800 flex items-center justify-between gap-2.5">
+                <div class="flex items-center gap-2 min-w-0">
+                    <span class="bg-rose-600 text-white text-[10px] font-black px-2 py-0.5 rounded shrink-0">動画解説</span>
+                    <h3 id="video-modal-title" class="text-xs sm:text-sm font-bold text-white truncate"></h3>
+                </div>
+                <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
+                    <a id="video-modal-exam-link" href="#" class="text-[10px] sm:text-[11px] font-bold bg-teal-600 hover:bg-teal-500 text-white px-2.5 sm:px-3 py-1.5 rounded-lg transition-colors whitespace-nowrap">
+                        ⚡ 演習へ
+                    </a>
+                    <button onclick="closeVideoModal()" class="w-8 h-8 rounded-lg bg-neutral-800 hover:bg-neutral-700 text-neutral-300 hover:text-white flex items-center justify-center transition-colors cursor-pointer">
+                        <i data-lucide="x" class="w-4 h-4"></i>
                     </button>
                 </div>
             </div>
-        </section>
-
-        <!-- ================== 🎬 2. YouTube 自動取得再生リスト ================== -->
-        <section class="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs hover:shadow-md transition-all duration-300 animate-fade-in">
-            <div class="w-full flex flex-col lg:flex-row gap-6 items-start">
-                
-                <!-- 左側：プレーヤー ＆ 再生リスト情報 -->
-                <div class="w-full lg:w-[360px] shrink-0 bg-gradient-to-b from-neutral-800 via-neutral-900 to-neutral-950 text-white rounded-2xl p-5 flex flex-col justify-between gap-4 shadow-xl border border-neutral-800">
-                    <div class="w-full aspect-video rounded-xl overflow-hidden shadow-lg relative bg-black group border border-neutral-700/50">
-                        <iframe 
-                            id="homepage-player"
-                            class="w-full h-full block border-none" 
-                            src="" 
-                            title="AP科目B 動画解説" 
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                            allowfullscreen>
-                        </iframe>
-                    </div>
-
-                    <div class="flex flex-col gap-2">
-                        <h2 class="text-xl font-black text-white tracking-tight">南式応用情報速攻学習会</h2>
-                        
-                        <div class="flex items-center gap-2 text-xs text-neutral-300 font-medium">
-                            <div class="w-6 h-6 rounded-full bg-rose-500 flex items-center justify-center text-white text-[10px] font-black shrink-0">南</div>
-                            <span class="truncate">作成者: <strong class="text-white">南くんと楽しく学べる教室</strong></span>
-                        </div>
-
-                        <div class="text-[11px] text-neutral-400 flex items-center gap-1.5 flex-wrap mt-0.5">
-                            <span class="bg-indigo-600/60 text-indigo-200 text-[10px] px-2 py-0.5 rounded font-bold">科目B 動画解説</span>
-                            <span>•</span>
-                            <span id="homepage-playlist-count" class="text-amber-400 font-bold">読み込み中...</span>
-                        </div>
-
-                        <p class="text-xs text-neutral-400 line-clamp-2 leading-relaxed mt-1">
-                            応用情報技術者試験（AP）科目Bの過去問をわかりやすく解説する再生リストです。
-                        </p>
-                    </div>
-
-                    <div class="flex items-center gap-2 pt-3 border-t border-neutral-800/80">
-                        <button id="play-all-btn" class="flex-1 bg-white hover:bg-neutral-200 text-black font-bold text-xs py-2.5 px-4 rounded-full flex items-center justify-center gap-2 transition-all active:scale-95 shadow-md cursor-pointer">
-                            <i data-lucide="play" class="w-4 h-4 fill-black"></i>
-                            <span>すべて再生</span>
-                        </button>
-                        <a href="https://www.youtube.com/playlist?list=PLI9LZ_5sMCR4" target="_blank" title="YouTubeで開く" class="w-9 h-9 rounded-full bg-neutral-800/80 hover:bg-neutral-700 text-neutral-200 flex items-center justify-center transition-colors cursor-pointer">
-                            <i data-lucide="external-link" class="w-4 h-4"></i>
-                        </a>
-                        <button onclick="copyPlaylistUrl()" title="共有する" class="w-9 h-9 rounded-full bg-neutral-800/80 hover:bg-neutral-700 text-neutral-200 flex items-center justify-center transition-colors cursor-pointer">
-                            <i data-lucide="share-2" class="w-4 h-4"></i>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- 右側：自動生成動画リスト -->
-                <div class="flex-1 w-full flex flex-col gap-3 min-w-0">
-                    <div class="flex items-center justify-between pb-2 border-b border-slate-100">
-                        <div class="flex items-center gap-2">
-                            <i data-lucide="list-video" class="w-4 h-4 text-indigo-600"></i>
-                            <span class="text-xs font-black text-slate-800 uppercase tracking-wider">動画再生リスト【毎週4本更新】</span>
-                        </div>
-                        <span class="text-[11px] text-slate-400 font-bold">選択すると上で即時再生します</span>
-                    </div>
-
-                    <div id="homepage-playlist-container" class="flex flex-col gap-2 max-h-[460px] overflow-y-auto pr-1 scroll-beauty">
-                        <!-- JSで自動挿入 -->
-                    </div>
-                </div>
-
+            <div class="aspect-video w-full bg-black">
+                <iframe id="modal-youtube-player" class="w-full h-full border-none" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             </div>
-        </section>
+        </div>
+    </div>
 
-        <!-- ================== 📅 3. 年度フィルター ================== -->
-        <section class="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs animate-fade-in">
-            <div class="flex items-center gap-2 mb-5">
-                <i data-lucide="calendar" class="w-5 h-5 text-indigo-600 animate-bounce"></i>
-                <h2 class="text-xs font-black text-slate-900 tracking-wider uppercase">年度から選ぶ</h2>
-            </div>
-            
-            <div id="year-filters" class="flex flex-wrap gap-2.5"></div>
-        </section>
-
-        <!-- ================== 📚 4. 過去問カードコンテナ ================== -->
-        <section id="exam-cards-container" class="flex flex-col gap-6 animate-fade-in" style="animation-delay: 100ms;"></section>
-
-    </main>
-
-    <!-- モーダル (Lightbox) -->
-    <div id="preview-modal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md hidden items-center justify-center p-4 transition-all duration-300 opacity-0" onclick="closePreviewModal()">
+    <!-- ポスターモーダル (Lightbox) -->
+    <div id="preview-modal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md hidden items-center justify-center p-3 sm:p-4 transition-all duration-300 opacity-0" onclick="closePreviewModal()">
         <div class="relative max-w-5xl w-full bg-white rounded-2xl overflow-hidden shadow-2xl border border-slate-700" onclick="event.stopPropagation()">
-            <button onclick="closePreviewModal()" class="absolute top-3 right-3 z-10 w-8 h-8 rounded-full bg-slate-900/80 hover:bg-slate-900 text-white flex items-center justify-center transition-all">
+            <button onclick="closePreviewModal()" class="absolute top-3 right-3 z-10 w-8 h-8 rounded-full bg-slate-900/80 hover:bg-slate-900 text-white flex items-center justify-center transition-all cursor-pointer">
                 <i data-lucide="x" class="w-4 h-4"></i>
             </button>
             <div class="aspect-[16/9] w-full bg-slate-900">
@@ -261,6 +271,82 @@
     <script>
         const PLAYLIST_ID = "PLI9LZ_5sMCR4";
         const YOUTUBE_API_KEY = typeof CONFIG_YOUTUBE_API_KEY !== 'undefined' ? CONFIG_YOUTUBE_API_KEY : "";
+        let currentYearFilter = 'all';
+
+        // サイドバー全体の開閉（PC・スマホ両対応）
+        function toggleSidebar() {
+            const sidebar = document.getElementById('app-sidebar');
+            if (!sidebar) return;
+
+            const isDesktop = window.innerWidth >= 1024;
+            if (isDesktop) {
+                const currentlyHidden = sidebar.classList.contains('lg:hidden');
+                if (currentlyHidden) {
+                    sidebar.classList.remove('lg:hidden', 'hidden');
+                    sidebar.classList.add('lg:flex');
+                } else {
+                    sidebar.classList.remove('lg:flex');
+                    sidebar.classList.add('lg:hidden', 'hidden');
+                }
+            } else {
+                const isHidden = sidebar.classList.contains('hidden');
+                if (isHidden) {
+                    sidebar.classList.remove('hidden');
+                    sidebar.classList.add('flex');
+                } else {
+                    sidebar.classList.add('hidden');
+                    sidebar.classList.remove('flex');
+                }
+            }
+        }
+
+        function openAboutModal() {
+            const modal = document.getElementById('about-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            setTimeout(() => modal.classList.remove('opacity-0'), 10);
+        }
+
+        function closeAboutModal() {
+            const modal = document.getElementById('about-modal');
+            modal.classList.add('opacity-0');
+            setTimeout(() => {
+                modal.classList.remove('flex');
+                modal.classList.add('hidden');
+            }, 200);
+        }
+
+        function openVideoModal(videoId, title, examUrl) {
+            const modal = document.getElementById('video-modal');
+            const player = document.getElementById('modal-youtube-player');
+            const titleEl = document.getElementById('video-modal-title');
+            const examLink = document.getElementById('video-modal-exam-link');
+
+            titleEl.textContent = title.replace(/^(\d+)_/, '$1 ');
+            player.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+            
+            if (examUrl) {
+                examLink.href = examUrl;
+                examLink.classList.remove('hidden');
+            } else {
+                examLink.classList.add('hidden');
+            }
+
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            setTimeout(() => modal.classList.remove('opacity-0'), 10);
+        }
+
+        function closeVideoModal() {
+            const modal = document.getElementById('video-modal');
+            const player = document.getElementById('modal-youtube-player');
+            modal.classList.add('opacity-0');
+            setTimeout(() => {
+                player.src = '';
+                modal.classList.remove('flex');
+                modal.classList.add('hidden');
+            }, 200);
+        }
 
         function openPreviewModal() {
             const modal = document.getElementById('preview-modal');
@@ -278,55 +364,52 @@
             }, 300);
         }
 
+        function toggleSpecialLectures() {
+            const list = document.getElementById('special-lectures-list');
+            const chevron = document.getElementById('special-chevron');
+            list.classList.toggle('hidden');
+            chevron.classList.toggle('rotate-180');
+        }
+
+        function toggleYearCard(yearBase) {
+            const body = document.getElementById(`year-body-${yearBase}`);
+            const chevron = document.getElementById(`year-chevron-${yearBase}`);
+            const hint = document.getElementById(`year-hint-${yearBase}`);
+            if (!body) return;
+            const isHidden = body.classList.toggle('hidden');
+            if (chevron) chevron.classList.toggle('rotate-180', !isHidden);
+            if (hint) hint.textContent = isHidden ? 'クリックして展開' : '';
+        }
+
         function copyWechatID() {
             navigator.clipboard.writeText('nowminami').then(() => {
                 const btnText = document.getElementById('copy-btn-text');
-                btnText.textContent = 'コピーしました！';
-                setTimeout(() => {
-                    btnText.textContent = 'WeChat IDをコピー';
-                }, 2000);
-            }).catch(() => {
-                alert('コピーに失敗しました。直接 nowminami を検索してください。');
-            });
-        }
-
-        function copyPlaylistUrl() {
-            navigator.clipboard.writeText(`https://www.youtube.com/playlist?list=${PLAYLIST_ID}`).then(() => {
-                alert('再生リストのURLをコピーしました！');
+                btnText.textContent = '済！';
+                setTimeout(() => btnText.textContent = 'コピー', 2000);
             });
         }
 
         function getYouTubeId(url) {
             if (!url) return null;
-            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-            const match = url.match(regExp);
+            const match = url.match(/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/);
             return (match && match[2].length === 11) ? match[2] : null;
         }
 
-        // ISO 8601 時間形式 (例: PT1H2M30S, PT15M42S) を秒数に変換
         function parseIsoDuration(duration) {
             if (!duration) return 0;
             const match = duration.match(/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/);
             if (!match) return 0;
-            const hours = parseInt(match[1] || 0, 10);
-            const minutes = parseInt(match[2] || 0, 10);
-            const seconds = parseInt(match[3] || 0, 10);
-            return hours * 3600 + minutes * 60 + seconds;
+            return (parseInt(match[1] || 0) * 3600) + (parseInt(match[2] || 0) * 60) + parseInt(match[3] || 0);
         }
 
-        // 秒数を "MM:SS" または "H:MM:SS" にフォーマット
         function formatDuration(sec) {
             if (!sec || isNaN(sec)) return '';
             const h = Math.floor(sec / 3600);
             const m = Math.floor((sec % 3600) / 60);
             const s = sec % 60;
-            if (h > 0) {
-                return `${h}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
-            }
-            return `${m}:${s.toString().padStart(2, '0')}`;
+            return h > 0 ? `${h}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}` : `${m}:${s.toString().padStart(2, '0')}`;
         }
 
-        // 総再生時間を日本語フォーマットに変換 (例: "3時間25分" または "45分")
         function formatTotalDuration(sec) {
             if (!sec || isNaN(sec) || sec <= 0) return '';
             const h = Math.floor(sec / 3600);
@@ -338,7 +421,6 @@
             return s > 0 ? `${m}分${s}秒` : `${m}分`;
         }
 
-        // 文字列 "MM:SS" や "H:MM:SS" を秒数に変換
         function parseDurationStringToSeconds(str) {
             if (!str || typeof str !== 'string') return 0;
             const parts = str.split(':').map(Number);
@@ -348,33 +430,25 @@
             return 0;
         }
 
-        // YouTube Data API（全件ページネーション取得 ＋ 動画詳細・時間の一括取得）
         async function fetchFromYouTubeDataApi(apiKey, playlistId) {
             let allItems = [];
             let nextPageToken = '';
-            
             try {
-                // 1. プレイリスト内の全アイテムを取得
                 do {
                     const pageParam = nextPageToken ? `&pageToken=${nextPageToken}` : '';
                     const url = `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&playlistId=${playlistId}${pageParam}&key=${apiKey}`;
                     const res = await fetch(url);
                     if (!res.ok) throw new Error(`YouTube API Error: ${res.status}`);
                     const data = await res.json();
-                    
-                    if (data.items && data.items.length > 0) {
+                    if (data.items) {
                         const items = data.items
                             .filter(item => item.snippet && item.snippet.title !== 'Private video' && item.snippet.title !== 'Deleted video')
                             .map(item => {
-                                const videoId = item.snippet.resourceId ? item.snippet.resourceId.videoId : null;
-                                const thumb = item.snippet.thumbnails?.medium?.url 
-                                    || item.snippet.thumbnails?.high?.url 
-                                    || (videoId ? `https://img.youtube.com/vi/${videoId}/mqdefault.jpg` : '');
+                                const videoId = item.snippet.resourceId?.videoId || null;
                                 return {
                                     title: item.snippet.title,
-                                    url: `https://www.youtube.com/watch?v=${videoId}`,
                                     videoId: videoId,
-                                    thumbnail: thumb,
+                                    thumbnail: item.snippet.thumbnails?.medium?.url || (videoId ? `https://img.youtube.com/vi/${videoId}/mqdefault.jpg` : ''),
                                     durationSec: 0,
                                     duration: ''
                                 };
@@ -384,359 +458,372 @@
                     nextPageToken = data.nextPageToken || '';
                 } while (nextPageToken);
 
-                if (allItems.length === 0) return null;
-
-                // 2. 各動画の再生時間（contentDetails.duration）を50件ずつバッチ取得
                 const videoIds = allItems.map(item => item.videoId).filter(Boolean);
                 const durationMap = {};
-
                 for (let i = 0; i < videoIds.length; i += 50) {
                     const chunk = videoIds.slice(i, i + 50);
-                    try {
-                        const videoDetailsUrl = `https://www.googleapis.com/youtube/v3/videos?part=contentDetails&id=${chunk.join(',')}&key=${apiKey}`;
-                        const vRes = await fetch(videoDetailsUrl);
-                        if (vRes.ok) {
-                            const vData = await vRes.json();
-                            if (vData.items) {
-                                vData.items.forEach(vItem => {
-                                    const rawDuration = vItem.contentDetails?.duration;
-                                    const sec = parseIsoDuration(rawDuration);
-                                    durationMap[vItem.id] = {
-                                        durationSec: sec,
-                                        durationText: formatDuration(sec)
-                                    };
-                                });
-                            }
-                        }
-                    } catch (err) {
-                        console.warn('動画時間の取得に失敗しました (chunk):', err);
+                    const vRes = await fetch(`https://www.googleapis.com/youtube/v3/videos?part=contentDetails&id=${chunk.join(',')}&key=${apiKey}`);
+                    if (vRes.ok) {
+                        const vData = await vRes.json();
+                        vData.items?.forEach(vItem => {
+                            const sec = parseIsoDuration(vItem.contentDetails?.duration);
+                            durationMap[vItem.id] = {
+                                durationSec: sec,
+                                durationText: formatDuration(sec)
+                            };
+                        });
                     }
                 }
-
-                // 3. 動画データに時間を紐付け
                 allItems.forEach(item => {
                     if (item.videoId && durationMap[item.videoId]) {
                         item.durationSec = durationMap[item.videoId].durationSec;
                         item.duration = durationMap[item.videoId].durationText;
                     }
                 });
-
                 return allItems;
             } catch (err) {
-                console.warn('YouTube Data APIの取得に失敗しました:', err);
+                console.warn('YouTube Data API取得失敗:', err);
                 return null;
             }
         }
 
-        // プレイリスト動画データ取得（優先度：YouTube Data API -> DEFAULT_PLAYLIST_DATA -> RSS API）
         async function fetchYouTubePlaylist() {
-            // 1. YouTube Data API Keyがある場合はAPIから全件取得
             if (YOUTUBE_API_KEY) {
                 const apiVideos = await fetchFromYouTubeDataApi(YOUTUBE_API_KEY, PLAYLIST_ID);
-                if (apiVideos && apiVideos.length > 0) {
-                    return apiVideos;
-                }
+                if (apiVideos && apiVideos.length > 0) return apiVideos;
             }
-
-            // 2. config.js に DEFAULT_PLAYLIST_DATA が定義されている場合はそれを優先
-            if (typeof DEFAULT_PLAYLIST_DATA !== 'undefined' && Array.isArray(DEFAULT_PLAYLIST_DATA) && DEFAULT_PLAYLIST_DATA.length > 0) {
+            if (typeof DEFAULT_PLAYLIST_DATA !== 'undefined' && Array.isArray(DEFAULT_PLAYLIST_DATA)) {
                 return DEFAULT_PLAYLIST_DATA.map(item => {
                     const videoId = item.videoId || getYouTubeId(item.url);
-                    const durationSec = item.durationSec || parseDurationStringToSeconds(item.duration) || 0;
+                    const sec = item.durationSec || parseDurationStringToSeconds(item.duration) || 0;
                     return {
                         ...item,
                         videoId: videoId,
                         thumbnail: item.thumbnail || (videoId ? `https://img.youtube.com/vi/${videoId}/mqdefault.jpg` : ''),
-                        durationSec: durationSec,
-                        duration: item.duration || formatDuration(durationSec)
+                        durationSec: sec,
+                        duration: item.duration || formatDuration(sec)
                     };
                 });
             }
-
-            // 3. フォールバック: RSS APIから取得
-            const rssApiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(`https://www.youtube.com/feeds/videos.xml?playlist_id=${PLAYLIST_ID}`)}`;
-            try {
-                const res = await fetch(rssApiUrl);
-                const data = await res.json();
-                if (data.status === 'ok' && data.items && data.items.length > 0) {
-                    return data.items.map(item => {
-                        const videoId = getYouTubeId(item.link);
-                        return {
-                            title: item.title,
-                            url: item.link,
-                            videoId: videoId,
-                            thumbnail: item.thumbnail || (videoId ? `https://img.youtube.com/vi/${videoId}/mqdefault.jpg` : ''),
-                            durationSec: 0,
-                            duration: ''
-                        };
-                    });
-                }
-            } catch (err) {
-                console.warn('YouTube RSSの自動取得に失敗しました:', err);
-            }
-
             return [];
         }
 
-        // 自動描画・初期化
-        async function initHomepagePlaylist() {
-            const player = document.getElementById('homepage-player');
-            const container = document.getElementById('homepage-playlist-container');
-            const countEl = document.getElementById('homepage-playlist-count');
-            const playAllBtn = document.getElementById('play-all-btn');
+        function mapVideosToExams(videoList) {
+            const examVideoMap = {};
+            const specialLectures = [];
 
-            if (!container || !player) return;
+            videoList.forEach(video => {
+                const cleanTitle = video.title.replace(/^(\d+)_/, '$1 ');
+                const match = cleanTitle.match(/(令和\d+年度|平成\d+年度|令和元年度)(春期|秋期).*?問題(\d+)/);
+                if (match) {
+                    const yearBase = match[1];
+                    const season = match[2];
+                    const qNum = match[3];
+                    const part = cleanTitle.includes('前編') ? '前編' : (cleanTitle.includes('後編') ? '後編' : '解説');
+                    
+                    const key = `${yearBase}_${season}_${qNum}`;
+                    if (!examVideoMap[key]) examVideoMap[key] = [];
+                    examVideoMap[key].push({
+                        ...video,
+                        cleanTitle,
+                        part
+                    });
+                } else {
+                    specialLectures.push({ ...video, cleanTitle });
+                }
+            });
 
-            // 動画データを取得
-            const videoList = await fetchYouTubePlaylist();
+            Object.keys(examVideoMap).forEach(key => {
+                examVideoMap[key].sort((a, b) => (a.part === '前編' ? -1 : 1));
+            });
 
-            // 総再生時間を計算
-            const totalSec = videoList.reduce((acc, item) => acc + (item.durationSec || 0), 0);
-            const totalDurationText = formatTotalDuration(totalSec);
+            return { examVideoMap, specialLectures };
+        }
 
-            // 動画数・総再生時間を動的に計算して更新
-            if (totalDurationText) {
-                countEl.innerHTML = `<span>${videoList.length} 本の動画</span> <span class="text-neutral-500 font-normal">|</span> <span class="text-teal-300 font-bold">総再生時間: ${totalDurationText}</span>`;
-            } else {
-                countEl.textContent = `${videoList.length} 本の動画`;
+        function saveStudyProgress(title, url) {
+            try {
+                localStorage.setItem('minami_ap_last_study', JSON.stringify({ title, url, time: Date.now() }));
+            } catch (e) {}
+        }
+
+        function loadStudyProgress() {
+            try {
+                const saved = JSON.parse(localStorage.getItem('minami_ap_last_study'));
+                if (saved && saved.title && saved.url) {
+                    const banner = document.getElementById('resume-banner');
+                    document.getElementById('resume-title').textContent = saved.title;
+                    document.getElementById('resume-link').href = saved.url;
+                    banner.classList.remove('hidden');
+                }
+            } catch (e) {}
+        }
+
+        function clearStudyProgress() {
+            try { localStorage.removeItem('minami_ap_last_study'); } catch (e) {}
+            document.getElementById('resume-banner').classList.add('hidden');
+        }
+
+        // サイドバー内の「年度を選択」ドロップダウンを構築
+        function renderYearDropdown(uniqueYearBases, examVideoMap = {}) {
+            const selectEl = document.getElementById('year-select');
+            if (!selectEl) return;
+
+            selectEl.innerHTML = `<option value="all">全年度</option>`;
+            uniqueYearBases.forEach(yearBase => {
+                const videoCount = Object.entries(examVideoMap)
+                    .filter(([k]) => k.startsWith(`${yearBase}_`))
+                    .reduce((acc, [, vids]) => acc + vids.length, 0);
+                const suffix = videoCount > 0 ? ` (🎬${videoCount})` : '';
+                const opt = document.createElement('option');
+                opt.value = yearBase;
+                opt.textContent = `${yearBase}${suffix}`;
+                selectEl.appendChild(opt);
+            });
+            selectEl.value = currentYearFilter;
+        }
+
+        function handleYearSelectChange(selectedYear) {
+            currentYearFilter = selectedYear;
+
+            if (window.innerWidth < 1024) {
+                const sidebar = document.getElementById('app-sidebar');
+                if (sidebar) sidebar.classList.add('hidden');
             }
 
+            const mainEl = document.querySelector('main');
+            if (mainEl && window.innerWidth >= 1024) {
+                mainEl.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+
+            document.querySelectorAll('.year-card').forEach(card => {
+                const cardYear = card.getAttribute('data-year-base');
+                const match = currentYearFilter === 'all' || cardYear === currentYearFilter;
+                card.style.display = match ? 'flex' : 'none';
+                if (match && currentYearFilter !== 'all') {
+                    const body = document.getElementById(`year-body-${cardYear}`);
+                    const chevron = document.getElementById(`year-chevron-${cardYear}`);
+                    const hint = document.getElementById(`year-hint-${cardYear}`);
+                    if (body) body.classList.remove('hidden');
+                    if (chevron) chevron.classList.add('rotate-180');
+                    if (hint) hint.textContent = '';
+                }
+            });
+        }
+
+        // 年度カードを描画
+        function renderExamCards(groups, uniqueYearBases, examVideoMap = {}) {
+            const container = document.getElementById('exam-cards-container');
             container.innerHTML = '';
 
-            if (videoList.length === 0) {
-                container.innerHTML = `
-                    <div class="p-6 text-center text-slate-400 text-xs font-medium bg-slate-50 rounded-xl border border-dashed border-slate-200">
-                        動画がありません
+            const hasVideosLoaded = Object.keys(examVideoMap).length > 0;
+
+            uniqueYearBases.forEach((yearBase, idx) => {
+                const group = groups[yearBase];
+                const yearHasVideo = Object.keys(examVideoMap).some(k => k.startsWith(`${yearBase}_`));
+                const isExpanded = currentYearFilter !== 'all' || (hasVideosLoaded ? yearHasVideo : idx < 3);
+
+                const card = document.createElement('div');
+                card.className = "year-card bg-white border border-slate-200 rounded-2xl shadow-2xs p-4 sm:p-5 flex flex-col transition-all duration-300";
+                card.setAttribute('data-year-base', yearBase);
+                card.style.display = (currentYearFilter === 'all' || currentYearFilter === yearBase) ? 'flex' : 'none';
+
+                const yearNote = yearBase === '令和2年度' 
+                    ? `<span class="text-[10px] sm:text-[11px] font-bold text-amber-700 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-md ml-1.5">※2020年10月特別実施</span>` 
+                    : '';
+
+                const videoBadge = yearHasVideo 
+                    ? `<span class="text-[10px] font-bold text-rose-700 bg-rose-50 border border-rose-200 px-2 py-0.5 rounded-full ml-1.5">🎬 動画あり</span>` 
+                    : '';
+
+                let cardHtml = `
+                <button type="button" onclick="toggleYearCard('${yearBase}')" class="w-full flex items-center justify-between text-left cursor-pointer group/hdr">
+                    <div class="border-l-[5px] border-indigo-600 pl-3 py-0.5 flex items-center flex-wrap gap-1">
+                        <h3 class="font-black text-slate-900 text-base sm:text-lg tracking-wide group-hover/hdr:text-indigo-600 transition-colors">${yearBase}</h3>
+                        ${yearNote}
+                        ${videoBadge}
                     </div>
-                `;
-                return;
-            }
-
-            const firstId = videoList[0].videoId;
-            if (firstId) {
-                player.src = `https://www.youtube.com/embed/${firstId}`;
-            }
-
-            if (playAllBtn && firstId) {
-                playAllBtn.onclick = () => {
-                    player.src = `https://www.youtube.com/embed/${firstId}?autoplay=1`;
-                };
-            }
-
-            videoList.forEach((item, index) => {
-                const itemEl = document.createElement('div');
-                itemEl.className = `playlist-item group p-2 rounded-xl transition-all flex items-center gap-3 cursor-pointer border ${
-                    index === 0 ? 'bg-indigo-50/80 border-indigo-200' : 'bg-white border-transparent hover:bg-slate-50 hover:border-slate-200'
-                }`;
-                
-                // 動画時間のバッジ表示 (存在する場合のみ)
-                const durationBadge = item.duration ? `
-                    <span class="absolute bottom-1 right-1 bg-black/80 backdrop-blur-xs text-white text-[10px] font-bold font-mono px-1.5 py-0.2 rounded shadow-xs">
-                        ${item.duration}
-                    </span>
-                ` : '';
-
-                itemEl.innerHTML = `
-                    <span class="w-5 text-center text-xs font-bold text-slate-400 group-hover:text-slate-800 shrink-0">
-                        ${index + 1}
-                    </span>
-
-                    <div class="relative w-28 sm:w-32 aspect-video rounded-lg overflow-hidden bg-slate-900 shrink-0 shadow-2xs">
-                        <img src="${item.thumbnail}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" onerror="this.src='https://img.youtube.com/vi/${item.videoId}/mqdefault.jpg'">
-                        ${durationBadge}
+                    <div class="flex items-center gap-1.5 text-xs font-bold text-slate-400 shrink-0">
+                        <span id="year-hint-${yearBase}" class="text-[11px]">${isExpanded ? '' : 'クリックして展開'}</span>
+                        <i id="year-chevron-${yearBase}" data-lucide="chevron-down" class="w-5 h-5 text-slate-400 transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}"></i>
                     </div>
-
-                    <div class="flex-1 min-w-0">
-                        <h4 class="text-xs sm:text-sm font-bold text-slate-800 leading-snug line-clamp-2 group-hover:text-indigo-600 transition-colors">
-                            ${item.title}
-                        </h4>
-                    </div>
-
-                    <button class="w-7 h-7 rounded-full hover:bg-slate-200/80 text-slate-400 hover:text-slate-700 flex items-center justify-center shrink-0 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <i data-lucide="more-vertical" class="w-3.5 h-3.5"></i>
-                    </button>
+                </button>
+                <div id="year-body-${yearBase}" class="${isExpanded ? '' : 'hidden'} grid grid-cols-1 xl:grid-cols-2 gap-3.5 sm:gap-4 mt-3.5 pt-3.5 border-t border-slate-100">
                 `;
 
-                itemEl.addEventListener('click', () => {
-                    container.querySelectorAll('.playlist-item').forEach((el, i) => {
-                        el.className = `playlist-item group p-2 rounded-xl transition-all flex items-center gap-3 cursor-pointer border ${
-                            i === index ? 'bg-indigo-50/80 border-indigo-200' : 'bg-white border-transparent hover:bg-slate-50 hover:border-slate-200'
-                        }`;
-                    });
+                const renderSeasonColumn = (seasonLabel, emoji, seasonData, seasonKey) => {
+                    const countLabel = (seasonData && typeof QUESTIONS_LIST !== 'undefined') 
+                        ? `<span class="text-[10px] font-bold text-slate-400">全${QUESTIONS_LIST.length}問</span>` 
+                        : '';
 
-                    if (item.videoId) {
-                        player.src = `https://www.youtube.com/embed/${item.videoId}?autoplay=1`;
+                    let colHtml = `
+                    <div class="bg-slate-50/80 border border-slate-200/80 rounded-2xl p-2.5 sm:p-3 flex flex-col gap-2">
+                        <div class="flex items-center justify-between px-1 pb-0.5">
+                            <div class="flex items-center gap-1.5 text-xs font-black text-slate-800">
+                                <span>${emoji}</span>
+                                <span>${seasonLabel}</span>
+                            </div>
+                            ${countLabel}
+                        </div>
+                        <div class="flex flex-col gap-1.5 sm:gap-2">
+                    `;
+
+                    if (seasonData && typeof QUESTIONS_LIST !== 'undefined') {
+                        QUESTIONS_LIST.forEach(q => {
+                            const qNumMatch = q.title.match(/問(\d+)/);
+                            const qNum = qNumMatch ? qNumMatch[1] : '';
+                            const matchedVideos = examVideoMap[`${yearBase}_${seasonKey}_${qNum}`] || [];
+                            const examUrl = `test.html?year=${seasonData.id}&question=${q.id}`;
+                            const fullLabel = `${yearBase} ${seasonLabel} ${q.title}`;
+
+                            let miniThumbsHtml = '';
+                            if (matchedVideos.length > 0) {
+                                miniThumbsHtml = `<div class="flex items-center gap-1 sm:gap-1.5 shrink-0">`;
+                                matchedVideos.forEach(v => {
+                                    const partColor = v.part === '前編' ? 'bg-rose-600' : 'bg-indigo-600';
+                                    const durBadge = v.duration 
+                                        ? `<span class="absolute bottom-0.5 right-0.5 bg-black/85 text-white text-[7px] sm:text-[8px] font-mono font-bold px-1 rounded leading-tight">${v.duration}</span>` 
+                                        : '';
+                                    miniThumbsHtml += `
+                                        <button type="button" 
+                                            onclick="event.stopPropagation(); saveStudyProgress('${fullLabel}', '${examUrl}'); openVideoModal('${v.videoId}', '${v.cleanTitle.replace(/'/g, "\\'")}', '${examUrl}')"
+                                            title="${v.cleanTitle}"
+                                            class="group/vid relative w-16 sm:w-[70px] aspect-video rounded-lg overflow-hidden bg-slate-200 border border-slate-200 hover:border-rose-400 shadow-2xs hover:shadow-sm transition-all cursor-pointer shrink-0">
+                                            <img src="${v.thumbnail}" loading="lazy" alt="${v.part}" class="w-full h-full object-cover group-hover/vid:scale-105 transition-transform duration-300" onerror="this.src='https://img.youtube.com/vi/${v.videoId}/mqdefault.jpg'">
+                                            <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/25"></div>
+                                            <span class="absolute top-0.5 left-0.5 ${partColor} text-white text-[7px] sm:text-[8px] font-black px-1 py-0.2 rounded leading-tight">
+                                                ${v.part}
+                                            </span>
+                                            <span class="absolute inset-0 flex items-center justify-center">
+                                                <span class="w-4 h-4 rounded-full bg-black/60 text-white flex items-center justify-center opacity-90 group-hover/vid:scale-110 group-hover/vid:bg-rose-600 transition-all">
+                                                    <i data-lucide="play" class="w-2 h-2 fill-white ml-0.5"></i>
+                                                </span>
+                                            </span>
+                                            ${durBadge}
+                                        </button>
+                                    `;
+                                });
+                                miniThumbsHtml += `</div>`;
+                            }
+
+                            colHtml += `
+                            <div class="group bg-white border border-slate-200/90 hover:border-indigo-400 rounded-xl px-2 sm:px-2.5 py-1.5 sm:py-2 flex flex-row items-center justify-between gap-1.5 sm:gap-2 transition-all hover:shadow-xs">
+                                <a href="${examUrl}" onclick="saveStudyProgress('${fullLabel}', '${examUrl}')" class="flex-1 min-w-0 flex items-center justify-between gap-1.5 font-bold text-[11px] sm:text-xs text-slate-800 group-hover:text-indigo-600 transition-colors">
+                                    <span class="truncate">${q.title}</span>
+                                    <span class="inline-flex items-center gap-0.5 text-[10px] font-black text-indigo-700 bg-indigo-50 border border-indigo-200/80 group-hover:bg-indigo-600 group-hover:text-white group-hover:border-indigo-600 px-1.5 sm:px-2 py-1 rounded-lg shrink-0 transition-colors">
+                                        <span>⚡ 演習</span>
+                                        <i data-lucide="chevron-right" class="w-3 h-3 hidden sm:inline"></i>
+                                    </span>
+                                </a>
+                                ${miniThumbsHtml}
+                            </div>
+                            `;
+                        });
+                    } else {
+                        colHtml += `
+                        <div class="bg-white/70 border border-dashed border-slate-200 rounded-xl p-5 text-center flex flex-col items-center justify-center gap-1.5 flex-1">
+                            <div class="flex items-center gap-1 text-[11px] font-bold text-slate-500">
+                                <i data-lucide="calendar-x" class="w-4 h-4 text-slate-400"></i>
+                                <span>試験未実施（対象外）</span>
+                            </div>
+                            <p class="text-[10px] text-slate-400">当該時期は応用情報技術者試験の実施がありません。</p>
+                        </div>
+                        `;
                     }
-                });
 
-                container.appendChild(itemEl);
+                    colHtml += `</div></div>`;
+                    return colHtml;
+                };
+
+                cardHtml += renderSeasonColumn('秋期試験', '🍁', group.autumn, '秋期');
+                cardHtml += renderSeasonColumn('春期試験', '🌸', group.spring, '春期');
+                cardHtml += `</div>`;
+
+                card.innerHTML = cardHtml;
+                container.appendChild(card);
             });
 
             if (typeof lucide !== 'undefined') lucide.createIcons();
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            if (typeof lucide !== 'undefined') lucide.createIcons();
+        function renderSpecialLectures(specialLectures) {
+            if (!specialLectures || specialLectures.length === 0) return;
 
-            initHomepagePlaylist();
+            const section = document.getElementById('special-lectures-section');
+            const list = document.getElementById('special-lectures-list');
+            const badge = document.getElementById('special-count-badge');
+
+            badge.textContent = `全${specialLectures.length}回`;
+            list.innerHTML = '';
+
+            specialLectures.forEach(item => {
+                const card = document.createElement('button');
+                card.type = 'button';
+                card.onclick = () => openVideoModal(item.videoId, item.cleanTitle, '');
+                card.className = "bg-white hover:bg-rose-50/40 border border-slate-200 hover:border-rose-300 rounded-xl p-3 flex items-center gap-3 text-left transition-all cursor-pointer group shadow-2xs";
+                card.innerHTML = `
+                    <div class="relative w-24 aspect-video rounded-lg overflow-hidden bg-slate-200 shrink-0">
+                        <img src="${item.thumbnail}" loading="lazy" alt="${item.cleanTitle}" class="w-full h-full object-cover group-hover:scale-105 transition-transform" onerror="this.src='https://img.youtube.com/vi/${item.videoId}/mqdefault.jpg'">
+                        ${item.duration ? `<span class="absolute bottom-1 right-1 bg-black/80 text-white text-[9px] font-mono px-1 rounded">${item.duration}</span>` : ''}
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <span class="text-xs font-bold text-slate-800 group-hover:text-rose-600 line-clamp-2 leading-snug">${item.cleanTitle}</span>
+                    </div>
+                `;
+                list.appendChild(card);
+            });
+
+            section.classList.remove('hidden');
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        }
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+            loadStudyProgress();
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    closeAboutModal();
+                    closeVideoModal();
+                    closePreviewModal();
+                }
+            });
 
             const groups = {};
-            
+            let uniqueYearBases = [];
+
             if (typeof YEARS_LIST !== 'undefined') {
                 YEARS_LIST.forEach(year => {
                     const parts = year.name.split(' ');
                     const yearBase = parts[0];
                     const semester = parts[1];
-                    
-                    if (!groups[yearBase]) {
-                        groups[yearBase] = { yearBase: yearBase };
-                    }
-                    
-                    if (semester.includes("春期")) {
-                        groups[yearBase].spring = year;
-                    } else if (semester.includes("秋期")) {
-                        groups[yearBase].autumn = year;
-                    }
+                    if (!groups[yearBase]) groups[yearBase] = { yearBase };
+                    if (semester.includes("春期")) groups[yearBase].spring = year;
+                    else if (semester.includes("秋期")) groups[yearBase].autumn = year;
                 });
 
-                const uniqueYearBases = [...new Set(YEARS_LIST.map(y => y.name.split(' ')[0]))].reverse();
+                uniqueYearBases = [...new Set(YEARS_LIST.map(y => y.name.split(' ')[0]))].reverse();
 
-                const filtersContainer = document.getElementById('year-filters');
-                
-                const allBtn = document.createElement('button');
-                allBtn.className = "filter-btn px-4 py-2.5 text-xs font-black rounded-xl transition-all shadow-md active:scale-95 bg-gradient-to-br from-indigo-600 to-teal-500 text-white cursor-pointer";
-                allBtn.textContent = "全年度";
-                allBtn.setAttribute('data-filter', 'all');
-                filtersContainer.appendChild(allBtn);
-
-                uniqueYearBases.forEach(yearBase => {
-                    const btn = document.createElement('button');
-                    btn.className = "filter-btn px-4 py-2.5 text-xs font-bold rounded-xl border border-slate-200 bg-white text-slate-600 hover:bg-slate-50 hover:border-slate-400 transition-all shadow-sm active:scale-95 cursor-pointer";
-                    btn.textContent = yearBase;
-                    btn.setAttribute('data-filter', yearBase);
-                    filtersContainer.appendChild(btn);
-                });
-
-                const container = document.getElementById('exam-cards-container');
-                container.innerHTML = '';
-
-                uniqueYearBases.forEach(yearBase => {
-                    const group = groups[yearBase];
-                    
-                    const card = document.createElement('div');
-                    card.className = "year-card bg-white border border-slate-200 rounded-2xl shadow-sm p-6 flex flex-col gap-6 transition-all duration-300 hover:shadow-md";
-                    card.setAttribute('data-year-base', yearBase);
-                    
-                    let cardHtml = `
-                    <div class="border-l-[6px] border-indigo-600 pl-3.5 py-0.5">
-                        <h3 class="font-black text-slate-900 text-base sm:text-lg tracking-wide">${yearBase}</h3>
-                    </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    `;
-                    
-                    // 🍁 秋期試験 (左侧)
-                    cardHtml += `
-                    <div class="flex flex-col gap-4">
-                        <div class="flex items-center gap-2 text-xs font-black text-slate-700 bg-slate-100 border border-slate-200 rounded-lg px-3 py-1.5 w-fit">
-                            <span>🍁</span>
-                            <span>秋期試験</span>
-                        </div>
-                        <div class="flex flex-col gap-2.5">
-                    `;
-                    if (group.autumn && typeof QUESTIONS_LIST !== 'undefined') {
-                        QUESTIONS_LIST.forEach(q => {
-                            cardHtml += `
-                            <a href="test.html?year=${group.autumn.id}&question=${q.id}" class="group bg-slate-50 hover:bg-white border border-slate-200 hover:border-indigo-500 rounded-xl p-4 flex items-center justify-between font-bold text-xs sm:text-sm text-slate-700 transition-all hover:shadow-md duration-200 hover:-translate-y-0.5">
-                                <span class="group-hover:text-indigo-600 transition-colors">${q.title}</span>
-                                <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400 group-hover:text-indigo-600 group-hover:translate-x-0.5 transition-all"></i>
-                            </a>
-                            `;
-                        });
-                    } else {
-                        cardHtml += `
-                        <div class="bg-slate-50/50 border border-dashed border-slate-200 rounded-xl p-5 text-center flex flex-col items-center justify-center gap-1.5 animate-fade-in">
-                            <div class="flex items-center gap-1 text-[11px] font-bold text-slate-500">
-                                <i data-lucide="calendar-x" class="w-4 h-4 text-slate-400"></i>
-                                <span>試験未実施（対象外）</span>
-                            </div>
-                            <p class="text-[10px] text-slate-400 leading-relaxed text-center">
-                                当該時期は応用情報技術者試験の実施がありません。
-                            </p>
-                        </div>
-                        `;
-                    }
-                    cardHtml += `
-                        </div>
-                    </div>
-                    `;
-
-                    // 🌸 春期試験 (右侧)
-                    cardHtml += `
-                    <div class="flex flex-col gap-4">
-                        <div class="flex items-center gap-2 text-xs font-black text-slate-700 bg-slate-100 border border-slate-200 rounded-lg px-3 py-1.5 w-fit">
-                            <span>🌸</span>
-                            <span>春期試験</span>
-                        </div>
-                        <div class="flex flex-col gap-2.5">
-                    `;
-                    if (group.spring && typeof QUESTIONS_LIST !== 'undefined') {
-                        QUESTIONS_LIST.forEach(q => {
-                            cardHtml += `
-                            <a href="test.html?year=${group.spring.id}&question=${q.id}" class="group bg-slate-50 hover:bg-white border border-slate-200 hover:border-indigo-500 rounded-xl p-4 flex items-center justify-between font-bold text-xs sm:text-sm text-slate-700 transition-all hover:shadow-md duration-200 hover:-translate-y-0.5">
-                                <span class="group-hover:text-indigo-600 transition-colors">${q.title}</span>
-                                <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400 group-hover:text-indigo-600 group-hover:translate-x-0.5 transition-all"></i>
-                            </a>
-                            `;
-                        });
-                    } else {
-                        cardHtml += `
-                        <div class="bg-slate-50/50 border border-dashed border-slate-200 rounded-xl p-5 text-center flex flex-col items-center justify-center gap-1.5 animate-fade-in">
-                            <div class="flex items-center gap-1 text-[11px] font-bold text-slate-500">
-                                <i data-lucide="calendar-x" class="w-4 h-4 text-slate-400"></i>
-                                <span>試験未実施（対象外）</span>
-                            </div>
-                            <p class="text-[10px] text-slate-400 leading-relaxed text-center">
-                                当該時期は応用情報技術者試験の実施がありません。
-                            </p>
-                        </div>
-                        `;
-                    }
-                    cardHtml += `
-                        </div>
-                    </div>
-                    </div>
-                    `;
-                    
-                    card.innerHTML = cardHtml;
-                    container.appendChild(card);
-                });
-
-                const filterBtns = filtersContainer.querySelectorAll('.filter-btn');
-                filterBtns.forEach(btn => {
-                    btn.addEventListener('click', () => {
-                        filterBtns.forEach(b => {
-                            b.className = "filter-btn px-4 py-2.5 text-xs font-bold rounded-xl border border-slate-200 bg-white text-slate-600 hover:bg-slate-50 hover:border-slate-400 transition-all shadow-sm active:scale-95 cursor-pointer";
-                        });
-                        
-                        btn.className = "filter-btn px-4 py-2.5 text-xs font-black rounded-xl transition-all shadow-md active:scale-95 bg-gradient-to-br from-indigo-600 to-teal-500 text-white cursor-pointer";
-                        
-                        const filterVal = btn.getAttribute('data-filter');
-                        const cards = document.querySelectorAll('.year-card');
-                        
-                        cards.forEach(card => {
-                            const cardYear = card.getAttribute('data-year-base');
-                            if (filterVal === 'all' || cardYear === filterVal) {
-                                card.style.display = 'flex';
-                                card.classList.add('animate-fade-in');
-                            } else {
-                                card.style.display = 'none';
-                            }
-                        });
-                    });
-                });
+                renderYearDropdown(uniqueYearBases, {});
+                renderExamCards(groups, uniqueYearBases, {});
             }
 
-            if (typeof lucide !== 'undefined') lucide.createIcons();
+            const videoList = await fetchYouTubePlaylist();
+            const statusEl = document.getElementById('video-sync-status');
+            if (videoList.length > 0) {
+                const totalSec = videoList.reduce((acc, item) => acc + (item.durationSec || 0), 0);
+                const totalDurationText = formatTotalDuration(totalSec);
+                const durationPart = totalDurationText ? `（総再生: ${totalDurationText}）` : '';
+
+                const { examVideoMap, specialLectures } = mapVideosToExams(videoList);
+                renderYearDropdown(uniqueYearBases, examVideoMap);
+                renderExamCards(groups, uniqueYearBases, examVideoMap);
+                renderSpecialLectures(specialLectures);
+                statusEl.textContent = `🎬 解説動画 全${videoList.length}本${durationPart}`;
+            } else {
+                statusEl.textContent = '';
+            }
         });
     </script>
 </body>
