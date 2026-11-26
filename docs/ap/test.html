@@ -4,48 +4,44 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>学習システム | 南式応用情報速攻！</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%234f46e5'/%3E%3Cstop offset='100%25' stop-color='%2314b8a6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='32' height='32' rx='8' fill='url(%23g)'/%3E%3Ctext x='16' y='22' font-family='sans-serif' font-weight='900' font-size='18' fill='white' text-anchor='middle'%3E南%3C/text%3E%3C/svg%3E">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        /* 导入英、中、日三款精致且和谐的字库 */
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght=400;500;600;700;900&family=Noto+Sans+JP:wght=400;500;700;900&family=Noto+Sans+SC:wght=400;500;700;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=Noto+Sans+JP:wght@400;500;700;900&family=Noto+Sans+SC:wght@400;500;700;900&display=swap');
         
         body {
-            /* 智能中日双语优雅回退字体栈，避免简中字符被错误解析为日文汉字字形 */
             font-family: 'Inter', 'Noto Sans SC', 'Noto Sans JP', -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans", "Microsoft YaHei", sans-serif;
             background-color: #F8FAFC;
             min-height: 100vh;
         }
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: #F8FAFC; }
+        ::-webkit-scrollbar { width: 5px; height: 5px; }
+        ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 3px; }
         ::-webkit-scrollbar-thumb:hover { background: #94A3B8; }
         
         .tab-panel { display: none !important; }
         .tab-panel.active { display: flex !important; width: 100%; }
 
-        /* 防止重复点击 */
         .disabled-clicks {
             pointer-events: none !important;
             cursor: default !important;
         }
 
-        /* 选项卡片物理阻尼动效 */
         .option-item-card {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .option-item-card:not(.disabled-clicks):hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(30, 27, 75, 0.04);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 18px rgba(30, 27, 75, 0.05);
             border-color: #4f46e5 !important;
         }
 
-        /* 选项对错高亮 */
         .option-item-card.correct {
             border-color: #10b981 !important; 
             background-color: #f0fdf4 !important; 
             color: #065f46 !important;
-            box-shadow: 0 4px 14px rgba(16, 185, 129, 0.06);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.08);
         }
         .option-item-card.correct .option-prefix {
             background-color: #10b981 !important;
@@ -56,23 +52,22 @@
             border-color: #f43f5e !important; 
             background-color: #fff1f2 !important; 
             color: #9f1239 !important;
-            box-shadow: 0 4px 14px rgba(244, 63, 94, 0.06);
+            box-shadow: 0 4px 12px rgba(244, 63, 94, 0.08);
         }
         .option-item-card.incorrect .option-prefix {
             background-color: #f43f5e !important;
             color: white !important;
         }
 
-        /* 保证切题回弹时，避开顶部 sticky 导航栏 */
         #quiz-box-card {
-            scroll-margin-top: 100px;
+            scroll-margin-top: 96px;
         }
 
         .animate-fade-in {
-            animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            animation: fadeIn 0.25s ease-out forwards;
         }
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(8px); }
+            from { opacity: 0; transform: translateY(-4px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
@@ -84,13 +79,11 @@
             animation: spinSlow 12s linear infinite;
         }
 
-        /* 🛠️ 响应用户反馈：将全局美化拉条加粗至 10px，更方便鼠标精准抓取和拖拽 */
-        .scroll-beauty::-webkit-scrollbar { width: 10px; height: 10px; }
+        .scroll-beauty::-webkit-scrollbar { width: 8px; height: 8px; }
         .scroll-beauty::-webkit-scrollbar-track { background: transparent; }
-        .scroll-beauty::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 10px; border: 2px solid transparent; background-clip: padding-box; }
+        .scroll-beauty::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 8px; border: 2px solid transparent; background-clip: padding-box; }
         .scroll-beauty::-webkit-scrollbar-thumb:hover { background: #94A3B8; border: 2px solid transparent; background-clip: padding-box; }
 
-        /* 可折叠 Diagram 样式组件 */
         .diagram-collapsed {
             min-height: 38px !important;
             height: 38px !important;
@@ -105,100 +98,115 @@
 </head>
 <body class="text-slate-800 flex flex-col antialiased">
 
-    <header class="border-b border-slate-200 bg-white/90 backdrop-blur-md shrink-0 sticky top-0 z-50 shadow-xs">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-            <a href="https://ipa.minami.ac.cn/ap" class="flex items-center space-x-3 hover:opacity-90 transition-all">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-600 to-teal-500 flex items-center justify-center text-white font-black text-lg shadow-sm">
-                    南
-                </div>
-                <div>
-                    <h1 class="text-base font-black text-slate-900 tracking-tight flex items-center gap-1.5">
-                        南式応用情報速攻！<span class="text-[10px] bg-teal-50 text-teal-700 font-bold px-2 py-0.5 rounded-full border border-teal-200">科目B専用</span>
-                    </h1>
-                    <p class="text-[9px] text-teal-600 font-bold tracking-wider uppercase">過去問演習・スマート学習システム</p>
-                </div>
-            </a>
+    <!-- 2層構造コンパクトヘッダー（FocusLink グローバルバー ＋ サイト固有ツールバー） -->
+    <header class="sticky top-0 z-40 shrink-0 shadow-2xs">
+        <!-- 第1層：FocusLink グローバルナビマウント位置（focuslink-bar.js で自動描画） -->
+        <div id="focuslink-bar-root"></div>
 
-            <div class="flex items-center gap-3">
-                <div class="hidden sm:flex items-center gap-1.5 text-xs font-mono font-bold text-slate-600 bg-slate-100 px-3 py-2 rounded-xl border border-slate-200 shadow-inner">
-                    <i data-lucide="timer" class="w-3.5 h-3.5 text-indigo-600 animate-pulse"></i>
-                    <span id="global-timer-display">00:00:00</span>
+        <!-- 第2層：現在のサイト固有バー（南式応用情報速攻！） -->
+        <div class="border-b border-slate-200 bg-white/95 backdrop-blur-md">
+            <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-9 sm:h-10 flex items-center justify-between gap-2">
+                <!-- 左：ポータル戻る ＋ ロゴ -->
+                <div class="flex items-center gap-1.5 min-w-0">
+                    <a href="index.html" title="年度・動画ポータルへ戻る" class="inline-flex items-center gap-1 text-[10.5px] font-bold text-slate-600 hover:text-indigo-600 bg-slate-100 hover:bg-indigo-50 px-2 py-0.5 rounded-md transition-colors shrink-0">
+                        <i data-lucide="arrow-left" class="w-3 h-3"></i>
+                        <span class="hidden sm:inline">一覧</span>
+                    </a>
+
+                    <a href="index.html" class="flex items-center space-x-1.5 hover:opacity-90 transition-all min-w-0">
+                        <div class="w-5 h-5 sm:w-6 sm:h-6 rounded-md bg-gradient-to-br from-indigo-600 to-teal-500 flex items-center justify-center text-white font-black text-[11px] sm:text-xs shadow-2xs shrink-0">
+                            南
+                        </div>
+                        <div class="flex items-center gap-1.5 min-w-0">
+                            <h1 class="text-xs sm:text-sm font-black text-slate-900 tracking-tight truncate">
+                                南式応用情報速攻！
+                            </h1>
+                            <span class="hidden sm:inline-block text-[9.5px] bg-teal-50 text-teal-700 font-bold px-1.5 py-0 rounded-full border border-teal-200 shrink-0">科目B</span>
+                        </div>
+                    </a>
                 </div>
-                <div id="page-title" class="text-xs sm:text-sm font-bold text-slate-700 bg-slate-100 px-4 py-2 rounded-xl border border-slate-200 max-w-[280px] sm:max-w-[400px] truncate shadow-sm">
-                    読み込み中...
+
+                <!-- 右：経過タイマー ＋ 現在の問題バッジ -->
+                <div class="flex items-center gap-1.5 shrink-0 min-w-0">
+                    <div class="hidden sm:inline-flex items-center gap-1 text-[10.5px] font-mono font-bold text-slate-700 bg-slate-100 px-2 py-0.5 rounded-md border border-slate-200/80 shrink-0">
+                        <i data-lucide="timer" class="w-3 h-3 text-indigo-600"></i>
+                        <span id="global-timer-display">00:00:00</span>
+                    </div>
+
+                    <div id="page-title" class="text-[10.5px] sm:text-[11px] font-bold text-indigo-800 bg-indigo-50/90 px-2.5 py-0.5 rounded-md border border-indigo-200/80 max-w-[165px] sm:max-w-[320px] truncate">
+                        読み込み中...
+                    </div>
                 </div>
             </div>
         </div>
     </header>
 
-    <nav class="max-w-7xl w-full mx-auto px-4 pt-4 flex space-x-1 border-b border-slate-200 shrink-0">
-        <button data-target="tab-01" class="tab-btn px-4 py-2.5 font-black text-xs sm:text-sm border-b-2 border-indigo-600 bg-indigo-50/50 text-indigo-900 focus:outline-none transition-all flex items-center space-x-1.5 rounded-t-xl">
-            <i data-lucide="award" class="w-4 h-4"></i>
+    <nav class="max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 pt-2.5 flex space-x-1 border-b border-slate-200 bg-white/60 shrink-0 overflow-x-auto no-scrollbar">
+        <button data-target="tab-01" class="tab-btn px-3 sm:px-4 py-2 font-black text-[11px] sm:text-xs border-b-2 border-indigo-600 bg-indigo-50/60 text-indigo-900 focus:outline-none transition-all flex items-center space-x-1.5 rounded-t-lg whitespace-nowrap shrink-0 cursor-pointer">
+            <i data-lucide="award" class="w-3.5 h-3.5"></i>
             <span>① 試験前知識チャージ</span>
         </button>
-        <button data-target="tab-02" class="tab-btn px-4 py-2.5 font-bold text-xs sm:text-sm border-b-2 border-transparent text-slate-500 hover:text-slate-800 hover:bg-slate-100/50 focus:outline-none transition-all flex items-center space-x-1.5 rounded-t-xl">
-            <i data-lucide="compass" class="w-4 h-4"></i>
+        <button data-target="tab-02" class="tab-btn px-3 sm:px-4 py-2 font-bold text-[11px] sm:text-xs border-b-2 border-transparent text-slate-500 hover:text-slate-800 hover:bg-slate-100/60 focus:outline-none transition-all flex items-center space-x-1.5 rounded-t-lg whitespace-nowrap shrink-0 cursor-pointer">
+            <i data-lucide="compass" class="w-3.5 h-3.5"></i>
             <span>② 過去問演習</span>
         </button>
-        <button data-target="tab-03" class="tab-btn px-4 py-2.5 font-bold text-xs sm:text-sm border-b-2 border-transparent text-slate-500 hover:text-slate-800 hover:bg-slate-100/50 focus:outline-none transition-all flex items-center space-x-1.5 rounded-t-xl">
-            <i data-lucide="search" class="w-4 h-4"></i>
+        <button data-target="tab-03" class="tab-btn px-3 sm:px-4 py-2 font-bold text-[11px] sm:text-xs border-b-2 border-transparent text-slate-500 hover:text-slate-800 hover:bg-slate-100/60 focus:outline-none transition-all flex items-center space-x-1.5 rounded-t-lg whitespace-nowrap shrink-0 cursor-pointer">
+            <i data-lucide="search" class="w-3.5 h-3.5"></i>
             <span>③ 解答例</span>
         </button>
-        <button data-target="tab-04" class="tab-btn px-4 py-2.5 font-bold text-xs sm:text-sm border-b-2 border-transparent text-slate-500 hover:text-slate-800 hover:bg-slate-100/50 focus:outline-none transition-all flex items-center space-x-1.5 rounded-t-xl">
-            <i data-lucide="shield-alert" class="w-4 h-4"></i>
+        <button data-target="tab-04" class="tab-btn px-3 sm:px-4 py-2 font-bold text-[11px] sm:text-xs border-b-2 border-transparent text-slate-500 hover:text-slate-800 hover:bg-slate-100/60 focus:outline-none transition-all flex items-center space-x-1.5 rounded-t-lg whitespace-nowrap shrink-0 cursor-pointer">
+            <i data-lucide="shield-alert" class="w-3.5 h-3.5"></i>
             <span>④ 南さんのノート</span>
         </button>
-        <button data-target="tab-05" class="tab-btn px-4 py-2.5 font-bold text-xs sm:text-sm border-b-2 border-transparent text-slate-500 hover:text-slate-800 hover:bg-slate-100/50 focus:outline-none transition-all flex items-center space-x-1.5 rounded-t-xl">
-            <i data-lucide="video" class="w-4 h-4"></i>
+        <button data-target="tab-05" class="tab-btn px-3 sm:px-4 py-2 font-bold text-[11px] sm:text-xs border-b-2 border-transparent text-slate-500 hover:text-slate-800 hover:bg-slate-100/60 focus:outline-none transition-all flex items-center space-x-1.5 rounded-t-lg whitespace-nowrap shrink-0 cursor-pointer">
+            <i data-lucide="video" class="w-3.5 h-3.5"></i>
             <span>⑤ 南さんの動画解説</span>
         </button>
     </nav>
 
-    <main class="flex-1 max-w-7xl w-full mx-auto px-4 py-4 flex flex-col min-h-0">
+    <main class="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-3 flex flex-col min-h-0">
 
-        <div id="tab-01" class="tab-panel active w-full flex-col pb-16">
-            <div class="w-full max-w-6xl mx-auto mt-4">
+        <div id="tab-01" class="tab-panel active w-full flex-col pb-12">
+            <div class="w-full max-w-6xl mx-auto mt-2">
                 
-                <div class="w-full flex flex-col md:flex-row gap-6 items-start animate-fade-in hidden" id="quiz-box-card">
+                <div class="w-full flex flex-col md:flex-row gap-4 sm:gap-5 items-start animate-fade-in hidden" id="quiz-box-card">
                     
-                    <!-- 左侧核心舱：宽度从原有的 35% 扩容至 42% 以完美包容网络架构流向图 -->
-                    <div class="w-full md:w-[42%] bg-white border border-slate-200 rounded-2xl p-6 flex flex-col gap-5 shrink-0 md:sticky md:top-20 shadow-xs hover:shadow-sm transition-all">
-                        <div class="flex flex-col gap-4">
+                    <div class="w-full md:w-[42%] bg-white border border-slate-200 rounded-2xl p-4 sm:p-5 flex flex-col gap-4 shrink-0 md:sticky md:top-14 shadow-2xs transition-all">
+                        <div class="flex flex-col gap-3">
                             <div class="flex items-center justify-between">
-                                <span class="bg-indigo-50 text-indigo-900 px-3 py-1 rounded-full text-[10px] font-bold tracking-wider border border-indigo-200 uppercase">
+                                <span class="bg-indigo-50 text-indigo-800 px-2.5 py-0.5 rounded-full text-[10px] font-bold tracking-wider border border-indigo-200/80 uppercase">
                                     知識の最速チャージ
                                 </span>
                                 <div class="text-xs font-bold text-slate-500">
-                                    第 <span id="q-current-idx" class="text-slate-900 font-extrabold text-sm">1</span> / <span id="q-total-count">10</span> 問
+                                    第 <span id="q-current-idx" class="text-slate-900 font-black text-sm">1</span> / <span id="q-total-count">10</span> 問
                                 </div>
                             </div>
-                            <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden shadow-inner">
+                            <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden shadow-inner">
                                 <div id="q-progress-bar" class="bg-gradient-to-r from-indigo-600 to-teal-500 h-full w-0 transition-all duration-300"></div>
                             </div>
-                            <div class="mt-1">
-                                <div id="q-question-text" class="text-base font-bold text-slate-900 leading-relaxed whitespace-pre-wrap tracking-tight">Loading...</div>
+                            <div class="mt-0.5">
+                                <div id="q-question-text" class="text-sm sm:text-[15px] font-bold text-slate-900 leading-relaxed whitespace-pre-wrap tracking-tight">Loading...</div>
                             </div>
 
-                            <!-- 🛠️ 优化升级后的流式图解舱：默认加入 diagram-collapsed 保持闭合 -->
-                            <div id="q-diagram-box" class="hidden diagram-collapsed w-full bg-slate-50 border border-slate-200 rounded-xl p-4 font-mono text-[11px] sm:text-xs text-slate-700 shadow-inner select-all scroll-beauty relative pt-10 mt-2" style="resize: both; overflow: auto; min-height: 160px; max-width: 100%;">
-                                <div id="q-diagram-toggle" class="absolute top-2.5 left-3 text-[9px] font-black tracking-wider text-slate-500 bg-slate-200/80 px-2 py-0.5 rounded-md uppercase cursor-pointer select-none flex items-center gap-1 hover:bg-slate-300 transition-colors">
+                            <div id="q-diagram-box" class="hidden diagram-collapsed w-full bg-slate-50 border border-slate-200 rounded-xl p-3.5 font-mono text-[11px] text-slate-700 shadow-inner select-all scroll-beauty relative pt-9 mt-1" style="resize: both; overflow: auto; min-height: 140px; max-width: 100%;">
+                                <div id="q-diagram-toggle" class="absolute top-2 left-2.5 text-[9px] font-black tracking-wider text-slate-600 bg-slate-200/80 px-2 py-0.5 rounded-md uppercase cursor-pointer select-none flex items-center gap-1 hover:bg-slate-300 transition-colors">
                                     <i data-lucide="image" class="w-3 h-3 text-slate-600"></i>Question Diagram <i data-lucide="chevron-down" class="w-3 h-3 text-slate-600 transition-transform duration-200" id="q-diagram-arrow"></i>
                                 </div>
                                 <pre id="q-diagram-content" class="whitespace-pre font-mono leading-relaxed text-slate-800 text-left block w-full overflow-visible select-text"></pre>
                             </div>
                         </div>
 
-                        <div class="flex flex-col gap-3 border-t border-slate-200 pt-4 mt-auto">
-                            <div class="hidden rounded-xl p-3.5 text-xs leading-relaxed bg-teal-50/60 border border-dashed border-teal-200 text-teal-900 transition-all" id="q-hint-box"></div>
+                        <div class="flex flex-col gap-2.5 border-t border-slate-100 pt-3.5 mt-auto">
+                            <div class="hidden rounded-xl p-3 text-xs leading-relaxed bg-teal-50/70 border border-dashed border-teal-200 text-teal-900 transition-all" id="q-hint-box"></div>
                             <div class="flex items-center justify-between gap-2">
-                                <button class="text-xs font-bold text-slate-700 bg-slate-100 border border-slate-200 px-3.5 py-2.5 rounded-xl hover:bg-slate-200 active:scale-95 transition-all" id="q-action-hint-btn">
+                                <button class="text-[11px] font-bold text-slate-700 bg-slate-100 border border-slate-200 px-3 py-2 rounded-xl hover:bg-slate-200 active:scale-95 transition-all cursor-pointer" id="q-action-hint-btn">
                                     <span class="flex items-center gap-1"><i data-lucide="help-circle" class="w-3.5 h-3.5"></i>ヒント</span>
                                 </button>
-                                <div class="flex items-center gap-2">
-                                    <button class="bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 font-bold text-xs p-2.5 rounded-xl active:scale-95 disabled:opacity-40 disabled:pointer-events-none transition-all" id="q-action-prev-btn" title="前の問題">
+                                <div class="flex items-center gap-1.5">
+                                    <button class="bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 font-bold text-xs p-2 rounded-xl active:scale-95 disabled:opacity-40 disabled:pointer-events-none transition-all cursor-pointer" id="q-action-prev-btn" title="前の問題">
                                         <i data-lucide="chevron-left" class="w-4 h-4"></i>
                                     </button>
-                                    <button class="bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs px-4 py-2.5 rounded-xl active:scale-95 transition-all shadow-sm flex items-center gap-1" id="q-action-next-btn">
+                                    <button class="bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs px-3.5 py-2 rounded-xl active:scale-95 transition-all shadow-2xs flex items-center gap-1 cursor-pointer" id="q-action-next-btn">
                                         <span>NEXT</span> <i data-lucide="chevron-right" class="w-4 h-4"></i>
                                     </button>
                                 </div>
@@ -206,42 +214,41 @@
                         </div>
                     </div>
 
-                    <!-- 右侧选项舱：自适应承接剩余宽度 -->
-                    <div class="flex-1 w-full bg-white border border-slate-200 rounded-2xl p-6 md:p-8 shadow-xs flex flex-col gap-4">
-                        <div class="text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-1">選択肢</div>
-                        <div class="flex flex-col gap-4 w-full" id="q-options-list"></div>
+                    <div class="flex-1 w-full bg-white border border-slate-200 rounded-2xl p-4 sm:p-6 shadow-2xs flex flex-col gap-3">
+                        <div class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">選択肢</div>
+                        <div class="flex flex-col gap-3 w-full" id="q-options-list"></div>
                     </div>
 
                 </div>
 
-                <div class="bg-white border-2 border-indigo-200 rounded-2xl p-8 shadow-md text-center flex flex-col items-center gap-5 hidden max-w-2xl mx-auto animate-fade-in" id="quiz-report-panel">
-                    <span class="bg-indigo-50 px-4 py-1.5 rounded-full text-indigo-700 text-[10px] font-bold tracking-wider border border-indigo-200">南式・合格判定ポータル</span>
-                    <h2 class="font-black text-slate-900 text-lg">事前知識チェック完了！</h2>
+                <div class="bg-white border border-indigo-200 rounded-2xl p-6 sm:p-8 shadow-sm text-center flex flex-col items-center gap-4 hidden max-w-2xl mx-auto animate-fade-in" id="quiz-report-panel">
+                    <span class="bg-indigo-50 px-3.5 py-1 rounded-full text-indigo-700 text-[10px] font-bold tracking-wider border border-indigo-200">南式・合格判定ポータル</span>
+                    <h2 class="font-black text-slate-900 text-base sm:text-lg">事前知識チェック完了！</h2>
                     <div class="text-4xl font-black text-slate-900">
                         <span id="report-correct-num" class="text-5xl text-indigo-600 font-black">0</span> <span class="text-sm font-medium text-slate-400">/ 15 問 正解</span>
                     </div>
                     <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 text-left w-full space-y-1">
                         <h4 id="report-eval-title" class="font-bold text-xs text-indigo-700">🤖 総合評価</h4>
-                        <p id="report-eval-content" class="text-[11px] text-slate-600 leading-relaxed whitespace-pre-wrap">--</p>
+                        <p id="report-eval-content" class="text-[11.5px] text-slate-600 leading-relaxed whitespace-pre-wrap">--</p>
                     </div>
-                    <div class="flex gap-3 w-full mt-2">
-                        <button class="flex-1 py-2.5 bg-slate-100 hover:bg-slate-200 border border-slate-300 text-slate-700 text-xs font-bold rounded-lg transition-all" id="report-retry-btn">再挑戦</button>
-                        <button class="flex-1 py-2.5 bg-gradient-to-r from-indigo-600 to-teal-500 text-white text-xs font-bold rounded-lg transition-all shadow-md hover:opacity-90" id="report-go-tab2-btn">STEP 02 過去問へ ➔</button>
+                    <div class="flex gap-3 w-full mt-1">
+                        <button class="flex-1 py-2.5 bg-slate-100 hover:bg-slate-200 border border-slate-300 text-slate-700 text-xs font-bold rounded-xl transition-all cursor-pointer" id="report-retry-btn">再挑戦</button>
+                        <button class="flex-1 py-2.5 bg-gradient-to-r from-indigo-600 to-teal-500 text-white text-xs font-bold rounded-xl transition-all shadow-sm hover:opacity-90 cursor-pointer" id="report-go-tab2-btn">STEP 02 過去問へ ➔</button>
                     </div>
                 </div>
 
-                <div id="quiz-empty-panel" class="bg-white border border-slate-200 rounded-2xl p-10 shadow-sm text-center flex flex-col items-center justify-center gap-5 max-w-xl mx-auto animate-fade-in hidden">
-                    <div class="w-16 h-16 rounded-full bg-slate-50 flex items-center justify-center text-slate-600 shadow-inner">
-                        <i data-lucide="sparkles" class="w-8 h-8 animate-spin-slow text-teal-500"></i>
+                <div id="quiz-empty-panel" class="bg-white border border-slate-200 rounded-2xl p-8 sm:p-10 shadow-2xs text-center flex flex-col items-center justify-center gap-4 max-w-xl mx-auto animate-fade-in hidden">
+                    <div class="w-14 h-14 rounded-full bg-indigo-50 flex items-center justify-center text-indigo-600">
+                        <i data-lucide="sparkles" class="w-7 h-7 animate-spin-slow text-teal-500"></i>
                     </div>
-                    <span class="inline-flex items-center gap-1 text-[11px] font-bold bg-slate-100 text-slate-800 border border-slate-200 px-2.5 py-0.5 rounded-full shadow-2xs">
+                    <span class="inline-flex items-center gap-1 text-[10.5px] font-bold bg-slate-100 text-slate-800 border border-slate-200 px-2.5 py-0.5 rounded-full">
                         UNDER CONSTRUCTION
                     </span>
                     <h2 class="font-black text-slate-900 text-base">事前知識チャージ 准备中！</h2>
                     <p class="text-xs text-slate-500 leading-relaxed max-w-sm">
                         完成制作后将立即全速同步。现在就先去搞定「② 過去問演習」吧！📚
                     </p>
-                    <button class="py-2.5 px-6 bg-gradient-to-r from-indigo-600 to-teal-500 text-white text-xs font-bold rounded-xl transition-all shadow-md hover:opacity-90 active:scale-98" id="empty-go-tab2-btn">
+                    <button class="py-2 px-5 bg-gradient-to-r from-indigo-600 to-teal-500 text-white text-xs font-bold rounded-xl transition-all shadow-sm hover:opacity-90 active:scale-95 cursor-pointer" id="empty-go-tab2-btn">
                         STEP 02 過去問演習へ ➔
                     </button>
                 </div>
@@ -249,21 +256,21 @@
             </div>
         </div>
 
-        <div id="tab-02" class="tab-panel w-full flex flex-col md:flex-row gap-4 h-[96vh] relative">
-            <div class="loading-overlay absolute inset-0 bg-white flex flex-col items-center justify-center z-20 text-xs text-slate-400" id="loading-02">
-                <div class="w-8 h-8 border-2 border-slate-200 border-t-indigo-600 rounded-full animate-spin mb-2"></div>
+        <div id="tab-02" class="tab-panel w-full flex flex-col md:flex-row gap-3 sm:gap-4 h-[calc(100vh-110px)] relative">
+            <div class="loading-overlay absolute inset-0 bg-white/90 flex flex-col items-center justify-center z-20 text-xs text-slate-400 rounded-2xl" id="loading-02">
+                <div class="w-7 h-7 border-2 border-slate-200 border-t-indigo-600 rounded-full animate-spin mb-2"></div>
                 <p>過去問 02_Test.pdf 読込中...</p>
             </div>
             
-            <div class="flex-1 h-full flex flex-col gap-1.5">
-                <div class="text-[10px] text-slate-400 font-medium px-1 flex items-center justify-between">
-                    <span>💡 下へスクロールするとヘッダーが隠れ、问题エリアがさらに広がります。</span>
-                    <a id="test-pdf-external" href="#" target="_blank" class="text-indigo-600 hover:text-indigo-700 hover:underline flex items-center gap-0.5">モバイル全画面表示 ↗</a>
+            <div class="flex-1 h-full flex flex-col gap-1.5 min-h-0">
+                <div class="text-[10.5px] text-slate-500 font-medium px-1 flex items-center justify-between">
+                    <span>💡 過去問PDFを確認しながら解答メモを整理しましょう。</span>
+                    <a id="test-pdf-external" href="#" target="_blank" class="text-indigo-600 hover:text-indigo-700 font-bold hover:underline flex items-center gap-0.5">別タブで開く ↗</a>
                 </div>
                 
-                <div id="test-pdf-container" class="flex-1 bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xs relative">
-                    <div id="test-empty-panel" class="absolute inset-0 bg-white flex flex-col items-center justify-center gap-4 text-center p-6 hidden">
-                        <div class="w-16 h-16 rounded-full bg-slate-50 flex items-center justify-center text-slate-600">
+                <div id="test-pdf-container" class="flex-1 bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-2xs relative min-h-0">
+                    <div id="test-empty-panel" class="absolute inset-0 bg-white flex flex-col items-center justify-center gap-3 text-center p-6 hidden">
+                        <div class="w-14 h-14 rounded-full bg-slate-50 flex items-center justify-center text-slate-600">
                             <i data-lucide="sparkles" class="w-7 h-7 animate-spin-slow text-teal-500"></i>
                         </div>
                         <h3 class="font-bold text-slate-900 text-sm">過去問PDF 準備中</h3>
@@ -274,31 +281,31 @@
                 </div>
             </div>
             
-            <div class="w-full md:w-80 bg-white border border-slate-200 rounded-2xl p-4 shadow-xs flex flex-col gap-3 shrink-0 h-auto md:h-full">
+            <div class="w-full md:w-80 bg-white border border-slate-200 rounded-2xl p-3.5 shadow-2xs flex flex-col gap-2.5 shrink-0 h-auto md:h-full">
                 <div class="text-xs font-black text-slate-900 tracking-wider uppercase border-b border-slate-100 pb-2 flex items-center justify-between">
                     <span>📝 解答メモ</span>
-                    <button onclick="insertAnswerTemplate('memo-input-tab2')" class="text-[10px] text-indigo-700 bg-indigo-50 border border-indigo-200/60 px-2 py-0.5 rounded hover:bg-indigo-100/80 transition-all font-bold">枠を挿入</button>
+                    <button onclick="insertAnswerTemplate('memo-input-tab2')" class="text-[10px] text-indigo-700 bg-indigo-50 border border-indigo-200/70 px-2 py-0.5 rounded-md hover:bg-indigo-100 transition-all font-bold cursor-pointer">枠を挿入</button>
                 </div>
-                <div class="flex-1 flex flex-col gap-3">
-                    <textarea id="memo-input-tab2" class="w-full flex-1 bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-medium text-slate-800 focus:outline-none focus:border-indigo-500 focus:bg-white resize-none shadow-inner min-h-[180px]" placeholder="ここに自己的解答を入力してください...&#10;（右上的按钮から官方对齐框架可一键插入）"></textarea>
-                    <button id="submit-memo-btn-tab2" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-black py-2.5 rounded-xl text-xs shadow-md transition-all text-center active:scale-98">提出して答え合わせ ➔</button>
+                <div class="flex-1 flex flex-col gap-2.5 min-h-0">
+                    <textarea id="memo-input-tab2" class="w-full flex-1 bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-medium text-slate-800 focus:outline-none focus:border-indigo-500 focus:bg-white resize-none shadow-inner min-h-[160px]" placeholder="ここに自己的解答を入力してください...&#10;（右上的按钮から官方对齐框架可一键插入）"></textarea>
+                    <button id="submit-memo-btn-tab2" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-black py-2 rounded-xl text-xs shadow-2xs transition-all text-center active:scale-95 cursor-pointer">提出して答え合わせ ➔</button>
                 </div>
             </div>
         </div>
 
-        <div id="tab-03" class="tab-panel w-full flex flex-col md:flex-row gap-4 h-[96vh] overflow-hidden">
-            <div class="flex-1 h-full overflow-auto bg-slate-50 rounded-2xl border border-slate-200 flex items-start justify-center p-4 relative">
-                <div id="loading-03" class="absolute inset-0 bg-white flex flex-col items-center justify-center z-20 text-xs text-slate-400">
-                    <div class="w-8 h-8 border-2 border-slate-200 border-t-indigo-600 rounded-full animate-spin mb-2"></div>
+        <div id="tab-03" class="tab-panel w-full flex flex-col md:flex-row gap-3 sm:gap-4 h-[calc(100vh-110px)] overflow-hidden">
+            <div class="flex-1 h-full overflow-auto bg-white rounded-2xl border border-slate-200 flex items-start justify-center p-4 relative shadow-2xs">
+                <div id="loading-03" class="absolute inset-0 bg-white/90 flex flex-col items-center justify-center z-20 text-xs text-slate-400">
+                    <div class="w-7 h-7 border-2 border-slate-200 border-t-indigo-600 rounded-full animate-spin mb-2"></div>
                     <p>解答例イメージ 読込中...</p>
                 </div>
-                <img id="answer-image" src="" alt="解答例" class="max-h-full w-auto rounded-xl shadow-sm border border-slate-200 hidden" />
+                <img id="answer-image" src="" alt="解答例" class="max-h-full w-auto rounded-xl shadow-2xs border border-slate-200 hidden" />
                 
-                <div id="answer-empty-panel" class="bg-white border border-slate-200 rounded-2xl p-8 shadow-sm text-center flex flex-col items-center justify-center gap-5 max-w-xl my-auto animate-fade-in hidden">
+                <div id="answer-empty-panel" class="bg-white border border-slate-200 rounded-2xl p-8 shadow-2xs text-center flex flex-col items-center justify-center gap-4 max-w-xl my-auto animate-fade-in hidden">
                     <div class="w-14 h-14 rounded-full bg-slate-50 flex items-center justify-center text-slate-600">
                         <i data-lucide="image-off" class="w-6 h-6 text-slate-500"></i>
                     </div>
-                    <span class="bg-slate-100 px-4 py-1.5 rounded-full text-slate-800 text-[10px] font-black tracking-wider border border-slate-200">NO IMAGE</span>
+                    <span class="bg-slate-100 px-3.5 py-1 rounded-full text-slate-800 text-[10px] font-black tracking-wider border border-slate-200">NO IMAGE</span>
                     <h3 class="font-bold text-slate-900 text-sm">解答例イメージ 準備中</h3>
                     <p class="text-xs text-slate-400 leading-relaxed max-w-xs">
                         全套图文详解与答题脑图设计正在火热渲染。📝
@@ -306,44 +313,44 @@
                 </div>
             </div>
 
-            <div class="w-full md:w-80 bg-white border border-slate-200 rounded-2xl p-4 shadow-xs flex flex-col gap-3 shrink-0 h-auto md:h-full">
+            <div class="w-full md:w-80 bg-white border border-slate-200 rounded-2xl p-3.5 shadow-2xs flex flex-col gap-2.5 shrink-0 h-auto md:h-full">
                 <div class="text-xs font-black text-slate-900 tracking-wider uppercase border-b border-slate-100 pb-2 flex items-center justify-between">
                     <span>📝 記入した解答の確認</span>
-                    <button onclick="insertAnswerTemplate('memo-input-tab3')" class="text-[10px] text-indigo-700 bg-indigo-50 border border-indigo-200/60 px-2 py-0.5 rounded hover:bg-indigo-100/80 transition-all font-bold">枠を挿入</button>
+                    <button onclick="insertAnswerTemplate('memo-input-tab3')" class="text-[10px] text-indigo-700 bg-indigo-50 border border-indigo-200/70 px-2 py-0.5 rounded-md hover:bg-indigo-100 transition-all font-bold cursor-pointer">枠を挿入</button>
                 </div>
-                <div class="flex-1 flex flex-col gap-3">
-                    <textarea id="memo-input-tab3" class="w-full flex-1 bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-medium text-slate-800 focus:outline-none focus:border-indigo-500 focus:bg-white resize-none shadow-inner min-h-[180px]" placeholder="ここに目的的解答を入力してください..."></textarea>
-                    <div class="text-[10px] text-slate-600 text-center font-medium bg-slate-50 p-2.5 rounded-xl border border-slate-200">
+                <div class="flex-1 flex flex-col gap-2.5 min-h-0">
+                    <textarea id="memo-input-tab3" class="w-full flex-1 bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-medium text-slate-800 focus:outline-none focus:border-indigo-500 focus:bg-white resize-none shadow-inner min-h-[160px]" placeholder="ここに目的的解答を入力してください..."></textarea>
+                    <div class="text-[10.5px] text-slate-600 text-center font-medium bg-indigo-50/60 p-2.5 rounded-xl border border-indigo-100">
                         💡 左侧的高清官方参考图片可以与你记录的草稿进行极速盲测与复盘对照。
                     </div>
                 </div>
             </div>
         </div>
 
-        <div id="tab-04" class="tab-panel w-full flex flex-col h-[96vh] relative">
-            <div class="loading-overlay absolute inset-0 bg-white flex flex-col items-center justify-center z-20 text-xs text-slate-400" id="loading-04">
-                <div class="w-8 h-8 border-2 border-slate-200 border-t-indigo-600 rounded-full animate-spin mb-2"></div>
+        <div id="tab-04" class="tab-panel w-full flex flex-col h-[calc(100vh-110px)] relative">
+            <div class="loading-overlay absolute inset-0 bg-white/90 flex flex-col items-center justify-center z-20 text-xs text-slate-400 rounded-2xl" id="loading-04">
+                <div class="w-7 h-7 border-2 border-slate-200 border-t-indigo-600 rounded-full animate-spin mb-2"></div>
                 <p>秘籍 04_minamis_note.pdf 読込中...</p>
             </div>
             
-            <div class="flex-1 h-full flex flex-col gap-1.5">
-                <div class="text-[10px] text-slate-400 font-medium px-1 flex items-center justify-between">
-                    <span>💡 攻略ノートを大画面で確認しながら、重要スタンスを脑に叩き込みましょう。</span>
-                    <a id="note-pdf-external" href="#" target="_blank" class="text-indigo-600 hover:text-indigo-700 hover:underline flex items-center gap-0.5">モバイル全画面表示 ↗</a>
+            <div class="flex-1 h-full flex flex-col gap-1.5 min-h-0">
+                <div class="text-[10.5px] text-slate-500 font-medium px-1 flex items-center justify-between">
+                    <span>💡 攻略ノートを確認しながら、重要ポイントを整理しましょう。</span>
+                    <a id="note-pdf-external" href="#" target="_blank" class="text-indigo-600 hover:text-indigo-700 font-bold hover:underline flex items-center gap-0.5">別タブで開く ↗</a>
                 </div>
                 
-                <div class="w-full flex-1 bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xs flex flex-col justify-center items-center">
+                <div class="w-full flex-1 bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-2xs flex flex-col justify-center items-center min-h-0">
                     <div id="note-pdf-container" class="w-full h-full"></div>
                     
-                    <div id="note-empty-panel" class="bg-white border border-slate-200 rounded-2xl p-10 shadow-sm text-center flex flex-col items-center justify-center gap-5 max-w-xl mx-auto my-auto animate-fade-in hidden">
-                        <div class="w-16 h-16 rounded-full bg-slate-50 flex items-center justify-center text-slate-600 shadow-inner">
-                            <i data-lucide="edit-3" class="w-8 h-8 animate-bounce text-slate-500"></i>
+                    <div id="note-empty-panel" class="bg-white border border-slate-200 rounded-2xl p-8 sm:p-10 shadow-2xs text-center flex flex-col items-center justify-center gap-4 max-w-xl mx-auto my-auto animate-fade-in hidden">
+                        <div class="w-14 h-14 rounded-full bg-slate-50 flex items-center justify-center text-slate-600">
+                            <i data-lucide="edit-3" class="w-7 h-7 animate-bounce text-slate-500"></i>
                         </div>
-                        <span class="inline-flex items-center gap-1 text-[11px] font-bold bg-slate-100 text-slate-800 border border-slate-200 px-2.5 py-0.5 rounded-full shadow-2xs">
+                        <span class="inline-flex items-center gap-1 text-[10.5px] font-bold bg-slate-100 text-slate-800 border border-slate-200 px-2.5 py-0.5 rounded-full">
                             COMING SOON
                         </span>
-                        <h2 class="font-black text-slate-900 text-lg">南さんのノート 绝賛執筆中！</h2>
-                        <p class="text-xs sm:text-sm text-slate-600 leading-relaxed max-w-sm">
+                        <h2 class="font-black text-slate-900 text-base sm:text-lg">南さんのノート 绝賛執筆中！</h2>
+                        <p class="text-xs sm:text-[13px] text-slate-600 leading-relaxed max-w-sm">
                             「群主 Minami 的独家秘籍攻略手记」正在结合最新考试动向进行直笔扫描与架构梳理。我们将最精妙的底层模型与中文解构技巧全盘托出。☕<br>
                             一经出炉，即刻在这里云端同步更新！🔥
                         </p>
@@ -352,41 +359,37 @@
             </div>
         </div>
 
-        <div id="tab-05" class="tab-panel w-full flex flex-col h-[96vh] relative">
-            <div class="loading-overlay absolute inset-0 bg-white flex flex-col items-center justify-center z-20 text-xs text-slate-400" id="loading-05">
-                <div class="w-8 h-8 border-2 border-slate-200 border-t-indigo-600 rounded-full animate-spin mb-2"></div>
+        <div id="tab-05" class="tab-panel w-full flex flex-col h-[calc(100vh-110px)] relative">
+            <div class="loading-overlay absolute inset-0 bg-white/90 flex flex-col items-center justify-center z-20 text-xs text-slate-400 rounded-2xl" id="loading-05">
+                <div class="w-7 h-7 border-2 border-slate-200 border-t-indigo-600 rounded-full animate-spin mb-2"></div>
                 <p>動画解説 05_video.js 読込中...</p>
             </div>
             
             <div class="flex-1 h-full flex flex-col gap-1.5 min-h-0">
-                <div class="text-[10px] text-slate-400 font-medium px-1 flex items-center justify-between shrink-0">
+                <div class="text-[10.5px] text-slate-500 font-medium px-1 flex items-center justify-between shrink-0">
                     <span>💡 動画を再生して、南さんの詳細な解き方と解説を確認しましょう。</span>
                 </div>
                 
-                <!-- 主内容区：采用响应式 Flex 布局，左侧播放器，右侧播放列表 -->
-                <div class="w-full flex-1 bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xs flex flex-col lg:flex-row p-4 md:p-6 gap-6 min-h-0">
+                <div class="w-full flex-1 bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-2xs flex flex-col lg:flex-row p-3.5 sm:p-5 gap-4 sm:gap-6 min-h-0">
                     
-                    <!-- 左侧：播放器核心舱 -->
                     <div class="flex-1 flex flex-col items-center justify-center min-h-0">
-                        <div id="video-player-container" class="w-full aspect-video bg-black rounded-xl overflow-hidden shadow-md hidden"></div>
+                        <div id="video-player-container" class="w-full aspect-video bg-black rounded-xl overflow-hidden shadow-sm hidden"></div>
                         
-                        <!-- 暂无视频时的占位面板 -->
-                        <div id="video-empty-panel" class="bg-white border border-slate-200 rounded-2xl p-10 shadow-sm text-center flex flex-col items-center justify-center gap-5 max-w-xl mx-auto my-auto animate-fade-in hidden">
-                            <div class="w-16 h-16 rounded-full bg-slate-50 flex items-center justify-center text-slate-600 shadow-inner">
-                                <i data-lucide="video-off" class="w-8 h-8 text-slate-400"></i>
+                        <div id="video-empty-panel" class="bg-white border border-slate-200 rounded-2xl p-8 sm:p-10 shadow-2xs text-center flex flex-col items-center justify-center gap-4 max-w-xl mx-auto my-auto animate-fade-in hidden">
+                            <div class="w-14 h-14 rounded-full bg-slate-50 flex items-center justify-center text-slate-600">
+                                <i data-lucide="video-off" class="w-7 h-7 text-slate-400"></i>
                             </div>
-                            <span class="inline-flex items-center gap-1 text-[11px] font-bold bg-slate-100 text-slate-800 border border-slate-200 px-2.5 py-0.5 rounded-full shadow-2xs">
+                            <span class="inline-flex items-center gap-1 text-[10.5px] font-bold bg-slate-100 text-slate-800 border border-slate-200 px-2.5 py-0.5 rounded-full">
                                 COMING SOON
                             </span>
-                            <h2 class="font-black text-slate-900 text-lg">動画解説 準備中！</h2>
-                            <p class="text-xs sm:text-sm text-slate-600 leading-relaxed max-w-sm">
+                            <h2 class="font-black text-slate-900 text-base sm:text-lg">動画解説 準備中！</h2>
+                            <p class="text-xs sm:text-[13px] text-slate-600 leading-relaxed max-w-sm">
                                 この問題の「南さんの動画解説」は、余裕ができたら制作・公開する予定です。🎬<br>
                             </p>
                         </div>
                     </div>
 
-                    <!-- 右侧：播放列表侧边栏 (默认隐藏，有多个视频或指定列表时显示) -->
-                    <div id="video-playlist-container" class="w-full lg:w-80 border-t lg:border-t-0 lg:border-l border-slate-200 pt-4 lg:pt-0 lg:pl-6 flex flex-col gap-3 shrink-0 hidden h-auto lg:h-full">
+                    <div id="video-playlist-container" class="w-full lg:w-80 border-t lg:border-t-0 lg:border-l border-slate-200 pt-3 lg:pt-0 lg:pl-5 flex flex-col gap-2.5 shrink-0 hidden h-auto lg:h-full">
                         <div class="text-xs font-black text-slate-900 tracking-wider uppercase flex items-center justify-between pb-2 border-b border-slate-100">
                             <span class="flex items-center gap-1.5">
                                 <i data-lucide="list-video" class="w-4 h-4 text-indigo-600"></i>
@@ -394,10 +397,7 @@
                             </span>
                             <span id="playlist-count" class="text-[10px] bg-indigo-50 text-indigo-700 px-2 py-0.5 rounded-full font-bold">0 本</span>
                         </div>
-                        <!-- 可滚动的视频列表 -->
-                        <div id="video-playlist-items" class="flex-1 overflow-y-auto space-y-2.5 pr-1 scroll-beauty">
-                            <!-- 动态渲染列表项 -->
-                        </div>
+                        <div id="video-playlist-items" class="flex-1 overflow-y-auto space-y-2 pr-1 scroll-beauty"></div>
                     </div>
 
                 </div>
@@ -406,16 +406,17 @@
 
     </main>
 
+    <!-- 独立 FocusLink 全局导航条 -->
+    <script src="https://focuslink.minami.ac.cn/focuslink-bar.js" defer></script>
     <script src="config.js"></script>
     <script src="ai_links.js"></script>
     <script>
         let quizQuestions = [];
-        let originalQuizQuestions = []; // 备份原始数据，支持重新挑战时Reshuffle
+        let originalQuizQuestions = [];
         let currentQuestionIdx = 0;
         let currentScore = 0;
         let currentIsAnswered = false;
 
-        // Fisher-Yates 随机置乱算法
         function shuffleArray(array) {
             for (let i = array.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
@@ -477,7 +478,6 @@ e:
         document.addEventListener('DOMContentLoaded', () => {
             if (typeof lucide !== 'undefined') lucide.createIcons();
 
-            // Question Diagram 折叠与展开联动逻辑
             const diagBox = document.getElementById('q-diagram-box');
             const diagToggle = document.getElementById('q-diagram-toggle');
             const diagArrow = document.getElementById('q-diagram-arrow');
@@ -505,8 +505,8 @@ e:
                 return;
             }
 
-            const foundYear = YEARS_LIST.find(y => y.id === year);
-            const foundQuestion = QUESTIONS_LIST.find(q => q.id === question);
+            const foundYear = typeof YEARS_LIST !== 'undefined' ? YEARS_LIST.find(y => y.id === year) : null;
+            const foundQuestion = typeof QUESTIONS_LIST !== 'undefined' ? QUESTIONS_LIST.find(q => q.id === question) : null;
             const displayYear = foundYear ? foundYear.name : year.replace(/_/g, ' ');
             const displayQuestion = foundQuestion ? foundQuestion.title : question.replace(/_/g, ' ');
             
@@ -564,10 +564,6 @@ e:
                 }, 450);
             });
 
-
-            // ==========================================
-            // 🤖 Tab 1: 完美无灰度高分辨率学习引擎
-            // ==========================================
             const injectScript = document.createElement('script');
             injectScript.src = `${basePath}/quiz_data.js`;
             
@@ -605,7 +601,6 @@ e:
                     return;
                 }
 
-                // 深度复制原始题目，并打乱题目顺序与选项顺序
                 quizQuestions = JSON.parse(JSON.stringify(originalQuizQuestions));
                 shuffleArray(quizQuestions);
                 quizQuestions.forEach(q => {
@@ -632,12 +627,10 @@ e:
                 const pct = ((currentQuestionIdx + 1) / quizQuestions.length) * 100;
                 document.getElementById('q-progress-bar').style.width = `${pct}%`;
 
-                // 🔥 智能拓扑分离引擎：自动切分纯文本情境题干与底层文本拓扑图
                 const diagramBox = document.getElementById('q-diagram-box');
                 const diagramContent = document.getElementById('q-diagram-content');
                 const questionTextEl = document.getElementById('q-question-text');
 
-                // 切题时重置为默认折叠状态
                 diagramBox.classList.add('diagram-collapsed');
                 const diagramArrow = document.getElementById('q-diagram-arrow');
                 if (diagramArrow) diagramArrow.setAttribute('data-lucide', 'chevron-down');
@@ -647,7 +640,6 @@ e:
                     diagramContent.textContent = currentQuiz.diagram;
                     diagramBox.classList.remove('hidden');
                 } else if (currentQuiz.question.includes('【') && (currentQuiz.question.includes('│') || currentQuiz.question.includes('▼'))) {
-                    // 正则捕获：根据常见的文本图解标志块（如【网络路径拓扑】、【邮件中继流量流向】等）实施断门切分
                     const parts = currentQuiz.question.split(/(?=【[^】]+拓撲】|【[^】]+流向】|【[^】]+位置】|【[^】]+架構】)/);
                     if (parts.length > 1) {
                         questionTextEl.textContent = parts[0].trim();
@@ -677,12 +669,12 @@ e:
                     const letter = String.fromCharCode(65 + oIdx);
                     const optCard = document.createElement('div');
                     
-                    optCard.className = "option-item-card bg-white border border-slate-200 p-5 rounded-2xl cursor-pointer flex flex-col items-start gap-1 font-semibold text-xs sm:text-sm text-slate-700 shadow-xs transition-all";
+                    optCard.className = "option-item-card bg-white border border-slate-200 p-4 rounded-xl cursor-pointer flex flex-col items-start gap-1 font-semibold text-xs sm:text-sm text-slate-700 shadow-2xs transition-all";
                     
                     optCard.innerHTML = `
-                        <div class="option-top-row flex items-center gap-3 w-full font-bold">
-                            <div class="option-prefix bg-slate-100 text-slate-500 w-6 h-6 rounded-md flex items-center justify-center text-[10px] font-black shrink-0 transition-colors">${letter}</div>
-                            <div class="flex-1 break-words text-slate-900 text-sm sm:text-base">${option.text}</div>
+                        <div class="option-top-row flex items-center gap-2.5 w-full font-bold">
+                            <div class="option-prefix bg-slate-100 text-slate-600 w-6 h-6 rounded-md flex items-center justify-center text-[10px] font-black shrink-0 transition-colors">${letter}</div>
+                            <div class="flex-1 break-words text-slate-900 text-xs sm:text-sm">${option.text}</div>
                         </div>
                     `;
 
@@ -696,11 +688,11 @@ e:
                         
                         const inlineBox = document.createElement('div');
                         if (option.isCorrect) {
-                            inlineBox.className = "w-full mt-4 p-4 bg-emerald-50 border border-emerald-200/60 rounded-xl text-xs sm:text-sm font-medium text-emerald-900 whitespace-pre-wrap leading-relaxed animate-fade-in";
+                            inlineBox.className = "w-full mt-3 p-3.5 bg-emerald-50 border border-emerald-200/70 rounded-xl text-xs font-medium text-emerald-900 whitespace-pre-wrap leading-relaxed animate-fade-in";
                         } else if (oIdx === savedSelectedIdx) {
-                            inlineBox.className = "w-full mt-4 p-4 bg-rose-50 border border-rose-200/60 rounded-xl text-xs sm:text-sm font-medium text-rose-900 whitespace-pre-wrap leading-relaxed animate-fade-in";
+                            inlineBox.className = "w-full mt-3 p-3.5 bg-rose-50 border border-rose-200/70 rounded-xl text-xs font-medium text-rose-900 whitespace-pre-wrap leading-relaxed animate-fade-in";
                         } else {
-                            inlineBox.className = "w-full mt-4 p-4 bg-slate-50 border border-slate-200/60 rounded-xl text-xs sm:text-sm font-medium text-slate-700 whitespace-pre-wrap leading-relaxed animate-fade-in";
+                            inlineBox.className = "w-full mt-3 p-3.5 bg-slate-50 border border-slate-200/70 rounded-xl text-xs font-medium text-slate-700 whitespace-pre-wrap leading-relaxed animate-fade-in";
                         }
                         inlineBox.textContent = option.rationale;
                         optCard.appendChild(inlineBox);
@@ -724,11 +716,11 @@ e:
 
                                 const inlineBox = document.createElement('div');
                                 if (opt.isCorrect) {
-                                    inlineBox.className = "w-full mt-4 p-4 bg-emerald-50 border border-emerald-200/60 rounded-xl text-xs sm:text-sm font-medium text-emerald-900 whitespace-pre-wrap leading-relaxed animate-fade-in";
+                                    inlineBox.className = "w-full mt-3 p-3.5 bg-emerald-50 border border-emerald-200/70 rounded-xl text-xs font-medium text-emerald-900 whitespace-pre-wrap leading-relaxed animate-fade-in";
                                 } else if (loopIdx === oIdx) {
-                                    inlineBox.className = "w-full mt-4 p-4 bg-rose-50 border border-rose-200/60 rounded-xl text-xs sm:text-sm font-medium text-rose-900 whitespace-pre-wrap leading-relaxed animate-fade-in";
+                                    inlineBox.className = "w-full mt-3 p-3.5 bg-rose-50 border border-rose-200/70 rounded-xl text-xs font-medium text-rose-900 whitespace-pre-wrap leading-relaxed animate-fade-in";
                                 } else {
-                                    inlineBox.className = "w-full mt-4 p-4 bg-slate-50 border border-slate-200/60 rounded-xl text-xs sm:text-sm font-medium text-slate-700 whitespace-pre-wrap leading-relaxed animate-fade-in";
+                                    inlineBox.className = "w-full mt-3 p-3.5 bg-slate-50 border border-slate-200/70 rounded-xl text-xs font-medium text-slate-700 whitespace-pre-wrap leading-relaxed animate-fade-in";
                                 }
                                 inlineBox.textContent = opt.rationale;
                                 targetCard.appendChild(inlineBox);
@@ -741,7 +733,6 @@ e:
                     optsWrapper.appendChild(optCard);
                 });
 
-                // 页面平滑重置滚轮
                 const cardEl = document.getElementById('quiz-box-card');
                 if (cardEl) {
                     cardEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -758,14 +749,14 @@ e:
                 if (currentQuestionIdx === quizQuestions.length - 1) {
                     if (hasAnswered) {
                         nextBtn.innerHTML = `<span>判定を見る</span> <i data-lucide="award" class="w-4 h-4"></i>`;
-                        nextBtn.className = "bg-gradient-to-r from-indigo-600 to-teal-500 text-white font-bold text-xs px-4 py-2.5 rounded-xl active:scale-95 transition-all shadow-sm hover:opacity-90 flex items-center gap-1";
+                        nextBtn.className = "bg-gradient-to-r from-indigo-600 to-teal-500 text-white font-bold text-xs px-4 py-2 rounded-xl active:scale-95 transition-all shadow-2xs hover:opacity-90 flex items-center gap-1 cursor-pointer";
                     } else {
                         nextBtn.innerHTML = `<span>最終問</span> <i data-lucide="chevron-right" class="w-4 h-4"></i>`;
-                        nextBtn.className = "bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs px-4 py-2.5 rounded-xl active:scale-95 transition-all shadow-sm flex items-center gap-1";
+                        nextBtn.className = "bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs px-3.5 py-2 rounded-xl active:scale-95 transition-all shadow-2xs flex items-center gap-1 cursor-pointer";
                     }
                 } else {
                     nextBtn.innerHTML = `<span>NEXT</span> <i data-lucide="chevron-right" class="w-4 h-4"></i>`;
-                    nextBtn.className = "bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs px-4 py-2.5 rounded-xl active:scale-95 transition-all shadow-sm flex items-center gap-1";
+                    nextBtn.className = "bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs px-3.5 py-2 rounded-xl active:scale-95 transition-all shadow-2xs flex items-center gap-1 cursor-pointer";
                 }
                 if (typeof lucide !== 'undefined') lucide.createIcons();
             }
@@ -831,10 +822,6 @@ e:
                 if (tab02Btn) tab02Btn.click();
             });
 
-
-            // ==========================================
-            // 🗂️ タブ切り替え & 动态ファイル存在チェック
-            // ==========================================
             const loadedStates = { 'tab-01': true, 'tab-02': false, 'tab-03': false, 'tab-04': false, 'tab-05': false };
 
             function loadSpecificTabContent(tabId) {
@@ -917,7 +904,6 @@ e:
                     const playlistCount = document.getElementById('playlist-count');
                     const videoJsUrl = `${basePath}/05_video.js`;
 
-                    // 提取 YouTube Video ID
                     function getYouTubeId(url) {
                         if (!url) return null;
                         const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
@@ -925,7 +911,6 @@ e:
                         return (match && match[2].length === 11) ? match[2] : null;
                     }
 
-                    // 通过 noembed API 自动异步获取视频标题
                     async function fetchVideoMetadata(rawItem) {
                         const urlStr = typeof rawItem === 'string' ? rawItem : rawItem.url;
                         const vId = getYouTubeId(urlStr);
@@ -961,14 +946,12 @@ e:
                             rawList = [window.CURRENT_VIDEO_URL];
                         }
 
-                        // 并行并发自动拉取所有视频的元数据
                         const validPlaylist = (await Promise.all(rawList.map(fetchVideoMetadata))).filter(Boolean);
 
                         if (validPlaylist.length > 0) {
                             emptyPanel.classList.add('hidden');
                             container.classList.remove('hidden');
 
-                            // 默认播放首个视频
                             playYouTubeVideo(validPlaylist[0].id);
 
                             if (validPlaylist.length > 1) {
@@ -978,10 +961,10 @@ e:
 
                                 validPlaylist.forEach((item, index) => {
                                     const itemEl = document.createElement('div');
-                                    itemEl.className = `playlist-item p-3 rounded-xl border cursor-pointer transition-all flex items-center justify-between gap-2 text-xs font-semibold ${index === 0 ? 'bg-indigo-50/80 border-indigo-500 text-indigo-900' : 'bg-white border-slate-200 text-slate-700 hover:border-indigo-500 hover:bg-indigo-50/30'}`;
+                                    itemEl.className = `playlist-item p-2.5 rounded-xl border cursor-pointer transition-all flex items-center justify-between gap-2 text-xs font-semibold ${index === 0 ? 'bg-indigo-50/80 border-indigo-500 text-indigo-900' : 'bg-white border-slate-200 text-slate-700 hover:border-indigo-500 hover:bg-indigo-50/30'}`;
                                     
                                     itemEl.innerHTML = `
-                                        <div class="flex items-center gap-2.5 min-w-0">
+                                        <div class="flex items-center gap-2 min-w-0">
                                             <span class="w-5 h-5 rounded-full bg-slate-100 text-slate-600 text-[10px] font-black flex items-center justify-center shrink-0">${index + 1}</span>
                                             <span class="truncate">${item.title}</span>
                                         </div>
@@ -990,7 +973,7 @@ e:
 
                                     itemEl.addEventListener('click', () => {
                                         playlistItems.querySelectorAll('.playlist-item').forEach((el, i) => {
-                                            el.className = `playlist-item p-3 rounded-xl border cursor-pointer transition-all flex items-center justify-between gap-2 text-xs font-semibold ${i === index ? 'bg-indigo-50/80 border-indigo-500 text-indigo-900' : 'bg-white border-slate-200 text-slate-700 hover:border-indigo-500 hover:bg-indigo-50/30'}`;
+                                            el.className = `playlist-item p-2.5 rounded-xl border cursor-pointer transition-all flex items-center justify-between gap-2 text-xs font-semibold ${i === index ? 'bg-indigo-50/80 border-indigo-500 text-indigo-900' : 'bg-white border-slate-200 text-slate-700 hover:border-indigo-500 hover:bg-indigo-50/30'}`;
                                         });
                                         playYouTubeVideo(item.id);
                                     });
@@ -1032,10 +1015,10 @@ e:
                     const targetId = btn.getAttribute('data-target');
 
                     tabButtons.forEach(b => {
-                        b.className = "tab-btn px-4 py-2.5 font-bold text-xs sm:text-sm border-b-2 border-transparent text-slate-500 hover:text-slate-800 hover:bg-slate-100/50 focus:outline-none transition-all flex items-center space-x-1.5 rounded-t-xl";
+                        b.className = "tab-btn px-3 sm:px-4 py-2 font-bold text-[11px] sm:text-xs border-b-2 border-transparent text-slate-500 hover:text-slate-800 hover:bg-slate-100/60 focus:outline-none transition-all flex items-center space-x-1.5 rounded-t-lg whitespace-nowrap shrink-0 cursor-pointer";
                     });
 
-                    btn.className = "tab-btn px-4 py-2.5 font-black text-xs sm:text-sm border-b-2 border-indigo-600 bg-indigo-50/50 text-indigo-900 focus:outline-none transition-all flex items-center space-x-1.5 rounded-t-xl";
+                    btn.className = "tab-btn px-3 sm:px-4 py-2 font-black text-[11px] sm:text-xs border-b-2 border-indigo-600 bg-indigo-50/60 text-indigo-900 focus:outline-none transition-all flex items-center space-x-1.5 rounded-t-lg whitespace-nowrap shrink-0 cursor-pointer";
 
                     tabPanels.forEach(panel => {
                         panel.classList.toggle('active', panel.id === targetId);

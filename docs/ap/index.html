@@ -413,9 +413,45 @@
             } catch (e) { return {}; }
         }
 
-        function toggleExamCompleted(examKey) {
+        function updateYearProgressBadge(yearBase) {
+            const badgeEl = document.getElementById(`year-progress-${yearBase}`);
+            if (!badgeEl) return;
+
+            const group = globalGroups[yearBase];
+            const completedMap = getCompletedExams();
+            let total = 0;
+            let done = 0;
+
+            if (group && typeof QUESTIONS_LIST !== 'undefined') {
+                ['autumn', 'spring'].forEach(sKey => {
+                    const sData = group[sKey];
+                    const seasonJa = sKey === 'autumn' ? '秋期' : '春期';
+                    if (sData) {
+                        QUESTIONS_LIST.forEach(q => {
+                            const qNumMatch = q.title.match(/問(\d+)/);
+                            const qNum = qNumMatch ? qNumMatch[1] : '';
+                            total++;
+                            if (completedMap[`${yearBase}_${seasonJa}_${qNum}`]) done++;
+                        });
+                    }
+                });
+            }
+
+            if (total > 0) {
+                if (done === total) {
+                    badgeEl.className = "text-[9.5px] font-black text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full";
+                    badgeEl.textContent = `🎉 ${done}/${total}問 完了`;
+                } else {
+                    badgeEl.className = `text-[9.5px] font-bold ${done > 0 ? 'text-indigo-700 bg-indigo-50 border-indigo-200' : 'text-slate-500 bg-slate-50 border-slate-200'} border px-2 py-0.5 rounded-full`;
+                    badgeEl.textContent = `完了 ${done}/${total}`;
+                }
+            }
+        }
+
+        function toggleExamCompleted(examKey, btnEl = null) {
             const completed = getCompletedExams();
-            if (completed[examKey]) {
+            const isDone = Boolean(completed[examKey]);
+            if (isDone) {
                 delete completed[examKey];
             } else {
                 completed[examKey] = Date.now();
@@ -423,7 +459,41 @@
             try {
                 localStorage.setItem(STORAGE_KEY_COMPLETED, JSON.stringify(completed));
             } catch (e) {}
-            renderActiveView();
+
+            const nextDone = !isDone;
+
+            // 局部更新当前题目行与复选框，不重绘整个卡片或折叠状态
+            const checkBtn = btnEl || document.querySelector(`[data-check-key="${examKey}"]`);
+            const rowEl = checkBtn ? checkBtn.closest('[data-exam-row]') : null;
+            const titleEl = rowEl ? rowEl.querySelector('[data-exam-title]') : null;
+
+            if (checkBtn) {
+                checkBtn.setAttribute('title', nextDone ? '完了を解除' : '完了としてマーク');
+                checkBtn.className = `w-4 h-4 rounded border flex items-center justify-center shrink-0 transition-all cursor-pointer ${
+                    nextDone
+                        ? 'bg-emerald-600 border-emerald-600 text-white shadow-2xs'
+                        : 'bg-white border-slate-400/80 shadow-inner text-transparent hover:border-indigo-500'
+                }`;
+            }
+
+            if (rowEl) {
+                rowEl.className = rowEl.className
+                    .replace(/\b(bg-emerald-50\/50|border-emerald-200\/90|hover:border-emerald-400|bg-white|border-slate-200\/90|hover:border-indigo-400)\b/g, '')
+                    .trim();
+                if (nextDone) {
+                    rowEl.classList.add('bg-emerald-50/50', 'border-emerald-200/90', 'hover:border-emerald-400');
+                } else {
+                    rowEl.classList.add('bg-white', 'border-slate-200/90', 'hover:border-indigo-400');
+                }
+            }
+
+            if (titleEl) {
+                titleEl.classList.toggle('text-slate-600', nextDone);
+                titleEl.classList.toggle('text-slate-800', !nextDone);
+            }
+
+            const yearBase = examKey.split('_')[0];
+            if (yearBase) updateYearProgressBadge(yearBase);
             updateOverallProgressUI();
         }
 
@@ -912,7 +982,6 @@
             if (!container) return;
             container.innerHTML = '';
 
-            // 動画データ読込中は「見つかりませんでした」を出さず、スケルトンカードを表示
             if (isVideosLoading) {
                 const skeletons = Array.from({ length: 8 }).map(() => `
                     <div class="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-2xs animate-pulse flex flex-col">
@@ -1025,18 +1094,16 @@
             if (typeof lucide !== 'undefined') lucide.createIcons();
         }
 
-        // 📋 年度別リスト描画
+        // 📋 年度別リスト描画（デフォルト展開・クリックで折りたたみ可能）
         function renderExamCards(groups, uniqueYearBases, examVideoMap = {}) {
             const container = document.getElementById('exam-cards-container');
             if (!container) return;
             container.innerHTML = '';
 
-            const hasVideosLoaded = Object.keys(examVideoMap).length > 0;
             const completedMap = getCompletedExams();
             const watchedMap = getWatchedVideos();
-            const isAnyFilterActive = currentYearFilter !== 'all' || currentCategoryFilter !== 'all' || videoOnlyFilter;
 
-            uniqueYearBases.forEach((yearBase, idx) => {
+            uniqueYearBases.forEach((yearBase) => {
                 if (currentYearFilter !== 'all' && currentYearFilter !== yearBase) return;
 
                 const group = groups[yearBase];
@@ -1061,7 +1128,7 @@
                     }
                 });
 
-                const isExpanded = isAnyFilterActive || (hasVideosLoaded ? yearHasVideo : idx < 3);
+                const isExpanded = true;
 
                 const card = document.createElement('div');
                 card.className = "year-card bg-white border border-slate-200 rounded-2xl shadow-2xs p-2.5 sm:p-3.5 flex flex-col transition-all duration-300";
@@ -1077,8 +1144,8 @@
 
                 const progressBadge = yearTotalQuestions > 0
                     ? (yearCompletedQuestions === yearTotalQuestions
-                        ? `<span class="text-[9.5px] font-black text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full">🎉 ${yearCompletedQuestions}/${yearTotalQuestions}問 完了</span>`
-                        : `<span class="text-[9.5px] font-bold ${yearCompletedQuestions > 0 ? 'text-indigo-700 bg-indigo-50 border-indigo-200' : 'text-slate-500 bg-slate-50 border-slate-200'} border px-2 py-0.5 rounded-full">完了 ${yearCompletedQuestions}/${yearTotalQuestions}</span>`)
+                        ? `<span id="year-progress-${yearBase}" class="text-[9.5px] font-black text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full">🎉 ${yearCompletedQuestions}/${yearTotalQuestions}問 完了</span>`
+                        : `<span id="year-progress-${yearBase}" class="text-[9.5px] font-bold ${yearCompletedQuestions > 0 ? 'text-indigo-700 bg-indigo-50 border-indigo-200' : 'text-slate-500 bg-slate-50 border-slate-200'} border px-2 py-0.5 rounded-full">完了 ${yearCompletedQuestions}/${yearTotalQuestions}</span>`)
                     : '';
 
                 let cardHtml = `
@@ -1090,8 +1157,8 @@
                         ${progressBadge}
                     </div>
                     <div class="flex items-center gap-1.5 text-xs font-bold text-slate-400 shrink-0">
-                        <span id="year-hint-${yearBase}" class="text-[10px] hidden sm:inline">${isExpanded ? '' : 'クリックして展開'}</span>
-                        <i id="year-chevron-${yearBase}" data-lucide="chevron-down" class="w-4 h-4 text-slate-400 transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}"></i>
+                        <span id="year-hint-${yearBase}" class="text-[10px] hidden sm:inline"></span>
+                        <i id="year-chevron-${yearBase}" data-lucide="chevron-down" class="w-4 h-4 text-slate-400 transition-transform duration-200 rotate-180"></i>
                     </div>
                 </button>
                 <div id="year-body-${yearBase}" class="${isExpanded ? '' : 'hidden'} grid grid-cols-1 md:grid-cols-2 gap-2.5 sm:gap-3 mt-2 pt-2 border-t border-slate-100">
@@ -1193,16 +1260,17 @@
                                     : 'bg-white border-slate-200/90 hover:border-indigo-400';
 
                                 colHtml += `
-                                <div class="group ${rowStyle} border rounded-xl p-2 flex flex-col gap-1.5 transition-all hover:shadow-xs">
+                                <div data-exam-row="${examKey}" class="group ${rowStyle} border rounded-xl p-2 flex flex-col gap-1.5 transition-all hover:shadow-xs">
                                     <div class="flex flex-row items-center justify-between gap-1.5">
-                                        <button type="button" 
-                                            onclick="toggleExamCompleted('${examKey}')" 
+                                        <button type="button"
+                                            data-check-key="${examKey}"
+                                            onclick="toggleExamCompleted('${examKey}', this)" 
                                             title="${isDone ? '完了を解除' : '完了としてマーク'}"
                                             class="w-4 h-4 rounded border flex items-center justify-center shrink-0 transition-all cursor-pointer ${isDone ? 'bg-emerald-600 border-emerald-600 text-white shadow-2xs' : 'bg-white border-slate-400/80 shadow-inner text-transparent hover:border-indigo-500'}">
                                             <i data-lucide="check" class="w-2.5 h-2.5 stroke-[3]"></i>
                                         </button>
 
-                                        <a href="${examUrl}" onclick="saveStudyProgress('${fullLabel}', '${examUrl}')" class="flex-1 min-w-0 flex items-center justify-between gap-1.5 font-bold text-[11.5px] sm:text-xs ${isDone ? 'text-slate-600' : 'text-slate-800'} group-hover:text-indigo-600 transition-colors">
+                                        <a href="${examUrl}" onclick="saveStudyProgress('${fullLabel}', '${examUrl}')" class="flex-1 min-w-0 flex items-center justify-between gap-1.5 font-bold text-[11.5px] sm:text-xs ${isDone ? 'text-slate-600' : 'text-slate-800'} group-hover:text-indigo-600 transition-colors" data-exam-title>
                                             <span class="truncate">${q.title}</span>
                                             <span class="inline-flex items-center gap-0.5 text-[10px] font-black text-indigo-700 bg-indigo-50 border border-indigo-200/80 group-hover:bg-indigo-600 group-hover:text-white group-hover:border-indigo-600 px-2 py-0.5 rounded-md shrink-0 transition-colors">
                                                 <span>⚡ 演習</span>
